@@ -1,15 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        Yearn Hub
-      </header>
-    </div>
-  );
+
+import { Home } from './components/app';
+
+
+class App extends React.Component {
+    render() {
+        return (
+        <BrowserRouter >
+          <Switch>
+            <Route exact path="/" component={Home} />
+          </Switch>
+        </BrowserRouter>
+        );
+    }
 }
 
 export default App;
