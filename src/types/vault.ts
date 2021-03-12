@@ -26,3 +26,7 @@ export type Vault = {
     performanceFee: BigNumber;
     strategies: Strategy[];
 }
+
+export type VaultApi = {
+   // TODO: fill this type with API payload schema
+}

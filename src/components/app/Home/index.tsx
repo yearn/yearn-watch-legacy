@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 
-import { BuildGet } from "../../../utils/apisRequest"
+import { getVaults } from "../../../utils/vaults"
 
 
 interface HomeProps {
@@ -14,10 +14,12 @@ export const Home = () => {
    const [data, setData] = useState([]);
 useEffect(() => {
     // GET request using axios inside useEffect React hook
-  const fetchData = BuildGet("/all")
-    console.log("fetchData", fetchData)
-
+    getVaults().then(vaults => {
+        console.log("vaults", vaults)
     //   setData(fetchData)
+    });
+    
+    
 
 }, []);
     console.log("data", data)

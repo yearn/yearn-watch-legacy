@@ -13,11 +13,21 @@ interface ServerData {
   name?: number
 }
 
+export const getVaults = async () => {
+  try {
+    const payload= await BuildGet("/all");
+  } catch (error) {
+    
+  }
+ 
+}
+
 export const BuildGet = async (url: string) => {
     let payload: any=[]
     try {
         const response = await axios.get(`${API_URL}${url}`);
-        payload = response
+        payload = response;
+        // TODO: map response
         return response
 } catch (error) {
     console.log("error")
@@ -25,3 +35,6 @@ export const BuildGet = async (url: string) => {
     console.log("payload--", payload.data)
     return payload.data
 }
+
+
+sum
