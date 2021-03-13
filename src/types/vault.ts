@@ -28,5 +28,21 @@ export type Vault = {
 }
 
 export type VaultApi = {
+      apiVersion: string;
+    name: string;
+    symbol: string;
+    want: Token;
+
+    emergencyShutdown: boolean;
+    management: string;
+    governance: string;
+    guardian:string;
+
+
+    depositLimit: BigNumber;
+    debtRatio: BigNumber;
+    managementFee: BigNumber;
+    performanceFee: BigNumber;
+    strategies: Strategy[];
    // TODO: fill this type with API payload schema
 }
