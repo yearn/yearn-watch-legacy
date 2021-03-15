@@ -4,7 +4,7 @@ import {
     ContractCallContext,
     ContractCallReturnContext,
   } from 'ethereum-multicall';
-import { BigNumber } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { get } from 'lodash';
 import { getEthersDefaultProvider } from './ethers';
 import { Vault, VaultApi , VaultVersion, Strategy } from '../types';
@@ -27,7 +27,9 @@ const STRAT_VIEW_METHODS = [
     'isActive',
     'keeper',
     'rewards',
-    'strategist'
+    'strategist',
+    'name',
+    'vault'
 ];
 
 
@@ -39,7 +41,7 @@ export const getVaults = async (): Promise<Vault[]> => {
     try {
       const response = await BuildGet("/all");
       let payload = response.data as VaultApi[];
-      payload = payload.filter(vault => vault.endorsed && vault.type == VaultVersion.V2);
+      payload = payload.filter(vault => vault.endorsed && vault.type === VaultVersion.V2);
 
       const vaultMap = new Map<string, VaultApi>();
       const strategyMap = new Map<string, string>();
@@ -79,8 +81,25 @@ export const getVaults = async (): Promise<Vault[]> => {
     }
 }
 
+export const getVault = async (address: string): Promise<Vault> => {
+    if (!address || !utils.isAddress(address)) {
+        throw new Error('Error: expect a valid vault address');
+    }
 
-const mapContractCalls = (result: ContractCallReturnContext ) => {
+    // TODO: refactor to optimize this code to only call the one vault
+    const vaults = await getVaults();
+
+    let [foundVault]: Vault[] = vaults.filter(vault =>  vault.address.toLowerCase() === address.toLowerCase());
+
+    if (!foundVault) {
+        throw new Error('Error: vault not part of the endorsed list');
+    }
+    
+    return foundVault;
+}
+
+
+export const mapContractCalls = (result: ContractCallReturnContext ) => {
     let mappedObj: any = {};
     result.callsReturnContext.forEach(({ methodName, returnValues }) => {
         if (returnValues && returnValues.length > 0) {
@@ -99,6 +118,7 @@ const mapVaultData = (contractCallsResults: ContractCallResults, vaultMap: Map<s
     const vaults: Vault[] = [];
 
     vaultMap.forEach((vault, key) => {
+        // TODO: map all the data from the contract calls
         const {
             address,
             apiVersion,
@@ -128,7 +148,8 @@ const mapVaultData = (contractCallsResults: ContractCallResults, vaultMap: Map<s
             let mappedStrat: any = mapContractCalls(stratData);
 
             return {
-                ...mappedStrat
+                ...mappedStrat,
+                address,
             };
         });
 
