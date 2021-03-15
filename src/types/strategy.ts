@@ -17,5 +17,5 @@ export type Strategy = {
     strategist: string;
     keeper: string;
 
-    params: StrategyParams;
+    params?: StrategyParams;
 }
