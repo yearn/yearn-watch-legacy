@@ -9,7 +9,8 @@ export type StrategyParams = {
 export type Strategy = {
     apiVersion: string;
     name: string; 
-    vaultAddress: string;
+    address: string;
+    vault: string;
 
     emergencyExit: boolean;
     active: boolean;
