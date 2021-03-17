@@ -2,7 +2,8 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 
-import { Home } from './components/app';
+import { Home, StrategistList } from './components/app';
+
 
 
 class App extends React.Component {
@@ -10,7 +11,8 @@ class App extends React.Component {
         return (
         <BrowserRouter >
           <Switch>
-            <Route exact path="/" component={Home} />
+              <Route exact path="/" component={Home} />
+               <Route exact path="/strategy" component={StrategistList} />
           </Switch>
         </BrowserRouter>
         );

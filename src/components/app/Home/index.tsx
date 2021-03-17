@@ -1,22 +1,50 @@
 import React, {useEffect, useState} from 'react';
-import Grid from '@material-ui/core/Grid';
-
+import Container from '@material-ui/core/Container';
+import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import { getVaults } from "../../../utils/vaults"
+// import Accordion from '../../common/Accordion';
+import { VaultsList } from '../VaultsList';
 
 
-interface HomeProps {
-    
+
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    rootContainer: {
+    [theme.breakpoints.down('sm')]: {
+     '& .MuiContainer-maxWidthLg' : {
+             maxWidth: "lg"
+        }, 
+    },
+    [theme.breakpoints.up('md')]: {
+     '& .MuiContainer-maxWidthLg' : {
+             maxWidth: "md"
+        }, 
+    },
+    [theme.breakpoints.up('lg')]: {
+      '& .MuiContainer-maxWidthLg' : {
+             maxWidth: "xs"
+        }, 
+    },
+     
+
+    },
   
-}
+  }),
+);
 
 
 export const Home = () => {
+      const classes = useStyles();
    const [data, setData] = useState([]);
 useEffect(() => {
     // GET request using axios inside useEffect React hook
     getVaults().then(vaults => {
-        console.log("vaults", vaults)
-    //   setData(fetchData)
+        if (vaults.length > 0) {
+            setData(vaults as any) 
+             
+        }
+     
     });
     
     
@@ -25,28 +53,20 @@ useEffect(() => {
     console.log("data", data)
     return (
         <div>
-        <Grid>
-                {data.map((vault: any) => (
-                    <React.Fragment>
-                        {vault.endorsed === true && vault.type === "v2" && (
-                            <div>
-                                {`name: ${vault.name}`}
-                                <br />
-                                Strategies
-                                {vault.strategies.map((strategy: any) => (
-                                    <React.Fragment>
-                                        {`address: ${strategy.address}`}
-                                        <br />
-                                          {`name: ${strategy.name}`}
-                                      </React.Fragment>
-                                ))}
-                                     <br />   <br />
-                            </div>
-                        ) }
-</React.Fragment>
-                ))}
-              
-        </Grid>
+            {data.length > 0 && (
+                <React.Fragment>
+                    {data.map((vault: any, index: number) => (
+                        <Container
+                            maxWidth="lg"
+                            // className={classes.rootContainer}
+                        ><VaultsList vault={vault} key={index} />
+                          
+                        </Container>
+                       
+                    ))}
+                </React.Fragment>
+            )
+            }
         </div>
     );
 };
