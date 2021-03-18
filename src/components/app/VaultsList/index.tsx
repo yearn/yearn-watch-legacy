@@ -63,7 +63,7 @@ export const VaultsList = (props: VaultsListProps) => {
 
     
   return (
-    <div className={ classes.root}  key={data.index} >
+    <div className={ classes.root}>
       <MuiAccordion className={classes.accordion} >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon style={{color: "#ffff"}}/>}
