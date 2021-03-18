@@ -11,6 +11,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
 import MuiAlert from '@material-ui/lab/Alert';
+import CallMadeIcon from '@material-ui/icons/CallMade';
+import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
+
+
 
 
 
@@ -45,7 +50,13 @@ export const VaultsList = (data: any) => {
     
   const classes = useStyles();
 
-  
+  const address1 =  vault.address.substring(0, 6) +
+        '...' +
+        vault.address.substring(vault.address.length - 4, vault.address.length); 
+  const maskedAddress = <Tooltip title={vault.address} aria-label="Etherscan"><span>{address1}</span></Tooltip>
+
+
+    
   return (
     <div className={ classes.root}  key={data.index} >
       <MuiAccordion className={classes.accordion} >
@@ -63,7 +74,8 @@ export const VaultsList = (data: any) => {
                 
           <Avatar alt={vault.icon} src={vault.icon}  />
         </ListItemAvatar>
-              <ListItemText primary={<Typography variant="subtitle1" gutterBottom>{vault.name } &nbsp;&nbsp;<span style={{fontSize: "14px"}} >{vault.address}</span></Typography>}
+              <ListItemText primary={<Typography variant="subtitle1" gutterBottom><a href={`/vault/${vault.address}`}>{vault.name}</a>
+ &nbsp;&nbsp;<span style={{ fontSize: "14px", opacity: "0.6" }} >{maskedAddress}</span> <Tooltip title="View on Etherscan" aria-label="Etherscan"><Button style={{  padding: 0 }} href={`https://etherscan.io/address/${vault.address}`} target="_blank"><CallMadeIcon fontSize="inherit" style={{backgroundColor: "white", borderRadius: 3, padding: 2 }}/></Button></Tooltip></Typography>}
                
               />
       </ListItem>
