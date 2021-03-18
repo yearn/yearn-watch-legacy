@@ -1,5 +1,6 @@
 import React from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
+import { Container } from '@material-ui/core';
 import MuiAccordion  from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -14,7 +15,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import CallMadeIcon from '@material-ui/icons/CallMade';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
-
+import Divider from '@material-ui/core/Divider';
 import { Vault } from '../../../types';
 
 
@@ -22,7 +23,6 @@ type VaultsListProps = {
   vault: Vault;
   key: number;
 }
-
 
 export const VaultsList = (props: VaultsListProps) => {
   const { vault, key } = props;
@@ -37,7 +37,35 @@ export const VaultsList = (props: VaultsListProps) => {
       margin: "5px",    
       borderRadius: "5px",
     },
-    
+    link: {
+      color: "#fff"
+    },
+    expandIcon: {
+      color: "#fff"
+    },
+    list: {
+      padding: 0
+    },
+    alert: {
+      background: "transparent",
+      color: "red",
+      fontWeight: 400,
+     
+    },
+    address: {
+      fontSize: "14px",
+      opacity: "0.6" 
+    },
+    iconCall: {
+      backgroundColor: "white",
+      borderRadius: 3, padding: 2 
+    },
+    divider: {
+      background: "#fff",
+      opacity: "0.3",
+      marginLeft: "10px",
+      marginRight:"10px"
+    },
     accordion: {
       background: config ? "#0a1d3f": "#ff6c6c",
       borderRadius: "8px",
@@ -63,43 +91,66 @@ export const VaultsList = (props: VaultsListProps) => {
 
     
   return (
-    <div className={ classes.root}>
-      <MuiAccordion className={classes.accordion} >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon style={{color: "#ffff"}}/>}
+      <div className={ classes.root}>
+        <MuiAccordion className={classes.accordion} >
+          <AccordionSummary
+          expandIcon={<ExpandMoreIcon className={classes.expandIcon}/>}
           aria-controls="panel1a-content"
           id="panel1a-header"
-        >       
-          <List style={{padding: 0}}>
-           {!config ? <MuiAlert severity="error" variant="filled"> error message</MuiAlert>: null}
-    
-            <ListItem >
-            
-              <ListItemAvatar>
-                
-          <Avatar alt={vault.icon} src={vault.icon}  />
-        </ListItemAvatar>
-              <ListItemText primary={<Typography variant="subtitle1" gutterBottom><a href={`/vault/${vault.address}`}>{vault.name}</a>
- &nbsp;&nbsp;<span style={{ fontSize: "14px", opacity: "0.6" }} >{maskedAddress}</span> <Tooltip title="View on Etherscan" aria-label="Etherscan"><Button style={{  padding: 0 }} href={`https://etherscan.io/address/${vault.address}`} target="_blank"><CallMadeIcon fontSize="inherit" style={{backgroundColor: "white", borderRadius: 3, padding: 2 }}/></Button></Tooltip></Typography>}
-               
+          >       
+              <List className={classes.list}>
+              {!config ? <MuiAlert severity="error" variant="filled" className={classes.alert} > {vault.configErrors && vault.configErrors?.length > 0 ? vault.configErrors[0]: ""}</MuiAlert>: null}
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar alt={vault.icon} src={vault.icon}  />
+                  </ListItemAvatar>
+              <ListItemText
+                primary={
+                  <Typography variant="subtitle1" gutterBottom><a className={classes.link} href={`/vault/${vault.address}`}>{vault.name}</a>
+                  &nbsp;&nbsp;<span className={classes.address} >{maskedAddress}</span>
+                    <Tooltip title="View on Etherscan" aria-label="Etherscan">
+                      <Button href={`https://etherscan.io/address/${vault.address}`} target="_blank">
+                        <CallMadeIcon fontSize="inherit" className={classes.iconCall} />
+                      </Button>
+                      </Tooltip>
+                </Typography>}
+
               />
-      </ListItem>
-   
-    </List>
-          
-       
+             
+            </ListItem>
+            
+              </List>
         </AccordionSummary>
+        <Divider className={classes.divider}/>
         <AccordionDetails>
-          <Typography>
-            {vault.strategies.map((str: any) => (
-              <div>
-                {str.strategist}
-             </div>
-           ))}
-          </Typography>
-        </AccordionDetails>
-      </MuiAccordion>
-   
-    </div>
+         
+          <Container>
+              <Typography>
+              {vault.strategies.map((str: any, index: any) => (
+                <List key={index}>
+                    <ListItem>
+                 {str.name}
+              <ListItemText
+                primary={
+                  <Typography variant="subtitle1" gutterBottom>
+                    <Tooltip title="View on Etherscan" aria-label="Etherscan">
+                      <Button href={`https://etherscan.io/address/${str.address}`} target="_blank">
+                        <CallMadeIcon fontSize="inherit" className={classes.iconCall} />
+                      </Button>
+                      </Tooltip>
+                </Typography>}
+
+              />
+             
+            </ListItem>
+             
+              </List>
+              ))}
+            </Typography>
+            </Container>
+          </AccordionDetails>
+        </MuiAccordion>
+
+      </div>
   );
 }
