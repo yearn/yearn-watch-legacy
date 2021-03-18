@@ -15,13 +15,18 @@ import CallMadeIcon from '@material-ui/icons/CallMade';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 
+import { Vault } from '../../../types';
 
 
+type VaultsListProps = {
+  vault: Vault;
+  key: number;
+}
 
 
-export const VaultsList = (data: any) => {
-  console.log("vault", data)
-    const vault = data.vault
+export const VaultsList = (props: VaultsListProps) => {
+  const { vault, key } = props;
+  console.log("vault", vault);
   const config = vault.configOK
 
 
