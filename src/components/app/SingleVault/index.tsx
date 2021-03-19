@@ -1,52 +1,11 @@
-// import React, { useEffect, useState } from 'react';
-// import { getVault } from "../../../utils/vaults"
-// import { useParams } from "react-router-dom";
-// import Container from '@material-ui/core/Container';
-// import { Vault } from '../../../types'
-//   interface ParamTypes {
-//   id: string
-//     }
-
-
-// export const SingleVault = () =>  {
-//   const { id } = useParams<ParamTypes>()
-  
-//   const [vault, setVault] = useState<Vault | undefined>();
-// useEffect(() => {
-//   getVault(id).then(loadedVault => {
-   
-//         setVault(loadedVault)  
-//     });
-    
-// });
-  
-
-
-//     return (
-//      <Container maxWidth="sm" style={{background: "#006ae3", borderRadius: 5}}>
- 
-//      { vault ? vault.address : ""}
-    
-    
-//       </Container>
-//     );
-// };
-
 
 import React, { useEffect, useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Vault } from '../../../types'
 import { useParams } from "react-router-dom";
@@ -56,9 +15,38 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { StrategistList } from '../StrategistList';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { Typography } from '@material-ui/core';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link from '@material-ui/core/Link';
+import Chip from '@material-ui/core/Chip';
+
   interface ParamTypes {
   id: string
     }
+
+
+
+export const SingleVault = () => {
+
+
+  const { id } = useParams<ParamTypes>()
+  
+
+  const [vault, setVault] = useState<Vault | undefined>();
+     const [isLoaded, setIsLoaded] = useState(true);
+
+  
+
+ 
+  useEffect(() => {
+  getVault(id).then(loadedVault => {
+    setVault(loadedVault) 
+    setIsLoaded(false)
+    });
+    
+  });
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -66,13 +54,27 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: "80%",
     marginLeft: "auto",
       marginRight: "auto",
-      // border: "2px solid #ff6c6c",
-      // background: "#ff6c6c"
+      border: vault && vault.configOK === false ? "5px solid #ff6c6c": "",   
+    },
+    crumbs: {
+      maxWidth: "80%",
+      marginLeft: "auto",
+      marginRight: "auto",
+      marginBottom: 15,
+      color: "#fff"
     
+    },
+    text: {
+      color: "#ffff",
+      fontWeight: "bolder"
+    },
+    row: {
+      background: "#0a1d3f"
     },
     gridContainer: {
       flexGrow: 1,
     },
+  
     media: {
       height: 0,
       paddingTop: '56.25%', // 16:9
@@ -90,37 +92,27 @@ const useStyles = makeStyles((theme: Theme) =>
    
   }),
 );
-
-
-export const SingleVault = () => {
-  const { id } = useParams<ParamTypes>()
   const classes = useStyles();
-
-  const [vault, setVault] = useState<Vault | undefined>();
-
-  
-
- 
-  useEffect(() => {
-  getVault(id).then(loadedVault => {
-   
-        setVault(loadedVault)  
-    });
-    
-  });
-
-
     const renderErrors = () => (
-  vault && vault.configErrors && vault.configErrors.map((message: any) => {
-    return <div>{ message}</div>
+  vault && vault.configErrors && vault.configErrors.map((message: string) => {  
+     
+    return <div style={{color: "#ff6c6c"}}>{ message}</div>
   })
    )
-  
   return (
-    <Card className={classes.root}>
+    <React.Fragment>
+      <Breadcrumbs className={classes.crumbs}>
+           <Link color="inherit" href="/" >
+       vaults
+      </Link>
+    
+      <Typography className={classes.text} >{vault ? vault.name : ""}</Typography>
+      </Breadcrumbs>
+     
+  { isLoaded ?<div  style={{ textAlign: "center", marginTop: "100px" }}><CircularProgress style={{ color: "#fff" }} /> <Typography style={{ color: "#fff" }}>Loading vault..</Typography></div>:  <Card className={classes.root}>
       <CardHeader
         avatar={
-          <Avatar src={vault ? vault.icon: ""}aria-label="recipe" />
+          <Avatar src={ vault ? vault.icon: ""}aria-label="recipe" />
             
          
         }
@@ -132,26 +124,40 @@ export const SingleVault = () => {
         title={vault ? vault.name : ""}
         subheader={vault ? vault.address : ""}
       />
-     
+     {console.log("vaoulll", vault)}
       <CardContent>
         <Table>
            <TableHead>
-    <TableRow>
-        <TableCell>API Version: </TableCell>
-        <TableCell>{vault ? vault.apiVersion : ""}</TableCell>        
+    <TableRow >
+        <TableCell >API Version: </TableCell>
+        <TableCell >{vault ? vault.apiVersion : ""}</TableCell>        
       </TableRow>
-        <TableRow>
-        <TableCell>Emergency shut down: </TableCell>
-        <TableCell>{vault ? vault.emergencyShutdown : ""}</TableCell>         
+        <TableRow >
+        <TableCell >Emergency shut down: </TableCell>
+        <TableCell >{vault && vault.emergencyShutdown=== false ?   <Chip
+                 
+                  label="ok"
+                  clickable
+                  style={{ color: "#fff", backgroundColor:"rgba(1,201,147,1)" }}
+                  
+      
+      /> : <Chip
+      
+        label="Emergency"
+        clickable
+      style={{ color: "#fff", backgroundColor:"#ff6c6c" }}
+      
+      />}</TableCell>         
+              </TableRow>
+                            <TableRow >
+        <TableCell >Governance: </TableCell>
+        <TableCell>{vault ? vault.governance : ""}</TableCell>         
       </TableRow>
                 <TableRow>
         <TableCell>Management: </TableCell>
         <TableCell>{vault ? vault.management : ""}</TableCell>         
       </TableRow>
-                  <TableRow>
-        <TableCell>Governance: </TableCell>
-        <TableCell>{vault ? vault.governance : ""}</TableCell>         
-      </TableRow>
+    
                   <TableRow>
         <TableCell>Guardian: </TableCell>
         <TableCell>{vault ? vault.guardian : ""}</TableCell>         
@@ -173,7 +179,7 @@ export const SingleVault = () => {
         <TableCell>{vault ? vault.totalAssets : ""}</TableCell>         
     </TableRow>
        
-       {      vault &&   vault.configOK === false ?          <TableRow>
+       {      vault && vault.configOK === false ?          <TableRow style={{border:"2px solid #ff6c6c"}}>
         <TableCell>Config errors: </TableCell>
         <TableCell>{vault ? renderErrors() : ""}</TableCell>         
     </TableRow> : null}
@@ -184,10 +190,11 @@ export const SingleVault = () => {
     
        
        
-        {vault &&  vault.strategies.length > 0 ? <StrategistList vault={vault}/>: ""}
+        {vault &&  vault.strategies.length > 0 ? <div style={{background: "#0a1d3f"}}><StrategistList vault={vault} /></div>: ""}
       </CardContent>
    
 
-    </Card>
+      </Card>}
+      </React.Fragment>
   );
 }

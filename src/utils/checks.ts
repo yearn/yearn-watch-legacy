@@ -9,7 +9,7 @@ export type VaultCheck = {
 const GOVERNANCE = '0xfeb4acf3df3cdea7399794d0869ef76a6efaff52';
 // dev.ychad.eth
 const GUARDIAN = '0x846e211e8ba920b353fb717631c015cf04061cc9';
-// strategist MS
+// strategist MultiSig
 const MANAGEMENT = '0x16388463d60FFE0661Cf7F1f31a7D658aC790ff7';
 
 const MANAGEMENT_FEE = 200;

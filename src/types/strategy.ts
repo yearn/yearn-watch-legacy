@@ -13,10 +13,11 @@ export type Strategy = {
     vault: string;
 
     emergencyExit: boolean;
-    active: boolean;
+    isActive: boolean;
 
     strategist: string;
     keeper: string;
+    rewards: string;
 
     params?: StrategyParams;
 }

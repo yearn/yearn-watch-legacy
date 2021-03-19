@@ -17,6 +17,9 @@ import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import Divider from '@material-ui/core/Divider';
 import { Vault } from '../../../types';
+import { StrategistList } from '../StrategistList';
+import { extractAddress } from "../../../utils/extractAddress";
+import Hidden from '@material-ui/core/Hidden';
 
 
 type VaultsListProps = {
@@ -26,7 +29,6 @@ type VaultsListProps = {
 
 export const VaultsList = (props: VaultsListProps) => {
   const { vault, key } = props;
-  console.log("vault", vault);
   const config = vault.configOK
 
 
@@ -82,14 +84,13 @@ export const VaultsList = (props: VaultsListProps) => {
 );
     
   const classes = useStyles();
-
-  const address1 =  vault.address.substring(0, 6) +
-        '...' +
-        vault.address.substring(vault.address.length - 4, vault.address.length); 
+  const address1 = extractAddress(vault.address) 
   const maskedAddress = <Tooltip title={vault.address} aria-label="Etherscan"><span>{address1}</span></Tooltip>
 
 
-    
+
+
+
   return (
       <div className={ classes.root}>
         <MuiAccordion className={classes.accordion} >
@@ -106,47 +107,32 @@ export const VaultsList = (props: VaultsListProps) => {
                   </ListItemAvatar>
               <ListItemText
                 primary={
+                  <div>
                   <Typography variant="subtitle1" gutterBottom><a className={classes.link} href={`/vault/${vault.address}`}>{vault.name}</a>
-                  &nbsp;&nbsp;<span className={classes.address} >{maskedAddress}</span>
+                    </Typography>  &nbsp;&nbsp;<span className={classes.address} >
+                        <Hidden smUp>
+          {maskedAddress}
+        </Hidden>
+                      
+                                      <Hidden xsDown>
+          {vault.address}
+        </Hidden></span>
                     <Tooltip title="View on Etherscan" aria-label="Etherscan">
                       <Button href={`https://etherscan.io/address/${vault.address}`} target="_blank">
                         <CallMadeIcon fontSize="inherit" className={classes.iconCall} />
                       </Button>
-                      </Tooltip>
-                </Typography>}
+                    </Tooltip>
+                  </div>}
 
-              />
-             
+              />   
             </ListItem>
             
               </List>
         </AccordionSummary>
         <Divider className={classes.divider}/>
-        <AccordionDetails>
-         
+        <AccordionDetails>     
           <Container>
-              <Typography>
-              {vault.strategies.map((str: any, index: any) => (
-                <List key={index}>
-                    <ListItem>
-                 {str.name}
-              <ListItemText
-                primary={
-                  <Typography variant="subtitle1" gutterBottom>
-                    <Tooltip title="View on Etherscan" aria-label="Etherscan">
-                      <Button href={`https://etherscan.io/address/${str.address}`} target="_blank">
-                        <CallMadeIcon fontSize="inherit" className={classes.iconCall} />
-                      </Button>
-                      </Tooltip>
-                </Typography>}
-
-              />
-             
-            </ListItem>
-             
-              </List>
-              ))}
-            </Typography>
+            <StrategistList vault={ vault}/>
             </Container>
           </AccordionDetails>
         </MuiAccordion>
