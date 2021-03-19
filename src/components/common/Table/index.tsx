@@ -6,23 +6,20 @@ import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles({
-  table: {
+    table: {
         minWidth: 650,
-        
-     
-  },
+    },
 });
 
+const Table = (props: any) => {
+    const classes = useStyles();
 
- const Table = (props: any) => {
-  const classes = useStyles();
-
-  return (
-    <TableContainer component={Paper}>
-      <MuiTable className={classes.table} aria-label="simple table">
-    {props.children}
-      </MuiTable>
-    </TableContainer>
-  );
-}
-export  default Table
+    return (
+        <TableContainer component={Paper}>
+            <MuiTable className={classes.table} aria-label="simple table">
+                {props.children}
+            </MuiTable>
+        </TableContainer>
+    );
+};
+export default Table;

@@ -3,7 +3,7 @@ import {
     ContractCallResults,
     ContractCallContext,
     ContractCallReturnContext,
-  } from 'ethereum-multicall';
+} from 'ethereum-multicall';
 import { utils } from 'ethers';
 
 import { getEthersDefaultProvider } from './ethers';
@@ -20,15 +20,17 @@ const STRAT_VIEW_METHODS = [
     'rewards',
     'strategist',
     'name',
-    'vault'
+    'vault',
 ];
 
-export const getStrategies = async (addresses: string[]): Promise<Strategy[]> => {
+export const getStrategies = async (
+    addresses: string[]
+): Promise<Strategy[]> => {
     if (addresses.length === 0) {
         throw new Error('Error: expect a valid strategy address');
     }
 
-    addresses.forEach(address => {
+    addresses.forEach((address) => {
         if (!address || !utils.isAddress(address)) {
             throw new Error('Error: expect a valid strategy address');
         }
@@ -39,18 +41,21 @@ export const getStrategies = async (addresses: string[]): Promise<Strategy[]> =>
     const multicall = new Multicall({ ethersProvider: provider });
 
     const stratCalls: ContractCallContext[] = addresses.map((address) => {
-        const calls = STRAT_VIEW_METHODS.map(method => ({ reference: method, methodName: method, methodParameters: [] }));
+        const calls = STRAT_VIEW_METHODS.map((method) => ({
+            reference: method,
+            methodName: method,
+            methodParameters: [],
+        }));
         return {
-                reference: address,
-                contractAddress: address,
-                abi: StratABI.abi,
-                calls,
-        }
-        
+            reference: address,
+            contractAddress: address,
+            abi: StratABI.abi,
+            calls,
+        };
     });
-    
+
     const results: ContractCallResults = await multicall.call(stratCalls);
-    const mappedStrategies: Strategy[]  = addresses.map((address) => {
+    const mappedStrategies: Strategy[] = addresses.map((address) => {
         const stratData = results.results[address];
         let mappedStrat: any = mapContractCalls(stratData);
 
@@ -58,7 +63,7 @@ export const getStrategies = async (addresses: string[]): Promise<Strategy[]> =>
             ...mappedStrat,
             address,
         };
-    });  
+    });
 
     return mappedStrategies;
-}
+};
