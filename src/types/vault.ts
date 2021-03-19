@@ -1,10 +1,9 @@
 import { BigNumber } from 'ethers';
 import { Strategy } from './strategy';
 
-
 export enum VaultVersion {
     V2 = 'v2',
-    V1 = 'v1'
+    V1 = 'v1',
 }
 
 export type Token = {
@@ -13,7 +12,7 @@ export type Token = {
     symbol: string;
     icon: string;
     name: string;
-}
+};
 
 export type Vault = {
     address: string;
@@ -26,8 +25,7 @@ export type Vault = {
     emergencyShutdown: boolean;
     management: string;
     governance: string;
-    guardian:string;
-
+    guardian: string;
 
     depositLimit: string;
     // TODO: add this
@@ -37,8 +35,8 @@ export type Vault = {
     totalAssets: string;
     strategies: Strategy[];
     configOK: boolean;
-    configErrors?: string[]
-}
+    configErrors?: string[];
+};
 
 export type VaultApi = {
     address: string;
@@ -55,13 +53,15 @@ export type VaultApi = {
         general: {
             managementFee: number;
             performanceFee: number;
-        }
-    },
+        };
+    };
     tvl: {
         totalAssets: BigNumber | number;
-    }
-    strategies: [{
-        name: string;
-        address: string;
-    }]
-}
+    };
+    strategies: [
+        {
+            name: string;
+            address: string;
+        }
+    ];
+};
