@@ -1,64 +1,65 @@
-import React from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import CallMadeIcon from '@material-ui/icons/CallMade';
-import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
-import { extractAddress, extractText } from '../../../utils/extractAddress';
+import { extractText } from '../../../utils/commonUtils';
 import Hidden from '@material-ui/core/Hidden';
+import EtherScanLink from '../../common/EtherScanLink';
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            width: '100%',
-            marginTop: 20,
-            background: 'transparent',
-            padding: 10,
-        },
-        address: {
-            fontSize: '14px',
-            opacity: '0.6',
-            color: '#ffff',
-        },
-        text: {
-            color: '#ffff',
-        },
-        iconCall: {
-            backgroundColor: 'white',
-            borderRadius: 3,
-            padding: 2,
-        },
-        list: {
-            background: 'transparent',
-            border: 'none',
-        },
-        accordion: {
-            background: 'transparent',
-            border: 'none',
-        },
-        link: {
-            color: '#fff',
-        },
-        heading: {
-            fontSize: theme.typography.pxToRem(15),
-            fontWeight: theme.typography.fontWeightRegular,
-        },
-    })
-);
-
-export const StrategistList = (vault: any) => {
+export const StrategistList = (props: any) => {
+    const useStyles = makeStyles((theme: Theme) =>
+        createStyles({
+            root: {
+                width: '100%',
+                marginTop: 20,
+                background: 'transparent',
+                padding: 10,
+            },
+            address: {
+                fontSize: '14px',
+                opacity: '0.6',
+                color: '#ffff',
+            },
+            text: {
+                color: props.dark ? '#ffff' : 'black',
+            },
+            iconCall: {
+                backgroundColor: 'white',
+                borderRadius: 3,
+                padding: 2,
+            },
+            list: {
+                background: 'transparent',
+                border: 'none',
+            },
+            accordion: {
+                background: 'transparent',
+                border: 'none',
+            },
+            link: {
+                color: props.dark ? '#ffff' : 'black',
+                '&:hover': {
+                    color: '#1f255f',
+                    fontWeight: 600,
+                },
+            },
+            heading: {
+                fontSize: theme.typography.pxToRem(15),
+                fontWeight: theme.typography.fontWeightRegular,
+            },
+        })
+    );
     const classes = useStyles();
-
+    const vault = props.vault;
+    console.log('propsss---,', props.vault);
     return (
         <div className={classes.root}>
             <Typography variant="body2" className={classes.text} component="p">
                 Strategies
             </Typography>
-            {vault.vault.strategies &&
-                vault.vault.strategies.map((strategie: any) => (
+            {vault.strategies &&
+                vault.strategies.map((strategie: any) => (
                     <List className={classes.list} style={{ border: 'none' }}>
                         <ListItem style={{ border: 'none' }}>
                             <ListItemText
@@ -87,30 +88,10 @@ export const StrategistList = (vault: any) => {
                                             </a>
                                         </Typography>
                                         &nbsp;&nbsp;
-                                        <span className={classes.address}>
-                                            <Hidden smUp>
-                                                {extractAddress(
-                                                    strategie.address
-                                                )}
-                                            </Hidden>
-                                            <Hidden xsDown>
-                                                {strategie.address}
-                                            </Hidden>
-                                        </span>
-                                        <Tooltip
-                                            title="View on Etherscan"
-                                            aria-label="Etherscan"
-                                        >
-                                            <Button
-                                                href={`https://etherscan.io/address/${strategie.address}`}
-                                                target="_blank"
-                                            >
-                                                <CallMadeIcon
-                                                    fontSize="inherit"
-                                                    className={classes.iconCall}
-                                                />
-                                            </Button>
-                                        </Tooltip>
+                                        <EtherScanLink
+                                            address={strategie.address}
+                                            dark={true}
+                                        />
                                     </div>
                                 }
                             />
