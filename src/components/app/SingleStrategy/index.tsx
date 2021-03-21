@@ -4,10 +4,8 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import { Strategy } from '../../../types';
-import { Vault } from '../../../types';
 import { useParams } from 'react-router-dom';
 import { getStrategies } from '../../../utils/strategies';
-import { getVault } from '../../../utils/vaults';
 import Table from '../../common/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -21,25 +19,19 @@ import EtherScanLink from '../../common/EtherScanLink';
 
 interface ParamTypes {
     id: string;
+    name: string;
 }
 
 export const SingleStrategy = () => {
-    const { id } = useParams<ParamTypes>();
+    const { id, name } = useParams<ParamTypes>();
 
     const [strategyData, setStrategyData] = useState<Strategy[] | undefined>();
     const [isLoaded, setIsLoaded] = useState(true);
-    const [vault, setVault] = useState<Vault | undefined>();
 
     useEffect(() => {
         getStrategies([id]).then((loadedStrategy) => {
             setStrategyData(loadedStrategy);
             setIsLoaded(false);
-            {
-                strategyData &&
-                    getVault(strategyData[0].vault).then((loadedVault) => {
-                        setVault(loadedVault);
-                    });
-            }
         });
     });
 
@@ -69,6 +61,7 @@ export const SingleStrategy = () => {
                 marginLeft: 'auto',
                 marginRight: 'auto',
                 marginBottom: 15,
+                marginTop: 15,
                 color: '#fff',
             },
             text: {
@@ -105,7 +98,7 @@ export const SingleStrategy = () => {
                     color="inherit"
                     href={`/vault/${strategy ? strategy.vault : ''}`}
                 >
-                    {vault && vault.name}
+                    {name}
                 </Link>
 
                 <Typography className={classes.text}>

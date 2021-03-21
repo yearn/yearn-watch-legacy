@@ -72,7 +72,7 @@ export const StrategistList = (props: any) => {
                                         >
                                             <a
                                                 className={classes.link}
-                                                href={`/strategy/${strategie.address}`}
+                                                href={`/strategy/${vault.name}/${strategie.address}`}
                                             >
                                                 <Hidden smUp>
                                                     {strategie.name.length > 20

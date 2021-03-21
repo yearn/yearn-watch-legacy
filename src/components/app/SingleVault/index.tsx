@@ -64,6 +64,7 @@ export const SingleVault = () => {
                 marginLeft: 'auto',
                 marginRight: 'auto',
                 marginBottom: 15,
+                marginTop: 15,
                 color: '#fff',
             },
             text: {
