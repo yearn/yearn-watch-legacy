@@ -9,6 +9,7 @@ import { Vault } from '../../../types';
 import { useParams } from 'react-router-dom';
 import { getVault } from '../../../utils/vaults';
 import { checkLabel } from '../../../utils/checks';
+import { weiToUnits } from '../../../utils/ethers';
 import Table from '../../common/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -204,13 +205,10 @@ export const SingleVault = () => {
                                     <TableCell>Assets: </TableCell>
                                     <TableCell>
                                         Total asset:{' '}
-                                        {vault
-                                            ? numeral(vault.totalAssets).format(
-                                                  '0,0.0000'
-                                              ) +
-                                              ' ' +
-                                              vault.token.symbol
-                                            : ''}
+                                        {vault &&
+                                            vault.totalAssets +
+                                                '  ' +
+                                                vault.token.symbol}{' '}
                                         <ProgressBars vault={vault} />
                                         {vault ? (
                                             <Typography
@@ -219,10 +217,8 @@ export const SingleVault = () => {
                                             >
                                                 {' '}
                                                 Deposit limit :
-                                                {numeral(
-                                                    vault.depositLimit
-                                                ).format('0,0.0000') +
-                                                    ' ' +
+                                                {vault.depositLimit +
+                                                    '  ' +
                                                     vault.token.symbol}
                                             </Typography>
                                         ) : (

@@ -15,5 +15,4 @@ export const formatAmount = (amount: string, decimals: number) => {
     return `${whole}${fraction ? '.' + fraction.substring(0, decimals) : ''}`;
 };
 
-export const weiToUnits = (amount: string, decimals: number) =>
-    formatUnits(BigNumber.from(amount), decimals);
+export const weiToUnits = (amount: string) => BigNumber.from(amount);

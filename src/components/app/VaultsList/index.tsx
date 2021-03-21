@@ -23,7 +23,7 @@ type VaultsListProps = {
 };
 
 export const VaultsList = (props: VaultsListProps) => {
-    const { vault, key } = props;
+    const { vault } = props;
     const config = vault.configOK;
 
     const useStyles = makeStyles((theme: Theme) =>

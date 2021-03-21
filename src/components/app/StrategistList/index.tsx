@@ -52,15 +52,19 @@ export const StrategistList = (props: any) => {
     );
     const classes = useStyles();
     const vault = props.vault;
-    console.log('propsss---,', props.vault);
+
     return (
         <div className={classes.root}>
             <Typography variant="body2" className={classes.text} component="p">
                 Strategies
             </Typography>
             {vault.strategies &&
-                vault.strategies.map((strategie: any) => (
-                    <List className={classes.list} style={{ border: 'none' }}>
+                vault.strategies.map((strategie: any, index: number) => (
+                    <List
+                        className={classes.list}
+                        style={{ border: 'none' }}
+                        key={index}
+                    >
                         <ListItem style={{ border: 'none' }}>
                             <ListItemText
                                 style={{ border: 'none' }}
