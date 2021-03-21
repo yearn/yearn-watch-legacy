@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import numeral from 'numeral';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Vault } from '../../../types';
 import { useParams } from 'react-router-dom';
 import { getVault } from '../../../utils/vaults';
+import { checkLabel } from '../../../utils/checks';
+import { weiToUnits } from '../../../utils/ethers';
 import Table from '../../common/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -19,6 +20,9 @@ import { Typography } from '@material-ui/core';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import Chip from '@material-ui/core/Chip';
+import ProgressBars from '../../common/ProgressBar';
+import { percentaje } from '../../../utils/commonUtils';
+import EtherScanLink from '../../common/EtherScanLink';
 
 interface ParamTypes {
     id: string;
@@ -40,7 +44,15 @@ export const SingleVault = () => {
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
             root: {
-                maxWidth: '80%',
+                [theme.breakpoints.down('sm')]: {
+                    maxWidth: '100%',
+                },
+                [theme.breakpoints.up('md')]: {
+                    maxWidth: '80%',
+                },
+                [theme.breakpoints.up('lg')]: {
+                    maxWidth: '80%',
+                },
                 marginLeft: 'auto',
                 marginRight: 'auto',
                 border:
@@ -53,6 +65,7 @@ export const SingleVault = () => {
                 marginLeft: 'auto',
                 marginRight: 'auto',
                 marginBottom: 15,
+                marginTop: 15,
                 color: '#fff',
             },
             text: {
@@ -118,15 +131,16 @@ export const SingleVault = () => {
                                 aria-label="recipe"
                             />
                         }
-                        action={
-                            <IconButton aria-label="settings">
-                                <MoreVertIcon />
-                            </IconButton>
-                        }
                         title={vault ? vault.name : ''}
-                        subheader={vault ? vault.address : ''}
+                        subheader={
+                            vault ? (
+                                <EtherScanLink address={vault.address} />
+                            ) : (
+                                ''
+                            )
+                        }
                     />
-                    {console.log('vaoulll', vault)}
+
                     <CardContent>
                         <Table>
                             <TableHead>
@@ -165,44 +179,69 @@ export const SingleVault = () => {
                                 <TableRow>
                                     <TableCell>Governance: </TableCell>
                                     <TableCell>
-                                        {vault ? vault.governance : ''}
+                                        {vault
+                                            ? checkLabel(vault.governance)
+                                            : ''}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Management: </TableCell>
                                     <TableCell>
-                                        {vault ? vault.management : ''}
+                                        {vault
+                                            ? checkLabel(vault.management)
+                                            : ''}
                                     </TableCell>
                                 </TableRow>
 
                                 <TableRow>
                                     <TableCell>Guardian: </TableCell>
                                     <TableCell>
-                                        {vault ? vault.guardian : ''}
+                                        {vault
+                                            ? checkLabel(vault.guardian)
+                                            : ''}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell>Deposit limit: </TableCell>
+                                    <TableCell>Assets: </TableCell>
                                     <TableCell>
-                                        {vault ? vault.depositLimit : ''}
+                                        Total asset:{' '}
+                                        {vault &&
+                                            vault.totalAssets +
+                                                '  ' +
+                                                vault.token.symbol}{' '}
+                                        <ProgressBars vault={vault} />
+                                        {vault ? (
+                                            <Typography
+                                                variant="body2"
+                                                color="textSecondary"
+                                            >
+                                                {' '}
+                                                Deposit limit :
+                                                {vault.depositLimit +
+                                                    '  ' +
+                                                    vault.token.symbol}
+                                            </Typography>
+                                        ) : (
+                                            ''
+                                        )}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Management fee: </TableCell>
                                     <TableCell>
-                                        {vault ? vault.managementFee : ''}
+                                        {vault
+                                            ? percentaje(vault.managementFee)
+                                            : ''}{' '}
+                                        %
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Performance fee: </TableCell>
                                     <TableCell>
-                                        {vault ? vault.performanceFee : ''}
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell>Total assets: </TableCell>
-                                    <TableCell>
-                                        {vault ? vault.totalAssets : ''}
+                                        {vault
+                                            ? percentaje(vault.performanceFee)
+                                            : ''}{' '}
+                                        %
                                     </TableCell>
                                 </TableRow>
 
@@ -220,9 +259,7 @@ export const SingleVault = () => {
                         </Table>
 
                         {vault && vault.strategies.length > 0 ? (
-                            <div style={{ background: '#0a1d3f' }}>
-                                <StrategistList vault={vault} />
-                            </div>
+                            <StrategistList vault={vault} dark={false} />
                         ) : (
                             ''
                         )}

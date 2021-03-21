@@ -13,7 +13,7 @@ class App extends React.Component {
                     <Route exact path="/vault/:id" component={SingleVault} />
                     <Route
                         exact
-                        path="/strategy/:id"
+                        path="/strategy/:name/:id"
                         component={SingleStrategy}
                     />
                 </Switch>

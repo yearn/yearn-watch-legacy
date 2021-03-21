@@ -44,7 +44,7 @@ export const NavBar = () => {
                     />
                 </IconButton>
                 <Typography variant="h5" className={classes.title}>
-                    yearn vaults
+                    yearn hub
                 </Typography>
             </Toolbar>
         </AppBar>

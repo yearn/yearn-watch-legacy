@@ -1,94 +1,93 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-
 import CardContent from '@material-ui/core/CardContent';
-
-import IconButton from '@material-ui/core/IconButton';
-
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Strategy } from '../../../types';
-import { Vault } from '../../../types';
 import { useParams } from 'react-router-dom';
 import { getStrategies } from '../../../utils/strategies';
-import { getVault } from '../../../utils/vaults';
 import Table from '../../common/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-
+import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Typography } from '@material-ui/core';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
+import EtherScanLink from '../../common/EtherScanLink';
 
 interface ParamTypes {
     id: string;
+    name: string;
 }
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            maxWidth: '80%',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            // border: "2px solid #ff6c6c",
-            // background: "#ff6c6c"
-        },
-        crumbs: {
-            maxWidth: '80%',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            marginBottom: 15,
-            color: '#fff',
-        },
-        text: {
-            color: '#ffff',
-            fontWeight: 'bolder',
-        },
-        gridContainer: {
-            flexGrow: 1,
-        },
-        media: {
-            height: 0,
-            paddingTop: '56.25%', // 16:9
-        },
-        expand: {
-            transform: 'rotate(0deg)',
-            marginLeft: 'auto',
-            transition: theme.transitions.create('transform', {
-                duration: theme.transitions.duration.shortest,
-            }),
-        },
-        expandOpen: {
-            transform: 'rotate(180deg)',
-        },
-    })
-);
 
 export const SingleStrategy = () => {
-    const { id } = useParams<ParamTypes>();
-    const classes = useStyles();
+    const { id, name } = useParams<ParamTypes>();
 
     const [strategyData, setStrategyData] = useState<Strategy[] | undefined>();
     const [isLoaded, setIsLoaded] = useState(true);
-    const [vault, setVault] = useState<Vault | undefined>();
 
     useEffect(() => {
         getStrategies([id]).then((loadedStrategy) => {
             setStrategyData(loadedStrategy);
             setIsLoaded(false);
-            {
-                strategyData &&
-                    getVault(strategyData[0].vault).then((loadedVault) => {
-                        setVault(loadedVault);
-                    });
-            }
         });
     });
 
     const strategy = strategyData && strategyData[0];
+    const useStyles = makeStyles((theme: Theme) =>
+        createStyles({
+            root: {
+                [theme.breakpoints.down('sm')]: {
+                    maxWidth: '100%',
+                },
+                [theme.breakpoints.up('md')]: {
+                    maxWidth: '80%',
+                },
+                [theme.breakpoints.up('lg')]: {
+                    maxWidth: '80%',
+                },
+
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                border:
+                    strategy && strategy.emergencyExit
+                        ? '2px solid #ff6c6c'
+                        : '#fff',
+            },
+            crumbs: {
+                maxWidth: '80%',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                marginBottom: 15,
+                marginTop: 15,
+                color: '#fff',
+            },
+            text: {
+                color: '#ffff',
+                fontWeight: 'bolder',
+            },
+            gridContainer: {
+                flexGrow: 1,
+            },
+            media: {
+                height: 0,
+                paddingTop: '56.25%', // 16:9
+            },
+            expand: {
+                transform: 'rotate(0deg)',
+                marginLeft: 'auto',
+                transition: theme.transitions.create('transform', {
+                    duration: theme.transitions.duration.shortest,
+                }),
+            },
+            expandOpen: {
+                transform: 'rotate(180deg)',
+            },
+        })
+    );
+    const classes = useStyles();
     return (
         <React.Fragment>
             <Breadcrumbs className={classes.crumbs}>
@@ -99,7 +98,7 @@ export const SingleStrategy = () => {
                     color="inherit"
                     href={`/vault/${strategy ? strategy.vault : ''}`}
                 >
-                    {vault && vault.name}
+                    {name}
                 </Link>
 
                 <Typography className={classes.text}>
@@ -116,13 +115,14 @@ export const SingleStrategy = () => {
             ) : (
                 <Card className={classes.root}>
                     <CardHeader
-                        action={
-                            <IconButton aria-label="settings">
-                                <MoreVertIcon />
-                            </IconButton>
-                        }
                         title={strategy ? strategy.name : ''}
-                        subheader={strategy ? strategy.address : ''}
+                        subheader={
+                            strategy ? (
+                                <EtherScanLink address={strategy.address} />
+                            ) : (
+                                ''
+                            )
+                        }
                     />
 
                     <CardContent>
@@ -137,37 +137,101 @@ export const SingleStrategy = () => {
                                 <TableRow>
                                     <TableCell>Emergency exit: </TableCell>
                                     <TableCell>
-                                        {strategy ? strategy.emergencyExit : ''}
+                                        {strategy &&
+                                        strategy.emergencyExit === false ? (
+                                            <Chip
+                                                label="ok"
+                                                clickable
+                                                style={{
+                                                    color: '#fff',
+                                                    backgroundColor:
+                                                        'rgba(1,201,147,1)',
+                                                }}
+                                            />
+                                        ) : (
+                                            <Chip
+                                                label="Emergency"
+                                                clickable
+                                                style={{
+                                                    color: '#fff',
+                                                    backgroundColor: '#ff6c6c',
+                                                }}
+                                            />
+                                        )}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Active: </TableCell>
                                     <TableCell>
-                                        {strategy ? strategy.isActive : ''}
+                                        {strategy &&
+                                        strategy.isActive === true ? (
+                                            <Chip
+                                                label="true"
+                                                clickable
+                                                style={{
+                                                    color: '#fff',
+                                                    backgroundColor:
+                                                        'rgba(1,201,147,1)',
+                                                }}
+                                            />
+                                        ) : (
+                                            <Chip
+                                                label="false"
+                                                clickable
+                                                style={{
+                                                    color: '#fff',
+                                                    backgroundColor: '#ff6c6c',
+                                                }}
+                                            />
+                                        )}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Keeper: </TableCell>
                                     <TableCell>
-                                        {strategy ? strategy.keeper : ''}
+                                        {strategy ? (
+                                            <EtherScanLink
+                                                address={strategy.keeper}
+                                            />
+                                        ) : (
+                                            ''
+                                        )}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Rewards: </TableCell>
                                     <TableCell>
-                                        {strategy ? strategy.rewards : ''}
+                                        {strategy ? (
+                                            <EtherScanLink
+                                                address={strategy.rewards}
+                                            />
+                                        ) : (
+                                            ''
+                                        )}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell>Straegist: </TableCell>
+                                    <TableCell>Strategist: </TableCell>
                                     <TableCell>
-                                        {strategy ? strategy.strategist : ''}
+                                        {strategy ? (
+                                            <EtherScanLink
+                                                address={strategy.strategist}
+                                            />
+                                        ) : (
+                                            ''
+                                        )}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Vault: </TableCell>
                                     <TableCell>
-                                        {strategy ? strategy.vault : ''}
+                                        {strategy ? (
+                                            <EtherScanLink
+                                                address={strategy.vault}
+                                            />
+                                        ) : (
+                                            ''
+                                        )}
                                     </TableCell>
                                 </TableRow>
                             </TableHead>

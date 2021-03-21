@@ -16,6 +16,18 @@ const MANAGEMENT_FEE = 200;
 
 const PERF_FEE = 2000;
 
+const addressMap = new Map<string, string>();
+addressMap.set(GOVERNANCE.toLowerCase(), 'ychad.eth');
+addressMap.set(GUARDIAN.toLowerCase(), 'dev.ychad.eth');
+addressMap.set(MANAGEMENT.toLowerCase(), 'strategist multisig');
+
+export const checkLabel = (address: string) => {
+    if (addressMap.has(address.toLowerCase())) {
+        return addressMap.get(address.toLowerCase());
+    }
+    return address;
+};
+
 const checks = [
     {
         field: 'governance',

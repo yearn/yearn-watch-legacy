@@ -10,16 +10,12 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Typography from '@material-ui/core/Typography';
 import MuiAlert from '@material-ui/lab/Alert';
-import CallMadeIcon from '@material-ui/icons/CallMade';
-import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
 import Divider from '@material-ui/core/Divider';
 import { Vault } from '../../../types';
 import { StrategistList } from '../StrategistList';
-import { extractAddress } from '../../../utils/extractAddress';
-import Hidden from '@material-ui/core/Hidden';
+import EtherScanLink from '../../common/EtherScanLink';
+import Typography from '@material-ui/core/Typography';
 
 type VaultsListProps = {
     vault: Vault;
@@ -27,7 +23,7 @@ type VaultsListProps = {
 };
 
 export const VaultsList = (props: VaultsListProps) => {
-    const { vault, key } = props;
+    const { vault } = props;
     const config = vault.configOK;
 
     const useStyles = makeStyles((theme: Theme) =>
@@ -40,6 +36,7 @@ export const VaultsList = (props: VaultsListProps) => {
             link: {
                 color: '#fff',
             },
+
             expandIcon: {
                 color: '#fff',
             },
@@ -51,15 +48,7 @@ export const VaultsList = (props: VaultsListProps) => {
                 color: 'red',
                 fontWeight: 400,
             },
-            address: {
-                fontSize: '14px',
-                opacity: '0.6',
-            },
-            iconCall: {
-                backgroundColor: 'white',
-                borderRadius: 3,
-                padding: 2,
-            },
+
             divider: {
                 background: '#fff',
                 opacity: '0.3',
@@ -82,12 +71,6 @@ export const VaultsList = (props: VaultsListProps) => {
     );
 
     const classes = useStyles();
-    const address1 = extractAddress(vault.address);
-    const maskedAddress = (
-        <Tooltip title={vault.address} aria-label="Etherscan">
-            <span>{address1}</span>
-        </Tooltip>
-    );
 
     return (
         <div className={classes.root}>
@@ -117,9 +100,10 @@ export const VaultsList = (props: VaultsListProps) => {
                             <ListItemAvatar>
                                 <Avatar alt={vault.icon} src={vault.icon} />
                             </ListItemAvatar>
+
                             <ListItemText
                                 primary={
-                                    <div>
+                                    <span>
                                         <Typography
                                             variant="subtitle1"
                                             gutterBottom
@@ -130,32 +114,13 @@ export const VaultsList = (props: VaultsListProps) => {
                                             >
                                                 {vault.name}
                                             </a>
-                                        </Typography>{' '}
+                                        </Typography>
                                         &nbsp;&nbsp;
-                                        <span className={classes.address}>
-                                            <Hidden smUp>
-                                                {maskedAddress}
-                                            </Hidden>
-
-                                            <Hidden xsDown>
-                                                {vault.address}
-                                            </Hidden>
-                                        </span>
-                                        <Tooltip
-                                            title="View on Etherscan"
-                                            aria-label="Etherscan"
-                                        >
-                                            <Button
-                                                href={`https://etherscan.io/address/${vault.address}`}
-                                                target="_blank"
-                                            >
-                                                <CallMadeIcon
-                                                    fontSize="inherit"
-                                                    className={classes.iconCall}
-                                                />
-                                            </Button>
-                                        </Tooltip>
-                                    </div>
+                                        <EtherScanLink
+                                            address={vault.address}
+                                            dark={true}
+                                        />
+                                    </span>
                                 }
                             />
                         </ListItem>
@@ -164,7 +129,7 @@ export const VaultsList = (props: VaultsListProps) => {
                 <Divider className={classes.divider} />
                 <AccordionDetails>
                     <Container>
-                        <StrategistList vault={vault} />
+                        <StrategistList vault={vault} dark={true} />
                     </Container>
                 </AccordionDetails>
             </MuiAccordion>

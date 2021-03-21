@@ -9,7 +9,7 @@ export const extractAddress = (address: string) => {
 export const extractText = (text: string) => {
     return text.substring(0, 20) + '...';
 };
-// label que diga si esta en emergencia
-// porcetaje
-// total asset es toke,
-// governance es primero
+
+export const percentaje = (fee: string) => {
+    return parseInt(fee) / 100;
+};
