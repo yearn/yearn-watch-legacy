@@ -2,8 +2,12 @@ import { BigNumber } from 'ethers';
 
 export type StrategyParams = {
     activation: BigNumber;
+    performanceFee: string;
     debtRatio: BigNumber;
     lastReport: BigNumber;
+    totalDebt: BigNumber;
+    totalGain: BigNumber;
+    totalLoss: BigNumber;
 };
 
 export type Strategy = {
@@ -19,5 +23,10 @@ export type Strategy = {
     keeper: string;
     rewards: string;
 
-    params?: StrategyParams;
+    // params
+    debtOutstanding: BigNumber;
+    creditAvailable: BigNumber;
+    expectedReturn: BigNumber;
+
+    params: StrategyParams;
 };

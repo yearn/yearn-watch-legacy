@@ -1,3 +1,6 @@
+import { BigNumber } from 'ethers';
+import { isNumber } from 'lodash';
+ 
 export const extractAddress = (address: string) => {
     return (
         address.substring(0, 6) +
@@ -10,6 +13,9 @@ export const extractText = (text: string) => {
     return text.substring(0, 20) + '...';
 };
 
-export const percentaje = (fee: string) => {
-    return parseInt(fee) / 100;
-};
+
+export const formatBPS = (val: string): string => {
+    if (isNumber(val)) return val;
+    
+    return BigNumber.from(val).div(100).toString();
+} 

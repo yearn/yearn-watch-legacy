@@ -21,7 +21,6 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import Chip from '@material-ui/core/Chip';
 import ProgressBars from '../../common/ProgressBar';
-import { percentaje } from '../../../utils/commonUtils';
 import EtherScanLink from '../../common/EtherScanLink';
 
 interface ParamTypes {
@@ -230,7 +229,7 @@ export const SingleVault = () => {
                                     <TableCell>Management fee: </TableCell>
                                     <TableCell>
                                         {vault
-                                            ? percentaje(vault.managementFee)
+                                            ? vault.managementFee
                                             : ''}{' '}
                                         %
                                     </TableCell>
@@ -239,7 +238,7 @@ export const SingleVault = () => {
                                     <TableCell>Performance fee: </TableCell>
                                     <TableCell>
                                         {vault
-                                            ? percentaje(vault.performanceFee)
+                                            ? vault.performanceFee
                                             : ''}{' '}
                                         %
                                     </TableCell>

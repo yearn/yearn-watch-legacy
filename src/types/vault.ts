@@ -28,12 +28,13 @@ export type Vault = {
     guardian: string;
 
     depositLimit: string;
-    // TODO: add this
-    // debtRatio: BigNumber;
+    pricePerShare: string;
+
     managementFee: string;
     performanceFee: string;
     totalAssets: string;
     strategies: Strategy[];
+    debtUsage: string;
     configOK: boolean;
     configErrors?: string[];
 };

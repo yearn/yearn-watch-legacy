@@ -23,6 +23,23 @@ const STRAT_VIEW_METHODS = [
     'vault',
 ];
 
+
+const buildStrategyCalls = (addresses: string[]): ContractCallContext<any>[] => {
+    return addresses.map((address) => {
+        const calls = STRAT_VIEW_METHODS.map((method) => ({
+            reference: method,
+            methodName: method,
+            methodParameters: [],
+        }));
+        return {
+            reference: address,
+            contractAddress: address,
+            abi: StratABI.abi,
+            calls,
+        };
+    });
+}
+
 export const getStrategies = async (
     addresses: string[]
 ): Promise<Strategy[]> => {
@@ -40,19 +57,7 @@ export const getStrategies = async (
 
     const multicall = new Multicall({ ethersProvider: provider });
 
-    const stratCalls: ContractCallContext[] = addresses.map((address) => {
-        const calls = STRAT_VIEW_METHODS.map((method) => ({
-            reference: method,
-            methodName: method,
-            methodParameters: [],
-        }));
-        return {
-            reference: address,
-            contractAddress: address,
-            abi: StratABI.abi,
-            calls,
-        };
-    });
+    const stratCalls: ContractCallContext[] = buildStrategyCalls(addresses);
 
     const results: ContractCallResults = await multicall.call(stratCalls);
     const mappedStrategies: Strategy[] = addresses.map((address) => {
@@ -67,3 +72,5 @@ export const getStrategies = async (
 
     return mappedStrategies;
 };
+
+
