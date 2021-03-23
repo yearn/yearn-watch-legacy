@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { memoize } from 'lodash';
 
 export const { get, all, post, put, spread } = axios;
 
@@ -13,7 +14,7 @@ interface ServerData {
     name?: number;
 }
 
-export const BuildGet = async (url: string) => {
+const getData = async (url: string) => {
     let payload: any = [];
     try {
         const response = await axios.get(`${API_URL}${url}`);
@@ -25,3 +26,5 @@ export const BuildGet = async (url: string) => {
     console.log('payload--', payload.data);
     return payload.data;
 };
+
+export const BuildGet = memoize(getData);

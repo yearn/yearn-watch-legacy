@@ -5,13 +5,16 @@ import {
     ContractCallReturnContext,
 } from 'ethereum-multicall';
 import { BigNumber, utils } from 'ethers';
-import { get } from 'lodash';
+import { get, omit, memoize } from 'lodash';
 import { getEthersDefaultProvider } from './ethers';
 import { Vault, VaultApi, VaultVersion, Strategy } from '../types';
 import { BuildGet } from '../utils/apisRequest';
 import { vaultChecks } from '../utils/checks';
-import VaultABI from './ABI/VaultAPI.json';
+import { formatBPS } from '../utils/commonUtils';
+import { getABI_032, getABI } from '../utils/abi';
+import { mapStrategyParams, getTotalDebtUsage } from '../utils/strategyParams';
 import StratABI from './ABI/Strategy.json';
+
 
 const VAULT_VIEW_METHODS = [
     'management',
@@ -31,7 +34,14 @@ const STRAT_VIEW_METHODS = [
     'vault',
 ];
 
-export const getVaults = async (): Promise<Vault[]> => {
+const STRAT_PARAM_METHODS: string[] = [
+    'debtOutstanding',
+    'creditAvailable',
+    'expectedReturn',
+    'strategies'
+];
+
+const internalGetVaults = async (): Promise<Vault[]> => {
     const provider = getEthersDefaultProvider();
 
     const multicall = new Multicall({ ethersProvider: provider });
@@ -62,17 +72,18 @@ export const getVaults = async (): Promise<Vault[]> => {
             return {
                 reference: address,
                 contractAddress: address,
-                abi: VaultABI.abi,
+                abi: getABI_032(),
                 calls,
             };
         });
         const stratCalls: ContractCallContext[] = payload.flatMap(
             ({ strategies }) => {
-                return strategies.map((strat) => {
+                
+                const stratViewMethods = strategies.map((strat) => {
                     const calls = STRAT_VIEW_METHODS.map((method) => ({
                         reference: method,
                         methodName: method,
-                        methodParameters: [],
+                        methodParameters: [] as string[],
                     }));
                     return {
                         reference: strat.address,
@@ -81,6 +92,25 @@ export const getVaults = async (): Promise<Vault[]> => {
                         calls,
                     };
                 });
+
+                const stratParamMethods = strategies.map((strat) => {
+                    const vaultAddress = (strategyMap.get(strat.address) as string);
+                    const vaultInfo = (vaultMap.get(vaultAddress) as VaultApi);
+                    const abiParams = getABI(vaultInfo.apiVersion);
+                    const calls = STRAT_PARAM_METHODS.map((method) => ({
+                        reference: method === 'strategies' ? 'strategyParams' : method,
+                        methodName: method,
+                        methodParameters: [strat.address],
+                    }));
+                    return {
+                        reference: `${strat.address}_${vaultAddress}`,
+                        contractAddress: vaultAddress,
+                        abi: abiParams,
+                        calls,
+                    };
+                });
+                // @ts-ignore
+                return stratViewMethods.concat(stratParamMethods);
             }
         );
         const results: ContractCallResults = await multicall.call(
@@ -94,12 +124,13 @@ export const getVaults = async (): Promise<Vault[]> => {
     }
 };
 
+export const getVaults = memoize(internalGetVaults);
+
 export const getVault = async (address: string): Promise<Vault> => {
     if (!address || !utils.isAddress(address)) {
         throw new Error('Error: expect a valid vault address');
     }
 
-    // TODO: refactor to optimize this code to only call the one vault
     const vaults = await getVaults();
 
     let [foundVault]: Vault[] = vaults.filter(
@@ -139,7 +170,6 @@ const mapVaultData = (
     const vaults: Vault[] = [];
 
     vaultMap.forEach((vault, key) => {
-        // TODO: map all the data from the contract calls
         const {
             address,
             apiVersion,
@@ -174,15 +204,23 @@ const mapVaultData = (
 
         const mappedStrategies: Strategy[] = strategies.map(({ address }) => {
             const stratData = contractCallsResults.results[address];
+            const vaultStratData = contractCallsResults.results[`${address}_${mappedVault.address}`];
             let mappedStrat: any = mapContractCalls(stratData);
-
+            let mappedVaultStratInfo: any = omit(mapContractCalls(vaultStratData), 'strategies');
+            let mappedStratParams: any = mapStrategyParams(vaultStratData, apiVersion);
+ 
             return {
+                ...mappedVaultStratInfo,
                 ...mappedStrat,
                 address,
+                params: mappedStratParams
             };
         });
 
+        mappedVault.debtUsage = getTotalDebtUsage(mappedStrategies);
+
         const vaultData = contractCallsResults.results[address];
+        
 
         vaults.push(
             vaultChecks({

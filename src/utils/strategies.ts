@@ -2,9 +2,9 @@ import {
     Multicall,
     ContractCallResults,
     ContractCallContext,
-    ContractCallReturnContext,
 } from 'ethereum-multicall';
 import { utils } from 'ethers';
+import { memoize } from 'lodash';
 
 import { getEthersDefaultProvider } from './ethers';
 import { Strategy } from '../types';
@@ -23,7 +23,24 @@ const STRAT_VIEW_METHODS = [
     'vault',
 ];
 
-export const getStrategies = async (
+
+const buildStrategyCalls = (addresses: string[]): ContractCallContext<any>[] => {
+    return addresses.map((address) => {
+        const calls = STRAT_VIEW_METHODS.map((method) => ({
+            reference: method,
+            methodName: method,
+            methodParameters: [],
+        }));
+        return {
+            reference: address,
+            contractAddress: address,
+            abi: StratABI.abi,
+            calls,
+        };
+    });
+}
+
+const innerGetStrategies = async (
     addresses: string[]
 ): Promise<Strategy[]> => {
     if (addresses.length === 0) {
@@ -40,19 +57,7 @@ export const getStrategies = async (
 
     const multicall = new Multicall({ ethersProvider: provider });
 
-    const stratCalls: ContractCallContext[] = addresses.map((address) => {
-        const calls = STRAT_VIEW_METHODS.map((method) => ({
-            reference: method,
-            methodName: method,
-            methodParameters: [],
-        }));
-        return {
-            reference: address,
-            contractAddress: address,
-            abi: StratABI.abi,
-            calls,
-        };
-    });
+    const stratCalls: ContractCallContext[] = buildStrategyCalls(addresses);
 
     const results: ContractCallResults = await multicall.call(stratCalls);
     const mappedStrategies: Strategy[] = addresses.map((address) => {
@@ -67,3 +72,7 @@ export const getStrategies = async (
 
     return mappedStrategies;
 };
+
+export const getStrategies = memoize(innerGetStrategies);
+
+

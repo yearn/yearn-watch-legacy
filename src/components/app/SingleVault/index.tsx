@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import numeral from 'numeral';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -9,7 +8,7 @@ import { Vault } from '../../../types';
 import { useParams } from 'react-router-dom';
 import { getVault } from '../../../utils/vaults';
 import { checkLabel } from '../../../utils/checks';
-import { weiToUnits } from '../../../utils/ethers';
+import { formatBPS } from '../../../utils/commonUtils';
 import Table from '../../common/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -21,7 +20,6 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import Chip from '@material-ui/core/Chip';
 import ProgressBars from '../../common/ProgressBar';
-import { percentaje } from '../../../utils/commonUtils';
 import EtherScanLink from '../../common/EtherScanLink';
 
 interface ParamTypes {
@@ -39,7 +37,7 @@ export const SingleVault = () => {
             setVault(loadedVault);
             setIsLoaded(false);
         });
-    });
+    }, [id]);
 
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
@@ -230,7 +228,7 @@ export const SingleVault = () => {
                                     <TableCell>Management fee: </TableCell>
                                     <TableCell>
                                         {vault
-                                            ? percentaje(vault.managementFee)
+                                            ? formatBPS(vault.managementFee)
                                             : ''}{' '}
                                         %
                                     </TableCell>
@@ -239,7 +237,17 @@ export const SingleVault = () => {
                                     <TableCell>Performance fee: </TableCell>
                                     <TableCell>
                                         {vault
-                                            ? percentaje(vault.performanceFee)
+                                            ? formatBPS(vault.performanceFee)
+                                            : ''}{' '}
+                                        %
+                                    </TableCell>
+                                </TableRow>
+
+                                <TableRow>
+                                    <TableCell>Debt Usage: </TableCell>
+                                    <TableCell>
+                                        {vault
+                                            ? formatBPS(vault.debtUsage)
                                             : ''}{' '}
                                         %
                                     </TableCell>

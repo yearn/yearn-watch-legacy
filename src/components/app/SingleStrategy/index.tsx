@@ -33,7 +33,7 @@ export const SingleStrategy = () => {
             setStrategyData(loadedStrategy);
             setIsLoaded(false);
         });
-    });
+    }, [id]);
 
     const strategy = strategyData && strategyData[0];
     const useStyles = makeStyles((theme: Theme) =>
