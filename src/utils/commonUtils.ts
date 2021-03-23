@@ -14,5 +14,5 @@ export const extractText = (text: string) => {
 
 
 export const formatBPS = (val: string): string => {    
-    return BigNumber.from(val).div(100).toString();
+    return (parseInt(val, 10)/ 100).toString();
 } 
