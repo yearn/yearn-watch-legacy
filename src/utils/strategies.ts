@@ -2,9 +2,9 @@ import {
     Multicall,
     ContractCallResults,
     ContractCallContext,
-    ContractCallReturnContext,
 } from 'ethereum-multicall';
 import { utils } from 'ethers';
+import { memoize } from 'lodash';
 
 import { getEthersDefaultProvider } from './ethers';
 import { Strategy } from '../types';
@@ -40,7 +40,7 @@ const buildStrategyCalls = (addresses: string[]): ContractCallContext<any>[] => 
     });
 }
 
-export const getStrategies = async (
+const innerGetStrategies = async (
     addresses: string[]
 ): Promise<Strategy[]> => {
     if (addresses.length === 0) {
@@ -72,5 +72,7 @@ export const getStrategies = async (
 
     return mappedStrategies;
 };
+
+export const getStrategies = memoize(innerGetStrategies);
 
 

@@ -5,7 +5,7 @@ import {
     ContractCallReturnContext,
 } from 'ethereum-multicall';
 import { BigNumber, utils } from 'ethers';
-import { get, omit } from 'lodash';
+import { get, omit, memoize } from 'lodash';
 import { getEthersDefaultProvider } from './ethers';
 import { Vault, VaultApi, VaultVersion, Strategy } from '../types';
 import { BuildGet } from '../utils/apisRequest';
@@ -41,8 +41,7 @@ const STRAT_PARAM_METHODS: string[] = [
     'strategies'
 ];
 
-
-export const getVaults = async (): Promise<Vault[]> => {
+const internalGetVaults = async (): Promise<Vault[]> => {
     const provider = getEthersDefaultProvider();
 
     const multicall = new Multicall({ ethersProvider: provider });
@@ -125,12 +124,13 @@ export const getVaults = async (): Promise<Vault[]> => {
     }
 };
 
+export const getVaults = memoize(internalGetVaults);
+
 export const getVault = async (address: string): Promise<Vault> => {
     if (!address || !utils.isAddress(address)) {
         throw new Error('Error: expect a valid vault address');
     }
 
-    // TODO: refactor to optimize this code to only call the one vault
     const vaults = await getVaults();
 
     let [foundVault]: Vault[] = vaults.filter(
@@ -189,16 +189,16 @@ const mapVaultData = (
             token,
             icon,
             emergencyShutdown,
-            managementFee: formatBPS(get(
+            managementFee: get(
                 vault,
                 'fees.general.managementFee',
                 'unknown'
-            ) as string),
-            performanceFee: formatBPS(get(
+            ) as string,
+            performanceFee: get(
                 vault,
                 'fees.general.performanceFee',
                 'unknown'
-            ) as string),
+            ) as string,
             totalAssets: get(vault, 'tvl.totalAssets', 'unknown') as string,
         };
 
@@ -210,8 +210,8 @@ const mapVaultData = (
             let mappedStratParams: any = mapStrategyParams(vaultStratData, apiVersion);
  
             return {
-                ...mappedStrat,
                 ...mappedVaultStratInfo,
+                ...mappedStrat,
                 address,
                 params: mappedStratParams
             };

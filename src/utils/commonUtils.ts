@@ -1,6 +1,5 @@
 import { BigNumber } from 'ethers';
-import { isNumber } from 'lodash';
- 
+
 export const extractAddress = (address: string) => {
     return (
         address.substring(0, 6) +
@@ -14,8 +13,6 @@ export const extractText = (text: string) => {
 };
 
 
-export const formatBPS = (val: string): string => {
-    if (isNumber(val)) return val;
-    
+export const formatBPS = (val: string): string => {    
     return BigNumber.from(val).div(100).toString();
 } 
