@@ -9,7 +9,12 @@ import { useParams } from 'react-router-dom';
 import { getVault } from '../../../utils/vaults';
 import { checkLabel } from '../../../utils/checks';
 import { formatBPS } from '../../../utils/commonUtils';
+
+
 import Table from '../../common/Table';
+
+import Pie from '../Charts/Pie';
+
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
@@ -30,12 +35,13 @@ export const SingleVault = () => {
     const { id } = useParams<ParamTypes>();
 
     const [vault, setVault] = useState<Vault | undefined>();
-    const [isLoaded, setIsLoaded] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        setIsLoading(true);
         getVault(id).then((loadedVault) => {
             setVault(loadedVault);
-            setIsLoaded(false);
+            setIsLoading(false);
         });
     }, [id]);
 
@@ -113,7 +119,7 @@ export const SingleVault = () => {
                 </Typography>
             </Breadcrumbs>
 
-            {isLoaded ? (
+            {isLoading ? (
                 <div style={{ textAlign: 'center', marginTop: '100px' }}>
                     <CircularProgress style={{ color: '#fff' }} />{' '}
                     <Typography style={{ color: '#fff' }}>
@@ -267,7 +273,10 @@ export const SingleVault = () => {
                         </Table>
 
                         {vault && vault.strategies.length > 0 ? (
-                            <StrategistList vault={vault} dark={false} />
+                            <div>
+                                <Pie vault={vault} />
+                                <StrategistList vault={vault} dark={false} />
+                            </div>
                         ) : (
                             ''
                         )}

@@ -6,8 +6,6 @@ import { sortBy } from 'lodash';
 import dayjs from 'dayjs';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
-
-import { formatBPS } from './commonUtils';
 import { StrategyParams, Strategy, Vault } from '../types';
 
 dayjs.extend(LocalizedFormat);
@@ -55,7 +53,7 @@ export const getChartData = (vault: Vault): ChartSeriesData[] => {
     const strategiesAllocations = vault.strategies.map(({ name, params }) => {
         return {
             name,
-            y: params.debtRatio.toNumber() / 100,
+            y: parseInt(params.debtRatio.toString(), 10) / 100,
         }
     });
 
@@ -63,12 +61,17 @@ export const getChartData = (vault: Vault): ChartSeriesData[] => {
 
     if (debtUsage < 100) {
         strategiesAllocations.push({
-            name: 'not allocated',
+            name: 'Not Allocated',
             y: 100 - debtUsage,
         });
     }
 
-    return sortBy(strategiesAllocations, ['y']);
+    const sortedAllocs = sortBy(strategiesAllocations, ['y']) as ChartSeriesData[];
+
+    sortedAllocs[sortedAllocs.length - 1].sliced = true;
+    sortedAllocs[sortedAllocs.length - 1].selected = true;
+
+    return sortedAllocs;
 }
 
 const mapParamDisplayValues = (param: any): StrategyParams => {
