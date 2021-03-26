@@ -1,3 +1,7 @@
+import {
+    ContractCallReturnContext,
+} from 'ethereum-multicall';
+import { get } from 'lodash';
 import { BigNumber } from 'ethers';
 
 export const extractAddress = (address: string) => {
@@ -16,3 +20,22 @@ export const extractText = (text: string) => {
 export const formatBPS = (val: string): string => {    
     return (parseInt(val, 10)/ 100).toString();
 } 
+
+export const mapContractCalls = (result: ContractCallReturnContext) => {
+    let mappedObj: any = {};
+    result.callsReturnContext.forEach(({ methodName, returnValues }) => {
+        if (returnValues && returnValues.length > 0) {
+            if (
+                typeof returnValues[0] === 'string' ||
+                typeof returnValues[0] === 'boolean'
+            ) {
+                mappedObj[methodName] = returnValues[0];
+            } else if (get(returnValues[0], 'type') === 'BigNumber') {
+                mappedObj[methodName] = BigNumber.from(
+                    returnValues[0]
+                ).toString();
+            }
+        }
+    });
+    return mappedObj;
+};

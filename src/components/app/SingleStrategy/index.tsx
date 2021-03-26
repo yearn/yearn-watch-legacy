@@ -16,6 +16,7 @@ import { Typography } from '@material-ui/core';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import EtherScanLink from '../../common/EtherScanLink';
+import { formatBPS } from '../../../utils/commonUtils';
 
 interface ParamTypes {
     id: string;
@@ -135,6 +136,18 @@ export const SingleStrategy = () => {
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
+                                    <TableCell>Activation Date: </TableCell>
+                                    <TableCell>
+                                        {strategy ? strategy.params.activation : ''}
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Time Since Last Harvest: </TableCell>
+                                    <TableCell>
+                                        {strategy ? strategy.params.lastReportText : ''}
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
                                     <TableCell>Emergency exit: </TableCell>
                                     <TableCell>
                                         {strategy &&
@@ -184,6 +197,66 @@ export const SingleStrategy = () => {
                                                 }}
                                             />
                                         )}
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Total Estimated Assets: </TableCell>
+                                    <TableCell>
+                                        {strategy ? strategy.estimatedTotalAssets: ''}
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Credit Available: </TableCell>
+                                    <TableCell>
+                                        {strategy ? strategy.creditAvailable: ''}
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Debt Outstanding: </TableCell>
+                                    <TableCell>
+                                        {strategy ? strategy.debtOutstanding: ''}
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Debt Ratio: </TableCell>
+                                    <TableCell>
+                                        {strategy ? formatBPS(strategy.params.debtRatio.toString()): ''} %
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Total Debt: </TableCell>
+                                    <TableCell>
+                                        {strategy ? strategy.params.totalDebt: ''}
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Total Gain: </TableCell>
+                                    <TableCell>
+                                        {strategy ? strategy.params.totalGain: ''}
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Total Loss: </TableCell>
+                                    <TableCell>
+                                        {strategy ? strategy.params.totalLoss: ''}
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Expected Return: </TableCell>
+                                    <TableCell>
+                                        {strategy ? strategy.expectedReturn: ''}
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Performance Fee: </TableCell>
+                                    <TableCell>
+                                        {strategy ? formatBPS(strategy.params.performanceFee.toString()): ''} %
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Rate Limit: </TableCell>
+                                    <TableCell>
+                                        {strategy && strategy.params.rateLimit ? strategy.params.rateLimit: 'N/A'}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>

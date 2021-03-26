@@ -76,10 +76,12 @@ export const getChartData = (vault: Vault): ChartSeriesData[] => {
 
 const mapParamDisplayValues = (param: any): StrategyParams => {
     if (param.activation) {
-        param.activation = dayjs.unix(parseInt(param.activation)).format('L LT');
+        param.activation = dayjs.unix(parseInt(param.activation)).toISOString();
     }
     if (param.lastReport) {
-        param.lastReport = dayjs.unix(parseInt(param.lastReport)).toNow();
+        const unixTimestamp = dayjs.unix(parseInt(param.lastReport));
+        param.lastReport = unixTimestamp.toISOString();
+        param.lastReportText = unixTimestamp.toNow(true);
     }
 
     return param;
