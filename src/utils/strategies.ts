@@ -4,13 +4,19 @@ import {
     ContractCallContext,
 } from 'ethereum-multicall';
 import { utils } from 'ethers';
-import { memoize } from 'lodash';
+import { get, omit, memoize } from 'lodash';
 
 import { getEthersDefaultProvider } from './ethers';
-import { Strategy } from '../types';
-import { mapContractCalls } from './vaults';
+import { Strategy, VaultApi } from '../types';
+import { getABI } from './abi';
+import { mapStrategyParams } from './strategyParams';
+import { mapContractCalls } from './commonUtils';
 
 import StratABI from './ABI/Strategy.json';
+
+interface VaultVersionInfo {
+    apiVersion: string;
+}
 
 const STRAT_VIEW_METHODS = [
     'apiVersion',
@@ -23,19 +29,83 @@ const STRAT_VIEW_METHODS = [
     'vault',
 ];
 
+const STRAT_PARAM_METHODS: string[] = [
+    'debtOutstanding',
+    'creditAvailable',
+    'expectedReturn',
+    'strategies'
+];
 
-const buildStrategyCalls = (addresses: string[]): ContractCallContext<any>[] => {
-    return addresses.map((address) => {
+
+
+const buildViewMethodsCall = (strategies: string[]): ContractCallContext[] =>  {
+    return strategies.map((stratAddres) => {
         const calls = STRAT_VIEW_METHODS.map((method) => ({
             reference: method,
             methodName: method,
-            methodParameters: [],
+            methodParameters: [] as string[],
         }));
         return {
-            reference: address,
-            contractAddress: address,
+            reference: stratAddres,
+            contractAddress: stratAddres,
             abi: StratABI.abi,
             calls,
+        };
+    });
+}
+
+const buildParamMethodsCall = (
+    strategies: string[], 
+    strategyMap: Map<string, string>, 
+    vaultMap: Map<string, VaultVersionInfo>
+): ContractCallContext[] =>  {
+    return strategies.map((stratAddres) => {
+        const vaultAddress = (strategyMap.get(stratAddres) as string);
+        const vaultInfo = (vaultMap.get(vaultAddress) as VaultVersionInfo);
+        const abiParams = getABI(vaultInfo.apiVersion);
+        const calls = STRAT_PARAM_METHODS.map((method) => ({
+            reference: method === 'strategies' ? 'strategyParams' : method,
+            methodName: method,
+            methodParameters: [stratAddres],
+        }));
+        return {
+            reference: `${stratAddres}_${vaultAddress}`,
+            contractAddress: vaultAddress,
+            abi: abiParams,
+            calls,
+        };
+    });
+}
+
+export const buildStrategyCalls = (
+    strategies: string[], 
+    vaultMap: Map<string, VaultApi>, 
+    strategyMap: Map<string, string>
+): ContractCallContext[] => {
+    const stratViewMethods = buildViewMethodsCall(strategies);
+
+    const stratParamMethods = buildParamMethodsCall(strategies, strategyMap, vaultMap);
+    // @ts-ignore
+    return stratViewMethods.concat(stratParamMethods);
+}
+
+export const mapStrategiesCalls = (
+    strategies: string[], 
+    contractCallsResults: ContractCallResults, 
+    strategyMap: Map<string, string>,
+): Strategy[] => {
+    return strategies.map(( address ) => {
+        const stratData = contractCallsResults.results[address];
+        const vaultStratData = contractCallsResults.results[`${address}_${strategyMap.get(address)}`];
+        let mappedStrat: any = mapContractCalls(stratData);
+        let mappedVaultStratInfo: any = omit(mapContractCalls(vaultStratData), 'strategies');
+        let mappedStratParams: any = mapStrategyParams(vaultStratData, mappedStrat.apiVersion);
+
+        return {
+            ...mappedVaultStratInfo,
+            ...mappedStrat,
+            address,
+            params: mappedStratParams
         };
     });
 }
@@ -57,22 +127,44 @@ const innerGetStrategies = async (
 
     const multicall = new Multicall({ ethersProvider: provider });
 
-    const stratCalls: ContractCallContext[] = buildStrategyCalls(addresses);
+    // do call to strategy apiVersion and vault
+    const stratCalls: ContractCallContext[] = buildViewMethodsCall(addresses);
 
-    const results: ContractCallResults = await multicall.call(stratCalls);
-    const mappedStrategies: Strategy[] = addresses.map((address) => {
-        const stratData = results.results[address];
+    const resultsViewMethods: ContractCallResults = await multicall.call(stratCalls);
+    const vaultMap = new Map<string, VaultVersionInfo>();
+    const strategyMap = new Map<string, string>();
+
+    addresses.forEach((address) => {
+        const stratData = resultsViewMethods.results[address];
         let mappedStrat: any = mapContractCalls(stratData);
-
-        return {
-            ...mappedStrat,
-            address,
-        };
+        strategyMap.set(address, mappedStrat.vault);
+        vaultMap.set(mappedStrat.vault, { apiVersion: mappedStrat.apiVersion })
     });
+
+    const stratParamCalls = buildParamMethodsCall(addresses, strategyMap, vaultMap);
+    const stratParamResults: ContractCallResults = await multicall.call(stratParamCalls);
+
+    const mergedResults: ContractCallResults = {
+        results: {
+            ...resultsViewMethods.results, 
+            ...stratParamResults.results
+        },
+        blockNumber: stratParamResults.blockNumber,
+    }
+
+    const mappedStrategies = mapStrategiesCalls(
+        addresses,
+        mergedResults,
+        strategyMap,
+    );
+
+    console.log('mappedStrategies', mappedStrategies);
 
     return mappedStrategies;
 };
 
 export const getStrategies = memoize(innerGetStrategies);
+
+
 
 
