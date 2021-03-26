@@ -4,7 +4,7 @@ import {
     ContractCallContext,
 } from 'ethereum-multicall';
 import { utils } from 'ethers';
-import { get, omit, memoize } from 'lodash';
+import { omit, memoize } from 'lodash';
 
 import { getEthersDefaultProvider } from './ethers';
 import { Strategy, VaultApi } from '../types';
@@ -27,6 +27,8 @@ const STRAT_VIEW_METHODS = [
     'strategist',
     'name',
     'vault',
+    'estimatedTotalAssets',
+    'delegatedAssets'
 ];
 
 const STRAT_PARAM_METHODS: string[] = [
@@ -157,8 +159,6 @@ const innerGetStrategies = async (
         mergedResults,
         strategyMap,
     );
-
-    console.log('mappedStrategies', mappedStrategies);
 
     return mappedStrategies;
 };

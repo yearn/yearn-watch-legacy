@@ -152,8 +152,6 @@ const mapVaultData = (
         );
     });
 
-    console.log('vaults', vaults);
-
     return vaults;
 };
 
