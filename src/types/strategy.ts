@@ -1,4 +1,5 @@
 import { BigNumber } from 'ethers';
+import { Token } from './token';
 
 export type StrategyParams = {
     activation: string;
@@ -17,6 +18,7 @@ export type Strategy = {
     name: string;
     address: string;
     vault: string;
+    token: Token;
 
     emergencyExit: boolean;
     isActive: boolean;

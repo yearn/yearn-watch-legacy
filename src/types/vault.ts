@@ -1,18 +1,11 @@
 import { BigNumber } from 'ethers';
+import { Token } from './token';
 import { Strategy } from './strategy';
 
 export enum VaultVersion {
     V2 = 'v2',
     V1 = 'v1',
 }
-
-export type Token = {
-    address: string;
-    decimals: number;
-    symbol: string;
-    icon: string;
-    name: string;
-};
 
 export type Vault = {
     address: string;
@@ -47,6 +40,7 @@ export type VaultApi = {
     icon?: string;
     symbol: string;
     name: string;
+    want: string;
     token: Token;
     type: VaultVersion;
     emergencyShutdown: boolean;

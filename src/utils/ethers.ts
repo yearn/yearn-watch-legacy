@@ -1,7 +1,5 @@
-import { ethers, providers, BigNumber } from 'ethers';
+import { ethers, providers, BigNumber, BigNumberish } from 'ethers';
 import { getEnv } from './env';
-
-const { formatUnits } = ethers.utils;
 
 export const getEthersDefaultProvider = (
     network = 'homestead'
@@ -16,3 +14,5 @@ export const formatAmount = (amount: string, decimals: number) => {
 };
 
 export const weiToUnits = (amount: string) => BigNumber.from(amount);
+
+

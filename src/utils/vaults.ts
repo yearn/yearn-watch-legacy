@@ -19,6 +19,7 @@ const VAULT_VIEW_METHODS = [
     'governance',
     'guardian',
     'depositLimit',
+    'totalAssets'
 ];
 
 const internalGetVaults = async (): Promise<Vault[]> => {
@@ -131,7 +132,7 @@ const mapVaultData = (
                 'fees.general.performanceFee',
                 'unknown'
             ) as string,
-            totalAssets: get(vault, 'tvl.totalAssets', 'unknown') as string,
+            // totalAssets: get(vault, 'tvl.value', 'unknown') as string,
         };
 
         const stratAddresses = strategies.map(({ address }) => address);
