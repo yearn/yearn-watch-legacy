@@ -13,9 +13,11 @@ import { mapStrategyParams } from './strategyParams';
 import { mapContractCalls } from './commonUtils';
 
 import StratABI from './ABI/Strategy.json';
+import TokenABI from './ABI/Token.json';
 
 interface VaultVersionInfo {
     apiVersion: string;
+    want: string;
 }
 
 const STRAT_VIEW_METHODS = [
@@ -28,7 +30,8 @@ const STRAT_VIEW_METHODS = [
     'name',
     'vault',
     'estimatedTotalAssets',
-    'delegatedAssets'
+    'delegatedAssets',
+    'want'
 ];
 
 const STRAT_PARAM_METHODS: string[] = [
@@ -38,6 +41,12 @@ const STRAT_PARAM_METHODS: string[] = [
     'strategies'
 ];
 
+
+const TOKEN_VIEW_METHODS: string[] = [
+    'decimals',
+    'symbol',
+    'name',
+];
 
 
 const buildViewMethodsCall = (strategies: string[]): ContractCallContext[] =>  {
@@ -79,6 +88,29 @@ const buildParamMethodsCall = (
     });
 }
 
+const buildTokenCallMethods = (
+    strategies: string[], 
+    strategyMap: Map<string, string>, 
+    vaultMap: Map<string, VaultVersionInfo>
+): ContractCallContext[] =>  {
+    return strategies.map((stratAddres) => {
+        const vaultAddress = (strategyMap.get(stratAddres) as string);
+        const vaultInfo = (vaultMap.get(vaultAddress) as VaultVersionInfo);
+    
+        const calls = TOKEN_VIEW_METHODS.map((method) => ({
+            reference: method,
+            methodName: method,
+            methodParameters: [] as string[],
+        }));
+        return {
+            reference: `${vaultInfo.want}`,
+            contractAddress: vaultInfo.want,
+            abi: TokenABI.abi,
+            calls,
+        };
+    });
+}
+
 export const buildStrategyCalls = (
     strategies: string[], 
     vaultMap: Map<string, VaultApi>, 
@@ -102,6 +134,12 @@ export const mapStrategiesCalls = (
         let mappedStrat: any = mapContractCalls(stratData);
         let mappedVaultStratInfo: any = omit(mapContractCalls(vaultStratData), 'strategies');
         let mappedStratParams: any = mapStrategyParams(vaultStratData, mappedStrat.apiVersion);
+
+        let tokenData = contractCallsResults.results[mappedStrat.want];
+        if (tokenData) {
+            let token = mapContractCalls(tokenData);
+            mappedStrat.token = token;
+        }
 
         return {
             ...mappedVaultStratInfo,
@@ -140,11 +178,16 @@ const innerGetStrategies = async (
         const stratData = resultsViewMethods.results[address];
         let mappedStrat: any = mapContractCalls(stratData);
         strategyMap.set(address, mappedStrat.vault);
-        vaultMap.set(mappedStrat.vault, { apiVersion: mappedStrat.apiVersion })
+        vaultMap.set(mappedStrat.vault, { 
+            apiVersion: mappedStrat.apiVersion,
+            want: mappedStrat.want,
+        });
     });
-
+    
     const stratParamCalls = buildParamMethodsCall(addresses, strategyMap, vaultMap);
-    const stratParamResults: ContractCallResults = await multicall.call(stratParamCalls);
+    const tokenMethodCalls = buildTokenCallMethods(addresses, strategyMap, vaultMap);
+
+    const stratParamResults: ContractCallResults = await multicall.call(stratParamCalls.concat(tokenMethodCalls));
 
     const mergedResults: ContractCallResults = {
         results: {

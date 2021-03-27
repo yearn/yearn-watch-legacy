@@ -16,7 +16,7 @@ import { Typography } from '@material-ui/core';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import EtherScanLink from '../../common/EtherScanLink';
-import { formatBPS } from '../../../utils/commonUtils';
+import { formatBPS, displayAmount } from '../../../utils/commonUtils';
 
 interface ParamTypes {
     id: string;
@@ -37,6 +37,7 @@ export const SingleStrategy = () => {
     }, [id]);
 
     const strategy = strategyData && strategyData[0];
+
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
             root: {
@@ -202,19 +203,19 @@ export const SingleStrategy = () => {
                                 <TableRow>
                                     <TableCell>Total Estimated Assets: </TableCell>
                                     <TableCell>
-                                        {strategy ? strategy.estimatedTotalAssets: ''}
+                                        {strategy ? displayAmount(strategy.estimatedTotalAssets.toString(), strategy.token.decimals): ''}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Credit Available: </TableCell>
                                     <TableCell>
-                                        {strategy ? strategy.creditAvailable: ''}
+                                        {strategy ? displayAmount(strategy.creditAvailable.toString(), strategy.token.decimals): ''}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Debt Outstanding: </TableCell>
                                     <TableCell>
-                                        {strategy ? strategy.debtOutstanding: ''}
+                                        {strategy ? displayAmount(strategy.debtOutstanding.toString(), strategy.token.decimals): ''}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
@@ -226,25 +227,25 @@ export const SingleStrategy = () => {
                                 <TableRow>
                                     <TableCell>Total Debt: </TableCell>
                                     <TableCell>
-                                        {strategy ? strategy.params.totalDebt: ''}
+                                        {strategy ? displayAmount(strategy.params.totalDebt.toString(), strategy.token.decimals) : ''}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Total Gain: </TableCell>
                                     <TableCell>
-                                        {strategy ? strategy.params.totalGain: ''}
+                                        {strategy ? displayAmount(strategy.params.totalGain.toString(), strategy.token.decimals): ''}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Total Loss: </TableCell>
                                     <TableCell>
-                                        {strategy ? strategy.params.totalLoss: ''}
+                                        {strategy ? displayAmount(strategy.params.totalLoss.toString(), strategy.token.decimals): ''}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Expected Return: </TableCell>
                                     <TableCell>
-                                        {strategy ? strategy.expectedReturn: ''}
+                                        {strategy ? displayAmount(strategy.expectedReturn.toString(), strategy.token.decimals): ''}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
@@ -256,7 +257,8 @@ export const SingleStrategy = () => {
                                 <TableRow>
                                     <TableCell>Rate Limit: </TableCell>
                                     <TableCell>
-                                        {strategy && strategy.params.rateLimit ? strategy.params.rateLimit: 'N/A'}
+                                        {strategy && strategy.params.rateLimit ? 
+                                        displayAmount(strategy.params.rateLimit.toString(), strategy.token.decimals) : 'N/A'}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>

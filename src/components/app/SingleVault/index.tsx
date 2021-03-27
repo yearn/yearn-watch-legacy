@@ -4,11 +4,11 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
-import { Vault } from '../../../types';
 import { useParams } from 'react-router-dom';
+import { Vault } from '../../../types';
 import { getVault } from '../../../utils/vaults';
 import { checkLabel } from '../../../utils/checks';
-import { formatBPS } from '../../../utils/commonUtils';
+import { formatBPS, displayAmount } from '../../../utils/commonUtils';
 
 
 import Table from '../../common/Table';
@@ -210,7 +210,7 @@ export const SingleVault = () => {
                                     <TableCell>
                                         Total asset:{' '}
                                         {vault &&
-                                            vault.totalAssets +
+                                            displayAmount(vault.totalAssets, vault.token.decimals) +
                                                 '  ' +
                                                 vault.token.symbol}{' '}
                                         <ProgressBars vault={vault} />
@@ -221,7 +221,7 @@ export const SingleVault = () => {
                                             >
                                                 {' '}
                                                 Deposit limit :
-                                                {vault.depositLimit +
+                                                {displayAmount(vault.depositLimit, vault.token.decimals) +
                                                     '  ' +
                                                     vault.token.symbol}
                                             </Typography>
