@@ -41,6 +41,7 @@ mapVersions.set('0.3.0', STRAT_PARAMS_V030);
 mapVersions.set('0.3.1', STRAT_PARAMS_V030);
 mapVersions.set('0.3.2', STRAT_PARAMS_V032);
 mapVersions.set('0.3.3', STRAT_PARAMS_V032);
+mapVersions.set('0.3.3.Edited', STRAT_PARAMS_V030);
 
 export type ChartSeriesData = {
     name: string;
@@ -75,10 +76,11 @@ export const getChartData = (vault: Vault): ChartSeriesData[] => {
 }
 
 const mapParamDisplayValues = (param: any): StrategyParams => {
-    if (param.activation) {
+    console.log('param', param);
+    if (param.activation && dayjs.unix(parseInt(param.activation)).isValid()) {
         param.activation = dayjs.unix(parseInt(param.activation)).toISOString();
     }
-    if (param.lastReport) {
+    if (param.lastReport && dayjs.unix(parseInt(param.lastReport)).isValid()) {
         const unixTimestamp = dayjs.unix(parseInt(param.lastReport));
         param.lastReport = unixTimestamp.toISOString();
         param.lastReportText = unixTimestamp.toNow(true);
@@ -99,6 +101,7 @@ export const mapStrategyParams = (result: ContractCallReturnContext, apiVersion:
     let params: any = {};
     result.callsReturnContext.forEach(({ methodName, returnValues }) => {
         if (methodName === STRATEGIES_METHOD && returnValues && returnValues.length > 0) {
+            // TODO: resolve version ABI based on vault instead of strategy
             const props =  mapVersions.get(apiVersion) || STRAT_PARAMS_V032;
 
             returnValues.forEach((val, i) => {
