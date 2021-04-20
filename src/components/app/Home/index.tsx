@@ -37,10 +37,7 @@ export const Home = () => {
                     <>
                         {vaults.map((vault: Vault, index: number) => (
                             <Container maxWidth="lg" key={index}>
-                                <VaultsList
-                                    vault={vault}
-                                    key={index}
-                                />
+                                <VaultsList vault={vault} key={index} />
                             </Container>
                         ))}
                     </>

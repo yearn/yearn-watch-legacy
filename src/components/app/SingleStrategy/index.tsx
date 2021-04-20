@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MediaQuery from 'react-responsive';
-import {
-    makeStyles,
-    Theme,
-    createStyles,
-} from '@material-ui/core/styles';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -31,9 +27,7 @@ interface ParamTypes {
 export const SingleStrategy = () => {
     const { id, name } = useParams<ParamTypes>();
 
-    const [strategyData, setStrategyData] = useState<
-        Strategy[] | undefined
-    >();
+    const [strategyData, setStrategyData] = useState<Strategy[] | undefined>();
     const [isLoaded, setIsLoaded] = useState(true);
 
     useEffect(() => {
@@ -98,12 +92,8 @@ export const SingleStrategy = () => {
     );
     const classes = useStyles();
     const api_version = strategy ? strategy.apiVersion : '';
-    const activation_date = strategy
-        ? strategy.params.activation
-        : '';
-    const last_report_text = strategy
-        ? strategy.params.lastReportText
-        : '';
+    const activation_date = strategy ? strategy.params.activation : '';
+    const last_report_text = strategy ? strategy.params.lastReportText : '';
     const emergency_exit =
         strategy && strategy.emergencyExit === false ? (
             <Chip
@@ -199,11 +189,7 @@ export const SingleStrategy = () => {
                   strategy.token.decimals
               )
             : 'N/A';
-    const keeper = strategy ? (
-        <EtherScanLink address={strategy.keeper} />
-    ) : (
-        ''
-    );
+    const keeper = strategy ? <EtherScanLink address={strategy.keeper} /> : '';
     const rewards = strategy ? (
         <EtherScanLink address={strategy.rewards} />
     ) : (
@@ -214,11 +200,7 @@ export const SingleStrategy = () => {
     ) : (
         ''
     );
-    const vaults = strategy ? (
-        <EtherScanLink address={strategy.vault} />
-    ) : (
-        ''
-    );
+    const vaults = strategy ? <EtherScanLink address={strategy.vault} /> : '';
     return (
         <React.Fragment>
             <Breadcrumbs className={classes.crumbs}>
@@ -254,9 +236,7 @@ export const SingleStrategy = () => {
                         title={strategy ? strategy.name : ''}
                         subheader={
                             strategy ? (
-                                <EtherScanLink
-                                    address={strategy.address}
-                                />
+                                <EtherScanLink address={strategy.address} />
                             ) : (
                                 ''
                             )
@@ -276,9 +256,7 @@ export const SingleStrategy = () => {
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
                                         {' '}
-                                        <TableCell>
-                                            {api_version}
-                                        </TableCell>
+                                        <TableCell>{api_version}</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -292,9 +270,7 @@ export const SingleStrategy = () => {
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
                                         {' '}
-                                        <TableCell>
-                                            {activation_date}
-                                        </TableCell>
+                                        <TableCell>{activation_date}</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -322,9 +298,7 @@ export const SingleStrategy = () => {
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
                                         {' '}
-                                        <TableCell>
-                                            {emergency_exit}
-                                        </TableCell>
+                                        <TableCell>{emergency_exit}</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -337,9 +311,7 @@ export const SingleStrategy = () => {
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
                                         {' '}
-                                        <TableCell>
-                                            {is_active}
-                                        </TableCell>
+                                        <TableCell>{is_active}</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -351,9 +323,7 @@ export const SingleStrategy = () => {
                                         </MediaQuery>{' '}
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
-                                        <TableCell>
-                                            {estimated_asset}
-                                        </TableCell>
+                                        <TableCell>{estimated_asset}</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -381,9 +351,7 @@ export const SingleStrategy = () => {
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
                                         {' '}
-                                        <TableCell>
-                                            {deb_outstanding}
-                                        </TableCell>
+                                        <TableCell>{deb_outstanding}</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -397,9 +365,7 @@ export const SingleStrategy = () => {
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
                                         {' '}
-                                        <TableCell>
-                                            {deb_radio} %
-                                        </TableCell>
+                                        <TableCell>{deb_radio} %</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -412,9 +378,7 @@ export const SingleStrategy = () => {
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
                                         {' '}
-                                        <TableCell>
-                                            {total_deb}
-                                        </TableCell>
+                                        <TableCell>{total_deb}</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -426,9 +390,7 @@ export const SingleStrategy = () => {
                                         </MediaQuery>
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
-                                        <TableCell>
-                                            {total_gain}
-                                        </TableCell>
+                                        <TableCell>{total_gain}</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -440,9 +402,7 @@ export const SingleStrategy = () => {
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
                                         {' '}
-                                        <TableCell>
-                                            {total_loss}
-                                        </TableCell>
+                                        <TableCell>{total_loss}</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -453,9 +413,7 @@ export const SingleStrategy = () => {
                                         </MediaQuery>
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
-                                        <TableCell>
-                                            {expect_return}
-                                        </TableCell>
+                                        <TableCell>{expect_return}</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -483,9 +441,7 @@ export const SingleStrategy = () => {
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
                                         {' '}
-                                        <TableCell>
-                                            {react_limit}
-                                        </TableCell>
+                                        <TableCell>{react_limit}</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -498,9 +454,7 @@ export const SingleStrategy = () => {
                                         </MediaQuery>
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
-                                        <TableCell>
-                                            {keeper}
-                                        </TableCell>
+                                        <TableCell>{keeper}</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -513,9 +467,7 @@ export const SingleStrategy = () => {
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
                                         {' '}
-                                        <TableCell>
-                                            {rewards}
-                                        </TableCell>
+                                        <TableCell>{rewards}</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -529,9 +481,7 @@ export const SingleStrategy = () => {
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
                                         {' '}
-                                        <TableCell>
-                                            {strategist}
-                                        </TableCell>
+                                        <TableCell>{strategist}</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -545,9 +495,7 @@ export const SingleStrategy = () => {
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
                                         {' '}
-                                        <TableCell>
-                                            {vaults}
-                                        </TableCell>
+                                        <TableCell>{vaults}</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                             </TableHead>

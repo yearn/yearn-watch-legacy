@@ -23,8 +23,7 @@ const Pie = (props: PieProps) => {
             text: `${vault.name} Debt Allocation`,
         },
         tooltip: {
-            pointFormat:
-                '{series.name}: <b>{point.percentage:.1f}%</b>',
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
         },
         accessibility: {
             point: {
@@ -37,8 +36,7 @@ const Pie = (props: PieProps) => {
                 cursor: 'pointer',
                 dataLabels: {
                     enabled: true,
-                    format:
-                        '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
                 },
             },
         },
@@ -53,10 +51,7 @@ const Pie = (props: PieProps) => {
 
     return (
         <div>
-            <HighchartsReact
-                highcharts={Highcharts}
-                options={options}
-            />
+            <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
     );
 };

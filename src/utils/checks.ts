@@ -71,9 +71,10 @@ const checks = [
 ];
 
 export const vaultChecks = (vault: Vault): Vault => {
-    let result: VaultCheck = { checkOK: true };
+    const result: VaultCheck = { checkOK: true };
 
     checks.forEach((check) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (!check.validate(vault[check.field])) {
             result.checkOK = false;

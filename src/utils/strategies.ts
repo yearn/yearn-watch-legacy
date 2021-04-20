@@ -43,9 +43,7 @@ const STRAT_PARAM_METHODS: string[] = [
 
 const TOKEN_VIEW_METHODS: string[] = ['decimals', 'symbol', 'name'];
 
-const buildViewMethodsCall = (
-    strategies: string[]
-): ContractCallContext[] => {
+const buildViewMethodsCall = (strategies: string[]): ContractCallContext[] => {
     return strategies.map((stratAddres) => {
         const calls = STRAT_VIEW_METHODS.map((method) => ({
             reference: method,
@@ -68,13 +66,10 @@ const buildParamMethodsCall = (
 ): ContractCallContext[] => {
     return strategies.map((stratAddres) => {
         const vaultAddress = strategyMap.get(stratAddres) as string;
-        const vaultInfo = vaultMap.get(
-            vaultAddress
-        ) as VaultVersionInfo;
+        const vaultInfo = vaultMap.get(vaultAddress) as VaultVersionInfo;
         const abiParams = getABI(vaultInfo.apiVersion);
         const calls = STRAT_PARAM_METHODS.map((method) => ({
-            reference:
-                method === 'strategies' ? 'strategyParams' : method,
+            reference: method === 'strategies' ? 'strategyParams' : method,
             methodName: method,
             methodParameters: [stratAddres],
         }));
@@ -94,9 +89,7 @@ const buildTokenCallMethods = (
 ): ContractCallContext[] => {
     return strategies.map((stratAddres) => {
         const vaultAddress = strategyMap.get(stratAddres) as string;
-        const vaultInfo = vaultMap.get(
-            vaultAddress
-        ) as VaultVersionInfo;
+        const vaultInfo = vaultMap.get(vaultAddress) as VaultVersionInfo;
 
         const calls = TOKEN_VIEW_METHODS.map((method) => ({
             reference: method,
@@ -124,6 +117,7 @@ export const buildStrategyCalls = (
         strategyMap,
         vaultMap
     );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     return stratViewMethods.concat(stratParamMethods);
 };
@@ -139,20 +133,19 @@ export const mapStrategiesCalls = (
             contractCallsResults.results[
                 `${address}_${strategyMap.get(address)}`
             ];
-        let mappedStrat: any = mapContractCalls(stratData);
-        let mappedVaultStratInfo: any = omit(
+        const mappedStrat: any = mapContractCalls(stratData);
+        const mappedVaultStratInfo: any = omit(
             mapContractCalls(vaultStratData),
             'strategies'
         );
-        let mappedStratParams: any = mapStrategyParams(
+        const mappedStratParams: any = mapStrategyParams(
             vaultStratData,
             mappedStrat.apiVersion
         );
 
-        let tokenData =
-            contractCallsResults.results[mappedStrat.want];
+        const tokenData = contractCallsResults.results[mappedStrat.want];
         if (tokenData) {
-            let token = mapContractCalls(tokenData);
+            const token = mapContractCalls(tokenData);
             mappedStrat.token = token;
         }
 
@@ -165,9 +158,7 @@ export const mapStrategiesCalls = (
     });
 };
 
-const innerGetStrategies = async (
-    addresses: string[]
-): Promise<Strategy[]> => {
+const innerGetStrategies = async (addresses: string[]): Promise<Strategy[]> => {
     if (addresses.length === 0) {
         throw new Error('Error: expect a valid strategy address');
     }
@@ -183,9 +174,7 @@ const innerGetStrategies = async (
     const multicall = new Multicall({ ethersProvider: provider });
 
     // do call to strategy apiVersion and vault
-    const stratCalls: ContractCallContext[] = buildViewMethodsCall(
-        addresses
-    );
+    const stratCalls: ContractCallContext[] = buildViewMethodsCall(addresses);
 
     const resultsViewMethods: ContractCallResults = await multicall.call(
         stratCalls
@@ -195,7 +184,7 @@ const innerGetStrategies = async (
 
     addresses.forEach((address) => {
         const stratData = resultsViewMethods.results[address];
-        let mappedStrat: any = mapContractCalls(stratData);
+        const mappedStrat: any = mapContractCalls(stratData);
         strategyMap.set(address, mappedStrat.vault);
         vaultMap.set(mappedStrat.vault, {
             apiVersion: mappedStrat.apiVersion,

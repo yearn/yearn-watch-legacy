@@ -76,7 +76,6 @@ export const getChartData = (vault: Vault): ChartSeriesData[] => {
 };
 
 const mapParamDisplayValues = (param: any): StrategyParams => {
-    console.log('param', param);
     if (param.activation && dayjs.unix(parseInt(param.activation)).isValid()) {
         param.activation = dayjs.unix(parseInt(param.activation)).toISOString();
     }

@@ -64,8 +64,6 @@ export const StrategistList = (props: StrategistListProps) => {
     const classes = useStyles();
     const { vault } = props;
 
-    console.log('vault', vault);
-
     return (
         <div className={classes.root}>
             <Typography variant="body2" className={classes.text} component="p">
