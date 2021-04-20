@@ -28,13 +28,11 @@ export const checkLabel = (address: string) => {
     return address;
 };
 
-
 const INCOMPATIBLE_VERSIONS_API = new Set(['0.3.0', '0.3.1']);
 
 export const isLegacyVault = (apiVersion: string): boolean => {
     return INCOMPATIBLE_VERSIONS_API.has(apiVersion);
-}
-
+};
 
 const checks = [
     {

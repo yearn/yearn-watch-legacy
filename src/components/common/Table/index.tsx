@@ -16,7 +16,10 @@ const Table = (props: any) => {
 
     return (
         <TableContainer component={Paper}>
-            <MuiTable className={classes.table} aria-label="simple table">
+            <MuiTable
+                className={classes.table}
+                aria-label="simple table"
+            >
                 {props.children}
             </MuiTable>
         </TableContainer>

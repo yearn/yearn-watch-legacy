@@ -6,6 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Hidden from '@material-ui/core/Hidden';
 import EtherScanLink from '../../common/EtherScanLink';
 
@@ -15,7 +16,7 @@ import { Strategy, Vault } from '../../../types';
 type StrategistListProps = {
     vault: Vault;
     dark: boolean;
-}
+};
 
 export const StrategistList = (props: StrategistListProps) => {
     const useStyles = makeStyles((theme: Theme) =>
@@ -72,47 +73,40 @@ export const StrategistList = (props: StrategistListProps) => {
             </Typography>
             {vault.strategies &&
                 vault.strategies.map((strategy: Strategy, index: number) => (
-                    <List
-                        className={classes.list}
-                        style={{ border: 'none' }}
-                        key={index}
-                    >
-                        <ListItem style={{ border: 'none' }}>
-                            <ListItemText
-                                style={{ border: 'none' }}
-                                primary={
-                                    <div>
-                                        <Typography
-                                            variant="subtitle1"
-                                            gutterBottom
-                                        >
-                                            <a
-                                                className={classes.link}
-                                                href={`/strategy/${vault.name}/${strategy.address}`}
-                                            >
-                                                <Hidden smUp>
-                                                    {strategy.name.length > 20
-                                                        ? extractText(
-                                                            strategy.name
-                                                          )
-                                                        : strategy.name}
-                                                </Hidden>
+                    <Accordion key={index}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Typography variant="subtitle1" gutterBottom>
+                                <a
+                                    className={classes.link}
+                                    href={`/strategy/${vault.name}/${strategy.address}`}
+                                >
+                                    <Hidden smUp>
+                                        {strategy.name.length > 20
+                                            ? extractText(strategy.name)
+                                            : strategy.name}
+                                    </Hidden>
 
-                                                <Hidden xsDown>
-                                                    {strategy.name}
-                                                </Hidden>
-                                            </a>
-                                        </Typography>
-                                        &nbsp;&nbsp;
-                                        <EtherScanLink
-                                            address={strategy.address}
-                                            dark={true}
-                                        />
-                                    </div>
-                                }
+                                    <Hidden xsDown>{strategy.name}</Hidden>
+                                </a>
+                            </Typography>
+                            &nbsp;&nbsp;
+                            <EtherScanLink
+                                address={strategy.address}
+                                dark={true}
                             />
-                        </ListItem>
-                    </List>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Typography>
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipiscing elit. Suspendisse malesuada lacus ex,
+                                sit amet blandit leo lobortis eget.
+                            </Typography>
+                        </AccordionDetails>
+                    </Accordion>
                 ))}
         </div>
     );

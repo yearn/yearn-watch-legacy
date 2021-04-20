@@ -10,9 +10,9 @@ export const getEthersDefaultProvider = (
 
 export const formatAmount = (amount: string, decimals: number) => {
     const [whole, fraction] = amount.split('.');
-    return `${whole}${fraction ? '.' + fraction.substring(0, decimals) : ''}`;
+    return `${whole}${
+        fraction ? '.' + fraction.substring(0, decimals) : ''
+    }`;
 };
 
 export const weiToUnits = (amount: string) => BigNumber.from(amount);
-
-

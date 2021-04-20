@@ -21,7 +21,12 @@ export const Home = () => {
     return (
         <div>
             {isLoaded ? (
-                <div style={{ textAlign: 'center', marginTop: '100px' }}>
+                <div
+                    style={{
+                        textAlign: 'center',
+                        marginTop: '100px',
+                    }}
+                >
                     <CircularProgress style={{ color: '#fff' }} />
                     <Typography style={{ color: '#fff' }}>
                         Loading vaults..
@@ -32,7 +37,10 @@ export const Home = () => {
                     <>
                         {vaults.map((vault: Vault, index: number) => (
                             <Container maxWidth="lg" key={index}>
-                                <VaultsList vault={vault} key={index} />
+                                <VaultsList
+                                    vault={vault}
+                                    key={index}
+                                />
                             </Container>
                         ))}
                     </>

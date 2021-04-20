@@ -1,6 +1,4 @@
-import {
-    ContractCallReturnContext,
-} from 'ethereum-multicall';
+import { ContractCallReturnContext } from 'ethereum-multicall';
 import { BigNumber } from 'ethers';
 import { sortBy } from 'lodash';
 import dayjs from 'dayjs';
@@ -9,7 +7,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { StrategyParams, Strategy, Vault } from '../types';
 
 dayjs.extend(LocalizedFormat);
-dayjs.extend(relativeTime)
+dayjs.extend(relativeTime);
 
 const STRATEGIES_METHOD = 'strategies';
 
@@ -21,7 +19,7 @@ const STRAT_PARAMS_V030: string[] = [
     'lastReport',
     'totalDebt',
     'totalGain',
-    'totalLoss'
+    'totalLoss',
 ];
 
 const STRAT_PARAMS_V032: string[] = [
@@ -33,7 +31,7 @@ const STRAT_PARAMS_V032: string[] = [
     'lastReport',
     'totalDebt',
     'totalGain',
-    'totalLoss'
+    'totalLoss',
 ];
 
 const mapVersions = new Map<string, string[]>();
@@ -48,14 +46,14 @@ export type ChartSeriesData = {
     y: number;
     sliced?: boolean;
     selected?: boolean;
-}
+};
 
 export const getChartData = (vault: Vault): ChartSeriesData[] => {
     const strategiesAllocations = vault.strategies.map(({ name, params }) => {
         return {
             name,
             y: parseInt(params.debtRatio.toString(), 10) / 100,
-        }
+        };
     });
 
     const debtUsage = parseInt(vault.debtUsage) / 100;
@@ -67,13 +65,15 @@ export const getChartData = (vault: Vault): ChartSeriesData[] => {
         });
     }
 
-    const sortedAllocs = sortBy(strategiesAllocations, ['y']) as ChartSeriesData[];
+    const sortedAllocs = sortBy(strategiesAllocations, [
+        'y',
+    ]) as ChartSeriesData[];
 
     sortedAllocs[sortedAllocs.length - 1].sliced = true;
     sortedAllocs[sortedAllocs.length - 1].selected = true;
 
     return sortedAllocs;
-}
+};
 
 const mapParamDisplayValues = (param: any): StrategyParams => {
     console.log('param', param);
@@ -87,7 +87,7 @@ const mapParamDisplayValues = (param: any): StrategyParams => {
     }
 
     return param;
-}
+};
 
 export const getTotalDebtUsage = (strategies: Strategy[]): string => {
     let debtUsed = BigNumber.from(0);
@@ -95,24 +95,29 @@ export const getTotalDebtUsage = (strategies: Strategy[]): string => {
         debtUsed = debtUsed.add(params.debtRatio);
     });
     return debtUsed.toString();
-}
+};
 
-export const mapStrategyParams = (result: ContractCallReturnContext, apiVersion: string): StrategyParams  => {
-    let params: any = {};
+export const mapStrategyParams = (
+    result: ContractCallReturnContext,
+    apiVersion: string
+): StrategyParams => {
+    const params: any = {};
     result.callsReturnContext.forEach(({ methodName, returnValues }) => {
-        if (methodName === STRATEGIES_METHOD && returnValues && returnValues.length > 0) {
+        if (
+            methodName === STRATEGIES_METHOD &&
+            returnValues &&
+            returnValues.length > 0
+        ) {
             // TODO: resolve version ABI based on vault instead of strategy
-            const props =  mapVersions.get(apiVersion) || STRAT_PARAMS_V032;
+            const props = mapVersions.get(apiVersion) || STRAT_PARAMS_V032;
 
             returnValues.forEach((val, i) => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
-                params[props[i]] = BigNumber.from(
-                    val
-                ).toString();
+                params[props[i]] = BigNumber.from(val).toString();
             });
         }
     });
 
     return mapParamDisplayValues(params);
-}
-
+};
