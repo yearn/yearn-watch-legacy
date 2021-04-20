@@ -92,16 +92,13 @@ export const StrategistList = (props: StrategistListProps) => {
                                 </a>
                             </Typography>
                             &nbsp;&nbsp;
-                            <EtherScanLink
-                                address={strategy.address}
-                                dark={true}
-                            />
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography>
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Suspendisse malesuada lacus ex,
-                                sit amet blandit leo lobortis eget.
+                                <EtherScanLink
+                                    address={strategy.address}
+                                    dark={true}
+                                />
                             </Typography>
                         </AccordionDetails>
                     </Accordion>

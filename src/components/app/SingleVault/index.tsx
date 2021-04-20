@@ -338,7 +338,7 @@ export const SingleVault = () => {
                                         }}
                                     >
                                         <TableCell>
-                                            Config errors:
+                                            Config Warnings:
                                             <MediaQuery query="(max-device-width: 1224px)">
                                                 {' '}
                                                 <br /> {render_error}
