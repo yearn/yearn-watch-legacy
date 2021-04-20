@@ -19,7 +19,7 @@ const VAULT_VIEW_METHODS = [
     'governance',
     'guardian',
     'depositLimit',
-    'totalAssets'
+    'totalAssets',
 ];
 
 const internalGetVaults = async (): Promise<Vault[]> => {
@@ -59,8 +59,12 @@ const internalGetVaults = async (): Promise<Vault[]> => {
         });
         const stratCalls: ContractCallContext[] = payload.flatMap(
             ({ strategies }) => {
-                const stratAddresses = strategies.map(({ address }) => address); 
-                return buildStrategyCalls(stratAddresses, vaultMap, strategyMap);
+                const stratAddresses = strategies.map(({ address }) => address);
+                return buildStrategyCalls(
+                    stratAddresses,
+                    vaultMap,
+                    strategyMap
+                );
             }
         );
         const results: ContractCallResults = await multicall.call(
@@ -83,7 +87,7 @@ export const getVault = async (address: string): Promise<Vault> => {
 
     const vaults = await getVaults();
 
-    let [foundVault]: Vault[] = vaults.filter(
+    const [foundVault]: Vault[] = vaults.filter(
         (vault) => vault.address.toLowerCase() === address.toLowerCase()
     );
 
@@ -93,7 +97,6 @@ export const getVault = async (address: string): Promise<Vault> => {
 
     return foundVault;
 };
-
 
 const mapVaultData = (
     contractCallsResults: ContractCallResults,
@@ -114,7 +117,7 @@ const mapVaultData = (
             strategies,
         } = vault;
 
-        let mappedVault: any = {
+        const mappedVault: any = {
             address,
             apiVersion,
             symbol,
@@ -137,12 +140,14 @@ const mapVaultData = (
 
         const stratAddresses = strategies.map(({ address }) => address);
         const mappedStrategies: Strategy[] = mapStrategiesCalls(
-            stratAddresses, contractCallsResults, strategyMap);
+            stratAddresses,
+            contractCallsResults,
+            strategyMap
+        );
 
         mappedVault.debtUsage = getTotalDebtUsage(mappedStrategies);
 
         const vaultData = contractCallsResults.results[address];
-        
 
         vaults.push(
             vaultChecks({
@@ -155,7 +160,3 @@ const mapVaultData = (
 
     return vaults;
 };
-
-
-
-

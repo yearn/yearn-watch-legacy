@@ -21,7 +21,12 @@ export const Home = () => {
     return (
         <div>
             {isLoaded ? (
-                <div style={{ textAlign: 'center', marginTop: '100px' }}>
+                <div
+                    style={{
+                        textAlign: 'center',
+                        marginTop: '100px',
+                    }}
+                >
                     <CircularProgress style={{ color: '#fff' }} />
                     <Typography style={{ color: '#fff' }}>
                         Loading vaults..

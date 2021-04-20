@@ -31,25 +31,19 @@ const STRAT_VIEW_METHODS = [
     'vault',
     'estimatedTotalAssets',
     'delegatedAssets',
-    'want'
+    'want',
 ];
 
 const STRAT_PARAM_METHODS: string[] = [
     'debtOutstanding',
     'creditAvailable',
     'expectedReturn',
-    'strategies'
+    'strategies',
 ];
 
+const TOKEN_VIEW_METHODS: string[] = ['decimals', 'symbol', 'name'];
 
-const TOKEN_VIEW_METHODS: string[] = [
-    'decimals',
-    'symbol',
-    'name',
-];
-
-
-const buildViewMethodsCall = (strategies: string[]): ContractCallContext[] =>  {
+const buildViewMethodsCall = (strategies: string[]): ContractCallContext[] => {
     return strategies.map((stratAddres) => {
         const calls = STRAT_VIEW_METHODS.map((method) => ({
             reference: method,
@@ -63,16 +57,16 @@ const buildViewMethodsCall = (strategies: string[]): ContractCallContext[] =>  {
             calls,
         };
     });
-}
+};
 
 const buildParamMethodsCall = (
-    strategies: string[], 
-    strategyMap: Map<string, string>, 
+    strategies: string[],
+    strategyMap: Map<string, string>,
     vaultMap: Map<string, VaultVersionInfo>
-): ContractCallContext[] =>  {
+): ContractCallContext[] => {
     return strategies.map((stratAddres) => {
-        const vaultAddress = (strategyMap.get(stratAddres) as string);
-        const vaultInfo = (vaultMap.get(vaultAddress) as VaultVersionInfo);
+        const vaultAddress = strategyMap.get(stratAddres) as string;
+        const vaultInfo = vaultMap.get(vaultAddress) as VaultVersionInfo;
         const abiParams = getABI(vaultInfo.apiVersion);
         const calls = STRAT_PARAM_METHODS.map((method) => ({
             reference: method === 'strategies' ? 'strategyParams' : method,
@@ -86,17 +80,17 @@ const buildParamMethodsCall = (
             calls,
         };
     });
-}
+};
 
 const buildTokenCallMethods = (
-    strategies: string[], 
-    strategyMap: Map<string, string>, 
+    strategies: string[],
+    strategyMap: Map<string, string>,
     vaultMap: Map<string, VaultVersionInfo>
-): ContractCallContext[] =>  {
+): ContractCallContext[] => {
     return strategies.map((stratAddres) => {
-        const vaultAddress = (strategyMap.get(stratAddres) as string);
-        const vaultInfo = (vaultMap.get(vaultAddress) as VaultVersionInfo);
-    
+        const vaultAddress = strategyMap.get(stratAddres) as string;
+        const vaultInfo = vaultMap.get(vaultAddress) as VaultVersionInfo;
+
         const calls = TOKEN_VIEW_METHODS.map((method) => ({
             reference: method,
             methodName: method,
@@ -109,35 +103,49 @@ const buildTokenCallMethods = (
             calls,
         };
     });
-}
+};
 
 export const buildStrategyCalls = (
-    strategies: string[], 
-    vaultMap: Map<string, VaultApi>, 
+    strategies: string[],
+    vaultMap: Map<string, VaultApi>,
     strategyMap: Map<string, string>
 ): ContractCallContext[] => {
     const stratViewMethods = buildViewMethodsCall(strategies);
 
-    const stratParamMethods = buildParamMethodsCall(strategies, strategyMap, vaultMap);
+    const stratParamMethods = buildParamMethodsCall(
+        strategies,
+        strategyMap,
+        vaultMap
+    );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     return stratViewMethods.concat(stratParamMethods);
-}
+};
 
 export const mapStrategiesCalls = (
-    strategies: string[], 
-    contractCallsResults: ContractCallResults, 
-    strategyMap: Map<string, string>,
+    strategies: string[],
+    contractCallsResults: ContractCallResults,
+    strategyMap: Map<string, string>
 ): Strategy[] => {
-    return strategies.map(( address ) => {
+    return strategies.map((address) => {
         const stratData = contractCallsResults.results[address];
-        const vaultStratData = contractCallsResults.results[`${address}_${strategyMap.get(address)}`];
-        let mappedStrat: any = mapContractCalls(stratData);
-        let mappedVaultStratInfo: any = omit(mapContractCalls(vaultStratData), 'strategies');
-        let mappedStratParams: any = mapStrategyParams(vaultStratData, mappedStrat.apiVersion);
+        const vaultStratData =
+            contractCallsResults.results[
+                `${address}_${strategyMap.get(address)}`
+            ];
+        const mappedStrat: any = mapContractCalls(stratData);
+        const mappedVaultStratInfo: any = omit(
+            mapContractCalls(vaultStratData),
+            'strategies'
+        );
+        const mappedStratParams: any = mapStrategyParams(
+            vaultStratData,
+            mappedStrat.apiVersion
+        );
 
-        let tokenData = contractCallsResults.results[mappedStrat.want];
+        const tokenData = contractCallsResults.results[mappedStrat.want];
         if (tokenData) {
-            let token = mapContractCalls(tokenData);
+            const token = mapContractCalls(tokenData);
             mappedStrat.token = token;
         }
 
@@ -145,14 +153,12 @@ export const mapStrategiesCalls = (
             ...mappedVaultStratInfo,
             ...mappedStrat,
             address,
-            params: mappedStratParams
+            params: mappedStratParams,
         };
     });
-}
+};
 
-const innerGetStrategies = async (
-    addresses: string[]
-): Promise<Strategy[]> => {
+const innerGetStrategies = async (addresses: string[]): Promise<Strategy[]> => {
     if (addresses.length === 0) {
         throw new Error('Error: expect a valid strategy address');
     }
@@ -170,44 +176,52 @@ const innerGetStrategies = async (
     // do call to strategy apiVersion and vault
     const stratCalls: ContractCallContext[] = buildViewMethodsCall(addresses);
 
-    const resultsViewMethods: ContractCallResults = await multicall.call(stratCalls);
+    const resultsViewMethods: ContractCallResults = await multicall.call(
+        stratCalls
+    );
     const vaultMap = new Map<string, VaultVersionInfo>();
     const strategyMap = new Map<string, string>();
 
     addresses.forEach((address) => {
         const stratData = resultsViewMethods.results[address];
-        let mappedStrat: any = mapContractCalls(stratData);
+        const mappedStrat: any = mapContractCalls(stratData);
         strategyMap.set(address, mappedStrat.vault);
-        vaultMap.set(mappedStrat.vault, { 
+        vaultMap.set(mappedStrat.vault, {
             apiVersion: mappedStrat.apiVersion,
             want: mappedStrat.want,
         });
     });
-    
-    const stratParamCalls = buildParamMethodsCall(addresses, strategyMap, vaultMap);
-    const tokenMethodCalls = buildTokenCallMethods(addresses, strategyMap, vaultMap);
 
-    const stratParamResults: ContractCallResults = await multicall.call(stratParamCalls.concat(tokenMethodCalls));
+    const stratParamCalls = buildParamMethodsCall(
+        addresses,
+        strategyMap,
+        vaultMap
+    );
+    const tokenMethodCalls = buildTokenCallMethods(
+        addresses,
+        strategyMap,
+        vaultMap
+    );
+
+    const stratParamResults: ContractCallResults = await multicall.call(
+        stratParamCalls.concat(tokenMethodCalls)
+    );
 
     const mergedResults: ContractCallResults = {
         results: {
-            ...resultsViewMethods.results, 
-            ...stratParamResults.results
+            ...resultsViewMethods.results,
+            ...stratParamResults.results,
         },
         blockNumber: stratParamResults.blockNumber,
-    }
+    };
 
     const mappedStrategies = mapStrategiesCalls(
         addresses,
         mergedResults,
-        strategyMap,
+        strategyMap
     );
 
     return mappedStrategies;
 };
 
 export const getStrategies = memoize(innerGetStrategies);
-
-
-
-

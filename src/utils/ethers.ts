@@ -14,5 +14,3 @@ export const formatAmount = (amount: string, decimals: number) => {
 };
 
 export const weiToUnits = (amount: string) => BigNumber.from(amount);
-
-

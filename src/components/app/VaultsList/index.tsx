@@ -45,7 +45,7 @@ export const VaultsList = (props: VaultsListProps) => {
             },
             alert: {
                 background: 'transparent',
-                color: 'red',
+                color: '#006ae3',
                 fontWeight: 400,
             },
 
@@ -56,11 +56,11 @@ export const VaultsList = (props: VaultsListProps) => {
                 marginRight: '10px',
             },
             accordion: {
-                background: config ? '#0a1d3f' : '#ff6c6c',
+                background: config ? '#0a1d3f' : '#4db6f0',
                 borderRadius: '8px',
                 color: '#ffffff',
                 '&:hover': {
-                    background: config ? '#006ae3' : '#ff5c5c',
+                    background: config ? '#006ae3' : '#4db6f0',
                 },
             },
             heading: {
@@ -85,7 +85,7 @@ export const VaultsList = (props: VaultsListProps) => {
                     <List className={classes.list}>
                         {!config ? (
                             <MuiAlert
-                                severity="error"
+                                severity="info"
                                 variant="filled"
                                 className={classes.alert}
                             >
@@ -129,7 +129,7 @@ export const VaultsList = (props: VaultsListProps) => {
                 <Divider className={classes.divider} />
                 <AccordionDetails>
                     <Container>
-                        <StrategistList vault={vault} dark={true} />
+                        <StrategistList vault={vault} dark={false} />
                     </Container>
                 </AccordionDetails>
             </MuiAccordion>

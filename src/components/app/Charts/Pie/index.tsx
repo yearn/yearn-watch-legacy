@@ -1,6 +1,6 @@
 import React from 'react';
-import Highcharts from 'highcharts'
-import HighchartsReact from 'highcharts-react-official'
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 
 import { Vault } from '../../../../types';
 import { getChartData } from '../../../../utils/strategyParams';
@@ -17,18 +17,18 @@ const Pie = (props: PieProps) => {
             plotBackgroundColor: null,
             plotBorderWidth: null,
             plotShadow: false,
-            type: 'pie'
+            type: 'pie',
         },
         title: {
-            text: `${vault.name} Debt Allocation`
+            text: `${vault.name} Debt Allocation`,
         },
         tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
         },
         accessibility: {
             point: {
-                valueSuffix: '%'
-            }
+                valueSuffix: '%',
+            },
         },
         plotOptions: {
             pie: {
@@ -36,26 +36,24 @@ const Pie = (props: PieProps) => {
                 cursor: 'pointer',
                 dataLabels: {
                     enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                }
-            }
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                },
+            },
         },
-        series: [{
-          name: 'Strategies',
-          colorByPoint: true,
-          data: getChartData(vault)
-        }]
-      }
+        series: [
+            {
+                name: 'Strategies',
+                colorByPoint: true,
+                data: getChartData(vault),
+            },
+        ],
+    };
 
     return (
         <div>
-            <HighchartsReact
-                highcharts={Highcharts}
-                options={options}
-            />
+            <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
-    )
-
-}
+    );
+};
 
 export default Pie;
