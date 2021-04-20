@@ -3,11 +3,21 @@ import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { extractText } from '../../../utils/commonUtils';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Hidden from '@material-ui/core/Hidden';
 import EtherScanLink from '../../common/EtherScanLink';
 
-export const StrategistList = (props: any) => {
+import { extractText, displayAmount } from '../../../utils/commonUtils';
+import { Strategy, Vault } from '../../../types';
+
+type StrategistListProps = {
+    vault: Vault;
+    dark: boolean;
+}
+
+export const StrategistList = (props: StrategistListProps) => {
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
             root: {
@@ -51,7 +61,9 @@ export const StrategistList = (props: any) => {
         })
     );
     const classes = useStyles();
-    const vault = props.vault;
+    const { vault } = props;
+
+    console.log('vault', vault);
 
     return (
         <div className={classes.root}>
@@ -59,7 +71,7 @@ export const StrategistList = (props: any) => {
                 Strategies
             </Typography>
             {vault.strategies &&
-                vault.strategies.map((strategie: any, index: number) => (
+                vault.strategies.map((strategy: Strategy, index: number) => (
                     <List
                         className={classes.list}
                         style={{ border: 'none' }}
@@ -76,24 +88,24 @@ export const StrategistList = (props: any) => {
                                         >
                                             <a
                                                 className={classes.link}
-                                                href={`/strategy/${vault.name}/${strategie.address}`}
+                                                href={`/strategy/${vault.name}/${strategy.address}`}
                                             >
                                                 <Hidden smUp>
-                                                    {strategie.name.length > 20
+                                                    {strategy.name.length > 20
                                                         ? extractText(
-                                                              strategie.name
+                                                            strategy.name
                                                           )
-                                                        : strategie.name}
+                                                        : strategy.name}
                                                 </Hidden>
 
                                                 <Hidden xsDown>
-                                                    {strategie.name}
+                                                    {strategy.name}
                                                 </Hidden>
                                             </a>
                                         </Typography>
                                         &nbsp;&nbsp;
                                         <EtherScanLink
-                                            address={strategie.address}
+                                            address={strategy.address}
                                             dark={true}
                                         />
                                     </div>

@@ -9,7 +9,7 @@ export type VaultCheck = {
 const GOVERNANCE = '0xfeb4acf3df3cdea7399794d0869ef76a6efaff52';
 // dev.ychad.eth
 const GUARDIAN = '0x846e211e8ba920b353fb717631c015cf04061cc9';
-// strategist MultiSig
+// brains.ychad.eth
 const MANAGEMENT = '0x16388463d60FFE0661Cf7F1f31a7D658aC790ff7';
 
 const MANAGEMENT_FEE = 200;
@@ -19,7 +19,7 @@ const PERF_FEE = 2000;
 const addressMap = new Map<string, string>();
 addressMap.set(GOVERNANCE.toLowerCase(), 'ychad.eth');
 addressMap.set(GUARDIAN.toLowerCase(), 'dev.ychad.eth');
-addressMap.set(MANAGEMENT.toLowerCase(), 'strategist multisig');
+addressMap.set(MANAGEMENT.toLowerCase(), 'brains.ychad.eth');
 
 export const checkLabel = (address: string) => {
     if (addressMap.has(address.toLowerCase())) {

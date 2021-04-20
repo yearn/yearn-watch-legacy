@@ -5,26 +5,26 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
-import { useParams } from 'react-router-dom';
-import { Vault } from '../../../types';
-import { getVault } from '../../../utils/vaults';
-import { checkLabel } from '../../../utils/checks';
-import { formatBPS, displayAmount } from '../../../utils/commonUtils';
-
-
-import Table from '../../common/Table';
-
-import Pie from '../Charts/Pie';
-
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { StrategistList } from '../StrategistList';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Typography } from '@material-ui/core';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import Chip from '@material-ui/core/Chip';
+
+import { useParams } from 'react-router-dom';
+
+import { Vault } from '../../../types';
+import { getVault } from '../../../utils/vaults';
+import { checkLabel } from '../../../utils/checks';
+import { formatBPS, displayAmount } from '../../../utils/commonUtils';
+import Table from '../../common/Table';
+import Pie from '../Charts/Pie';
+import { StrategistList } from '../StrategistList';
 import ProgressBars from '../../common/ProgressBar';
 import EtherScanLink from '../../common/EtherScanLink';
 
@@ -263,7 +263,7 @@ export const SingleVault = () => {
                                 </TableRow>
 
                                 <TableRow>
-                                    <TableCell>Debt Usage:<MediaQuery query="(max-device-width: 1224px)"><br/> {deb_usage }   %
+                                    <TableCell>Debt Usage:<MediaQuery query="(max-device-width: 1224px)"><br/> {deb_usage }
                                         %</MediaQuery> </TableCell>
                                   <MediaQuery query="(min-device-width: 1224px)"> <TableCell>
                                         {deb_usage }
