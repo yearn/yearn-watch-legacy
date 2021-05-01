@@ -33,7 +33,10 @@ export const StrategistList = (props: StrategistListProps) => {
                 color: '#ffff',
             },
             text: {
-                color: props.dark ? '#ffff' : 'black',
+                color: '#ffff',
+                fontFamily: 'Open Sans',
+                lineHeight: '27px',
+                fontSize: '18px',
             },
             iconCall: {
                 backgroundColor: 'white',
@@ -63,7 +66,7 @@ export const StrategistList = (props: StrategistListProps) => {
     );
     const classes = useStyles();
     const { vault } = props;
-
+    console.log('vault', vault);
     return (
         <div className={classes.root}>
             <Typography variant="body2" className={classes.text} component="p">

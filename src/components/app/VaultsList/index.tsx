@@ -1,4 +1,3 @@
-import React from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import { Container } from '@material-ui/core';
 import MuiAccordion from '@material-ui/core/Accordion';
@@ -6,17 +5,14 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Avatar from '@material-ui/core/Avatar';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import MuiAlert from '@material-ui/lab/Alert';
 import Divider from '@material-ui/core/Divider';
 import { Vault } from '../../../types';
 import { StrategistList } from '../StrategistList';
 import EtherScanLink from '../../common/EtherScanLink';
-import Typography from '@material-ui/core/Typography';
 
+import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
 type VaultsListProps = {
     vault: Vault;
     key: number;
@@ -35,6 +31,12 @@ export const VaultsList = (props: VaultsListProps) => {
             },
             link: {
                 color: '#fff',
+                textDecoration: 'none',
+            },
+            textVault: {
+                fontFamily: 'Open Sans',
+                lineHeight: '27px',
+                fontSize: '18px',
             },
 
             expandIcon: {
@@ -56,16 +58,20 @@ export const VaultsList = (props: VaultsListProps) => {
                 marginRight: '10px',
             },
             accordion: {
-                background: config ? '#0a1d3f' : '#4db6f0',
+                background: config ? '#0a1d3f' : '#006ae3',
                 borderRadius: '8px',
                 color: '#ffffff',
                 '&:hover': {
-                    background: config ? '#006ae3' : '#4db6f0',
+                    background: config ? '#0a1d3f' : '#006ae3',
+                    opacity: '0.9',
                 },
             },
             heading: {
                 fontSize: theme.typography.pxToRem(15),
                 fontWeight: theme.typography.fontWeightRegular,
+            },
+            paper: {
+                padding: theme.spacing(2),
             },
         })
     );
@@ -82,50 +88,74 @@ export const VaultsList = (props: VaultsListProps) => {
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                 >
-                    <List className={classes.list}>
-                        {!config ? (
-                            <MuiAlert
-                                severity="info"
-                                variant="filled"
-                                className={classes.alert}
+                    <Grid container className={classes.root} spacing={2}>
+                        <Grid item md={12} xs={12}>
+                            <Grid
+                                container
+                                spacing={1}
+                                direction="row"
+                                justify="center"
+                                alignItems="center"
                             >
-                                {' '}
-                                {vault.configErrors &&
-                                vault.configErrors?.length > 0
-                                    ? vault.configErrors[0]
-                                    : ''}
-                            </MuiAlert>
-                        ) : null}
-                        <ListItem>
-                            <ListItemAvatar>
-                                <Avatar alt={vault.icon} src={vault.icon} />
-                            </ListItemAvatar>
-
-                            <ListItemText
-                                primary={
-                                    <span>
-                                        <Typography
-                                            variant="subtitle1"
-                                            gutterBottom
-                                        >
-                                            <a
-                                                className={classes.link}
-                                                href={`/vault/${vault.address}`}
+                                <Grid item md={1} xs={3}>
+                                    {vault && vault.icon ? (
+                                        <ListItemAvatar>
+                                            {
+                                                <Avatar
+                                                    alt={vault.icon}
+                                                    src={vault.icon}
+                                                />
+                                            }
+                                        </ListItemAvatar>
+                                    ) : (
+                                        <ListItemAvatar>
+                                            <Avatar
+                                                style={{
+                                                    color: 'transparent',
+                                                }}
                                             >
-                                                {vault.name}
-                                            </a>
-                                        </Typography>
-                                        &nbsp;&nbsp;
+                                                .
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                    )}
+                                </Grid>
+                                <Grid item md={3} xs={9}>
+                                    <a
+                                        className={classes.link}
+                                        href={`/vault/${vault.address}`}
+                                    >
+                                        <span className={classes.textVault}>
+                                            {' '}
+                                            {vault.name}{' '}
+                                        </span>
+                                    </a>
+                                </Grid>
+
+                                <Hidden xsDown>
+                                    {' '}
+                                    <Grid item md={8} xs={12}>
+                                        {' '}
                                         <EtherScanLink
                                             address={vault.address}
                                             dark={true}
                                         />
-                                    </span>
-                                }
-                            />
-                        </ListItem>
-                    </List>
+                                    </Grid>
+                                </Hidden>
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </AccordionSummary>
+                <Hidden smUp>
+                    <Grid container className={classes.root} spacing={2}>
+                        <Grid item md={8} xs={12}>
+                            {' '}
+                            <EtherScanLink
+                                address={vault.address}
+                                dark={true}
+                            />
+                        </Grid>
+                    </Grid>
+                </Hidden>
                 <Divider className={classes.divider} />
                 <AccordionDetails>
                     <Container>
