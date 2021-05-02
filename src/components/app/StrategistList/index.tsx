@@ -65,7 +65,7 @@ export const StrategistList = (props: StrategistListProps) => {
                 fontWeight: theme.typography.fontWeightRegular,
             },
             expandIcon: {
-                color: '#fff',
+                color: props.dark ? '#ffff' : 'black',
             },
             paper: {
                 padding: theme.spacing(2),
