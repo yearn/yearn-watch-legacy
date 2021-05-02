@@ -1,5 +1,5 @@
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
-import { Container } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
 import MuiAccordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -32,11 +32,17 @@ export const VaultsList = (props: VaultsListProps) => {
             link: {
                 color: '#fff',
                 textDecoration: 'none',
+                '&:hover': {
+                    textDecoration: 'underline',
+                },
             },
             textVault: {
                 fontFamily: 'Open Sans',
                 lineHeight: '27px',
                 fontSize: '18px',
+                '&:hover': {
+                    fontSize: 19,
+                },
             },
 
             expandIcon: {
@@ -47,12 +53,12 @@ export const VaultsList = (props: VaultsListProps) => {
             },
             alert: {
                 background: 'transparent',
-                color: '#006ae3',
+                color: 'red',
                 fontWeight: 400,
             },
 
             divider: {
-                background: '#fff',
+                background: '#1d265f',
                 opacity: '0.3',
                 marginLeft: '10px',
                 marginRight: '10px',
@@ -61,10 +67,7 @@ export const VaultsList = (props: VaultsListProps) => {
                 background: config ? '#0a1d3f' : '#006ae3',
                 borderRadius: '8px',
                 color: '#ffffff',
-                '&:hover': {
-                    background: config ? '#0a1d3f' : '#006ae3',
-                    opacity: '0.9',
-                },
+                marginTop: 10,
             },
             heading: {
                 fontSize: theme.typography.pxToRem(15),
@@ -88,7 +91,7 @@ export const VaultsList = (props: VaultsListProps) => {
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                 >
-                    <Grid container className={classes.root} spacing={2}>
+                    <Grid className={classes.root} spacing={2}>
                         <Grid item md={12} xs={12}>
                             <Grid
                                 container
@@ -159,7 +162,7 @@ export const VaultsList = (props: VaultsListProps) => {
                 <Divider className={classes.divider} />
                 <AccordionDetails>
                     <Container>
-                        <StrategistList vault={vault} dark={false} />
+                        <StrategistList vault={vault} dark={true} />
                     </Container>
                 </AccordionDetails>
             </MuiAccordion>

@@ -1,17 +1,18 @@
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Hidden from '@material-ui/core/Hidden';
 import EtherScanLink from '../../common/EtherScanLink';
-
-import { extractText, displayAmount } from '../../../utils/commonUtils';
+import {
+    extractText,
+    displayAmount,
+    formatBPS,
+} from '../../../utils/commonUtils';
 import { Strategy, Vault } from '../../../types';
+import Grid from '@material-ui/core/Grid';
 
 type StrategistListProps = {
     vault: Vault;
@@ -19,13 +20,13 @@ type StrategistListProps = {
 };
 
 export const StrategistList = (props: StrategistListProps) => {
+    const { vault } = props;
+    const config = vault.configOK;
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
-            root: {
+            root: {},
+            rootGrid: {
                 width: '100%',
-                marginTop: 20,
-                background: 'transparent',
-                padding: 10,
             },
             address: {
                 fontSize: '14px',
@@ -33,10 +34,11 @@ export const StrategistList = (props: StrategistListProps) => {
                 color: '#ffff',
             },
             text: {
-                color: '#ffff',
+                color: props.dark ? '#ffff' : 'black',
                 fontFamily: 'Open Sans',
                 lineHeight: '27px',
                 fontSize: '18px',
+                margin: 10,
             },
             iconCall: {
                 backgroundColor: 'white',
@@ -48,13 +50,13 @@ export const StrategistList = (props: StrategistListProps) => {
                 border: 'none',
             },
             accordion: {
-                background: 'transparent',
-                border: 'none',
+                background: props.dark ? (config ? '#040e20' : '#0552aa') : '',
+                borderRadius: 5,
+                margin: 10,
             },
             link: {
                 color: props.dark ? '#ffff' : 'black',
                 '&:hover': {
-                    color: '#1f255f',
                     fontWeight: 600,
                 },
             },
@@ -62,11 +64,18 @@ export const StrategistList = (props: StrategistListProps) => {
                 fontSize: theme.typography.pxToRem(15),
                 fontWeight: theme.typography.fontWeightRegular,
             },
+            expandIcon: {
+                color: '#fff',
+            },
+            paper: {
+                padding: theme.spacing(2),
+                textAlign: 'center',
+                color: theme.palette.text.secondary,
+            },
         })
     );
     const classes = useStyles();
-    const { vault } = props;
-    console.log('vault', vault);
+
     return (
         <div className={classes.root}>
             <Typography variant="body2" className={classes.text} component="p">
@@ -74,35 +83,115 @@ export const StrategistList = (props: StrategistListProps) => {
             </Typography>
             {vault.strategies &&
                 vault.strategies.map((strategy: Strategy, index: number) => (
-                    <Accordion key={index}>
+                    <Accordion key={index} className={classes.accordion}>
                         <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
+                            expandIcon={
+                                <ExpandMoreIcon
+                                    className={classes.expandIcon}
+                                />
+                            }
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Typography variant="subtitle1" gutterBottom>
-                                <a
-                                    className={classes.link}
-                                    href={`/strategy/${vault.name}/${strategy.address}`}
-                                >
-                                    <Hidden smUp>
-                                        {strategy.name.length > 20
-                                            ? extractText(strategy.name)
-                                            : strategy.name}
-                                    </Hidden>
+                            <Grid className={classes.rootGrid} spacing={2}>
+                                <Grid item md={12} xs={12}>
+                                    <Grid
+                                        container
+                                        spacing={1}
+                                        direction="row"
+                                        justify="center"
+                                        alignItems="center"
+                                    >
+                                        <Grid item md={4} xs={12}>
+                                            <Typography
+                                                variant="subtitle1"
+                                                gutterBottom
+                                            >
+                                                <a
+                                                    className={classes.link}
+                                                    href={`/strategy/${vault.name}/${strategy.address}`}
+                                                >
+                                                    <Hidden smUp>
+                                                        {strategy.name.length >
+                                                        20
+                                                            ? extractText(
+                                                                  strategy.name
+                                                              )
+                                                            : strategy.name}
+                                                    </Hidden>
 
-                                    <Hidden xsDown>{strategy.name}</Hidden>
-                                </a>
-                            </Typography>
-                            &nbsp;&nbsp;
+                                                    <Hidden xsDown>
+                                                        {strategy.name}
+                                                    </Hidden>
+                                                </a>
+                                            </Typography>
+                                        </Grid>
+                                        <Hidden xsDown>
+                                            {' '}
+                                            <Grid item md={8} xs={6}>
+                                                <EtherScanLink
+                                                    address={strategy.address}
+                                                    dark={props.dark}
+                                                />
+                                            </Grid>
+                                        </Hidden>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Typography>
-                                <EtherScanLink
-                                    address={strategy.address}
-                                    dark={true}
-                                />
-                            </Typography>
+                            <Grid container spacing={1}>
+                                <Hidden smUp>
+                                    {' '}
+                                    <Typography>
+                                        <EtherScanLink
+                                            address={strategy.address}
+                                            dark={props.dark}
+                                        />
+                                    </Typography>
+                                </Hidden>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={4}
+                                    className={classes.link}
+                                >
+                                    Total debt
+                                    <br />
+                                    {vault &&
+                                        displayAmount(
+                                            strategy.params.totalDebt.toString(),
+                                            vault.token.decimals
+                                        )}
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={4}
+                                    className={classes.link}
+                                >
+                                    Debt ratio
+                                    <br />
+                                    {formatBPS(
+                                        strategy.params.debtRatio.toString()
+                                    )}{' '}
+                                    %
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={4}
+                                    className={classes.link}
+                                >
+                                    Credit available
+                                    <br />
+                                    {vault &&
+                                        displayAmount(
+                                            strategy.creditAvailable.toString(),
+                                            vault.token.decimals
+                                        )}
+                                </Grid>
+                            </Grid>
                         </AccordionDetails>
                     </Accordion>
                 ))}
