@@ -22,7 +22,9 @@ const EtherScanLink = (props: any) => {
 
             address: {
                 fontSize: '14px',
-                opacity: '0.6',
+                opacity: '0.7',
+
+                color: props.dark ? '#fff' : 'black',
             },
         })
     );
