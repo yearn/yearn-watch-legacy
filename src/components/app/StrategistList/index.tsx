@@ -153,7 +153,16 @@ export const StrategistList = (props: StrategistListProps) => {
                                 <Grid
                                     item
                                     xs={12}
-                                    md={4}
+                                    md={3}
+                                    className={classes.link}
+                                >
+                                    Time Since Last Report:
+                                    <br /> {strategy.params.lastReportText}
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={3}
                                     className={classes.link}
                                 >
                                     Total debt
@@ -167,7 +176,7 @@ export const StrategistList = (props: StrategistListProps) => {
                                 <Grid
                                     item
                                     xs={12}
-                                    md={4}
+                                    md={3}
                                     className={classes.link}
                                 >
                                     Debt ratio
@@ -180,7 +189,7 @@ export const StrategistList = (props: StrategistListProps) => {
                                 <Grid
                                     item
                                     xs={12}
-                                    md={4}
+                                    md={3}
                                     className={classes.link}
                                 >
                                     Credit available
