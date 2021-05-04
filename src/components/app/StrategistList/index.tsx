@@ -17,10 +17,11 @@ import Grid from '@material-ui/core/Grid';
 type StrategistListProps = {
     vault: Vault;
     dark: boolean;
+    expand?: boolean;
 };
 
 export const StrategistList = (props: StrategistListProps) => {
-    const { vault } = props;
+    const { vault, expand = true } = props;
     const config = vault.configOK;
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
@@ -83,7 +84,11 @@ export const StrategistList = (props: StrategistListProps) => {
             </Typography>
             {vault.strategies &&
                 vault.strategies.map((strategy: Strategy, index: number) => (
-                    <Accordion key={index} className={classes.accordion}>
+                    <Accordion
+                        key={index}
+                        className={classes.accordion}
+                        defaultExpanded={expand}
+                    >
                         <AccordionSummary
                             expandIcon={
                                 <ExpandMoreIcon
