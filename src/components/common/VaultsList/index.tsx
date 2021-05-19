@@ -20,12 +20,23 @@ export const VaultsList = (props: VaultsListProps) => {
             setFilteredItems(props.items);
         } else {
             const filteredItems = props.items.filter((item: Vault) => {
+                const hasStrategies = () => {
+                    const strategies = item.strategies.filter((strategy) => {
+                        return (
+                            strategy.address.toLowerCase().includes(newText) ||
+                            strategy.name.toLowerCase().includes(newText) ||
+                            strategy.strategist.toLowerCase().includes(newText)
+                        );
+                    });
+                    return strategies.length > 0;
+                };
                 return (
                     item.address.toLowerCase().includes(newText) ||
                     item.apiVersion.includes(newText) ||
                     item.name.toLowerCase().includes(newText) ||
                     item.symbol.toLowerCase().includes(newText) ||
-                    item.token.symbol.toLowerCase().includes(newText)
+                    item.token.symbol.toLowerCase().includes(newText) ||
+                    hasStrategies()
                 );
             });
             setFilteredItems(filteredItems);

@@ -67,7 +67,7 @@ const SearchInput = (props: SearchInputProps) => {
                     onChange={onChange}
                     type="search"
                     value={searchText}
-                    placeholder="Search by vault address, token name/symbol, share token symbol/name or API version."
+                    placeholder="Search by vault/strategy address/name, strategist address, token name/symbol, share token symbol/name or API version."
                     InputProps={{
                         endAdornment:
                             searchText !== '' ? (
