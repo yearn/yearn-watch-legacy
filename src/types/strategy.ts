@@ -27,6 +27,7 @@ export type Strategy = {
     keeper: string;
     rewards: string;
 
+    withdrawalQueueIndex: number;
     // params
     estimatedTotalAssets: BigNumber;
     delgatedAssets: BigNumber;

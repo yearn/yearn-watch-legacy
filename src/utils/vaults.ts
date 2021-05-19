@@ -9,7 +9,11 @@ import { getEthersDefaultProvider } from './ethers';
 import { Vault, VaultApi, VaultVersion, Strategy } from '../types';
 import { BuildGet } from './apisRequest';
 import { vaultChecks } from './checks';
-import { mapContractCalls } from './commonUtils';
+import {
+    mapContractCalls,
+    createStrategiesHelperCallAssetStrategiesAddresses,
+    mapToStrategyAddressQueueIndex,
+} from './commonUtils';
 import { getABI_032 } from './abi';
 import { mapStrategiesCalls, buildStrategyCalls } from './strategies';
 import { getTotalDebtUsage } from './strategyParams';
@@ -67,11 +71,19 @@ const internalGetVaults = async (): Promise<Vault[]> => {
                 );
             }
         );
+        const strategiesHelperCallResults: ContractCallResults = await multicall.call(
+            createStrategiesHelperCallAssetStrategiesAddresses(payload)
+        );
         const results: ContractCallResults = await multicall.call(
             vaultCalls.concat(stratCalls)
         );
 
-        return mapVaultData(results, vaultMap, strategyMap);
+        return mapVaultData(
+            results,
+            strategiesHelperCallResults,
+            vaultMap,
+            strategyMap
+        );
     } catch (error) {
         console.error(error);
         return Promise.resolve([]);
@@ -100,6 +112,7 @@ export const getVault = async (address: string): Promise<Vault> => {
 
 const mapVaultData = (
     contractCallsResults: ContractCallResults,
+    strategiesHelperCallsResults: ContractCallResults,
     vaultMap: Map<string, VaultApi>,
     strategyMap: Map<string, string>
 ): Vault[] => {
@@ -116,6 +129,11 @@ const mapVaultData = (
             emergencyShutdown,
             strategies,
         } = vault;
+
+        const strategiesQueueIndexes = mapToStrategyAddressQueueIndex(
+            address,
+            strategiesHelperCallsResults
+        );
 
         const mappedVault: any = {
             address,
@@ -142,6 +160,7 @@ const mapVaultData = (
         const mappedStrategies: Strategy[] = mapStrategiesCalls(
             stratAddresses,
             contractCallsResults,
+            strategiesQueueIndexes,
             strategyMap
         );
 

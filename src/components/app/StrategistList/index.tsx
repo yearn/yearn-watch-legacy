@@ -98,7 +98,7 @@ export const StrategistList = (props: StrategistListProps) => {
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Grid className={classes.rootGrid} spacing={2}>
+                            <Grid className={classes.rootGrid}>
                                 <Grid item md={12} xs={12}>
                                     <Grid
                                         container
@@ -167,7 +167,7 @@ export const StrategistList = (props: StrategistListProps) => {
                                 <Grid
                                     item
                                     xs={12}
-                                    md={3}
+                                    md={2}
                                     className={classes.link}
                                 >
                                     Total debt
@@ -181,7 +181,7 @@ export const StrategistList = (props: StrategistListProps) => {
                                 <Grid
                                     item
                                     xs={12}
-                                    md={3}
+                                    md={2}
                                     className={classes.link}
                                 >
                                     Debt ratio
@@ -194,7 +194,7 @@ export const StrategistList = (props: StrategistListProps) => {
                                 <Grid
                                     item
                                     xs={12}
-                                    md={3}
+                                    md={2}
                                     className={classes.link}
                                 >
                                     Credit available
@@ -203,6 +203,26 @@ export const StrategistList = (props: StrategistListProps) => {
                                         displayAmount(
                                             strategy.creditAvailable.toString(),
                                             vault.token.decimals
+                                        )}
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={3}
+                                    className={classes.link}
+                                    style={{
+                                        backgroundColor:
+                                            strategy.withdrawalQueueIndex < 0
+                                                ? 'red'
+                                                : '',
+                                    }}
+                                >
+                                    Withdrawal Queue Index
+                                    <br />
+                                    {vault &&
+                                        displayAmount(
+                                            strategy.withdrawalQueueIndex.toString(),
+                                            0
                                         )}
                                 </Grid>
                             </Grid>

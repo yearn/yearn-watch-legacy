@@ -1,5 +1,6 @@
 import VaultABI_030 from './ABI/VaultAPI_030.json';
 import VaultABI_032 from './ABI/VaultAPI_032.json';
+import StrategiesHelper from './ABI/StrategiesHelper.json';
 
 export const v0_3_2 = '0.3.2';
 
@@ -16,3 +17,5 @@ export const getABI_032 = (): any => {
 export const getABI = (apiVersion: string = v0_3_2): any => {
     return abiMap.get(apiVersion) || abiMap.get(v0_3_2);
 };
+
+export const getABIStrategiesHelper = (): any => StrategiesHelper;

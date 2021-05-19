@@ -7,7 +7,7 @@ import { utils } from 'ethers';
 import { omit, memoize } from 'lodash';
 
 import { getEthersDefaultProvider } from './ethers';
-import { Strategy, VaultApi } from '../types';
+import { Strategy, StrategyAddressQueueIndex, VaultApi } from '../types';
 import { getABI } from './abi';
 import { mapStrategyParams } from './strategyParams';
 import { mapContractCalls } from './commonUtils';
@@ -125,6 +125,7 @@ export const buildStrategyCalls = (
 export const mapStrategiesCalls = (
     strategies: string[],
     contractCallsResults: ContractCallResults,
+    strategiesQueueIndexes: Array<StrategyAddressQueueIndex>,
     strategyMap: Map<string, string>
 ): Strategy[] => {
     return strategies.map((address) => {
@@ -148,12 +149,20 @@ export const mapStrategiesCalls = (
             const token = mapContractCalls(tokenData);
             mappedStrat.token = token;
         }
-
+        const strategyWithdrawalQueueIndex = strategiesQueueIndexes.find(
+            (queueIndex) =>
+                queueIndex.address.toLowerCase() === address.toLowerCase()
+        );
+        const withdrawalQueueIndex =
+            strategyWithdrawalQueueIndex === undefined
+                ? -1
+                : strategyWithdrawalQueueIndex.queueIndex;
         return {
             ...mappedVaultStratInfo,
             ...mappedStrat,
             address,
             params: mappedStratParams,
+            withdrawalQueueIndex,
         };
     });
 };
@@ -218,6 +227,7 @@ const innerGetStrategies = async (addresses: string[]): Promise<Strategy[]> => {
     const mappedStrategies = mapStrategiesCalls(
         addresses,
         mergedResults,
+        [],
         strategyMap
     );
 

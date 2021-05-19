@@ -91,7 +91,7 @@ export const VaultItemList = (props: VaultItemListProps) => {
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                 >
-                    <Grid className={classes.root} spacing={2}>
+                    <Grid container className={classes.root} spacing={2}>
                         <Grid item md={12} xs={12}>
                             <Grid
                                 container
