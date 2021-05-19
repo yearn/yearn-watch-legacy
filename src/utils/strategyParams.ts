@@ -1,13 +1,8 @@
 import { ContractCallReturnContext } from 'ethereum-multicall';
 import { BigNumber } from 'ethers';
 import { sortBy } from 'lodash';
-import dayjs from 'dayjs';
-import LocalizedFormat from 'dayjs/plugin/localizedFormat';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { StrategyParams, Strategy, Vault } from '../types';
-
-dayjs.extend(LocalizedFormat);
-dayjs.extend(relativeTime);
+import { isValidTimestamp, toIsoString, toHumanDateText } from './dateUtils';
 
 const STRATEGIES_METHOD = 'strategies';
 
@@ -76,13 +71,13 @@ export const getChartData = (vault: Vault): ChartSeriesData[] => {
 };
 
 const mapParamDisplayValues = (param: any): StrategyParams => {
-    if (param.activation && dayjs.unix(parseInt(param.activation)).isValid()) {
-        param.activation = dayjs.unix(parseInt(param.activation)).toISOString();
+    if (param.activation && isValidTimestamp(param.activation)) {
+        param.activation = toIsoString(param.activation);
     }
-    if (param.lastReport && dayjs.unix(parseInt(param.lastReport)).isValid()) {
-        const unixTimestamp = dayjs.unix(parseInt(param.lastReport));
-        param.lastReport = unixTimestamp.toISOString();
-        param.lastReportText = unixTimestamp.toNow(true);
+    if (param.lastReport && isValidTimestamp(param.lastReport)) {
+        const { lastReport } = param;
+        param.lastReport = toIsoString(lastReport);
+        param.lastReportText = toHumanDateText(lastReport);
     }
 
     return param;
