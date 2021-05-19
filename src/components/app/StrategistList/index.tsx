@@ -217,7 +217,7 @@ export const StrategistList = (props: StrategistListProps) => {
                                                 : '',
                                     }}
                                 >
-                                    Withdrawal Queue Index
+                                    Index
                                     <br />
                                     {vault &&
                                         displayAmount(
