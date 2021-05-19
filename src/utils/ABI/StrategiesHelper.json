@@ -1,0 +1,406 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_registryAdapterAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_helperAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "assetAddress",
+                "type": "address"
+            }
+        ],
+        "name": "assetStrategies",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "apiVersion",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "strategist",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "rewards",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "vault",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "keeper",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "want",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "emergencyExit",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isActive",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "delegatedAssets",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "estimatedTotalAssets",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct StrategiesHelper.StrategyMetadata[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "assetAddress",
+                "type": "address"
+            }
+        ],
+        "name": "assetStrategiesAddresses",
+        "outputs": [
+            { "internalType": "address[]", "name": "", "type": "address[]" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "assetAddress",
+                "type": "address"
+            }
+        ],
+        "name": "assetStrategiesDelegatedBalance",
+        "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "assetAddress",
+                "type": "address"
+            }
+        ],
+        "name": "assetStrategiesLength",
+        "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "strategyAddress",
+                "type": "address"
+            }
+        ],
+        "name": "assetStrategy",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "apiVersion",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "strategist",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "rewards",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "vault",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "keeper",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "want",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "emergencyExit",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isActive",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "delegatedAssets",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "estimatedTotalAssets",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct StrategiesHelper.StrategyMetadata",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_assetsStrategiesAddresses",
+                "type": "address[]"
+            }
+        ],
+        "name": "assetsStrategies",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "apiVersion",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "strategist",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "rewards",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "vault",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "keeper",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "want",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "emergencyExit",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isActive",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "delegatedAssets",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "estimatedTotalAssets",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct StrategiesHelper.StrategyMetadata[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "assetsStrategies",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "apiVersion",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "strategist",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "rewards",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "vault",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "keeper",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "want",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "emergencyExit",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isActive",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "delegatedAssets",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "estimatedTotalAssets",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct StrategiesHelper.StrategyMetadata[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "assetsStrategiesAddresses",
+        "outputs": [
+            { "internalType": "address[]", "name": "", "type": "address[]" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "assetsStrategiesDelegatedBalance",
+        "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "assetsStrategiesLength",
+        "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "helperAddress",
+        "outputs": [
+            { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "registryAdapterAddress",
+        "outputs": [
+            { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

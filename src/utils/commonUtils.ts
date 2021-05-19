@@ -1,6 +1,16 @@
-import { ContractCallReturnContext } from 'ethereum-multicall';
+import {
+    ContractCallContext,
+    ContractCallReturnContext,
+} from 'ethereum-multicall';
 import { get } from 'lodash';
 import { BigNumber, constants } from 'ethers';
+import { StrategyAddressQueueIndex, VaultApi } from '../types';
+import {
+    CallContext,
+    ContractCallResults,
+} from 'ethereum-multicall/dist/models';
+import { getABIStrategiesHelper } from './abi';
+import _ from 'lodash';
 
 export const extractAddress = (address: string) => {
     return (
@@ -42,4 +52,60 @@ export const mapContractCalls = (result: ContractCallReturnContext) => {
         }
     });
     return mappedObj;
+};
+
+const STRATEGIES_HELPER_CONTRACT_ADDRESS =
+    '0xae813841436fe29b95a14AC701AFb1502C4CB789';
+
+export const createStrategiesHelperCallAssetStrategiesAddresses = (
+    vaults: VaultApi[]
+): ContractCallContext => {
+    const strategiesHelperCalls: CallContext[] = vaults.map((vault) => {
+        return {
+            methodName: 'assetStrategiesAddresses',
+            methodParameters: [vault.address],
+            reference: STRATEGIES_HELPER_CONTRACT_ADDRESS,
+        };
+    });
+    return {
+        reference: STRATEGIES_HELPER_CONTRACT_ADDRESS,
+        contractAddress: STRATEGIES_HELPER_CONTRACT_ADDRESS,
+        abi: getABIStrategiesHelper(),
+        calls: strategiesHelperCalls,
+    };
+};
+
+export const mapToStrategyAddressQueueIndex = (
+    vaultAddress: string,
+    strategiesHelperCallsResults: ContractCallResults
+): StrategyAddressQueueIndex[] => {
+    const strategiesHelperCallsReturnContext =
+        strategiesHelperCallsResults.results[STRATEGIES_HELPER_CONTRACT_ADDRESS]
+            .callsReturnContext;
+
+    const strategiesHelperCallsReturnContextList = _.values(
+        strategiesHelperCallsReturnContext
+    );
+    const strategiesQueuePosition = strategiesHelperCallsReturnContextList.find(
+        (item) =>
+            item.methodParameters[0].toLowerCase() ===
+            vaultAddress.toLowerCase()
+    );
+    let strategiesQueueIndexes: Array<StrategyAddressQueueIndex>;
+    if (strategiesQueuePosition === undefined) {
+        strategiesQueueIndexes = Array<{
+            queueIndex: number;
+            address: string;
+        }>();
+    } else {
+        strategiesQueueIndexes = strategiesQueuePosition?.returnValues.map(
+            (value: unknown, index: number) => {
+                return {
+                    queueIndex: index,
+                    address: (value as string).toLowerCase(),
+                };
+            }
+        );
+    }
+    return strategiesQueueIndexes;
 };
