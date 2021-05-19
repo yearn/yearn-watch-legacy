@@ -7,12 +7,20 @@ import { Typography } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 
 import { checkLabel } from '../../../utils/checks';
-import { formatBPS, displayAmount } from '../../../utils/commonUtils';
+import { formatBPS, displayAmount, sub } from '../../../utils/commonUtils';
 import Table from '../../common/Table';
 import ProgressBars from '../../common/ProgressBar';
+import { Vault } from '../../../types';
 
-export const VaultDescription = (v: any, isLoading: boolean) => {
-    const vault = v.vault;
+interface VaultDescriptionProps {
+    vault: Vault | undefined;
+    isLoading: boolean;
+}
+
+export const VaultDescription = (props: VaultDescriptionProps) => {
+    const { vault } = props;
+
+    console.log('vault', vault);
 
     const renderErrors = () =>
         vault &&
@@ -53,6 +61,19 @@ export const VaultDescription = (v: any, isLoading: boolean) => {
         displayAmount(vault.totalAssets, vault.token.decimals) +
             '  ' +
             vault.token.symbol;
+    const total_debt =
+        vault &&
+        displayAmount(vault.totalDebt, vault.token.decimals) +
+            '  ' +
+            vault.token.symbol;
+    const unallocated =
+        vault &&
+        displayAmount(
+            sub(vault.totalAssets, vault.totalDebt),
+            vault.token.decimals
+        ) +
+            '  ' +
+            vault.token.symbol;
     const vault_list = vault ? (
         <Typography variant="body2" color="textSecondary">
             {' '}
@@ -66,7 +87,9 @@ export const VaultDescription = (v: any, isLoading: boolean) => {
     );
     const management_fee = vault ? formatBPS(vault.managementFee) : '';
     const performance_fee = vault ? formatBPS(vault.performanceFee) : '';
-    const deb_usage = vault ? formatBPS(vault.debtUsage) : '';
+    const debt_usage = vault ? formatBPS(vault.debtUsage) : '';
+    const debt_ratio = vault ? formatBPS(vault.debtRatio) : '';
+    const last_report_text = vault ? vault.lastReportText : '';
     const render_error = vault ? renderErrors() : '';
     return (
         <React.Fragment>
@@ -184,17 +207,69 @@ export const VaultDescription = (v: any, isLoading: boolean) => {
                             <TableCell>{performance_fee}%</TableCell>
                         </MediaQuery>
                     </TableRow>
+                    <TableRow>
+                        <TableCell>
+                            Time Since Last Report:
+                            <MediaQuery query="(max-device-width: 1224px)">
+                                <br />
+                                {last_report_text}
+                            </MediaQuery>{' '}
+                        </TableCell>
+                        <MediaQuery query="(min-device-width: 1224px)">
+                            {' '}
+                            <TableCell>{last_report_text}</TableCell>
+                        </MediaQuery>
+                    </TableRow>
+
+                    <TableRow>
+                        <TableCell>
+                            Total Debt:
+                            <MediaQuery query="(max-device-width: 1224px)">
+                                <br /> {total_debt}
+                            </MediaQuery>{' '}
+                        </TableCell>
+                        <MediaQuery query="(min-device-width: 1224px)">
+                            {' '}
+                            <TableCell>{total_debt}</TableCell>
+                        </MediaQuery>
+                    </TableRow>
+
+                    <TableRow>
+                        <TableCell>
+                            {`(Total Asset - Total Debt):`}
+                            <MediaQuery query="(max-device-width: 1224px)">
+                                <br /> {unallocated}
+                            </MediaQuery>{' '}
+                        </TableCell>
+                        <MediaQuery query="(min-device-width: 1224px)">
+                            {' '}
+                            <TableCell>{unallocated}</TableCell>
+                        </MediaQuery>
+                    </TableRow>
+
+                    <TableRow>
+                        <TableCell>
+                            Total Debt Ratio:
+                            <MediaQuery query="(max-device-width: 1224px)">
+                                <br /> {debt_ratio}%
+                            </MediaQuery>{' '}
+                        </TableCell>
+                        <MediaQuery query="(min-device-width: 1224px)">
+                            {' '}
+                            <TableCell>{debt_ratio}%</TableCell>
+                        </MediaQuery>
+                    </TableRow>
 
                     <TableRow>
                         <TableCell>
                             Debt Usage:
                             <MediaQuery query="(max-device-width: 1224px)">
-                                <br /> {deb_usage}%
+                                <br /> {debt_usage}%
                             </MediaQuery>{' '}
                         </TableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
                             {' '}
-                            <TableCell>{deb_usage}%</TableCell>
+                            <TableCell>{debt_usage}%</TableCell>
                         </MediaQuery>
                     </TableRow>
 

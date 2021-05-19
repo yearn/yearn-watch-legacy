@@ -21,6 +21,10 @@ export type Vault = {
     guardian: string;
 
     depositLimit: string;
+    debtRatio: string;
+    totalDebt: string;
+    lastReport: string;
+    lastReportText: string;
     pricePerShare: string;
 
     managementFee: string;

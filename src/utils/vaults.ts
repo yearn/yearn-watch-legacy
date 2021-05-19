@@ -14,6 +14,7 @@ import {
     createStrategiesHelperCallAssetStrategiesAddresses,
     mapToStrategyAddressQueueIndex,
 } from './commonUtils';
+import { toHumanDateText } from './dateUtils';
 import { getABI_032 } from './abi';
 import { mapStrategiesCalls, buildStrategyCalls } from './strategies';
 import { getTotalDebtUsage } from './strategyParams';
@@ -24,6 +25,9 @@ const VAULT_VIEW_METHODS = [
     'guardian',
     'depositLimit',
     'totalAssets',
+    'debtRatio',
+    'totalDebt',
+    'lastReport',
 ];
 
 const internalGetVaults = async (): Promise<Vault[]> => {
@@ -57,7 +61,7 @@ const internalGetVaults = async (): Promise<Vault[]> => {
             return {
                 reference: address,
                 contractAddress: address,
-                abi: getABI_032(),
+                abi: getABI_032(), // only this abi version has the vault view methods
                 calls,
             };
         });
@@ -168,10 +172,16 @@ const mapVaultData = (
 
         const vaultData = contractCallsResults.results[address];
 
+        const mappedVaultContractCalls = mapContractCalls(vaultData);
+
+        mappedVault.lastReportText = toHumanDateText(
+            mappedVaultContractCalls.lastReport
+        );
+
         vaults.push(
             vaultChecks({
                 ...mappedVault,
-                ...mapContractCalls(vaultData),
+                ...mappedVaultContractCalls,
                 strategies: mappedStrategies,
             })
         );

@@ -30,6 +30,10 @@ export const displayAmount = (amount: string, decimals: number): string => {
     return BigNumber.from(amount).div(tokenBits).toNumber().toLocaleString();
 };
 
+export const sub = (amountA: string, amountB: string): string => {
+    return BigNumber.from(amountA).sub(amountB).toString();
+};
+
 export const formatBPS = (val: string): string => {
     return (parseInt(val, 10) / 100).toString();
 };
