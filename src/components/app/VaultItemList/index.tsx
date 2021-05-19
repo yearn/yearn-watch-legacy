@@ -13,12 +13,12 @@ import EtherScanLink from '../../common/EtherScanLink';
 
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
-type VaultsListProps = {
+type VaultItemListProps = {
     vault: Vault;
     key: number;
 };
 
-export const VaultsList = (props: VaultsListProps) => {
+export const VaultItemList = (props: VaultItemListProps) => {
     const { vault } = props;
     const config = vault.configOK;
 
