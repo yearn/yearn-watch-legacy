@@ -115,6 +115,8 @@ export const StrategistList = (props: StrategistListProps) => {
                                                 <a
                                                     className={classes.link}
                                                     href={`/strategy/${vault.name}/${strategy.address}`}
+                                                    target="_blank"
+                                                    rel="noreferrer"
                                                 >
                                                     <Hidden smUp>
                                                         {strategy.name.length >

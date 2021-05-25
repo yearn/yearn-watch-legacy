@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
+import ImageYH from './logo192.png';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -38,10 +39,7 @@ export const NavBar = () => {
                     aria-label="menu"
                     href="/"
                 >
-                    <Avatar
-                        alt="yearn-image"
-                        src="https://raw.githubusercontent.com/yearn/yearn-assets/master/icons/tokens/0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e/logo-128.png"
-                    />
+                    <Avatar alt="yearn-image" src={ImageYH} />
                 </IconButton>
                 <Typography variant="h5" className={classes.title}>
                     yearn hub

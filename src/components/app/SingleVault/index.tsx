@@ -24,6 +24,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import EtherScanLink from '../../common/EtherScanLink';
+import ReactHelmet from '../../common/ReactHelmet';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -132,6 +133,7 @@ export const SingleVault = () => {
     const classes = useStyles();
     return (
         <React.Fragment>
+            <ReactHelmet title={vault ? vault.name : ''} />
             <Breadcrumbs className={classes.crumbs}>
                 <Link color="inherit" href="/">
                     vaults

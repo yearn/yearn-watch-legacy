@@ -18,6 +18,7 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import EtherScanLink from '../../common/EtherScanLink';
 import { formatBPS, displayAmount } from '../../../utils/commonUtils';
+import ReactHelmet from '../../common/ReactHelmet';
 
 interface ParamTypes {
     id: string;
@@ -203,6 +204,7 @@ export const SingleStrategy = () => {
     const vaults = strategy ? <EtherScanLink address={strategy.vault} /> : '';
     return (
         <React.Fragment>
+            <ReactHelmet title={strategy ? strategy.name : ''} />
             <Breadcrumbs className={classes.crumbs}>
                 <Link color="inherit" href="/">
                     vaults

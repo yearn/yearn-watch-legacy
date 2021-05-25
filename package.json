@@ -29,6 +29,7 @@
         "react": "^17.0.1",
         "react-device-detect": "^1.17.0",
         "react-dom": "^17.0.1",
+        "react-helmet": "^6.1.0",
         "react-responsive": "^8.2.0",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",
@@ -64,6 +65,7 @@
     },
     "devDependencies": {
         "@types/lodash": "^4.14.168",
+        "@types/react-helmet": "^6.1.1",
         "@types/styled-components": "^5.1.7",
         "@typescript-eslint/eslint-plugin": "^4.22.0",
         "@typescript-eslint/parser": "^4.22.0",
