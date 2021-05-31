@@ -122,7 +122,7 @@ export const VaultItemList = (props: VaultItemListProps) => {
                                         </ListItemAvatar>
                                     )}
                                 </Grid>
-                                <Grid item md={3} xs={9}>
+                                <Grid item md={5} xs={9}>
                                     <a
                                         className={classes.link}
                                         href={`/vault/${vault.address}`}
@@ -131,14 +131,14 @@ export const VaultItemList = (props: VaultItemListProps) => {
                                     >
                                         <span className={classes.textVault}>
                                             {' '}
-                                            {vault.name}{' '}
+                                            {vault.name}
+                                            {` (${vault.strategies.length} strats)`}
                                         </span>
                                     </a>
                                 </Grid>
-
                                 <Hidden xsDown>
                                     {' '}
-                                    <Grid item md={8} xs={12}>
+                                    <Grid item md={6} xs={9}>
                                         {' '}
                                         <EtherScanLink
                                             address={vault.address}

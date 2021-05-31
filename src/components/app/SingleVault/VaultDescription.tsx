@@ -53,6 +53,7 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                 }}
             />
         );
+    const rewards = vault ? checkLabel(vault.rewards) : '';
     const governance = vault ? checkLabel(vault.governance) : '';
     const management = vault ? checkLabel(vault.management) : '';
     const guardian = vault ? checkLabel(vault.guardian) : '';
@@ -158,6 +159,19 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                         <MediaQuery query="(min-device-width: 1224px)">
                             {' '}
                             <TableCell>{guardian}</TableCell>
+                        </MediaQuery>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>
+                            Rewards:
+                            <MediaQuery query="(max-device-width: 1224px)">
+                                <br />
+                                {rewards}
+                            </MediaQuery>{' '}
+                        </TableCell>
+                        <MediaQuery query="(min-device-width: 1224px)">
+                            {' '}
+                            <TableCell>{rewards}</TableCell>
                         </MediaQuery>
                     </TableRow>
                     <TableRow>

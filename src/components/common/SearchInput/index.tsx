@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import { ChangeEvent, useState } from 'react';
 import { Delete } from '@material-ui/icons';
+import ResultsLabel from '../ResultsLabel';
 
 const useStyles = makeStyles({
     root: {
@@ -32,6 +33,8 @@ type SearchInputProps = {
     debounceWait: number;
     totalItems: number;
     foundItems: number;
+    totalSubItems: number;
+    foundSubItems: number;
     onFilter: (text: string) => void;
 };
 
@@ -87,11 +90,26 @@ const SearchInput = (props: SearchInputProps) => {
             </form>
             <Container maxWidth="lg" className={classes.resultText}>
                 {isSearching ? 'Searching items...' : ''}
-                {!isSearching && searchText.trim() !== ''
-                    ? `Vaults found: ${props.foundItems} - Total Vaults: ${props.totalItems}`
-                    : isSearching
-                    ? ''
-                    : `Total Vaults: ${props.totalItems}`}
+                {!isSearching && searchText.trim() !== '' ? (
+                    <>
+                        <ResultsLabel
+                            title="Vaults"
+                            totalItems={props.totalItems}
+                            foundItems={props.foundItems}
+                            isSearching={isSearching}
+                        />
+                        <ResultsLabel
+                            title="Strategies"
+                            totalItems={props.totalSubItems}
+                            foundItems={props.foundSubItems}
+                            isSearching={isSearching}
+                        />
+                    </>
+                ) : isSearching ? (
+                    ''
+                ) : (
+                    `Total Vaults: ${props.totalItems}`
+                )}
             </Container>
         </Container>
     );

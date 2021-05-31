@@ -28,6 +28,7 @@ const VAULT_VIEW_METHODS = [
     'debtRatio',
     'totalDebt',
     'lastReport',
+    'rewards',
 ];
 
 const internalGetVaults = async (): Promise<Vault[]> => {
