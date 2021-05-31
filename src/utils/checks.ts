@@ -11,6 +11,8 @@ const GOVERNANCE = '0xfeb4acf3df3cdea7399794d0869ef76a6efaff52';
 const GUARDIAN = '0x846e211e8ba920b353fb717631c015cf04061cc9';
 // brain.ychad.eth
 const MANAGEMENT = '0x16388463d60FFE0661Cf7F1f31a7D658aC790ff7';
+// treasury.ychad.eth
+const TREASURY = '0x93a62da5a14c80f265dabc077fcee437b1a0efde';
 
 const MANAGEMENT_FEE = 200;
 
@@ -20,6 +22,7 @@ const addressMap = new Map<string, string>();
 addressMap.set(GOVERNANCE.toLowerCase(), 'ychad.eth');
 addressMap.set(GUARDIAN.toLowerCase(), 'dev.ychad.eth');
 addressMap.set(MANAGEMENT.toLowerCase(), 'brain.ychad.eth');
+addressMap.set(TREASURY.toLowerCase(), 'treasury.ychad.eth');
 
 export const checkLabel = (address: string) => {
     if (addressMap.has(address.toLowerCase())) {
@@ -67,6 +70,13 @@ const checks = [
         validate: (value: any): boolean =>
             typeof value === 'number' && value === PERF_FEE,
         error: 'value incorrect for performance fee',
+    },
+    {
+        field: 'rewards',
+        validate: (value: any): boolean =>
+            typeof value === 'string' &&
+            value.toLowerCase() === TREASURY.toLowerCase(),
+        error: 'value incorrect for rewards',
     },
 ];
 
