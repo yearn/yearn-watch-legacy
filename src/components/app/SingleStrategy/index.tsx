@@ -91,6 +91,7 @@ export const SingleStrategy = () => {
             },
         })
     );
+    // TODO: change all this var names to camelCase to keep consistency
     const classes = useStyles();
     const api_version = strategy ? strategy.apiVersion : '';
     const activation_date = strategy ? strategy.params.activation : '';
@@ -147,16 +148,16 @@ export const SingleStrategy = () => {
               strategy.token.decimals
           )
         : '';
-    const deb_outstanding = strategy
+    const debt_outstanding = strategy
         ? displayAmount(
               strategy.debtOutstanding.toString(),
               strategy.token.decimals
           )
         : '';
-    const deb_radio = strategy
+    const debt_ratio = strategy
         ? formatBPS(strategy.params.debtRatio.toString())
         : '';
-    const total_deb = strategy
+    const total_debt = strategy
         ? displayAmount(
               strategy.params.totalDebt.toString(),
               strategy.token.decimals
@@ -183,10 +184,24 @@ export const SingleStrategy = () => {
     const performance_fee = strategy
         ? formatBPS(strategy.params.performanceFee.toString())
         : '';
-    const react_limit =
+    const rate_limit =
         strategy && strategy.params.rateLimit
             ? displayAmount(
                   strategy.params.rateLimit.toString(),
+                  strategy.token.decimals
+              )
+            : 'N/A';
+    const min_debt_per_harvest =
+        strategy && strategy.params.minDebtPerHarvest
+            ? displayAmount(
+                  strategy.params.minDebtPerHarvest.toString(),
+                  strategy.token.decimals
+              )
+            : 'N/A';
+    const max_debt_per_harvest =
+        strategy && strategy.params.maxDebtPerHarvest
+            ? displayAmount(
+                  strategy.params.maxDebtPerHarvest.toString(),
                   strategy.token.decimals
               )
             : 'N/A';
@@ -348,12 +363,14 @@ export const SingleStrategy = () => {
                                         <MediaQuery query="(max-device-width: 1224px)">
                                             {' '}
                                             <br />
-                                            {deb_outstanding}
+                                            {debt_outstanding}
                                         </MediaQuery>{' '}
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
                                         {' '}
-                                        <TableCell>{deb_outstanding}</TableCell>
+                                        <TableCell>
+                                            {debt_outstanding}
+                                        </TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -362,12 +379,12 @@ export const SingleStrategy = () => {
                                         <MediaQuery query="(max-device-width: 1224px)">
                                             {' '}
                                             <br />
-                                            {deb_radio} %
+                                            {debt_ratio} %
                                         </MediaQuery>
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
                                         {' '}
-                                        <TableCell>{deb_radio} %</TableCell>
+                                        <TableCell>{debt_ratio} %</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -375,12 +392,12 @@ export const SingleStrategy = () => {
                                         Total Debt:{' '}
                                         <MediaQuery query="(max-device-width: 1224px)">
                                             {' '}
-                                            <br /> {total_deb}
+                                            <br /> {total_debt}
                                         </MediaQuery>
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
                                         {' '}
-                                        <TableCell>{total_deb}</TableCell>
+                                        <TableCell>{total_debt}</TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
@@ -438,12 +455,42 @@ export const SingleStrategy = () => {
                                         Rate Limit:{' '}
                                         <MediaQuery query="(max-device-width: 1224px)">
                                             <br />
-                                            {react_limit}
+                                            {rate_limit}
                                         </MediaQuery>
                                     </TableCell>
                                     <MediaQuery query="(min-device-width: 1224px)">
                                         {' '}
-                                        <TableCell>{react_limit}</TableCell>
+                                        <TableCell>{rate_limit}</TableCell>
+                                    </MediaQuery>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>
+                                        Min Debt Per Harvest:{' '}
+                                        <MediaQuery query="(max-device-width: 1224px)">
+                                            <br />
+                                            {min_debt_per_harvest}
+                                        </MediaQuery>
+                                    </TableCell>
+                                    <MediaQuery query="(min-device-width: 1224px)">
+                                        {' '}
+                                        <TableCell>
+                                            {min_debt_per_harvest}
+                                        </TableCell>
+                                    </MediaQuery>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>
+                                        Max Debt Per Harvest:{' '}
+                                        <MediaQuery query="(max-device-width: 1224px)">
+                                            <br />
+                                            {max_debt_per_harvest}
+                                        </MediaQuery>
+                                    </TableCell>
+                                    <MediaQuery query="(min-device-width: 1224px)">
+                                        {' '}
+                                        <TableCell>
+                                            {max_debt_per_harvest}
+                                        </TableCell>
                                     </MediaQuery>
                                 </TableRow>
                                 <TableRow>
