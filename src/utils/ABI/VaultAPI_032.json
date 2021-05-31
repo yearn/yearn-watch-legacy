@@ -88,6 +88,19 @@
       "type": "function"
     },
     {
+      "gas": 2978,
+      "inputs": [],
+      "name": "rewards",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "address",

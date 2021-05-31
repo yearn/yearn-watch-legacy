@@ -19,6 +19,7 @@ export type Vault = {
     management: string;
     governance: string;
     guardian: string;
+    rewards: string;
 
     depositLimit: string;
     debtRatio: string;
