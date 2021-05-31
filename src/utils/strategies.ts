@@ -7,7 +7,12 @@ import { utils } from 'ethers';
 import { omit, memoize } from 'lodash';
 
 import { getEthersDefaultProvider } from './ethers';
-import { Strategy, StrategyAddressQueueIndex, VaultApi } from '../types';
+import {
+    Strategy,
+    StrategyAddressQueueIndex,
+    VaultApi,
+    StrategyParams,
+} from '../types';
 import { getABI } from './abi';
 import { mapStrategyParams } from './strategyParams';
 import { mapContractCalls } from './commonUtils';
@@ -139,10 +144,12 @@ export const mapStrategiesCalls = (
             mapContractCalls(vaultStratData),
             'strategies'
         );
-        const mappedStratParams: any = mapStrategyParams(
+        const mappedStratParams: StrategyParams = mapStrategyParams(
             vaultStratData,
             mappedStrat.apiVersion
         );
+
+        console.log('mappedStratParams', mappedStratParams);
 
         const tokenData = contractCallsResults.results[mappedStrat.want];
         if (tokenData) {

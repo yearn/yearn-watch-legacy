@@ -11,6 +11,8 @@ export type StrategyParams = {
     totalGain: BigNumber;
     totalLoss: BigNumber;
     rateLimit?: BigNumber;
+    minDebtPerHarvest?: BigNumber;
+    maxDebtPerHarvest?: BigNumber;
 };
 
 export type Strategy = {
