@@ -60,6 +60,52 @@ const SearchInput = (props: SearchInputProps) => {
         setSearchText('');
         props.onFilter('');
     };
+    const renderSearchingLabel = () => {
+        let render: any;
+        if (!isSearching && searchText.trim() !== '') {
+            render = (
+                <>
+                    <ResultsLabel
+                        title="Vaults"
+                        totalItems={props.totalItems}
+                        foundItems={props.foundItems}
+                        isSearching={isSearching}
+                    />
+                    <ResultsLabel
+                        title="Strategies"
+                        totalItems={props.totalSubItems}
+                        foundItems={props.foundSubItems}
+                        isSearching={isSearching}
+                    />
+                </>
+            );
+        } else {
+            if (isSearching) {
+                render = 'Searching items...';
+            } else {
+                render = (
+                    <>
+                        <ResultsLabel
+                            title="Vaults"
+                            totalItems={props.totalItems}
+                            foundItems={props.foundItems}
+                            displayFound={false}
+                            isSearching={isSearching}
+                        />
+                        <ResultsLabel
+                            title="Strategies"
+                            totalItems={props.totalSubItems}
+                            foundItems={props.foundSubItems}
+                            displayFound={false}
+                            isSearching={isSearching}
+                        />
+                    </>
+                );
+            }
+        }
+        return render;
+    };
+
     return (
         <Container maxWidth="lg">
             <form className={classes.root}>
@@ -89,27 +135,7 @@ const SearchInput = (props: SearchInputProps) => {
                 />
             </form>
             <Container maxWidth="lg" className={classes.resultText}>
-                {isSearching ? 'Searching items...' : ''}
-                {!isSearching && searchText.trim() !== '' ? (
-                    <>
-                        <ResultsLabel
-                            title="Vaults"
-                            totalItems={props.totalItems}
-                            foundItems={props.foundItems}
-                            isSearching={isSearching}
-                        />
-                        <ResultsLabel
-                            title="Strategies"
-                            totalItems={props.totalSubItems}
-                            foundItems={props.foundSubItems}
-                            isSearching={isSearching}
-                        />
-                    </>
-                ) : isSearching ? (
-                    ''
-                ) : (
-                    `Total Vaults: ${props.totalItems}`
-                )}
+                {renderSearchingLabel()}
             </Container>
         </Container>
     );

@@ -15,14 +15,17 @@ type ResultsLabelProps = {
     totalItems: number;
     foundItems: number;
     isSearching: boolean;
+    displayFound?: boolean;
 };
 
 const ResultsLabel = (props: ResultsLabelProps) => {
+    const { displayFound = true } = props;
     const classes = useStyles();
+    const foundText = displayFound ? `Found: ${props.foundItems} -` : '';
     return (
         <Container maxWidth="lg" className={classes.resultText}>
             {!props.isSearching
-                ? `${props.title} - Found: ${props.foundItems} - Total: ${props.totalItems}`
+                ? `${props.title} - ${foundText} Total: ${props.totalItems}`
                 : props.isSearching
                 ? ''
                 : `Total: ${props.totalItems}`}
