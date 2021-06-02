@@ -1,7 +1,7 @@
 import { Container } from '@material-ui/core';
 import { useState } from 'react';
 import { Vault } from '../../../types';
-import SearchInput from '../SearchInput';
+import SearchInput, { Flags } from '../SearchInput';
 import { VaultItemList } from '../../app';
 import _ from 'lodash';
 
@@ -11,9 +11,9 @@ type VaultsListProps = {
 
 export const VaultsList = (props: VaultsListProps) => {
     const [filteredItems, setFilteredItems] = useState(props.items);
-    const totalStrategies = _.sum(
-        props.items.map((item) => item.strategies.length)
-    );
+    const getTotalStrategies = () =>
+        _.sum(props.items.map((item) => item.strategies.length));
+    const totalStrategies = getTotalStrategies();
     const [totalStrategiesFound, setTotalStrategiesFound] = useState(
         totalStrategies
     );
@@ -24,6 +24,11 @@ export const VaultsList = (props: VaultsListProps) => {
 
     const filterStrategies = (vault: Vault, newText: string) => {
         const strategies = vault.strategies.filter((strategy) => {
+            console.log(
+                `${strategy.name.toLowerCase()} includes ${newText} ? ${strategy.name
+                    .toLowerCase()
+                    .includes(newText)}`
+            );
             return (
                 strategy.address.toLowerCase().includes(newText) ||
                 strategy.name.toLowerCase().includes(newText) ||
@@ -33,24 +38,34 @@ export const VaultsList = (props: VaultsListProps) => {
         return strategies;
     };
 
-    const onFilter = (newText: string) => {
-        if (newText.trim() === '') {
+    const onFilter = (newText: string, flags: Flags) => {
+        const hasFlags = flags.onlyWithWarnings;
+        if (!hasFlags && newText.trim() === '') {
             setFilteredItems(props.items);
+            setTotalStrategiesFound(getTotalStrategies());
         } else {
             let totalStrategiesFound = 0;
-            const filteredItems = props.items.filter((item: Vault) => {
-                const filteredStrategies = filterStrategies(item, newText);
-                totalStrategiesFound += filteredStrategies.length;
-                const hasVaultStrategies = filteredStrategies.length > 0;
-                return (
-                    item.address.toLowerCase().includes(newText) ||
-                    item.apiVersion.includes(newText) ||
-                    item.name.toLowerCase().includes(newText) ||
-                    item.symbol.toLowerCase().includes(newText) ||
-                    item.token.symbol.toLowerCase().includes(newText) ||
-                    hasVaultStrategies
-                );
-            });
+            const filteredItems = props.items
+                .filter((item: Vault) => {
+                    const applyFlags =
+                        !flags.onlyWithWarnings ||
+                        (flags.onlyWithWarnings && !item.configOK);
+                    return applyFlags;
+                })
+                .filter((item: Vault) => {
+                    const filteredStrategies = filterStrategies(item, newText);
+                    totalStrategiesFound += filteredStrategies.length;
+                    const hasVaultStrategies = filteredStrategies.length > 0;
+
+                    const applyFilter =
+                        item.address.toLowerCase().includes(newText) ||
+                        item.apiVersion.includes(newText) ||
+                        item.name.toLowerCase().includes(newText) ||
+                        item.symbol.toLowerCase().includes(newText) ||
+                        item.token.symbol.toLowerCase().includes(newText) ||
+                        hasVaultStrategies;
+                    return applyFilter;
+                });
             setFilteredItems(filteredItems);
             setTotalStrategiesFound(totalStrategiesFound);
         }

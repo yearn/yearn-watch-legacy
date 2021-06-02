@@ -148,9 +148,6 @@ export const mapStrategiesCalls = (
             vaultStratData,
             mappedStrat.apiVersion
         );
-
-        console.log('mappedStratParams', mappedStratParams);
-
         const tokenData = contractCallsResults.results[mappedStrat.want];
         if (tokenData) {
             const token = mapContractCalls(tokenData);
