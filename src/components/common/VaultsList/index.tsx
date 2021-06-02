@@ -41,12 +41,14 @@ export const VaultsList = (props: VaultsListProps) => {
             const filteredItems = props.items.filter((item: Vault) => {
                 const filteredStrategies = filterStrategies(item, newText);
                 totalStrategiesFound += filteredStrategies.length;
+                const hasVaultStrategies = filteredStrategies.length > 0;
                 return (
                     item.address.toLowerCase().includes(newText) ||
                     item.apiVersion.includes(newText) ||
                     item.name.toLowerCase().includes(newText) ||
                     item.symbol.toLowerCase().includes(newText) ||
-                    item.token.symbol.toLowerCase().includes(newText)
+                    item.token.symbol.toLowerCase().includes(newText) ||
+                    hasVaultStrategies
                 );
             });
             setFilteredItems(filteredItems);
