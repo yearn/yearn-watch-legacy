@@ -129,7 +129,7 @@ const SearchInput = (props: SearchInputProps) => {
                             />
                         }
                         className={classes.switch}
-                        label="Vaults with warnings."
+                        label="Only show Vaults with warnings"
                     />
                 </Container>
                 <TextField
