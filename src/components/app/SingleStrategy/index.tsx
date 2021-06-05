@@ -6,7 +6,6 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import { Strategy } from '../../../types';
 import { useParams } from 'react-router-dom';
-import { getStrategies } from '../../../utils/strategies';
 import Table from '../../common/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -20,6 +19,9 @@ import EtherScanLink from '../../common/EtherScanLink';
 import { formatBPS, displayAmount } from '../../../utils/commonUtils';
 import ReactHelmet from '../../common/ReactHelmet';
 
+import { getStrategies } from '../../../utils/strategies';
+import { getReportsForStrategy, StrategyReport } from '../../../utils/reports';
+
 interface ParamTypes {
     id: string;
     name: string;
@@ -31,10 +33,21 @@ export const SingleStrategy = () => {
     const [strategyData, setStrategyData] = useState<Strategy[] | undefined>();
     const [isLoaded, setIsLoaded] = useState(true);
 
+    const [strategyReports, setStrategyReports] = useState<
+        StrategyReport[] | undefined
+    >();
+    const [isReportsLoading, setIsReportsLoading] = useState(true);
+
     useEffect(() => {
         getStrategies([id]).then((loadedStrategy) => {
             setStrategyData(loadedStrategy);
             setIsLoaded(false);
+        });
+
+        getReportsForStrategy(id).then((reports) => {
+            console.log('reports', reports);
+            setStrategyReports(reports);
+            setIsReportsLoading(false);
         });
     }, [id]);
 
