@@ -72,8 +72,9 @@ export type StrategyReport = {
     totalDebt: string;
     totalGain: string;
     totalLoss: string;
-    apr: string;
     transactionHash: string;
+    // TODO: add later
+    // apr: string;
 };
 
 export const getReportsForStrategy = async (
@@ -98,7 +99,8 @@ export const getReportsForStrategy = async (
         return {
             ...(omit(report, OMIT_FIELDS) as StratReportGrahType),
             transactionHash: report.transaction.hash,
-            apr: get(report, 'results[0].apr'),
+            // TODO: add later
+            // apr: get(report, 'results[0].apr'),
         };
     });
 };
