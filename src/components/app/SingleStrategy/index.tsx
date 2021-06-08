@@ -26,12 +26,12 @@ interface ParamTypes {
 export const SingleStrategy = () => {
     const { id, name } = useParams<ParamTypes>();
 
-    const [strategyData, setStrategyData] = useState<Strategy[] | undefined>();
+    const [strategyData, setStrategyData] = useState<Strategy[]>([]);
     const [isLoaded, setIsLoaded] = useState(true);
 
-    const [strategyReports, setStrategyReports] = useState<
-        StrategyReport[] | undefined
-    >();
+    const [strategyReports, setStrategyReports] = useState<StrategyReport[]>(
+        []
+    );
     const [isReportsLoading, setIsReportsLoading] = useState(true);
 
     useEffect(() => {
@@ -128,9 +128,9 @@ export const SingleStrategy = () => {
                         <StrategyData strategy={strategy} />
                     ) : (
                         <StrategyReports
-                            strategy={strategyReports}
+                            reports={strategyReports}
                             tokenDecimals={
-                                strategy ? strategy.token.decimals : null
+                                strategy ? strategy.token.decimals : 18
                             }
                         />
                     )}

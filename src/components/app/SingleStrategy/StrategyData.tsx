@@ -3,8 +3,12 @@ import Chip from '@material-ui/core/Chip';
 import EtherScanLink from '../../common/EtherScanLink';
 import { formatBPS, displayAmount } from '../../../utils/commonUtils';
 import CardContent from './CardContent';
+import { Strategy } from '../../../types';
 
-export const SingleData = (props: any) => {
+type SingleDataProps = {
+    strategy: Strategy;
+};
+export const SingleData = (props: SingleDataProps) => {
     const { strategy } = props;
 
     const apiVersion = strategy ? strategy.apiVersion : '';
@@ -132,27 +136,27 @@ export const SingleData = (props: any) => {
     );
     const vaults = strategy ? <EtherScanLink address={strategy.vault} /> : '';
     const data = [
-        { name: 'API Version:', strategyName: apiVersion },
-        { name: ' Activation Date', strategyName: activationDate },
-        { name: ' Time Since Last Harvest:', strategyName: lastReportText },
-        { name: ' Emergency exit:', strategyName: emergencyExit },
-        { name: ' Active:', strategyName: isActive },
-        { name: ' Total Estimated Assets:', strategyName: estimatedAsset },
-        { name: ' Credit Available:', strategyName: creditAvailable },
-        { name: ' Debt Outstanding:', strategyName: debtOutstanding },
-        { name: ' Debt Ratio:', strategyName: debtRatio },
-        { name: 'Total Debt::', strategyName: totalDebt },
-        { name: ' Total Gain:', strategyName: totalGain },
-        { name: ' Total Loss:', strategyName: totalLoss },
-        { name: ' Expected Return:', strategyName: expectReturn },
-        { name: ' Performance Fee:', strategyName: performanceFee },
-        { name: ' Rate Limit:', strategyName: rateLimit },
-        { name: ' Min Debt Per Harvest:', strategyName: minDebtPerHarvest },
-        { name: ' Max Debt Per Harvest:', strategyName: maxDebtPerHarvest },
-        { name: ' Keeper:', strategyName: keeper },
-        { name: ' Rewards:', strategyName: rewards },
-        { name: ' Strategist:', strategyName: strategist },
-        { name: ' Vault:', strategyName: vaults },
+        { key: 'API Version:', value: apiVersion },
+        { key: ' Activation Date', value: activationDate },
+        { key: ' Time Since Last Harvest:', value: lastReportText },
+        { key: ' Emergency exit:', value: emergencyExit },
+        { key: ' Active:', value: isActive },
+        { key: ' Total Estimated Assets:', value: estimatedAsset },
+        { key: ' Credit Available:', value: creditAvailable },
+        { key: ' Debt Outstanding:', value: debtOutstanding },
+        { key: ' Debt Ratio:', value: debtRatio },
+        { key: 'Total Debt::', value: totalDebt },
+        { key: ' Total Gain:', value: totalGain },
+        { key: ' Total Loss:', value: totalLoss },
+        { key: ' Expected Return:', value: expectReturn },
+        { key: ' Performance Fee:', value: performanceFee },
+        { key: ' Rate Limit:', value: rateLimit },
+        { key: ' Min Debt Per Harvest:', value: minDebtPerHarvest },
+        { key: ' Max Debt Per Harvest:', value: maxDebtPerHarvest },
+        { key: ' Keeper:', value: keeper },
+        { key: ' Rewards:', value: rewards },
+        { key: ' Strategist:', value: strategist },
+        { key: ' Vault:', value: vaults },
     ];
     return <CardContent data={data} />;
 };

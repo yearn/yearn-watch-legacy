@@ -1,9 +1,14 @@
 import AccordionReport from './AccordionReport';
+import { StrategyReport } from '../../../utils/reports';
+type StrategyReportsProps = {
+    reports: StrategyReport[];
+    tokenDecimals: number;
+};
 
-export const StrategyReports = (props: any) => {
-    const { strategy, tokenDecimals } = props;
+export const StrategyReports = (props: StrategyReportsProps) => {
+    const { reports, tokenDecimals } = props;
 
-    return <AccordionReport data={strategy} tokenDecimals={tokenDecimals} />;
+    return <AccordionReport data={reports} tokenDecimals={tokenDecimals} />;
 };
 
 export default StrategyReports;

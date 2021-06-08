@@ -8,8 +8,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { FileCopy } from '@material-ui/icons';
 
 type EtherScanLinkProps = {
-    address?: any;
-    transactionHash?: any;
+    address?: string;
+    transactionHash?: string;
     dark?: boolean | false;
 };
 const EtherScanLink = (props: EtherScanLinkProps) => {
@@ -46,11 +46,17 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
         })
     );
     const classes = useStyles();
-    const value = address ? address : transactionHash;
-    const extractedValue = address
-        ? extractAddress(address)
-        : extractAddress(transactionHash);
-    // const address1 = extractAddress(address);
+    let value = '';
+    let extractedValue = '';
+    if (address) {
+        value = address;
+        extractedValue = extractAddress(address);
+    }
+    if (transactionHash) {
+        value = transactionHash;
+        extractedValue = extractAddress(transactionHash);
+    }
+
     const maskedValue = (
         <Tooltip title={value} aria-label="Etherscan">
             <span>{extractedValue}</span>

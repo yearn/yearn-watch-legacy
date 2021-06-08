@@ -3,11 +3,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import MuiBreadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import { Typography } from '@material-ui/core';
-type BreadCrumbsProps = {
-    strategyVault: string;
-    name: string;
-    strategyName: string;
-};
+
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         crumbs: {
@@ -24,6 +20,11 @@ const useStyles = makeStyles((theme: Theme) =>
         },
     })
 );
+type BreadCrumbsProps = {
+    strategyVault: string;
+    name: string;
+    strategyName: string;
+};
 const BreadCrumbs = (props: BreadCrumbsProps) => {
     const { strategyVault, name, strategyName } = props;
     const classes = useStyles();

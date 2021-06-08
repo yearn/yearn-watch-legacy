@@ -8,6 +8,7 @@ import { displayAmount } from '../../../utils/commonUtils';
 import EtherScanLink from '../../common/EtherScanLink';
 import { Grid } from '@material-ui/core';
 import { toIsoStringMilliseconds } from '../../../utils/dateUtils';
+import { StrategyReport } from '../../../utils/reports';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -36,15 +37,18 @@ const useStyles = makeStyles((theme: Theme) =>
         },
     })
 );
-
-const AccordionReport = (props: any) => {
+type AccordionReportProps = {
+    data: StrategyReport[];
+    tokenDecimals: number;
+};
+const AccordionReport = (props: AccordionReportProps) => {
     const { data, tokenDecimals } = props;
     const classes = useStyles();
 
     return (
         <div className={classes.root}>
             <Typography className={classes.text}>Last 5 reports</Typography>
-            {data.map((res: any, index: number) => {
+            {data.map((res: StrategyReport, index: number) => {
                 return (
                     <Accordion key={index} className={classes.accordion}>
                         <AccordionSummary
@@ -52,11 +56,26 @@ const AccordionReport = (props: any) => {
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Typography className={classes.heading}>
-                                <EtherScanLink
-                                    transactionHash={res.transactionHash}
-                                />
-                            </Typography>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12} md={9}>
+                                    <Typography className={classes.heading}>
+                                        <EtherScanLink
+                                            transactionHash={
+                                                res.transactionHash
+                                            }
+                                        />
+                                    </Typography>
+                                </Grid>
+
+                                <Grid item xs={12} md={3}>
+                                    <Typography className={classes.subText}>
+                                        {' '}
+                                        Timestamp:
+                                        <br />
+                                        {toIsoStringMilliseconds(res.timestamp)}
+                                    </Typography>
+                                </Grid>
+                            </Grid>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={1}>
@@ -124,19 +143,7 @@ const AccordionReport = (props: any) => {
                                         )}
                                     </Typography>
                                 </Grid>
-                                <Grid
-                                    item
-                                    xs={12}
-                                    md={3}
-                                    className={classes.grid}
-                                >
-                                    <Typography className={classes.subText}>
-                                        {' '}
-                                        Time stamp:
-                                        <br />
-                                        {toIsoStringMilliseconds(res.timestamp)}
-                                    </Typography>
-                                </Grid>
+
                                 <Grid
                                     item
                                     xs={12}
