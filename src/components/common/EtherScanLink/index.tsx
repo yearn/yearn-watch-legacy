@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { extractAddress } from '../../../utils/commonUtils';
@@ -7,7 +7,13 @@ import CallMadeIcon from '@material-ui/icons/CallMade';
 import Tooltip from '@material-ui/core/Tooltip';
 import { FileCopy } from '@material-ui/icons';
 
-const EtherScanLink = (props: any) => {
+type EtherScanLinkProps = {
+    address?: string;
+    transactionHash?: string;
+    dark?: boolean | false;
+};
+const EtherScanLink = (props: EtherScanLinkProps) => {
+    const { address, transactionHash, dark } = props;
     const [copied, setCopied] = useState(false);
 
     useEffect(() => {
@@ -17,7 +23,7 @@ const EtherScanLink = (props: any) => {
 
         return () => clearTimeout(timeId);
     }, [copied]);
-    const address = props.address;
+
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
             button: {
@@ -32,33 +38,44 @@ const EtherScanLink = (props: any) => {
             address: {
                 fontSize: '14px',
                 opacity: '0.7',
-                color: props.dark ? '#fff' : 'black',
+                color: dark ? '#fff' : 'black',
             },
             copiedText: {
-                color: props.dark ? '#fff' : 'black',
+                color: dark ? '#fff' : 'black',
             },
         })
     );
     const classes = useStyles();
+    let value = '';
+    let extractedValue = '';
+    if (address) {
+        value = address;
+        extractedValue = extractAddress(address);
+    }
+    if (transactionHash) {
+        value = transactionHash;
+        extractedValue = extractAddress(transactionHash);
+    }
 
-    const address1 = extractAddress(address);
-    const maskedAddress = (
-        <Tooltip title={address} aria-label="Etherscan">
-            <span>{address1}</span>
+    const maskedValue = (
+        <Tooltip title={value} aria-label="Etherscan">
+            <span>{extractedValue}</span>
         </Tooltip>
     );
     const onCopyToClipboard = (e: MouseEvent<HTMLElement>) => {
         e.stopPropagation();
-        navigator.clipboard.writeText(address);
+        navigator.clipboard.writeText(value);
         setCopied(true);
     };
-
+    const refLink = transactionHash
+        ? `https://etherscan.io/tx/${value}`
+        : `https://etherscan.io/address/${value}`;
     return (
         <span>
             <span className={classes.address}>
-                <Hidden smUp>{maskedAddress}</Hidden>
+                <Hidden smUp>{maskedValue}</Hidden>
 
-                <Hidden xsDown>{address}</Hidden>
+                <Hidden xsDown>{value}</Hidden>
             </span>
             <Tooltip title="Copy to clipboard" aria-label="Clipboard">
                 <Button onClick={(e) => onCopyToClipboard(e)}>
@@ -71,10 +88,7 @@ const EtherScanLink = (props: any) => {
                 </Button>
             </Tooltip>
             <Tooltip title="View on Etherscan" aria-label="Etherscan">
-                <Button
-                    href={`https://etherscan.io/address/${address}`}
-                    target="_blank"
-                >
+                <Button href={refLink} target="_blank">
                     <CallMadeIcon
                         fontSize="inherit"
                         className={classes.iconCall}
