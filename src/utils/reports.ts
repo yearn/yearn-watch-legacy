@@ -88,9 +88,11 @@ export const getReportsForStrategy = async (
     const reportResults: StratReportGraphResult = await querySubgraphData(
         buildReportsQuery(strategy.toLowerCase())
     );
+    console.log('reportResults', reportResults);
     const reports: StratReportGrahType[] = get(
         reportResults,
-        'data.strategies[0].reports'
+        'data.strategies[0].reports',
+        []
     );
 
     const OMIT_FIELDS = ['results', 'transaction', 'id'];

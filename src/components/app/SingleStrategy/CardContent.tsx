@@ -28,7 +28,7 @@ const CardContent = (props: CardContentProps) => {
                                     {res.key}
                                     <MediaQuery query="(max-device-width: 1224px)">
                                         <br />
-                                        {res.key}
+                                        {res.value}
                                     </MediaQuery>{' '}
                                 </TableCell>
                                 <MediaQuery query="(min-device-width: 1224px)">

@@ -45,9 +45,12 @@ const AccordionReport = (props: AccordionReportProps) => {
     const { data, tokenDecimals } = props;
     const classes = useStyles();
 
+    const topLabel =
+        data.length === 0 ? 'No Reports Loaded' : `Last ${data.length} reports`;
+
     return (
         <div className={classes.root}>
-            <Typography className={classes.text}>Last 5 reports</Typography>
+            <Typography className={classes.text}>{topLabel}</Typography>
             {data.map((res: StrategyReport, index: number) => {
                 return (
                     <Accordion key={index} className={classes.accordion}>

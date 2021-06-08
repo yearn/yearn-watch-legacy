@@ -5,10 +5,10 @@ import { formatBPS, displayAmount } from '../../../utils/commonUtils';
 import CardContent from './CardContent';
 import { Strategy } from '../../../types';
 
-type SingleDataProps = {
+type StrategyDetailProps = {
     strategy: Strategy;
 };
-export const SingleData = (props: SingleDataProps) => {
+export const StrategyDetail = (props: StrategyDetailProps) => {
     const { strategy } = props;
 
     const apiVersion = strategy ? strategy.apiVersion : '';
@@ -161,4 +161,4 @@ export const SingleData = (props: SingleDataProps) => {
     return <CardContent data={data} />;
 };
 
-export default SingleData;
+export default StrategyDetail;
