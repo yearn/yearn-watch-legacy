@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import MuiAccordion from '@material-ui/core/Accordion';
@@ -13,6 +14,10 @@ import EtherScanLink from '../../common/EtherScanLink';
 
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
+import { ReportProblem } from '@material-ui/icons';
+import { Typography } from '@material-ui/core';
+import { HtmlTooltip } from '../../common/HtmlTooltip';
+
 type VaultItemListProps = {
     vault: Vault;
     key: number;
@@ -44,7 +49,11 @@ export const VaultItemList = (props: VaultItemListProps) => {
                     fontSize: 19,
                 },
             },
-
+            warningIcon: {
+                borderRadius: 3,
+                padding: 1,
+                boxShadow: '0px 0px 0px 0 rgba(0,0,0,0.2)',
+            },
             expandIcon: {
                 color: '#fff',
             },
@@ -123,6 +132,35 @@ export const VaultItemList = (props: VaultItemListProps) => {
                                     )}
                                 </Grid>
                                 <Grid item md={5} xs={9}>
+                                    {vault.configErrors ? (
+                                        <HtmlTooltip
+                                            title={
+                                                <Fragment>
+                                                    <Typography color="inherit">
+                                                        {
+                                                            vault.configErrors
+                                                                .length
+                                                        }{' '}
+                                                        warning(s) found
+                                                    </Typography>
+                                                    {vault.configErrors.map(
+                                                        (error, index) => (
+                                                            <em key={index}>
+                                                                {error}
+                                                                <br />
+                                                            </em>
+                                                        )
+                                                    )}
+                                                </Fragment>
+                                            }
+                                        >
+                                            <ReportProblem
+                                                className={classes.warningIcon}
+                                            />
+                                        </HtmlTooltip>
+                                    ) : (
+                                        ''
+                                    )}
                                     <a
                                         className={classes.link}
                                         href={`/vault/${vault.address}`}
