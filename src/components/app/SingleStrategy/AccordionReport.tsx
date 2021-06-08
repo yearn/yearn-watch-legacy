@@ -43,9 +43,7 @@ const AccordionReport = (props: any) => {
 
     return (
         <div className={classes.root}>
-            <Typography className={classes.text}>
-                Last 5 strategy report
-            </Typography>
+            <Typography className={classes.text}>Last 5 reports</Typography>
             {data.map((res: any, index: number) => {
                 return (
                     <Accordion key={index} className={classes.accordion}>
@@ -56,8 +54,7 @@ const AccordionReport = (props: any) => {
                         >
                             <Typography className={classes.heading}>
                                 <EtherScanLink
-                                    transaction={true}
-                                    address={res.transactionHash}
+                                    transactionHash={res.transactionHash}
                                 />
                             </Typography>
                         </AccordionSummary>
@@ -71,7 +68,7 @@ const AccordionReport = (props: any) => {
                                 >
                                     <Typography className={classes.subText}>
                                         {' '}
-                                        Debt Added:
+                                        Debt added:
                                         <br />{' '}
                                         {displayAmount(
                                             res.debtAdded.toString(),
@@ -87,7 +84,7 @@ const AccordionReport = (props: any) => {
                                 >
                                     <Typography className={classes.subText}>
                                         {' '}
-                                        Debt Limit:
+                                        Debt limit:
                                         <br />{' '}
                                         {displayAmount(
                                             res.debtLimit.toString(),
@@ -103,7 +100,7 @@ const AccordionReport = (props: any) => {
                                 >
                                     <Typography className={classes.subText}>
                                         {' '}
-                                        Debt Paid:
+                                        Debt paid:
                                         <br />{' '}
                                         {displayAmount(
                                             res.debtPaid.toString(),
@@ -135,7 +132,7 @@ const AccordionReport = (props: any) => {
                                 >
                                     <Typography className={classes.subText}>
                                         {' '}
-                                        timestamp:
+                                        Time stamp:
                                         <br />
                                         {toIsoStringMilliseconds(res.timestamp)}
                                     </Typography>
@@ -148,7 +145,7 @@ const AccordionReport = (props: any) => {
                                 >
                                     <Typography className={classes.subText}>
                                         {' '}
-                                        totalDebt:
+                                        Total debt:
                                         <br />
                                         {displayAmount(
                                             res.totalDebt.toString(),
@@ -164,7 +161,7 @@ const AccordionReport = (props: any) => {
                                 >
                                     <Typography className={classes.subText}>
                                         {' '}
-                                        totalGain:
+                                        Total gain:
                                         <br />
                                         {displayAmount(
                                             res.totalGain.toString(),
@@ -180,7 +177,7 @@ const AccordionReport = (props: any) => {
                                 >
                                     <Typography className={classes.subText}>
                                         {' '}
-                                        totalLoss:
+                                        Total loss:
                                         <br />
                                         {displayAmount(
                                             res.totalLoss.toString(),

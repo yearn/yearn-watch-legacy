@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { extractAddress } from '../../../utils/commonUtils';
@@ -7,8 +7,13 @@ import CallMadeIcon from '@material-ui/icons/CallMade';
 import Tooltip from '@material-ui/core/Tooltip';
 import { FileCopy } from '@material-ui/icons';
 
-const EtherScanLink = (props: any) => {
-    const { address, transaction } = props;
+type EtherScanLinkProps = {
+    address?: any;
+    transactionHash?: any;
+    dark?: boolean | false;
+};
+const EtherScanLink = (props: EtherScanLinkProps) => {
+    const { address, transactionHash, dark } = props;
     const [copied, setCopied] = useState(false);
 
     useEffect(() => {
@@ -33,35 +38,38 @@ const EtherScanLink = (props: any) => {
             address: {
                 fontSize: '14px',
                 opacity: '0.7',
-                color: props.dark ? '#fff' : 'black',
+                color: dark ? '#fff' : 'black',
             },
             copiedText: {
-                color: props.dark ? '#fff' : 'black',
+                color: dark ? '#fff' : 'black',
             },
         })
     );
     const classes = useStyles();
-
-    const address1 = extractAddress(address);
-    const maskedAddress = (
-        <Tooltip title={address} aria-label="Etherscan">
-            <span>{address1}</span>
+    const value = address ? address : transactionHash;
+    const extractedValue = address
+        ? extractAddress(address)
+        : extractAddress(transactionHash);
+    // const address1 = extractAddress(address);
+    const maskedValue = (
+        <Tooltip title={value} aria-label="Etherscan">
+            <span>{extractedValue}</span>
         </Tooltip>
     );
     const onCopyToClipboard = (e: MouseEvent<HTMLElement>) => {
         e.stopPropagation();
-        navigator.clipboard.writeText(address);
+        navigator.clipboard.writeText(value);
         setCopied(true);
     };
-    const refLink = transaction
-        ? `https://etherscan.io/tx/${address}`
-        : `https://etherscan.io/address/${address}`;
+    const refLink = transactionHash
+        ? `https://etherscan.io/tx/${value}`
+        : `https://etherscan.io/address/${value}`;
     return (
         <span>
             <span className={classes.address}>
-                <Hidden smUp>{maskedAddress}</Hidden>
+                <Hidden smUp>{maskedValue}</Hidden>
 
-                <Hidden xsDown>{address}</Hidden>
+                <Hidden xsDown>{value}</Hidden>
             </span>
             <Tooltip title="Copy to clipboard" aria-label="Clipboard">
                 <Button onClick={(e) => onCopyToClipboard(e)}>
