@@ -8,6 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { FileCopy } from '@material-ui/icons';
 
 const EtherScanLink = (props: any) => {
+    const { address, transaction } = props;
     const [copied, setCopied] = useState(false);
 
     useEffect(() => {
@@ -17,7 +18,7 @@ const EtherScanLink = (props: any) => {
 
         return () => clearTimeout(timeId);
     }, [copied]);
-    const address = props.address;
+
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
             button: {
@@ -52,7 +53,9 @@ const EtherScanLink = (props: any) => {
         navigator.clipboard.writeText(address);
         setCopied(true);
     };
-
+    const refLink = transaction
+        ? `https://etherscan.io/tx/${address}`
+        : `https://etherscan.io/address/${address}`;
     return (
         <span>
             <span className={classes.address}>
@@ -71,10 +74,7 @@ const EtherScanLink = (props: any) => {
                 </Button>
             </Tooltip>
             <Tooltip title="View on Etherscan" aria-label="Etherscan">
-                <Button
-                    href={`https://etherscan.io/address/${address}`}
-                    target="_blank"
-                >
+                <Button href={refLink} target="_blank">
                     <CallMadeIcon
                         fontSize="inherit"
                         className={classes.iconCall}
