@@ -8,5 +8,6 @@ export const getEnv = memoize(
         env: process.env.NODE_ENV,
         ethereumNetwork: 'homestead',
         infuraProjectId: process.env.INFURA_PROJECT_ID,
+        alchemyKey: process.env.ALCHEMY_KEY,
     })
 );

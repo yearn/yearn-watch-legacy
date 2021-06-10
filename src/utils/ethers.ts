@@ -4,8 +4,9 @@ import { getEnv } from './env';
 export const getEthersDefaultProvider = (
     network = 'homestead'
 ): ethers.providers.BaseProvider => {
-    const { infuraProjectId } = getEnv();
-    return new providers.InfuraProvider(network, infuraProjectId);
+    const { infuraProjectId, alchemyKey } = getEnv();
+    // return new providers.InfuraProvider(network, infuraProjectId);
+    return new providers.AlchemyProvider(network, alchemyKey);
 };
 
 export const formatAmount = (amount: string, decimals: number) => {
