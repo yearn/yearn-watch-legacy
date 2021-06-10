@@ -164,7 +164,6 @@ export const VaultItemList = (props: VaultItemListProps) => {
                                     <a
                                         className={classes.link}
                                         href={`/vault/${vault.address}`}
-                                        target="_blank"
                                         rel="noreferrer"
                                     >
                                         <span className={classes.textVault}>
