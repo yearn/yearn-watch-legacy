@@ -7,7 +7,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { displayAmount } from '../../../utils/commonUtils';
 import EtherScanLink from '../../common/EtherScanLink';
 import { Grid } from '@material-ui/core';
-import { toIsoStringMilliseconds } from '../../../utils/dateUtils';
+import { unixMsToIsoString } from '../../../utils/dateUtils';
 import { StrategyReport } from '../../../utils/reports';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -75,7 +75,7 @@ const AccordionReport = (props: AccordionReportProps) => {
                                         {' '}
                                         Timestamp:
                                         <br />
-                                        {toIsoStringMilliseconds(res.timestamp)}
+                                        {unixMsToIsoString(res.timestamp)}
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -90,10 +90,10 @@ const AccordionReport = (props: AccordionReportProps) => {
                                 >
                                     <Typography className={classes.subText}>
                                         {' '}
-                                        Debt added:
+                                        Debt Added:
                                         <br />{' '}
                                         {displayAmount(
-                                            res.debtAdded.toString(),
+                                            res.debtAdded,
                                             tokenDecimals
                                         )}
                                     </Typography>
@@ -106,10 +106,10 @@ const AccordionReport = (props: AccordionReportProps) => {
                                 >
                                     <Typography className={classes.subText}>
                                         {' '}
-                                        Debt limit:
+                                        Debt Limit:
                                         <br />{' '}
                                         {displayAmount(
-                                            res.debtLimit.toString(),
+                                            res.debtLimit,
                                             tokenDecimals
                                         )}
                                     </Typography>
@@ -122,10 +122,10 @@ const AccordionReport = (props: AccordionReportProps) => {
                                 >
                                     <Typography className={classes.subText}>
                                         {' '}
-                                        Debt paid:
+                                        Debt Paid:
                                         <br />{' '}
                                         {displayAmount(
-                                            res.debtPaid.toString(),
+                                            res.debtPaid,
                                             tokenDecimals
                                         )}
                                     </Typography>
@@ -138,15 +138,14 @@ const AccordionReport = (props: AccordionReportProps) => {
                                 >
                                     <Typography className={classes.subText}>
                                         {' '}
-                                        Gain:
+                                        Profit:
                                         <br />{' '}
                                         {displayAmount(
-                                            res.gain.toString(),
+                                            res.profit,
                                             tokenDecimals
                                         )}
                                     </Typography>
                                 </Grid>
-
                                 <Grid
                                     item
                                     xs={12}
@@ -155,10 +154,23 @@ const AccordionReport = (props: AccordionReportProps) => {
                                 >
                                     <Typography className={classes.subText}>
                                         {' '}
-                                        Total debt:
+                                        Loss:
+                                        <br />{' '}
+                                        {displayAmount(res.loss, tokenDecimals)}
+                                    </Typography>
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={3}
+                                    className={classes.grid}
+                                >
+                                    <Typography className={classes.subText}>
+                                        {' '}
+                                        Total Debt:
                                         <br />
                                         {displayAmount(
-                                            res.totalDebt.toString(),
+                                            res.totalDebt,
                                             tokenDecimals
                                         )}
                                     </Typography>
@@ -171,10 +183,10 @@ const AccordionReport = (props: AccordionReportProps) => {
                                 >
                                     <Typography className={classes.subText}>
                                         {' '}
-                                        Total gain:
+                                        Total Profit:
                                         <br />
                                         {displayAmount(
-                                            res.totalGain.toString(),
+                                            res.totalProfit,
                                             tokenDecimals
                                         )}
                                     </Typography>
@@ -187,10 +199,10 @@ const AccordionReport = (props: AccordionReportProps) => {
                                 >
                                     <Typography className={classes.subText}>
                                         {' '}
-                                        Total loss:
+                                        Total Loss:
                                         <br />
                                         {displayAmount(
-                                            res.totalLoss.toString(),
+                                            res.totalLoss,
                                             tokenDecimals
                                         )}
                                     </Typography>
