@@ -1,4 +1,4 @@
-import { get, omit } from 'lodash';
+import { get, omit, memoize } from 'lodash';
 import { querySubgraphData } from './apisRequest';
 
 const buildReportsQuery = (strategy: string): string => `
@@ -79,7 +79,7 @@ export type StrategyReport = {
     // apr: string;
 };
 
-export const getReportsForStrategy = async (
+const _getReportsForStrategy = async (
     strategy: string
 ): Promise<StrategyReport[]> => {
     if (!strategy || strategy === '') {
@@ -111,3 +111,5 @@ export const getReportsForStrategy = async (
         };
     });
 };
+
+export const getReportsForStrategy = memoize(_getReportsForStrategy);

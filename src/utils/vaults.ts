@@ -97,7 +97,7 @@ const internalGetVaults = async (): Promise<Vault[]> => {
 
 export const getVaults = memoize(internalGetVaults);
 
-export const getVault = async (address: string): Promise<Vault> => {
+const _getVault = async (address: string): Promise<Vault> => {
     if (!address || !utils.isAddress(address)) {
         throw new Error('Error: expect a valid vault address');
     }
@@ -114,6 +114,8 @@ export const getVault = async (address: string): Promise<Vault> => {
 
     return foundVault;
 };
+
+export const getVault = memoize(_getVault);
 
 const mapVaultData = (
     contractCallsResults: ContractCallResults,
