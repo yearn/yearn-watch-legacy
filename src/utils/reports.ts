@@ -38,6 +38,7 @@ type StratReportGrahType = {
     debtLimit: string;
     debtPaid: string;
     gain: string;
+    loss: string;
     timestamp: string;
     totalDebt: string;
     totalGain: string;
@@ -67,10 +68,11 @@ export type StrategyReport = {
     debtAdded: string;
     debtLimit: string;
     debtPaid: string;
-    gain: string;
+    profit: string;
+    loss: string;
     timestamp: string;
     totalDebt: string;
-    totalGain: string;
+    totalProfit: string;
     totalLoss: string;
     transactionHash: string;
     // TODO: add later
@@ -88,7 +90,7 @@ export const getReportsForStrategy = async (
     const reportResults: StratReportGraphResult = await querySubgraphData(
         buildReportsQuery(strategy.toLowerCase())
     );
-    console.log('reportResults', reportResults);
+
     const reports: StratReportGrahType[] = get(
         reportResults,
         'data.strategies[0].reports',
@@ -100,6 +102,9 @@ export const getReportsForStrategy = async (
     return reports.map((report) => {
         return {
             ...(omit(report, OMIT_FIELDS) as StratReportGrahType),
+            profit: report.gain,
+            loss: report.loss,
+            totalProfit: report.totalGain,
             transactionHash: report.transaction.hash,
             // TODO: add later
             // apr: get(report, 'results[0].apr'),

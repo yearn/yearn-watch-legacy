@@ -17,7 +17,7 @@ export const toIsoString = (timestamp: string): string => {
 };
 
 // Unix Timestamp (milliseconds)
-export const toIsoStringMilliseconds = (timestamp: string): string => {
+export const unixMsToIsoString = (timestamp: string): string => {
     if (!isValidTimestamp(timestamp)) return '';
     const unixTimestamp = dayjs(parseInt(timestamp));
 
