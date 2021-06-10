@@ -4,6 +4,7 @@ import {
 } from 'ethereum-multicall';
 import { get } from 'lodash';
 import { BigNumber, constants } from 'ethers';
+import { BigNumber as BN } from 'bignumber.js';
 import { StrategyAddressQueueIndex, VaultApi } from '../types';
 import {
     CallContext,
@@ -27,7 +28,22 @@ export const extractText = (text: string) => {
 export const displayAmount = (amount: string, decimals: number): string => {
     if (amount === constants.MaxUint256.toString()) return ' ∞';
     const tokenBits = BigNumber.from(10).pow(decimals);
-    return BigNumber.from(amount).div(tokenBits).toNumber().toLocaleString();
+
+    let display = BigNumber.from(amount)
+        .div(tokenBits)
+        .toNumber()
+        .toLocaleString();
+    if (display === '0') {
+        // try bignumber.js just in case
+        display = new BN(amount)
+            .div(tokenBits.toString())
+            .toFixed(5)
+            .toLocaleLowerCase()
+            // strip trailing zeros for display
+            .replace('.00000', '');
+    }
+
+    return display;
 };
 
 export const sub = (amountA: string, amountB: string): string => {

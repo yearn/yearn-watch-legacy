@@ -17,6 +17,7 @@
         "@types/react-responsive": "^8.0.2",
         "@types/react-router-dom": "^5.1.7",
         "axios": "^0.21.1",
+        "bignumber.js": "^9.0.1",
         "dayjs": "^1.10.4",
         "dotenv": "^8.2.0",
         "ethereum-multicall": "^2.0.2",
