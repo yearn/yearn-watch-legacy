@@ -7,7 +7,7 @@ const buildReportsQuery = (strategy: string): string => `
       id: "${strategy}"
     }) {
         id
-        reports(first: 5, orderBy: timestamp, orderDirection: desc)  {
+        reports(first: 10, orderBy: timestamp, orderDirection: desc)  {
           id
           transaction {
             hash
@@ -27,13 +27,33 @@ const buildReportsQuery = (strategy: string): string => `
             duration
             apr
             durationPr
+            currentReport {
+                id
+                gain
+                loss
+                totalDebt
+                totalGain
+                totalLoss
+                timestamp
+                transaction { hash blockNumber }
+            }
+            previousReport {
+                id
+                gain
+                loss
+                totalDebt
+                totalGain
+                totalLoss
+                timestamp
+                transaction { hash blockNumber }
+            }
           }
         }
       }
   }
 `;
 
-type StratReportGrahType = {
+type StratReportGraphType = {
     debtAdded: string;
     debtLimit: string;
     debtPaid: string;
@@ -43,13 +63,37 @@ type StratReportGrahType = {
     totalDebt: string;
     totalGain: string;
     totalLoss: string;
-    results: {
+    results: Array<{
         apr: string;
         duration: string;
         durationPr: string;
         startTimestamp: string;
         endTimestamp: string;
-    };
+        currentReport: {
+            id: string;
+            gain: string;
+            loss: string;
+            totalDebt: string;
+            totalGain: string;
+            totalLoss: string;
+            timestamp: number;
+            transaction: {
+                hash: string;
+            };
+        };
+        previousReport: {
+            id: string;
+            gain: string;
+            loss: string;
+            totalDebt: string;
+            totalGain: string;
+            totalLoss: string;
+            timestamp: number;
+            transaction: {
+                hash: string;
+            };
+        };
+    }>;
     transaction: {
         hash: string;
     };
@@ -59,7 +103,7 @@ type StratReportGraphResult = {
     data: [
         {
             id: string;
-            reports: StratReportGrahType[];
+            reports: StratReportGraphType[];
         }
     ];
 };
@@ -75,8 +119,37 @@ export type StrategyReport = {
     totalProfit: string;
     totalLoss: string;
     transactionHash: string;
-    // TODO: add later
-    // apr: string;
+    results: {
+        startTimestamp: number;
+        endTimestamp: number;
+        duration: number;
+        apr: number;
+        durationPr: number;
+        currentReport: {
+            id: string;
+            gain: string;
+            loss: string;
+            totalDebt: string;
+            totalGain: string;
+            totalLoss: string;
+            timestamp: number;
+            transaction: {
+                hash: string;
+            };
+        };
+        previousReport: {
+            id: string;
+            gain: string;
+            loss: string;
+            totalDebt: string;
+            totalGain: string;
+            totalLoss: string;
+            timestamp: number;
+            transaction: {
+                hash: string;
+            };
+        };
+    };
 };
 
 const _getReportsForStrategy = async (
@@ -91,25 +164,40 @@ const _getReportsForStrategy = async (
         buildReportsQuery(strategy.toLowerCase())
     );
 
-    const reports: StratReportGrahType[] = get(
+    const reports: StratReportGraphType[] = get(
         reportResults,
         'data.strategies[0].reports',
         []
     );
 
     const OMIT_FIELDS = ['results', 'transaction', 'id'];
-
-    return reports.map((report) => {
+    const values = reports.map((report) => {
+        const result = report.results[0];
         return {
-            ...(omit(report, OMIT_FIELDS) as StratReportGrahType),
+            ...(omit(report, OMIT_FIELDS) as StratReportGraphType),
             profit: report.gain,
             loss: report.loss,
             totalProfit: report.totalGain,
             transactionHash: report.transaction.hash,
-            // TODO: add later
-            // apr: get(report, 'results[0].apr'),
+            results: {
+                ...result,
+                currentReport: {
+                    ...result.currentReport,
+                    timestamp: result.currentReport.timestamp,
+                },
+                previousReport: {
+                    ...result.previousReport,
+                    timestamp: result.previousReport.timestamp,
+                },
+                startTimestamp: parseInt(result.startTimestamp),
+                endTimestamp: parseInt(result.endTimestamp),
+                duration: parseInt(result.duration),
+                durationPr: parseFloat(result.durationPr),
+                apr: parseFloat(result.apr) * 100,
+            },
         };
     });
+    return values;
 };
 
 export const getReportsForStrategy = memoize(_getReportsForStrategy);
