@@ -20,13 +20,17 @@ type ItemDescriptionProps = {
     value: number | string;
     xs?: boolean | GridSize | undefined;
     md: boolean | GridSize | undefined;
+    visible?: boolean;
     helpTitle?: string;
     helpDescription?: ReactNode;
 };
 
 const ItemDescription = (props: ItemDescriptionProps) => {
-    const { xs = 12 } = props;
+    const { xs = 12, visible = true } = props;
     const classes = useStyles();
+    if (!visible) {
+        return <></>;
+    }
 
     const helpTooltip =
         props.helpTitle && props.helpDescription ? (

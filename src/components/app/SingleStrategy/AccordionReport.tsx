@@ -50,7 +50,7 @@ const AccordionReport = (props: AccordionReportProps) => {
     const { data, tokenDecimals } = props;
     const classes = useStyles();
 
-    const aprList = data.map((item) => item.results.apr);
+    const aprList = data.map((item) => item.results?.apr);
     const averageApr =
         aprList.length === 0 ? 0 : _.sum(aprList) / aprList.length;
     const averageAprLabel = `Average APR: ${averageApr.toFixed(2)}%`;
@@ -167,8 +167,11 @@ const AccordionReport = (props: AccordionReportProps) => {
                                     <ItemDescription
                                         label="Duration (hours)"
                                         value={msToHours(
-                                            res.results.duration
+                                            res.results
+                                                ? res.results.duration
+                                                : 0
                                         ).toFixed(2)}
+                                        visible={res.results !== undefined}
                                         md={3}
                                         helpTitle="What is it?"
                                         helpDescription={
@@ -181,9 +184,10 @@ const AccordionReport = (props: AccordionReportProps) => {
                                     />
                                     <ItemDescription
                                         label="Duration PR"
-                                        value={`${res.results.durationPr.toFixed(
+                                        value={`${res.results?.durationPr.toFixed(
                                             6
                                         )} %`}
+                                        visible={res.results !== undefined}
                                         md={3}
                                         helpTitle="What is the duration PR?"
                                         helpDescription={
@@ -205,9 +209,10 @@ const AccordionReport = (props: AccordionReportProps) => {
                                     />
                                     <ItemDescription
                                         label="APR"
-                                        value={`${res.results.apr.toFixed(
+                                        value={`${res.results?.apr.toFixed(
                                             2
                                         )} %`}
+                                        visible={res.results !== undefined}
                                         md={3}
                                         helpTitle="How is APR calculated?"
                                         helpDescription={

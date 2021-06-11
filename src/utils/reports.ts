@@ -119,7 +119,7 @@ export type StrategyReport = {
     totalProfit: string;
     totalLoss: string;
     transactionHash: string;
-    results: {
+    results?: {
         startTimestamp: number;
         endTimestamp: number;
         duration: number;
@@ -172,14 +172,10 @@ const _getReportsForStrategy = async (
 
     const OMIT_FIELDS = ['results', 'transaction', 'id'];
     const values = reports.map((report) => {
-        const result = report.results[0];
-        return {
-            ...(omit(report, OMIT_FIELDS) as StratReportGraphType),
-            profit: report.gain,
-            loss: report.loss,
-            totalProfit: report.totalGain,
-            transactionHash: report.transaction.hash,
-            results: {
+        let results;
+        if (report.results.length > 0) {
+            const result = report.results[0];
+            results = {
                 ...result,
                 currentReport: {
                     ...result.currentReport,
@@ -194,7 +190,15 @@ const _getReportsForStrategy = async (
                 duration: parseInt(result.duration),
                 durationPr: parseFloat(result.durationPr),
                 apr: parseFloat(result.apr) * 100,
-            },
+            };
+        }
+        return {
+            ...(omit(report, OMIT_FIELDS) as StratReportGraphType),
+            profit: report.gain,
+            loss: report.loss,
+            totalProfit: report.totalGain,
+            transactionHash: report.transaction.hash,
+            results,
         };
     });
     return values;
