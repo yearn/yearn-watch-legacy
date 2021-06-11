@@ -46,6 +46,10 @@ export const displayAmount = (amount: string, decimals: number): string => {
     return display;
 };
 
+export const msToHours = (ms: number): number => {
+    return ms / 1000 / 60 / 24;
+};
+
 export const sub = (amountA: string, amountB: string): string => {
     return BigNumber.from(amountA).sub(amountB).toString();
 };
