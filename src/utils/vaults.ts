@@ -31,6 +31,8 @@ const VAULT_VIEW_METHODS = [
     'rewards',
 ];
 
+const PRE_ENDORSED = new Set(['0xa258c4606ca8206d8aa700ce2143d7db854d168c']);
+
 const internalGetVaults = async (): Promise<Vault[]> => {
     const provider = getEthersDefaultProvider();
 
@@ -40,7 +42,9 @@ const internalGetVaults = async (): Promise<Vault[]> => {
         const response = await BuildGet('/all');
         let payload = response.data as VaultApi[];
         payload = payload.filter(
-            (vault) => vault.endorsed && vault.type === VaultVersion.V2
+            (vault) =>
+                (vault.endorsed && vault.type === VaultVersion.V2) ||
+                PRE_ENDORSED.has(vault.address.toLowerCase())
         );
 
         const vaultMap = new Map<string, VaultApi>();
