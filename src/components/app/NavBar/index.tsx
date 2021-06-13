@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme: Theme) =>
             lineHeight: '24px',
             fontColor: 'rgb(255, 255, 255)',
         },
+        logoYearnWatch: {
+            height: '74px',
+        },
     })
 );
 
@@ -39,7 +42,11 @@ export const NavBar = () => {
                     aria-label="menu"
                     href="/"
                 >
-                    <Avatar alt="yearn-image" src={ImageYH} />
+                    <img
+                        alt="yearn watch"
+                        src={ImageYH}
+                        className={classes.logoYearnWatch}
+                    />
                 </IconButton>
             </Toolbar>
         </AppBar>
