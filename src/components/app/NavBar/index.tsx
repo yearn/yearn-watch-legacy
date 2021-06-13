@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
             fontColor: 'rgb(255, 255, 255)',
         },
         logoYearnWatch: {
-            height: '74px',
+            height: '64px',
         },
     })
 );
