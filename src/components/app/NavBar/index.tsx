@@ -48,9 +48,6 @@ export const NavBar = () => {
                         className={classes.logoYearnWatch}
                     />
                 </IconButton>
-                <Typography variant="h5" className={classes.title}>
-                    YearnWatch
-                </Typography>
             </Toolbar>
         </AppBar>
     );
