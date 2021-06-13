@@ -42,7 +42,7 @@ export const NavBar = () => {
                     <Avatar alt="yearn-image" src={ImageYH} />
                 </IconButton>
                 <Typography variant="h5" className={classes.title}>
-                    yearn hub
+                    YearnWatch
                 </Typography>
             </Toolbar>
         </AppBar>
