@@ -1,17 +1,19 @@
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
-import _ from 'lodash';
+import { mean, compact } from 'lodash';
+import { Fragment } from 'react';
+import { Grid } from '@material-ui/core';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import { displayAmount, msToHours } from '../../../utils/commonUtils';
 import EtherScanLink from '../../common/EtherScanLink';
-import { Grid } from '@material-ui/core';
 import { unixMsToIsoString } from '../../../utils/dateUtils';
 import { StrategyReport } from '../../../utils/reports';
+import { median } from '../../../utils/math';
 import ItemDescription from '../../common/ItemDescription';
-import { Fragment } from 'react';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -50,10 +52,11 @@ const AccordionReport = (props: AccordionReportProps) => {
     const { data, tokenDecimals } = props;
     const classes = useStyles();
 
-    const aprList = data.map((item) => item.results?.apr);
-    const averageApr =
-        aprList.length === 0 ? 0 : _.sum(aprList) / aprList.length;
+    const aprList = compact(data.map((item) => item.results?.apr));
+    const averageApr = aprList.length === 0 ? 0 : mean(aprList);
+    const medianApr = aprList.length === 0 ? 0 : median(aprList);
     const averageAprLabel = `Average APR: ${averageApr.toFixed(2)}%`;
+    const medianAprLabel = `Median APR: ${medianApr.toFixed(2)}%`;
     const topLabel =
         data.length === 0
             ? 'No Reports Loaded'
@@ -62,7 +65,7 @@ const AccordionReport = (props: AccordionReportProps) => {
     return (
         <div className={classes.root}>
             <Typography className={classes.text}>
-                {topLabel} {averageAprLabel}
+                {topLabel} {averageAprLabel} / {medianAprLabel}
             </Typography>
             {data.map((res: StrategyReport, index: number) => {
                 return (
