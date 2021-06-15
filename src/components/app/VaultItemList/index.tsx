@@ -168,8 +168,9 @@ export const VaultItemList = (props: VaultItemListProps) => {
                                     >
                                         <span className={classes.textVault}>
                                             {' '}
-                                            {vault.name}
-                                            {` (${vault.strategies.length} strats)`}
+                                            {vault.name}{' '}
+                                            {`v${vault.apiVersion}`}
+                                            {` (${vault.strategies.length}  strats)`}
                                         </span>
                                     </a>
                                 </Grid>
