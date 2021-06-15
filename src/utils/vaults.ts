@@ -31,20 +31,23 @@ const VAULT_VIEW_METHODS = [
     'rewards',
 ];
 
-const PRE_ENDORSED = new Set(['0xa258c4606ca8206d8aa700ce2143d7db854d168c']);
-
-const internalGetVaults = async (): Promise<Vault[]> => {
+const internalGetVaults = async (
+    allowList: string[] = []
+): Promise<Vault[]> => {
     const provider = getEthersDefaultProvider();
 
     const multicall = new Multicall({ ethersProvider: provider });
+    // accepts non endorsed experimental vaults to access
+    const additional = new Set(allowList.map((addr) => addr.toLowerCase()));
 
     try {
         const response = await BuildGet('/all');
         let payload = response.data as VaultApi[];
+        console.log('payload', payload);
         payload = payload.filter(
             (vault) =>
                 (vault.endorsed && vault.type === VaultVersion.V2) ||
-                PRE_ENDORSED.has(vault.address.toLowerCase())
+                additional.has(vault.address.toLowerCase())
         );
 
         const vaultMap = new Map<string, VaultApi>();
@@ -106,14 +109,14 @@ const _getVault = async (address: string): Promise<Vault> => {
         throw new Error('Error: expect a valid vault address');
     }
 
-    const vaults = await getVaults();
+    const vaults = await getVaults([address]);
 
     const [foundVault]: Vault[] = vaults.filter(
         (vault) => vault.address.toLowerCase() === address.toLowerCase()
     );
 
     if (!foundVault) {
-        throw new Error('Error: vault not part of the endorsed list');
+        throw new Error('Error: vault not recognized as a yearn vault');
     }
 
     return foundVault;
