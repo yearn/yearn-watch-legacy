@@ -11,7 +11,7 @@ import {
     ContractCallResults,
 } from 'ethereum-multicall/dist/models';
 import { getABIStrategiesHelper } from './abi';
-import _ from 'lodash';
+import { values } from 'lodash';
 
 export const extractAddress = (address: string) => {
     return (
@@ -29,19 +29,11 @@ export const displayAmount = (amount: string, decimals: number): string => {
     if (amount === constants.MaxUint256.toString()) return ' ∞';
     const tokenBits = BigNumber.from(10).pow(decimals);
 
-    let display = BigNumber.from(amount)
-        .div(tokenBits)
-        .toNumber()
-        .toLocaleString();
-    if (display === '0') {
-        // try bignumber.js just in case
-        display = new BN(amount)
-            .div(tokenBits.toString())
-            .toFixed(5)
-            .toLocaleLowerCase()
-            // strip trailing zeros for display
-            .replace('.00000', '');
-    }
+    const display = new BN(amount)
+        .div(tokenBits.toString())
+        .toFormat(5)
+        // strip trailing zeros for display
+        .replace('.00000', '');
 
     return display;
 };
@@ -107,7 +99,7 @@ export const mapToStrategyAddressQueueIndex = (
         strategiesHelperCallsResults.results[STRATEGIES_HELPER_CONTRACT_ADDRESS]
             .callsReturnContext;
 
-    const strategiesHelperCallsReturnContextList = _.values(
+    const strategiesHelperCallsReturnContextList = values(
         strategiesHelperCallsReturnContext
     );
     const strategiesQueuePosition = strategiesHelperCallsReturnContextList.find(
