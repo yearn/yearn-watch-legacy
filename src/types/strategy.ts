@@ -28,6 +28,8 @@ export type Strategy = {
     strategist: string;
     keeper: string;
     rewards: string;
+    healthCheck: string | null;
+    doHealthCheck: boolean;
 
     withdrawalQueueIndex: number;
     // params
