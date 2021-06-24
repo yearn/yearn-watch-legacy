@@ -8,13 +8,18 @@ import { HtmlTooltip } from '../HtmlTooltip';
 import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles({
-    yellowIcon: {
+    redIcon: {
         color: '#c94141',
         verticalAlign: 'middle',
         padding: '3px',
     },
     greenIcon: {
         color: 'green',
+        verticalAlign: 'middle',
+        padding: '3px',
+    },
+    yellowIcon: {
+        color: 'yellow',
         verticalAlign: 'middle',
         padding: '3px',
     },
@@ -29,9 +34,17 @@ const HealthCheckIcon = (props: HealthCheckIconProps) => {
         strategy: { healthCheck, doHealthCheck },
     } = props;
     const classes = useStyles();
-    const isHealthCheckOk = healthCheck !== EMPTY_ADDRESS && doHealthCheck;
-
-    const icon = (
+    let icon = <></>;
+    if (healthCheck === null) {
+        icon = <CancelRoundedIcon className={classes.redIcon} />;
+    } else {
+        if (healthCheck.toLowerCase() === EMPTY_ADDRESS) {
+            icon = <CheckCircleRoundedIcon className={classes.yellowIcon} />;
+        } else {
+            icon = <CheckCircleRoundedIcon className={classes.greenIcon} />;
+        }
+    }
+    const render = (
         <HtmlTooltip
             title={
                 <React.Fragment>
@@ -46,14 +59,10 @@ const HealthCheckIcon = (props: HealthCheckIconProps) => {
                 </React.Fragment>
             }
         >
-            {isHealthCheckOk ? (
-                <CheckCircleRoundedIcon className={classes.greenIcon} />
-            ) : (
-                <CancelRoundedIcon className={classes.yellowIcon} />
-            )}
+            {icon}
         </HtmlTooltip>
     );
-    return icon;
+    return render;
 };
 
 export default HealthCheckIcon;

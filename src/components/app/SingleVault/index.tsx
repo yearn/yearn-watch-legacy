@@ -185,7 +185,6 @@ export const SingleVault = () => {
                             <Tab label="Details" {...a11yProps(0)} />
                             <Tab label="Allocation" {...a11yProps(1)} />
                             <Tab label="Strategies" {...a11yProps(2)} />
-                            <Tab label="Health Check" {...a11yProps(3)} />
                         </Tabs>
 
                         <TabPanel value={value} index={0}>
@@ -204,18 +203,6 @@ export const SingleVault = () => {
                             )}
                         </TabPanel>
                         <TabPanel value={value} index={2}>
-                            {vault && vault.strategies.length > 0 ? (
-                                <div>
-                                    <StrategistList
-                                        vault={vault}
-                                        dark={false}
-                                    />
-                                </div>
-                            ) : (
-                                ''
-                            )}
-                        </TabPanel>
-                        <TabPanel value={value} index={3}>
                             {vault && vault.strategies.length > 0 ? (
                                 <div>
                                     <StrategistList
