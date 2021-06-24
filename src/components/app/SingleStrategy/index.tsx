@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import StrategyDetail from './StrategyDetail';
+import StrategyHealthCheck from './StrategyHealthCheck';
 import MuiCard from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import { Strategy } from '../../../types';
@@ -122,17 +123,24 @@ export const SingleStrategy = () => {
                     >
                         <Tab label="Detail" />
                         <Tab label="Reports" />
+                        <Tab label="Health Check" />
                     </Tabs>
 
-                    {value === 0 ? (
-                        <StrategyDetail strategy={strategy} />
-                    ) : (
+                    {value === 0 ? <StrategyDetail strategy={strategy} /> : ''}
+                    {value === 1 ? (
                         <StrategyReports
                             reports={strategyReports}
                             tokenDecimals={
                                 strategy ? strategy.token.decimals : 18
                             }
                         />
+                    ) : (
+                        ''
+                    )}
+                    {value === 2 ? (
+                        <StrategyHealthCheck strategy={strategy} />
+                    ) : (
+                        ''
                     )}
                 </MuiCard>
             )}
