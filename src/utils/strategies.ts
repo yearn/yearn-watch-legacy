@@ -60,10 +60,18 @@ const STRAT_PARAM_METHODS: string[] = [
 ];
 
 const TOKEN_VIEW_METHODS: string[] = ['decimals', 'symbol', 'name'];
-
+const filterList = ['0x2923a58c1831205c854dbea001809b194fdb3fa5'];
 const buildViewMethodsCall = (strategies: string[]): ContractCallContext[] => {
     return strategies.map((stratAddres) => {
-        const calls = STRAT_VIEW_METHODS.map((method) => ({
+        // TODO: this is a hack since a strategy is failing on this specific call
+        // remove after on chain fix
+        const filterCalls = STRAT_VIEW_METHODS.filter((viewMethod) => {
+            return !(
+                filterList.includes(stratAddres.toLowerCase()) &&
+                viewMethod === 'estimatedTotalAssets'
+            );
+        });
+        const calls = filterCalls.map((method) => ({
             reference: method,
             methodName: method,
             methodParameters: [] as string[],

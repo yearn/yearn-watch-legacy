@@ -54,12 +54,14 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
                 }}
             />
         );
-    const estimatedAsset = strategy
-        ? displayAmount(
-              strategy.estimatedTotalAssets.toString(),
-              strategy.token.decimals
-          )
-        : '';
+
+    const estimatedAsset =
+        strategy && strategy.estimatedTotalAssets
+            ? displayAmount(
+                  strategy.estimatedTotalAssets.toString(),
+                  strategy.token.decimals
+              )
+            : '';
     const creditAvailable = strategy
         ? displayAmount(
               strategy.creditAvailable.toString(),
