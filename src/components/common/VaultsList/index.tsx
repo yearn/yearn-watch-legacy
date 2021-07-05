@@ -32,8 +32,7 @@ export const VaultsList = (props: VaultsListProps) => {
             return (
                 strategy.address.toLowerCase().includes(newText) ||
                 strategy.name.toLowerCase().includes(newText) ||
-                strategy.strategist.toLowerCase().includes(newText) ||
-                strategy.healthCheck?.toLowerCase().includes(newText)
+                strategy.strategist.toLowerCase().includes(newText)
             );
         });
         return strategies;

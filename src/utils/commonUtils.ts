@@ -13,8 +13,6 @@ import {
 import { getABIStrategiesHelper } from './abi';
 import { values } from 'lodash';
 
-export const EMPTY_ADDRESS = '0x0000000000000000000000000000000000000000';
-
 export const extractAddress = (address: string) => {
     return (
         address.substring(0, 6) +
