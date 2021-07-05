@@ -16,12 +16,7 @@ import {
 } from './commonUtils';
 import { toHumanDateText } from './dateUtils';
 import { getABI_032 } from './abi';
-import {
-    mapStrategiesCalls,
-    buildStrategyCalls,
-    StrategyHealthCheck,
-    getHealthCheckForStrategy,
-} from './strategies';
+import { mapStrategiesCalls, buildStrategyCalls } from './strategies';
 import { getTotalDebtUsage } from './strategyParams';
 
 const VAULT_VIEW_METHODS = [
@@ -95,7 +90,7 @@ const internalGetVaults = async (
             vaultCalls.concat(stratCalls)
         );
 
-        return await mapVaultData(
+        return mapVaultData(
             results,
             strategiesHelperCallResults,
             vaultMap,
@@ -129,15 +124,15 @@ const _getVault = async (address: string): Promise<Vault> => {
 
 export const getVault = memoize(_getVault);
 
-const mapVaultData = async (
+const mapVaultData = (
     contractCallsResults: ContractCallResults,
     strategiesHelperCallsResults: ContractCallResults,
     vaultMap: Map<string, VaultApi>,
     strategyMap: Map<string, string>
-): Promise<Vault[]> => {
+): Vault[] => {
     const vaults: Vault[] = [];
 
-    for (const vault of Array.from(vaultMap.values())) {
+    vaultMap.forEach((vault, key) => {
         const {
             address,
             apiVersion,
@@ -175,21 +170,12 @@ const mapVaultData = async (
             // totalAssets: get(vault, 'tvl.value', 'unknown') as string,
         };
 
-        const strategyHealthCheckMap = new Map<string, StrategyHealthCheck>();
         const stratAddresses = strategies.map(({ address }) => address);
-        const healthCheckPromisesResult = stratAddresses.map((address) => {
-            return getHealthCheckForStrategy(address);
-        });
-        const healthCheckResult = await Promise.all(healthCheckPromisesResult);
-        healthCheckResult.forEach((healthCheckInfo) => {
-            strategyHealthCheckMap.set(healthCheckInfo.id, healthCheckInfo);
-        });
         const mappedStrategies: Strategy[] = mapStrategiesCalls(
             stratAddresses,
             contractCallsResults,
             strategiesQueueIndexes,
-            strategyMap,
-            strategyHealthCheckMap
+            strategyMap
         );
 
         mappedVault.debtUsage = getTotalDebtUsage(mappedStrategies);
@@ -209,7 +195,7 @@ const mapVaultData = async (
                 strategies: mappedStrategies,
             })
         );
-    }
+    });
 
     return vaults;
 };

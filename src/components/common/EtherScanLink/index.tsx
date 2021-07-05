@@ -46,9 +46,6 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
         })
     );
     const classes = useStyles();
-    if (!address) {
-        return <>Not set</>;
-    }
     let value = '';
     let extractedValue = '';
     if (address) {

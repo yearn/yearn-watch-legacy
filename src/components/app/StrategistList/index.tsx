@@ -6,7 +6,6 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Hidden from '@material-ui/core/Hidden';
 import EtherScanLink from '../../common/EtherScanLink';
-import HealthCheckIcon from '../../common/HealthCheckIcon';
 import {
     extractText,
     displayAmount,
@@ -126,13 +125,9 @@ export const StrategistList = (props: StrategistListProps) => {
                                                               )
                                                             : strategy.name}
                                                     </Hidden>
+
                                                     <Hidden xsDown>
                                                         {strategy.name}
-                                                    </Hidden>
-                                                    <Hidden xsDown>
-                                                        <HealthCheckIcon
-                                                            strategy={strategy}
-                                                        />
                                                     </Hidden>
                                                 </a>
                                             </Typography>
