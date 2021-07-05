@@ -19,6 +19,19 @@ import { mapContractCalls } from './commonUtils';
 
 import StratABI from './ABI/Strategy.json';
 import TokenABI from './ABI/Token.json';
+import { querySubgraphData } from './apisRequest';
+
+const buildHealthCheckQuery = (strategy: string): string => `
+{
+    strategies(where: {
+      id: "${strategy.toLowerCase()}"
+    }) {
+        id
+        healthCheck
+        doHealthCheck
+      }
+  }
+`;
 
 interface VaultVersionInfo {
     apiVersion: string;
@@ -139,7 +152,8 @@ export const mapStrategiesCalls = (
     strategies: string[],
     contractCallsResults: ContractCallResults,
     strategiesQueueIndexes: Array<StrategyAddressQueueIndex>,
-    strategyMap: Map<string, string>
+    strategyMap: Map<string, string>,
+    healthCheckMap: Map<string, StrategyHealthCheck>
 ): Strategy[] => {
     return strategies.map((address) => {
         const stratData = contractCallsResults.results[address];
@@ -165,6 +179,7 @@ export const mapStrategiesCalls = (
             (queueIndex) =>
                 queueIndex.address.toLowerCase() === address.toLowerCase()
         );
+        const healthCheckInfo = healthCheckMap.get(address);
         const withdrawalQueueIndex =
             strategyWithdrawalQueueIndex === undefined
                 ? -1
@@ -172,11 +187,59 @@ export const mapStrategiesCalls = (
         return {
             ...mappedVaultStratInfo,
             ...mappedStrat,
+            ...healthCheckInfo,
             address,
             params: mappedStratParams,
             withdrawalQueueIndex,
         };
     });
+};
+
+export type StrategyHealthCheck = {
+    id: string;
+    healthCheck: string | null;
+    doHealthCheck: boolean;
+};
+
+type StrategyHealthCheckGraphResult = {
+    data: {
+        strategies: [
+            {
+                id: string;
+                doHealthCheck: boolean;
+                healthCheck: string;
+            }
+        ];
+    };
+};
+
+export const getHealthCheckForStrategy = async (
+    strategy: string
+): Promise<StrategyHealthCheck> => {
+    if (!strategy || strategy === '') {
+        throw new Error(
+            'Error: getHealthCheckForStrategy expected valid strategy address'
+        );
+    }
+    const reportResults: StrategyHealthCheckGraphResult = await querySubgraphData(
+        buildHealthCheckQuery(strategy.toLowerCase())
+    );
+    const hasData =
+        reportResults.data &&
+        reportResults.data.strategies &&
+        reportResults.data.strategies.length > 0;
+
+    const healthCheckInfo: StrategyHealthCheck = {
+        doHealthCheck: false,
+        healthCheck: null,
+        id: strategy,
+    };
+    if (hasData) {
+        const strategyInfo = reportResults.data.strategies[0];
+        healthCheckInfo.doHealthCheck = strategyInfo.doHealthCheck;
+        healthCheckInfo.healthCheck = strategyInfo.healthCheck;
+    }
+    return healthCheckInfo;
 };
 
 const innerGetStrategies = async (addresses: string[]): Promise<Strategy[]> => {
@@ -213,6 +276,15 @@ const innerGetStrategies = async (addresses: string[]): Promise<Strategy[]> => {
         });
     });
 
+    const strategyHealthCheckMap = new Map<string, StrategyHealthCheck>();
+    const healthCheckPromisesResult = addresses.map((address) => {
+        return getHealthCheckForStrategy(address);
+    });
+    const healthCheckResult = await Promise.all(healthCheckPromisesResult);
+    healthCheckResult.forEach((healthCheckInfo) => {
+        strategyHealthCheckMap.set(healthCheckInfo.id, healthCheckInfo);
+    });
+
     const stratParamCalls = buildParamMethodsCall(
         addresses,
         strategyMap,
@@ -239,8 +311,9 @@ const innerGetStrategies = async (addresses: string[]): Promise<Strategy[]> => {
     const mappedStrategies = mapStrategiesCalls(
         addresses,
         mergedResults,
-        [],
-        strategyMap
+        [], // Strategy Queue Indexes
+        strategyMap,
+        strategyHealthCheckMap
     );
 
     return mappedStrategies;
