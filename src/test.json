@@ -44,7 +44,7 @@
         },
         "token": {
             "name": "TrueUSD",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x0000000000085d4780B73119b644AE5ecd22b376/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x0000000000085d4780B73119b644AE5ecd22b376/logo-128.png",
             "symbol": "TUSD",
             "address": "0x0000000000085d4780B73119b644AE5ecd22b376",
             "displayName": "TUSD",
@@ -106,7 +106,7 @@
     },
     {
         "inception": 11674522,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x5f18C75AbDAe578b483E5F43f12a39cF75b973a9/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x5f18C75AbDAe578b483E5F43f12a39cF75b973a9/logo-128.png",
         "symbol": "yvUSDC",
         "apy": {
             "description": "Price per share - One month sample",
@@ -156,7 +156,7 @@
         },
         "token": {
             "name": "USD Coin",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo-128.png",
             "symbol": "USDC",
             "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
             "displayName": "USDC",
@@ -169,7 +169,7 @@
     },
     {
         "inception": 11457948,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x0FCDAeDFb8A7DfDa2e9838564c5A1665d856AFDF/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x0FCDAeDFb8A7DfDa2e9838564c5A1665d856AFDF/logo-128.png",
         "symbol": "yvmusd3CRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -213,7 +213,7 @@
         },
         "token": {
             "name": "Curve.fi MUSD/3Crv",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x1AEf73d49Dedc4b1778d0706583995958Dc862e6/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x1AEf73d49Dedc4b1778d0706583995958Dc862e6/logo-128.png",
             "symbol": "musd3CRV",
             "address": "0x1AEf73d49Dedc4b1778d0706583995958Dc862e6",
             "displayName": "crvMUSD",
@@ -262,7 +262,7 @@
         },
         "token": {
             "name": "Curve.fi ETH/sETH",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xA3D87FffcE63B53E0d54fAa1cc983B7eB0b74A9c/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xA3D87FffcE63B53E0d54fAa1cc983B7eB0b74A9c/logo-128.png",
             "symbol": "eCRV",
             "address": "0xA3D87FffcE63B53E0d54fAa1cc983B7eB0b74A9c",
             "displayName": "crvSETH",
@@ -275,7 +275,7 @@
     },
     {
         "inception": 10559471,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x5dbcF33D8c2E976c6b560249878e6F1491Bca25c/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x5dbcF33D8c2E976c6b560249878e6F1491Bca25c/logo-128.png",
         "symbol": "yyDAI+yUSDC+yUSDT+yTUSD",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -319,7 +319,7 @@
         },
         "token": {
             "name": "Curve.fi yDAI/yUSDC/yUSDT/yTUSD",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8/logo-128.png",
             "symbol": "yDAI+yUSDC+yUSDT+yTUSD",
             "address": "0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8",
             "displayName": "yCRV",
@@ -375,7 +375,7 @@
         },
         "token": {
             "name": "Curve.fi renBTC/wBTC",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x49849C98ae39Fff122806C06791Fa73784FB3675/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x49849C98ae39Fff122806C06791Fa73784FB3675/logo-128.png",
             "symbol": "crvRenWBTC",
             "address": "0x49849C98ae39Fff122806C06791Fa73784FB3675",
             "displayName": "crvRENBTC",
@@ -388,7 +388,7 @@
     },
     {
         "inception": 11505946,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xcC7E70A958917cCe67B4B87a8C30E6297451aE98/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xcC7E70A958917cCe67B4B87a8C30E6297451aE98/logo-128.png",
         "symbol": "yvgusd3CRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -432,7 +432,7 @@
         },
         "token": {
             "name": "Curve.fi GUSD/3Crv",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xD2967f45c4f384DEEa880F807Be904762a3DeA07/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xD2967f45c4f384DEEa880F807Be904762a3DeA07/logo-128.png",
             "symbol": "gusd3CRV",
             "address": "0xD2967f45c4f384DEEa880F807Be904762a3DeA07",
             "displayName": "crvGUSD",
@@ -486,7 +486,7 @@
         },
         "token": {
             "name": "Curve.fi ETH/sETH",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xA3D87FffcE63B53E0d54fAa1cc983B7eB0b74A9c/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xA3D87FffcE63B53E0d54fAa1cc983B7eB0b74A9c/logo-128.png",
             "symbol": "eCRV",
             "address": "0xA3D87FffcE63B53E0d54fAa1cc983B7eB0b74A9c",
             "displayName": "crvSETH",
@@ -499,7 +499,7 @@
     },
     {
         "inception": 11883450,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x03403154afc09Ce8e44C3B185C82C6aD5f86b9ab/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x03403154afc09Ce8e44C3B185C82C6aD5f86b9ab/logo-128.png",
         "symbol": "yva3CRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -543,7 +543,7 @@
         },
         "token": {
             "name": "Curve.fi aDAI/aUSDC/aUSDT",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xFd2a8fA60Abd58Efe3EeE34dd494cD491dC14900/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xFd2a8fA60Abd58Efe3EeE34dd494cD491dC14900/logo-128.png",
             "symbol": "a3CRV",
             "address": "0xFd2a8fA60Abd58Efe3EeE34dd494cD491dC14900",
             "displayName": "crvAAVE",
@@ -597,7 +597,7 @@
         },
         "token": {
             "name": "Uniswap",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984/logo-128.png",
             "symbol": "UNI",
             "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
             "displayName": "UNI",
@@ -610,7 +610,7 @@
     },
     {
         "inception": 10532760,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x597aD1e0c13Bfe8025993D9e79C69E1c0233522e/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x597aD1e0c13Bfe8025993D9e79C69E1c0233522e/logo-128.png",
         "symbol": "yUSDC",
         "apy": {
             "description": "Price per share - One month sample",
@@ -652,7 +652,7 @@
         },
         "token": {
             "name": "USD Coin",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo-128.png",
             "symbol": "USDC",
             "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
             "displayName": "USDC",
@@ -663,7 +663,7 @@
     },
     {
         "inception": 11925258,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xBacB69571323575C6a5A3b4F9EEde1DC7D31FBc1/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xBacB69571323575C6a5A3b4F9EEde1DC7D31FBc1/logo-128.png",
         "symbol": "yvsaCRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -707,7 +707,7 @@
         },
         "token": {
             "name": "Curve.fi aDAI/aSUSD",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x02d341CcB60fAaf662bC0554d13778015d1b285C/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x02d341CcB60fAaf662bC0554d13778015d1b285C/logo-128.png",
             "symbol": "saCRV",
             "address": "0x02d341CcB60fAaf662bC0554d13778015d1b285C",
             "displayName": "crvSAAVE",
@@ -760,7 +760,7 @@
         },
         "token": {
             "name": "Wrapped Ether",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo-128.png",
             "symbol": "WETH",
             "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
             "displayName": "WETH",
@@ -816,7 +816,7 @@
         },
         "token": {
             "name": "Aave Token",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9/logo-128.png",
             "symbol": "AAVE",
             "address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
             "displayName": "AAVE",
@@ -829,7 +829,7 @@
     },
     {
         "inception": 11861570,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x8e6741b456a074F0Bc45B8b82A755d4aF7E965dF/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x8e6741b456a074F0Bc45B8b82A755d4aF7E965dF/logo-128.png",
         "symbol": "yvdusd3CRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -873,7 +873,7 @@
         },
         "token": {
             "name": "Curve.fi DUSD/3Crv",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x3a664Ab939FD8482048609f652f9a0B0677337B9/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x3a664Ab939FD8482048609f652f9a0B0677337B9/logo-128.png",
             "symbol": "dusd3CRV",
             "address": "0x3a664Ab939FD8482048609f652f9a0B0677337B9",
             "displayName": "crvDUSD",
@@ -884,7 +884,7 @@
     },
     {
         "inception": 10774539,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xe1237aA7f535b0CC33Fd973D66cBf830354D16c7/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xe1237aA7f535b0CC33Fd973D66cBf830354D16c7/logo-128.png",
         "symbol": "yWETH",
         "apy": {
             "description": "Price per share - One month sample",
@@ -926,7 +926,7 @@
         },
         "token": {
             "name": "Wrapped Ether",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo-128.png",
             "symbol": "WETH",
             "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
             "displayName": "WETH",
@@ -937,7 +937,7 @@
     },
     {
         "inception": 11794543,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xFe39Ce91437C76178665D64d7a2694B0f6f17fE3/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xFe39Ce91437C76178665D64d7a2694B0f6f17fE3/logo-128.png",
         "symbol": "yvusdn3CRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -981,7 +981,7 @@
         },
         "token": {
             "name": "Curve.fi USDN/3Crv",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x4f3E8F405CF5aFC05D68142F3783bDfE13811522/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x4f3E8F405CF5aFC05D68142F3783bDfE13811522/logo-128.png",
             "symbol": "usdn3CRV",
             "address": "0x4f3E8F405CF5aFC05D68142F3783bDfE13811522",
             "displayName": "crvUSDN",
@@ -992,7 +992,7 @@
     },
     {
         "inception": 11682487,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xe11ba472F74869176652C35D30dB89854b5ae84D/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xe11ba472F74869176652C35D30dB89854b5ae84D/logo-128.png",
         "symbol": "yvHEGIC",
         "apy": {
             "description": "Price per share - One month sample",
@@ -1042,7 +1042,7 @@
         },
         "token": {
             "name": "Hegic",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x584bC13c7D411c00c01A62e8019472dE68768430/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x584bC13c7D411c00c01A62e8019472dE68768430/logo-128.png",
             "symbol": "HEGIC",
             "address": "0x584bC13c7D411c00c01A62e8019472dE68768430",
             "displayName": "HEGIC",
@@ -1055,7 +1055,7 @@
     },
     {
         "inception": 11219034,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x629c759D1E83eFbF63d84eb3868B564d9521C129/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x629c759D1E83eFbF63d84eb3868B564d9521C129/logo-128.png",
         "symbol": "yvcDAI+cUSDC",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -1099,7 +1099,7 @@
         },
         "token": {
             "name": "Curve.fi cDAI/cUSDC",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x845838DF265Dcd2c412A1Dc9e959c7d08537f8a2/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x845838DF265Dcd2c412A1Dc9e959c7d08537f8a2/logo-128.png",
             "symbol": "cDAI+cUSDC",
             "address": "0x845838DF265Dcd2c412A1Dc9e959c7d08537f8a2",
             "displayName": "crvCOMP",
@@ -1153,7 +1153,7 @@
         },
         "token": {
             "name": "Ocean Token",
-            "icon": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x967da4048cD07aB37855c090aAF366e4ce1b9F48/logo.png",
+            "icon": "https://rawcdn.githack.com/trustwallet/assets/master/blockchains/ethereum/assets/0x967da4048cD07aB37855c090aAF366e4ce1b9F48/logo.png",
             "symbol": "OCEAN",
             "address": "0x967da4048cD07aB37855c090aAF366e4ce1b9F48",
             "displayName": "OCEAN",
@@ -1209,7 +1209,7 @@
         },
         "token": {
             "name": "Wrapped BTC",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo-128.png",
             "symbol": "WBTC",
             "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
             "displayName": "WBTC",
@@ -1264,7 +1264,7 @@
         },
         "token": {
             "name": "Synthetix Network Token",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F/logo-128.png",
             "symbol": "SNX",
             "address": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
             "displayName": "SNX",
@@ -1277,7 +1277,7 @@
     },
     {
         "inception": 11810257,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xF6C9E9AF314982A4b38366f4AbfAa00595C5A6fC/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xF6C9E9AF314982A4b38366f4AbfAa00595C5A6fC/logo-128.png",
         "symbol": "yvust3CRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -1321,7 +1321,7 @@
         },
         "token": {
             "name": "Curve.fi UST/3Crv",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x94e131324b6054c0D789b190b2dAC504e4361b53/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x94e131324b6054c0D789b190b2dAC504e4361b53/logo-128.png",
             "symbol": "ust3CRV",
             "address": "0x94e131324b6054c0D789b190b2dAC504e4361b53",
             "displayName": "crvUST",
@@ -1332,7 +1332,7 @@
     },
     {
         "inception": 11992804,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x96Ea6AF74Af09522fCB4c28C269C26F59a31ced6/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x96Ea6AF74Af09522fCB4c28C269C26F59a31ced6/logo-128.png",
         "symbol": "yvlinkCRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -1376,7 +1376,7 @@
         },
         "token": {
             "name": "Curve.fi LINK/sLINK",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xcee60cFa923170e4f8204AE08B4fA6A3F5656F3a/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xcee60cFa923170e4f8204AE08B4fA6A3F5656F3a/logo-128.png",
             "symbol": "linkCRV",
             "address": "0xcee60cFa923170e4f8204AE08B4fA6A3F5656F3a",
             "displayName": "crvLINK",
@@ -1387,7 +1387,7 @@
     },
     {
         "inception": 11039342,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x9cA85572E6A3EbF24dEDd195623F188735A5179f/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x9cA85572E6A3EbF24dEDd195623F188735A5179f/logo-128.png",
         "symbol": "y3Crv",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -1431,7 +1431,7 @@
         },
         "token": {
             "name": "Curve.fi DAI/USDC/USDT",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x6c3F90f043a72FA612cbac8115EE7e52BDe6E490/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x6c3F90f043a72FA612cbac8115EE7e52BDe6E490/logo-128.png",
             "symbol": "3Crv",
             "address": "0x6c3F90f043a72FA612cbac8115EE7e52BDe6E490",
             "displayName": "3Crv",
@@ -1485,7 +1485,7 @@
         },
         "token": {
             "name": "Huobi BTC",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x0316EB71485b0Ab14103307bf65a021042c6d380/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x0316EB71485b0Ab14103307bf65a021042c6d380/logo-128.png",
             "symbol": "HBTC",
             "address": "0x0316EB71485b0Ab14103307bf65a021042c6d380",
             "displayName": "HBTC",
@@ -1498,7 +1498,7 @@
     },
     {
         "inception": 11674216,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x19D3364A399d251E894aC732651be8B0E4e85001/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x19D3364A399d251E894aC732651be8B0E4e85001/logo-128.png",
         "symbol": "yvDAI",
         "apy": {
             "description": "Price per share - One month sample",
@@ -1552,7 +1552,7 @@
         },
         "token": {
             "name": "Dai Stablecoin",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo-128.png",
             "symbol": "DAI",
             "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
             "displayName": "DAI",
@@ -1608,7 +1608,7 @@
         },
         "token": {
             "name": "Synth sUSD",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x57Ab1ec28D129707052df4dF418D58a2D46d5f51/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x57Ab1ec28D129707052df4dF418D58a2D46d5f51/logo-128.png",
             "symbol": "sUSD",
             "address": "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51",
             "displayName": "sUSD",
@@ -1667,7 +1667,7 @@
         },
         "token": {
             "name": "1INCH Token",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x111111111117dC0aa78b770fA6A738034120C302/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x111111111117dC0aa78b770fA6A738034120C302/logo-128.png",
             "symbol": "1INCH",
             "address": "0x111111111117dC0aa78b770fA6A738034120C302",
             "displayName": "1INCH",
@@ -1680,7 +1680,7 @@
     },
     {
         "inception": 11805948,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x7F83935EcFe4729c4Ea592Ab2bC1A32588409797/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x7F83935EcFe4729c4Ea592Ab2bC1A32588409797/logo-128.png",
         "symbol": "yvoBTC/sbtcCRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -1724,7 +1724,7 @@
         },
         "token": {
             "name": "Curve.fi oBTC/sbtcCRV",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x2fE94ea3d5d4a175184081439753DE15AeF9d614/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x2fE94ea3d5d4a175184081439753DE15AeF9d614/logo-128.png",
             "symbol": "oBTC/sbtcCRV",
             "address": "0x2fE94ea3d5d4a175184081439753DE15AeF9d614",
             "displayName": "crvOBTC",
@@ -1777,7 +1777,7 @@
         },
         "token": {
             "name": "Wrapped BTC",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo-128.png",
             "symbol": "WBTC",
             "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
             "displayName": "WBTC",
@@ -1790,7 +1790,7 @@
     },
     {
         "inception": 10735275,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x7Ff566E1d69DEfF32a7b244aE7276b9f90e9D0f6/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x7Ff566E1d69DEfF32a7b244aE7276b9f90e9D0f6/logo-128.png",
         "symbol": "ycrvRenWSBTC",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -1834,7 +1834,7 @@
         },
         "token": {
             "name": "Curve.fi renBTC/wBTC/sBTC",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x075b1bb99792c9E1041bA13afEf80C91a1e70fB3/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x075b1bb99792c9E1041bA13afEf80C91a1e70fB3/logo-128.png",
             "symbol": "crvRenWSBTC",
             "address": "0x075b1bb99792c9E1041bA13afEf80C91a1e70fB3",
             "displayName": "crvSBTC",
@@ -1845,7 +1845,7 @@
     },
     {
         "inception": 11850069,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x5533ed0a3b83F70c3c4a1f69Ef5546D3D4713E44/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x5533ed0a3b83F70c3c4a1f69Ef5546D3D4713E44/logo-128.png",
         "symbol": "yvcrvPlain3andSUSD",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -1889,7 +1889,7 @@
         },
         "token": {
             "name": "Curve.fi DAI/USDC/USDT/sUSD",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xC25a3A3b969415c80451098fa907EC722572917F/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xC25a3A3b969415c80451098fa907EC722572917F/logo-128.png",
             "symbol": "crvPlain3andSUSD",
             "address": "0xC25a3A3b969415c80451098fa907EC722572917F",
             "displayName": "crvSUSD",
@@ -1900,7 +1900,7 @@
     },
     {
         "inception": 11922048,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xa9fE4601811213c340e850ea305481afF02f5b28/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xa9fE4601811213c340e850ea305481afF02f5b28/logo-128.png",
         "symbol": "yvWETH",
         "apy": {
             "description": "Price per share - One month sample",
@@ -1950,7 +1950,7 @@
         },
         "token": {
             "name": "Wrapped Ether",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo-128.png",
             "symbol": "WETH",
             "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
             "displayName": "WETH",
@@ -2005,7 +2005,7 @@
         },
         "token": {
             "name": "Wrapped Ether",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo-128.png",
             "symbol": "WETH",
             "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
             "displayName": "WETH",
@@ -2018,7 +2018,7 @@
     },
     {
         "inception": 10651473,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x2f08119C6f07c006695E079AAFc638b8789FAf18/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x2f08119C6f07c006695E079AAFc638b8789FAf18/logo-128.png",
         "symbol": "yUSDT",
         "apy": {
             "description": "Price per share - One month sample",
@@ -2060,7 +2060,7 @@
         },
         "token": {
             "name": "Tether USD",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo-128.png",
             "symbol": "USDT",
             "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
             "displayName": "USDT",
@@ -2071,7 +2071,7 @@
     },
     {
         "inception": -1,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xc5bDdf9843308380375a611c18B50Fb9341f502A/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xc5bDdf9843308380375a611c18B50Fb9341f502A/logo-128.png",
         "symbol": "yveCRV",
         "apy": {
             "description": "yveCRV Admin Fees",
@@ -2101,7 +2101,7 @@
         },
         "token": {
             "name": "Curve DAO Token",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xD533a949740bb3306d119CC777fa900bA034cd52/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xD533a949740bb3306d119CC777fa900bA034cd52/logo-128.png",
             "symbol": "CRV",
             "address": "0xD533a949740bb3306d119CC777fa900bA034cd52",
             "displayName": "CRV",
@@ -2112,7 +2112,7 @@
     },
     {
         "inception": 11806089,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x46AFc2dfBd1ea0c0760CAD8262A5838e803A37e5/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x46AFc2dfBd1ea0c0760CAD8262A5838e803A37e5/logo-128.png",
         "symbol": "yvhCRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -2156,7 +2156,7 @@
         },
         "token": {
             "name": "Curve.fi hBTC/wBTC",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xb19059ebb43466C323583928285a49f558E572Fd/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xb19059ebb43466C323583928285a49f558E572Fd/logo-128.png",
             "symbol": "hCRV",
             "address": "0xb19059ebb43466C323583928285a49f558E572Fd",
             "displayName": "crvHBTC",
@@ -2167,7 +2167,7 @@
     },
     {
         "inception": 11949653,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x123964EbE096A920dae00Fb795FFBfA0c9Ff4675/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x123964EbE096A920dae00Fb795FFBfA0c9Ff4675/logo-128.png",
         "symbol": "yvpBTC/sbtcCRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -2211,7 +2211,7 @@
         },
         "token": {
             "name": "Curve.fi pBTC/sbtcCRV",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xDE5331AC4B3630f94853Ff322B66407e0D6331E8/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xDE5331AC4B3630f94853Ff322B66407e0D6331E8/logo-128.png",
             "symbol": "pBTC/sbtcCRV",
             "address": "0xDE5331AC4B3630f94853Ff322B66407e0D6331E8",
             "displayName": "crvPBTC",
@@ -2260,7 +2260,7 @@
         },
         "token": {
             "name": "ChainLink Token",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x514910771AF9Ca656af840dff83E8264EcF986CA/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x514910771AF9Ca656af840dff83E8264EcF986CA/logo-128.png",
             "symbol": "LINK",
             "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
             "displayName": "LINK",
@@ -2273,7 +2273,7 @@
     },
     {
         "inception": 11662420,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x98B058b2CBacF5E99bC7012DF757ea7CFEbd35BC/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x98B058b2CBacF5E99bC7012DF757ea7CFEbd35BC/logo-128.png",
         "symbol": "yveursCRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -2317,7 +2317,7 @@
         },
         "token": {
             "name": "Curve.fi EURS/sEUR",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x194eBd173F6cDacE046C53eACcE9B953F28411d1/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x194eBd173F6cDacE046C53eACcE9B953F28411d1/logo-128.png",
             "symbol": "eursCRV",
             "address": "0x194eBd173F6cDacE046C53eACcE9B953F28411d1",
             "displayName": "crvEURS",
@@ -2328,7 +2328,7 @@
     },
     {
         "inception": -1,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x07FB4756f67bD46B748b16119E802F1f880fb2CC/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x07FB4756f67bD46B748b16119E802F1f880fb2CC/logo-128.png",
         "symbol": "yvtbtc/sbtcCrv",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -2372,7 +2372,7 @@
         },
         "token": {
             "name": "Curve.fi tBTC/sbtcCrv",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x64eda51d3Ad40D56b9dFc5554E06F94e1Dd786Fd/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x64eda51d3Ad40D56b9dFc5554E06F94e1Dd786Fd/logo-128.png",
             "symbol": "tbtc/sbtcCrv",
             "address": "0x64eda51d3Ad40D56b9dFc5554E06F94e1Dd786Fd",
             "displayName": "crvTBTC",
@@ -2383,7 +2383,7 @@
     },
     {
         "inception": 11926130,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x39546945695DCb1c037C836925B355262f551f55/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x39546945695DCb1c037C836925B355262f551f55/logo-128.png",
         "symbol": "yvhusd3CRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -2427,7 +2427,7 @@
         },
         "token": {
             "name": "Curve.fi HUSD/3Crv",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x5B5CFE992AdAC0C9D48E05854B2d91C73a003858/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x5B5CFE992AdAC0C9D48E05854B2d91C73a003858/logo-128.png",
             "symbol": "husd3CRV",
             "address": "0x5B5CFE992AdAC0C9D48E05854B2d91C73a003858",
             "displayName": "crvHUSD",
@@ -2438,7 +2438,7 @@
     },
     {
         "inception": 10603467,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x37d19d1c4E1fa9DC47bD1eA12f742a0887eDa74a/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x37d19d1c4E1fa9DC47bD1eA12f742a0887eDa74a/logo-128.png",
         "symbol": "yTUSD",
         "apy": {
             "description": "Price per share - One month sample",
@@ -2480,7 +2480,7 @@
         },
         "token": {
             "name": "TrueUSD",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x0000000000085d4780B73119b644AE5ecd22b376/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x0000000000085d4780B73119b644AE5ecd22b376/logo-128.png",
             "symbol": "TUSD",
             "address": "0x0000000000085d4780B73119b644AE5ecd22b376",
             "displayName": "TUSD",
@@ -2491,7 +2491,7 @@
     },
     {
         "inception": 11769265,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xA8B1Cb4ed612ee179BDeA16CCa6Ba596321AE52D/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xA8B1Cb4ed612ee179BDeA16CCa6Ba596321AE52D/logo-128.png",
         "symbol": "yvbBTC/sbtcCRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -2535,7 +2535,7 @@
         },
         "token": {
             "name": "Curve.fi bBTC/sbtcCRV",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x410e3E86ef427e30B9235497143881f717d93c2A/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x410e3E86ef427e30B9235497143881f717d93c2A/logo-128.png",
             "symbol": "bBTC/sbtcCRV",
             "address": "0x410e3E86ef427e30B9235497143881f717d93c2A",
             "displayName": "crvBBTC",
@@ -2546,7 +2546,7 @@
     },
     {
         "inception": 11773610,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xcB550A6D4C8e3517A939BC79d0c7093eb7cF56B5/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xcB550A6D4C8e3517A939BC79d0c7093eb7cF56B5/logo-128.png",
         "symbol": "yvWBTC",
         "apy": {
             "description": "Price per share - One month sample",
@@ -2588,7 +2588,7 @@
         },
         "token": {
             "name": "Wrapped BTC",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo-128.png",
             "symbol": "WBTC",
             "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
             "displayName": "WBTC",
@@ -2601,7 +2601,7 @@
     },
     {
         "inception": 10604055,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x881b06da56BB5675c54E4Ed311c21E54C5025298/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x881b06da56BB5675c54E4Ed311c21E54C5025298/logo-128.png",
         "symbol": "yLINK",
         "apy": {
             "description": "Price per share - One month sample",
@@ -2643,7 +2643,7 @@
         },
         "token": {
             "name": "ChainLink Token",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x514910771AF9Ca656af840dff83E8264EcF986CA/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x514910771AF9Ca656af840dff83E8264EcF986CA/logo-128.png",
             "symbol": "LINK",
             "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
             "displayName": "LINK",
@@ -2654,7 +2654,7 @@
     },
     {
         "inception": 11870118,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x986b4AFF588a109c09B50A03f42E4110E29D353F/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x986b4AFF588a109c09B50A03f42E4110E29D353F/logo-128.png",
         "symbol": "yveCRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -2697,7 +2697,7 @@
         },
         "token": {
             "name": "Curve.fi ETH/sETH",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xA3D87FffcE63B53E0d54fAa1cc983B7eB0b74A9c/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xA3D87FffcE63B53E0d54fAa1cc983B7eB0b74A9c/logo-128.png",
             "symbol": "eCRV",
             "address": "0xA3D87FffcE63B53E0d54fAa1cc983B7eB0b74A9c",
             "displayName": "crvSETH",
@@ -2748,7 +2748,7 @@
         },
         "token": {
             "name": "Synth sUSD",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x57Ab1ec28D129707052df4dF418D58a2D46d5f51/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x57Ab1ec28D129707052df4dF418D58a2D46d5f51/logo-128.png",
             "symbol": "sUSD",
             "address": "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51",
             "displayName": "sUSD",
@@ -2761,7 +2761,7 @@
     },
     {
         "inception": 11655023,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xdCD90C7f6324cfa40d7169ef80b12031770B4325/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xdCD90C7f6324cfa40d7169ef80b12031770B4325/logo-128.png",
         "symbol": "yvsteCRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -2804,7 +2804,7 @@
         },
         "token": {
             "name": "Curve.fi ETH/stETH",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x06325440D014e39736583c165C2963BA99fAf14E/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x06325440D014e39736583c165C2963BA99fAf14E/logo-128.png",
             "symbol": "steCRV",
             "address": "0x06325440D014e39736583c165C2963BA99fAf14E",
             "displayName": "crvSTETH",
@@ -2817,7 +2817,7 @@
     },
     {
         "inception": 10650221,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xACd43E627e64355f1861cEC6d3a6688B31a6F952/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xACd43E627e64355f1861cEC6d3a6688B31a6F952/logo-128.png",
         "symbol": "yDAI",
         "apy": {
             "description": "Price per share - One month sample",
@@ -2859,7 +2859,7 @@
         },
         "token": {
             "name": "Dai Stablecoin",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo-128.png",
             "symbol": "DAI",
             "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
             "displayName": "DAI",
@@ -2917,7 +2917,7 @@
     },
     {
         "inception": 11974933,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x1B5eb1173D2Bf770e50F10410C9a96F7a8eB6e75/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x1B5eb1173D2Bf770e50F10410C9a96F7a8eB6e75/logo-128.png",
         "symbol": "yvusdp3CRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -2961,7 +2961,7 @@
         },
         "token": {
             "name": "Curve.fi USDP/3Crv",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x7Eb40E450b9655f4B3cC4259BCC731c63ff55ae6/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x7Eb40E450b9655f4B3cC4259BCC731c63ff55ae6/logo-128.png",
             "symbol": "usdp3CRV",
             "address": "0x7Eb40E450b9655f4B3cC4259BCC731c63ff55ae6",
             "displayName": "crvUSDP",
@@ -2972,7 +2972,7 @@
     },
     {
         "inception": 10716120,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x2994529C0652D127b7842094103715ec5299bBed/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x2994529C0652D127b7842094103715ec5299bBed/logo-128.png",
         "symbol": "yyDAI+yUSDC+yUSDT+yBUSD",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -3016,7 +3016,7 @@
         },
         "token": {
             "name": "Curve.fi yDAI/yUSDC/yUSDT/yBUSD",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x3B3Ac5386837Dc563660FB6a0937DFAa5924333B/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x3B3Ac5386837Dc563660FB6a0937DFAa5924333B/logo-128.png",
             "symbol": "yDAI+yUSDC+yUSDT+yBUSD",
             "address": "0x3B3Ac5386837Dc563660FB6a0937DFAa5924333B",
             "displayName": "crvBUSD",
@@ -3121,7 +3121,7 @@
         },
         "token": {
             "name": "SushiToken",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x6B3595068778DD592e39A122f4f5a5cF09C90fE2/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x6B3595068778DD592e39A122f4f5a5cF09C90fE2/logo-128.png",
             "symbol": "SUSHI",
             "address": "0x6B3595068778DD592e39A122f4f5a5cF09C90fE2",
             "displayName": "SUSHI",
@@ -3134,7 +3134,7 @@
     },
     {
         "inception": 11993427,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xE14d13d8B3b85aF791b2AADD661cDBd5E6097Db1/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xE14d13d8B3b85aF791b2AADD661cDBd5E6097Db1/logo-128.png",
         "symbol": "yvYFI",
         "apy": {
             "description": "Price per share - One month sample",
@@ -3180,7 +3180,7 @@
         },
         "token": {
             "name": "yearn.finance",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e/logo-128.png",
             "symbol": "YFI",
             "address": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
             "displayName": "YFI",
@@ -3193,7 +3193,7 @@
     },
     {
         "inception": 11860576,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xE625F5923303f1CE7A43ACFEFd11fd12f30DbcA4/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xE625F5923303f1CE7A43ACFEFd11fd12f30DbcA4/logo-128.png",
         "symbol": "yvankrCRV",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -3237,7 +3237,7 @@
         },
         "token": {
             "name": "Curve.fi ETH/aETH",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xaA17A236F2bAdc98DDc0Cf999AbB47D47Fc0A6Cf/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xaA17A236F2bAdc98DDc0Cf999AbB47D47Fc0A6Cf/logo-128.png",
             "symbol": "ankrCRV",
             "address": "0xaA17A236F2bAdc98DDc0Cf999AbB47D47Fc0A6Cf",
             "displayName": "crvANKR",
@@ -3248,7 +3248,7 @@
     },
     {
         "inception": 10599657,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x29E240CFD7946BA20895a7a02eDb25C210f9f324/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x29E240CFD7946BA20895a7a02eDb25C210f9f324/logo-128.png",
         "symbol": "yaLINK",
         "apy": {
             "description": "Price per share - One month sample",
@@ -3290,7 +3290,7 @@
         },
         "token": {
             "name": "Aave Interest bearing LINK",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xA64BD6C70Cb9051F6A9ba1F163Fdc07E0DfB5F84/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xA64BD6C70Cb9051F6A9ba1F163Fdc07E0DfB5F84/logo-128.png",
             "symbol": "aLINK",
             "address": "0xA64BD6C70Cb9051F6A9ba1F163Fdc07E0DfB5F84",
             "displayName": "aLINK",
@@ -3344,7 +3344,7 @@
         },
         "token": {
             "name": "Tether USD",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo-128.png",
             "symbol": "USDT",
             "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
             "displayName": "USDT",
@@ -3357,7 +3357,7 @@
     },
     {
         "inception": 10695285,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xBA2E7Fed597fd0E3e70f5130BcDbbFE06bB94fe1/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xBA2E7Fed597fd0E3e70f5130BcDbbFE06bB94fe1/logo-128.png",
         "symbol": "yYFI",
         "apy": {
             "description": "Price per share - One month sample",
@@ -3399,7 +3399,7 @@
         },
         "token": {
             "name": "yearn.finance",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e/logo-128.png",
             "symbol": "YFI",
             "address": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
             "displayName": "YFI",
@@ -3448,7 +3448,7 @@
         },
         "token": {
             "name": "Curve.fi ETH/sETH",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xA3D87FffcE63B53E0d54fAa1cc983B7eB0b74A9c/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xA3D87FffcE63B53E0d54fAa1cc983B7eB0b74A9c/logo-128.png",
             "symbol": "eCRV",
             "address": "0xA3D87FffcE63B53E0d54fAa1cc983B7eB0b74A9c",
             "displayName": "crvSETH",
@@ -3461,7 +3461,7 @@
     },
     {
         "inception": 11841312,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x5334e150B938dd2b6bd040D9c4a03Cff0cED3765/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x5334e150B938dd2b6bd040D9c4a03Cff0cED3765/logo-128.png",
         "symbol": "yvcrvRenWBTC",
         "apy": {
             "description": "Pool APY + Boosted CRV APY",
@@ -3505,7 +3505,7 @@
         },
         "token": {
             "name": "Curve.fi renBTC/wBTC",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0x49849C98ae39Fff122806C06791Fa73784FB3675/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0x49849C98ae39Fff122806C06791Fa73784FB3675/logo-128.png",
             "symbol": "crvRenWBTC",
             "address": "0x49849C98ae39Fff122806C06791Fa73784FB3675",
             "displayName": "crvRENBTC",
@@ -3516,7 +3516,7 @@
     },
     {
         "inception": 11777410,
-        "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xE0db48B4F71752C4bEf16De1DBD042B82976b8C7/logo-128.png",
+        "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xE0db48B4F71752C4bEf16De1DBD042B82976b8C7/logo-128.png",
         "symbol": "yvmUSD",
         "apy": {
             "description": "Price per share - One month sample",
@@ -3558,7 +3558,7 @@
         },
         "token": {
             "name": "mStable USD",
-            "icon": "https://raw.githack.com/yearn/yearn-assets/master/icons/tokens/0xe2f2a5C287993345a840Db3B0845fbC70f5935a5/logo-128.png",
+            "icon": "https://rawcdn.githack.com/yearn/yearn-assets/master/icons/tokens/0xe2f2a5C287993345a840Db3B0845fbC70f5935a5/logo-128.png",
             "symbol": "mUSD",
             "address": "0xe2f2a5C287993345a840Db3B0845fbC70f5935a5",
             "displayName": "mUSD",
