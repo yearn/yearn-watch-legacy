@@ -8,14 +8,21 @@ export const getTokenUnitPrice = async (token: Token): Promise<BigNumber> => {
     try {
         const oracle = getOracleInstance();
         const result = await oracle.getPriceUsdcRecommended(token.address);
-        await new Promise((resolve, reject) => {
-            setTimeout(() => resolve('done'), 10000);
-        });
         return toUnits(result, USDC_DECIMALS);
     } catch (error) {
         console.error(error);
         return new BigNumber(0);
     }
+};
+
+export const getTokenUnitPrices = async (
+    tokens: Token[]
+): Promise<BigNumber[]> => {
+    const result = new Array<BigNumber>();
+    for (const token of tokens) {
+        result.push(await getTokenUnitPrice(token));
+    }
+    return result;
 };
 
 export const getTokenPrice = async (
