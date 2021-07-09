@@ -6,6 +6,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { Typography } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 
+import TokenPrice from '../../common/TokenPrice';
 import { checkLabel } from '../../../utils/checks';
 import { formatBPS, displayAmount, sub } from '../../../utils/commonUtils';
 import Table from '../../common/Table';
@@ -19,8 +20,6 @@ interface VaultDescriptionProps {
 
 export const VaultDescription = (props: VaultDescriptionProps) => {
     const { vault } = props;
-
-    console.log('vault', vault);
 
     const renderErrors = () =>
         vault &&
@@ -195,6 +194,15 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                             </TableCell>
                         </MediaQuery>
                     </TableRow>
+                    {vault ? (
+                        <TokenPrice
+                            label="Total Assets (USD):"
+                            token={vault.token}
+                            amount={vault.totalAssets}
+                        />
+                    ) : (
+                        ''
+                    )}
                     <TableRow>
                         <TableCell>
                             Management fee:

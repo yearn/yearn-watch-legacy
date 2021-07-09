@@ -1,6 +1,10 @@
 import VaultABI_030 from './ABI/VaultAPI_030.json';
 import VaultABI_032 from './ABI/VaultAPI_032.json';
 import StrategiesHelper from './ABI/StrategiesHelper.json';
+import Oracle from './ABI/Oracle.json';
+import { Contract } from 'ethers';
+import { ORACLE_CONTRACT_ADDRESS } from './commonUtils';
+import { getEthersDefaultProvider } from './ethers';
 
 export const v0_3_2 = '0.3.2';
 
@@ -19,3 +23,10 @@ export const getABI = (apiVersion: string = v0_3_2): any => {
 };
 
 export const getABIStrategiesHelper = (): any => StrategiesHelper;
+
+export const getABIOracle = (): any => Oracle;
+
+export const getOracleInstance = (): Contract => {
+    const provider = getEthersDefaultProvider();
+    return new Contract(ORACLE_CONTRACT_ADDRESS, getABIOracle(), provider);
+};
