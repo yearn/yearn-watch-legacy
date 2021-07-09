@@ -34,8 +34,11 @@ const useStyles = makeStyles({
 const ProgressBars = (props: any) => {
     const classes = useStyles();
     const vault = props.vault;
-    const value = vault ? vault.totalAssets / vault.depositLimit : '';
-    const p = value ? value * 100 : '';
+    const value =
+        vault && vault.depositLimit > 0
+            ? vault.totalAssets / vault.depositLimit
+            : 1;
+    const p = value * 100;
     const f = p ? parseInt(p.toFixed(0)) : 0;
     return (
         <div className={classes.root}>

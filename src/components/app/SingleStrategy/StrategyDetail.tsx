@@ -4,6 +4,7 @@ import EtherScanLink from '../../common/EtherScanLink';
 import { formatBPS, displayAmount } from '../../../utils/commonUtils';
 import CardContent from './CardContent';
 import { Strategy } from '../../../types';
+import TokenPrice from '../../common/TokenPrice';
 
 type StrategyDetailProps = {
     strategy: Strategy;
@@ -137,6 +138,13 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
         ''
     );
     const vaults = strategy ? <EtherScanLink address={strategy.vault} /> : '';
+    const tokenPrice = (
+        <TokenPrice
+            label="Total Estimated Assets (USD):"
+            token={strategy.token}
+            amount={strategy.estimatedTotalAssets}
+        />
+    );
     const data = [
         { key: 'API Version:', value: apiVersion },
         { key: ' Activation Date', value: activationDate },
@@ -144,10 +152,15 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
         { key: ' Emergency exit:', value: emergencyExit },
         { key: ' Active:', value: isActive },
         { key: ' Total Estimated Assets:', value: estimatedAsset },
+        {
+            key: ' Total Estimated Assets (USD):',
+            value: tokenPrice,
+            render: true,
+        },
         { key: ' Credit Available:', value: creditAvailable },
         { key: ' Debt Outstanding:', value: debtOutstanding },
         { key: ' Debt Ratio:', value: debtRatio },
-        { key: 'Total Debt::', value: totalDebt },
+        { key: ' Total Debt:', value: totalDebt },
         { key: ' Total Gain:', value: totalGain },
         { key: ' Total Loss:', value: totalLoss },
         { key: ' Expected Return:', value: expectReturn },

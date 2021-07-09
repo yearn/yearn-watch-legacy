@@ -159,7 +159,10 @@ export const mapStrategiesCalls = (
         const tokenData = contractCallsResults.results[mappedStrat.want];
         if (tokenData) {
             const token = mapContractCalls(tokenData);
-            mappedStrat.token = token;
+            mappedStrat.token = {
+                ...token,
+                address: mappedStrat.want,
+            };
         }
         const strategyWithdrawalQueueIndex = strategiesQueueIndexes.find(
             (queueIndex) =>

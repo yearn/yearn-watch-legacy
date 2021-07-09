@@ -3,7 +3,7 @@ import {
     ContractCallReturnContext,
 } from 'ethereum-multicall';
 import { get } from 'lodash';
-import { BigNumber, constants } from 'ethers';
+import { BigNumber, BigNumberish, constants } from 'ethers';
 import { BigNumber as BN } from 'bignumber.js';
 import { StrategyAddressQueueIndex, VaultApi } from '../types';
 import {
@@ -12,6 +12,21 @@ import {
 } from 'ethereum-multicall/dist/models';
 import { getABIStrategiesHelper } from './abi';
 import { values } from 'lodash';
+
+export const USDC_DECIMALS = 6;
+export const USDC_ADDRESS = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48';
+
+export const isUSDC = (token: string): boolean => {
+    return token.toLowerCase() === USDC_ADDRESS;
+};
+
+export const toUnits = (amount: BigNumberish, decimals: number): BN => {
+    return new BN(amount.toString()).div(new BN(10).pow(decimals));
+};
+
+export const toDecimals = (amount: BigNumberish, decimals: number): BN => {
+    return new BN(amount.toString()).times(new BN(10).pow(decimals));
+};
 
 export const extractAddress = (address: string) => {
     return (
@@ -69,6 +84,9 @@ export const mapContractCalls = (result: ContractCallReturnContext) => {
     });
     return mappedObj;
 };
+
+export const ORACLE_CONTRACT_ADDRESS =
+    '0x83d95e0D5f402511dB06817Aff3f9eA88224B030';
 
 const STRATEGIES_HELPER_CONTRACT_ADDRESS =
     '0xae813841436fe29b95a14AC701AFb1502C4CB789';

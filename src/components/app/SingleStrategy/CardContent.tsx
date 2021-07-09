@@ -8,6 +8,7 @@ import MediaQuery from 'react-responsive';
 type KeyValue = {
     key: string;
     value: string | JSX.Element;
+    render?: boolean;
 };
 
 type CardContentProps = {
@@ -22,6 +23,10 @@ const CardContent = (props: CardContentProps) => {
             <Table>
                 <TableHead>
                     {data.map((res: KeyValue, index: number) => {
+                        const { render = false } = res;
+                        if (render) {
+                            return res.value;
+                        }
                         return (
                             <TableRow key={index}>
                                 <TableCell>
