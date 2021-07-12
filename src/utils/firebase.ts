@@ -17,7 +17,7 @@ if (firebase.apps.length === 0) {
     firebase.initializeApp(config);
 }
 
-export const scores = firebase?.firestore().collection('scores');
+export const groupings = firebase?.firestore().collection('groupings');
 console.log('connection initialized');
 
 export default firebase;

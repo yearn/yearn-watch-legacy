@@ -1,7 +1,8 @@
 // Import FirebaseAuth and firebase.
 import React, { useEffect, useState } from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import firebase, { scores } from '../../../utils/firebase';
+import { Typography } from '@material-ui/core';
+import firebase, { groupings } from '../../../utils/firebase';
 
 // Configure FirebaseUI.
 const uiConfig = {
@@ -17,15 +18,15 @@ const uiConfig = {
 
 const SignInScreen = () => {
     const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
-    const [score, setScore] = useState<any>(null); // Local signed-in state.
+    const [groups, setGroupings] = useState<any>(null); // Local signed-in state.
 
-    console.log('score', score);
-    if (isSignedIn && !score) {
-        console.log('load score');
-        scores
-            .doc('1')
+    console.log('groups', groups);
+    if (isSignedIn && !groups) {
+        console.log('load groupings');
+        groupings
+            .doc('default')
             .get()
-            .then((result) => setScore(result.data()));
+            .then((result) => setGroupings(result.data()));
     }
 
     // Listen to the Firebase Auth state and set the local state.
@@ -41,8 +42,10 @@ const SignInScreen = () => {
     if (!isSignedIn) {
         return (
             <div>
-                <h1>My App</h1>
-                <p>Please sign-in:</p>
+                <Typography style={{ color: '#fff' }}>
+                    <p>Please sign-in:</p>
+                </Typography>
+
                 <StyledFirebaseAuth
                     uiConfig={uiConfig}
                     firebaseAuth={firebase.auth()}
@@ -52,11 +55,13 @@ const SignInScreen = () => {
     }
     return (
         <div>
-            <h1>My App</h1>
-            <p>
-                Welcome {firebase.auth()?.currentUser?.displayName}! You are now
-                signed-in!
-            </p>
+            <Typography style={{ color: '#fff' }}>
+                <p>
+                    Welcome {firebase.auth()?.currentUser?.displayName}! You are
+                    now signed-in!
+                </p>
+            </Typography>
+
             <button onClick={() => firebase.auth()?.signOut()}>Sign-out</button>
         </div>
     );
