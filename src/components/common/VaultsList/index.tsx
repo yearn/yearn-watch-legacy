@@ -24,11 +24,6 @@ export const VaultsList = (props: VaultsListProps) => {
 
     const filterStrategies = (vault: Vault, newText: string) => {
         const strategies = vault.strategies.filter((strategy) => {
-            console.log(
-                `${strategy.name.toLowerCase()} includes ${newText} ? ${strategy.name
-                    .toLowerCase()
-                    .includes(newText)}`
-            );
             return (
                 strategy.address.toLowerCase().includes(newText) ||
                 strategy.name.toLowerCase().includes(newText) ||

@@ -20,8 +20,6 @@ interface VaultDescriptionProps {
 export const VaultDescription = (props: VaultDescriptionProps) => {
     const { vault } = props;
 
-    console.log('vault', vault);
-
     const renderErrors = () =>
         vault &&
         vault.configErrors &&
