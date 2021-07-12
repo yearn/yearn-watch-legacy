@@ -1,4 +1,5 @@
 export * from './Home';
+export * from './Dashboard';
 export * from './VaultItemList';
 export * from './StrategistList';
 export * from './SingleVault';
