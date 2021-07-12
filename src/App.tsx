@@ -7,6 +7,7 @@ import {
     NavBar,
     SingleStrategy,
     Scores,
+    Dashboard,
 } from './components/app';
 import SignIn from './components/common/SignIn';
 import PrivateRoute from './components/common/PrivateRoute';
@@ -19,7 +20,7 @@ class App extends React.Component {
                 <NavBar />
                 <Switch>
                     <Route exact path="/" component={Home} />
-
+                    <Route exact path="/dashboard" component={Dashboard} />
                     <Route exact path="/vault/:id" component={SingleVault} />
                     <Route
                         exact

@@ -3,17 +3,40 @@
         "inputs": [
             {
                 "internalType": "address",
-                "name": "_registryAdapterAddress",
+                "name": "_addressesGeneratorAddress",
                 "type": "address"
             },
             {
                 "internalType": "address",
-                "name": "_helperAddress",
+                "name": "_addressesMergeHelperAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_oracleAddress",
                 "type": "address"
             }
         ],
         "stateMutability": "nonpayable",
         "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "addressesGeneratorAddress",
+        "outputs": [
+            { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "addressesMergeHelperAddress",
+        "outputs": [
+            { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
     },
     {
         "inputs": [
@@ -31,6 +54,11 @@
                         "internalType": "string",
                         "name": "name",
                         "type": "string"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "id",
+                        "type": "address"
                     },
                     {
                         "internalType": "string",
@@ -63,6 +91,21 @@
                         "type": "address"
                     },
                     {
+                        "internalType": "uint256",
+                        "name": "wantPriceUsdc",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "wantDecimals",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "wantSymbol",
+                        "type": "string"
+                    },
+                    {
                         "internalType": "bool",
                         "name": "emergencyExit",
                         "type": "bool"
@@ -81,6 +124,21 @@
                         "internalType": "uint256",
                         "name": "estimatedTotalAssets",
                         "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "estimatedTotalAssetsUsdc",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "doHealthCheck",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "healthCheckAddress",
+                        "type": "address"
                     }
                 ],
                 "internalType": "struct StrategiesHelper.StrategyMetadata[]",
@@ -139,84 +197,8 @@
     {
         "inputs": [
             {
-                "internalType": "address",
-                "name": "strategyAddress",
-                "type": "address"
-            }
-        ],
-        "name": "assetStrategy",
-        "outputs": [
-            {
-                "components": [
-                    {
-                        "internalType": "string",
-                        "name": "name",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "string",
-                        "name": "apiVersion",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "strategist",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "rewards",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "vault",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "keeper",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "want",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "bool",
-                        "name": "emergencyExit",
-                        "type": "bool"
-                    },
-                    {
-                        "internalType": "bool",
-                        "name": "isActive",
-                        "type": "bool"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "delegatedAssets",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "estimatedTotalAssets",
-                        "type": "uint256"
-                    }
-                ],
-                "internalType": "struct StrategiesHelper.StrategyMetadata",
-                "name": "",
-                "type": "tuple"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
                 "internalType": "address[]",
-                "name": "_assetsStrategiesAddresses",
+                "name": "_assetsAddresses",
                 "type": "address[]"
             }
         ],
@@ -230,6 +212,11 @@
                         "type": "string"
                     },
                     {
+                        "internalType": "address",
+                        "name": "id",
+                        "type": "address"
+                    },
+                    {
                         "internalType": "string",
                         "name": "apiVersion",
                         "type": "string"
@@ -260,6 +247,21 @@
                         "type": "address"
                     },
                     {
+                        "internalType": "uint256",
+                        "name": "wantPriceUsdc",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "wantDecimals",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "wantSymbol",
+                        "type": "string"
+                    },
+                    {
                         "internalType": "bool",
                         "name": "emergencyExit",
                         "type": "bool"
@@ -278,6 +280,21 @@
                         "internalType": "uint256",
                         "name": "estimatedTotalAssets",
                         "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "estimatedTotalAssetsUsdc",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "doHealthCheck",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "healthCheckAddress",
+                        "type": "address"
                     }
                 ],
                 "internalType": "struct StrategiesHelper.StrategyMetadata[]",
@@ -300,6 +317,11 @@
                         "type": "string"
                     },
                     {
+                        "internalType": "address",
+                        "name": "id",
+                        "type": "address"
+                    },
+                    {
                         "internalType": "string",
                         "name": "apiVersion",
                         "type": "string"
@@ -330,6 +352,21 @@
                         "type": "address"
                     },
                     {
+                        "internalType": "uint256",
+                        "name": "wantPriceUsdc",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "wantDecimals",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "wantSymbol",
+                        "type": "string"
+                    },
+                    {
                         "internalType": "bool",
                         "name": "emergencyExit",
                         "type": "bool"
@@ -348,6 +385,21 @@
                         "internalType": "uint256",
                         "name": "estimatedTotalAssets",
                         "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "estimatedTotalAssetsUsdc",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "doHealthCheck",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "healthCheckAddress",
+                        "type": "address"
                     }
                 ],
                 "internalType": "struct StrategiesHelper.StrategyMetadata[]",
@@ -363,6 +415,283 @@
         "name": "assetsStrategiesAddresses",
         "outputs": [
             { "internalType": "address[]", "name": "", "type": "address[]" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_assetsAddresses",
+                "type": "address[]"
+            }
+        ],
+        "name": "assetsStrategiesAddresses",
+        "outputs": [
+            { "internalType": "address[]", "name": "", "type": "address[]" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string[][]",
+                "name": "filter",
+                "type": "string[][]"
+            }
+        ],
+        "name": "assetsStrategiesAddressesByFilter",
+        "outputs": [
+            { "internalType": "address[]", "name": "", "type": "address[]" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_strategiesAddresses",
+                "type": "address[]"
+            },
+            {
+                "internalType": "string[][]",
+                "name": "filter",
+                "type": "string[][]"
+            }
+        ],
+        "name": "assetsStrategiesAddressesByFilter",
+        "outputs": [
+            { "internalType": "address[]", "name": "", "type": "address[]" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string[][]",
+                "name": "_filter",
+                "type": "string[][]"
+            }
+        ],
+        "name": "assetsStrategiesByFilter",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "id",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "apiVersion",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "strategist",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "rewards",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "vault",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "keeper",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "want",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "wantPriceUsdc",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "wantDecimals",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "wantSymbol",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "emergencyExit",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isActive",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "delegatedAssets",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "estimatedTotalAssets",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "estimatedTotalAssetsUsdc",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "doHealthCheck",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "healthCheckAddress",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct StrategiesHelper.StrategyMetadata[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_assetsAddresses",
+                "type": "address[]"
+            },
+            {
+                "internalType": "string[][]",
+                "name": "_filter",
+                "type": "string[][]"
+            }
+        ],
+        "name": "assetsStrategiesByFilter",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "id",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "apiVersion",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "strategist",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "rewards",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "vault",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "keeper",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "want",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "wantPriceUsdc",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "wantDecimals",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "wantSymbol",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "emergencyExit",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isActive",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "delegatedAssets",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "estimatedTotalAssets",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "estimatedTotalAssetsUsdc",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "doHealthCheck",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "healthCheckAddress",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct StrategiesHelper.StrategyMetadata[]",
+                "name": "",
+                "type": "tuple[]"
+            }
         ],
         "stateMutability": "view",
         "type": "function"
@@ -387,7 +716,7 @@
     },
     {
         "inputs": [],
-        "name": "helperAddress",
+        "name": "oracleAddress",
         "outputs": [
             { "internalType": "address", "name": "", "type": "address" }
         ],
@@ -396,11 +725,261 @@
     },
     {
         "inputs": [],
-        "name": "registryAdapterAddress",
+        "name": "ownerAddress",
         "outputs": [
             { "internalType": "address", "name": "", "type": "address" }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_strategiesAddresses",
+                "type": "address[]"
+            }
+        ],
+        "name": "strategies",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "id",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "apiVersion",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "strategist",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "rewards",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "vault",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "keeper",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "want",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "wantPriceUsdc",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "wantDecimals",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "wantSymbol",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "emergencyExit",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isActive",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "delegatedAssets",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "estimatedTotalAssets",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "estimatedTotalAssetsUsdc",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "doHealthCheck",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "healthCheckAddress",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct StrategiesHelper.StrategyMetadata[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "strategyAddress",
+                "type": "address"
+            }
+        ],
+        "name": "strategy",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "id",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "apiVersion",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "strategist",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "rewards",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "vault",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "keeper",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "want",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "wantPriceUsdc",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "wantDecimals",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "wantSymbol",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "emergencyExit",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isActive",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "delegatedAssets",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "estimatedTotalAssets",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "estimatedTotalAssetsUsdc",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "doHealthCheck",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "healthCheckAddress",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct StrategiesHelper.StrategyMetadata",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "strategyAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "string[][]",
+                "name": "instructions",
+                "type": "string[][]"
+            }
+        ],
+        "name": "strategyPassesFilter",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "bytes32", "name": "slot", "type": "bytes32" },
+            { "internalType": "bytes32", "name": "value", "type": "bytes32" }
+        ],
+        "name": "updateSlot",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     }
 ]
