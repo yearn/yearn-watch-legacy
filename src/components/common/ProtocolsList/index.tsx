@@ -103,8 +103,8 @@ export const ProtocolsList = (props: ProtocolsListProps) => {
     if (props.items.length === 0) {
         render = (
             <Container maxWidth="lg" className={classes.resultText}>
-                Protocols not added. Please search protocols to add in your
-                list.
+                No terms added yet. Please add your terms above in the search
+                bar and click the search icon.
             </Container>
         );
     }

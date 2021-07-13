@@ -5,7 +5,7 @@ import {
     InputAdornment,
     TextField,
 } from '@material-ui/core';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, MouseEvent, useState } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles({
@@ -41,7 +41,8 @@ const SearchProtocolInput = (props: SearchProtocolInputProps) => {
         const value = (event.target as HTMLInputElement).value;
         setSearchText(value);
     };
-    const handleClickSearch = () => {
+    const handleClickSearch = (event: MouseEvent<HTMLElement>) => {
+        event.preventDefault();
         setIsSearching(true);
         props.onSearch(searchText.trim()).then(() => setIsSearching(false));
     };
