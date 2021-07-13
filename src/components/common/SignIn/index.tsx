@@ -1,8 +1,9 @@
 // Import FirebaseAuth and firebase.
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { Typography } from '@material-ui/core';
 import firebase, { groupings } from '../../../utils/firebase';
+import { useAuth } from '../../../contexts/AuthContext';
 
 // Configure FirebaseUI.
 const uiConfig = {
@@ -17,8 +18,8 @@ const uiConfig = {
 };
 
 const SignInScreen = () => {
-    const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
     const [groups, setGroupings] = useState<any>(null); // Local signed-in state.
+    const { currentUser, isSignedIn, signOut } = useAuth();
 
     console.log('groups', groups);
     if (isSignedIn && !groups) {
@@ -28,16 +29,6 @@ const SignInScreen = () => {
             .get()
             .then((result) => setGroupings(result.data()));
     }
-
-    // Listen to the Firebase Auth state and set the local state.
-    useEffect(() => {
-        const unregisterAuthObserver = firebase
-            .auth()
-            .onAuthStateChanged((user) => {
-                setIsSignedIn(!!user);
-            });
-        return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
-    }, []);
 
     if (!isSignedIn) {
         return (
@@ -57,12 +48,11 @@ const SignInScreen = () => {
         <div>
             <Typography style={{ color: '#fff' }}>
                 <p>
-                    Welcome {firebase.auth()?.currentUser?.displayName}! You are
-                    now signed-in!
+                    Welcome {currentUser?.displayName}! You are now signed-in!
                 </p>
             </Typography>
 
-            <button onClick={() => firebase.auth()?.signOut()}>Sign-out</button>
+            <button onClick={() => signOut()}>Sign-out</button>
         </div>
     );
 };
