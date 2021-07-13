@@ -137,7 +137,14 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
     ) : (
         ''
     );
-    const vaults = strategy ? <EtherScanLink address={strategy.vault} /> : '';
+    const vaults = strategy ? (
+        <EtherScanLink
+            internalHref={`/vault/${strategy.vault.toLowerCase()}`}
+            address={strategy.vault}
+        />
+    ) : (
+        ''
+    );
     const tokenPrice = (
         <TokenPrice
             label="Total Estimated Assets (USD):"

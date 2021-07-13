@@ -17,7 +17,7 @@ import { Grid } from '@material-ui/core';
 import {
     amountToMMs,
     amountToString,
-    getTVLRiskLevel,
+    getTvlImpact,
 } from '../../../utils/commonUtils';
 import { ProtocolTVL } from '../../../types/protocol-tvl';
 import { Delete } from '@material-ui/icons';
@@ -143,7 +143,7 @@ export const ProtocolsList = (props: ProtocolsListProps) => {
                                                 index + 1
                                             } - ${protocol.name.toUpperCase()} - ${amountToString(
                                                 protocol.tvl
-                                            )} - TVL Risk Level: ${getTVLRiskLevel(
+                                            )} - TVL Impact: ${getTvlImpact(
                                                 amountToMMs(protocol.tvl)
                                             )}`}
                                         </Grid>

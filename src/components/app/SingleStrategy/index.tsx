@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Typography } from '@material-ui/core';
-import MuiBreadcrumbs from './BreadCrumbs';
+import BreadCrumbs from './BreadCrumbs';
 import EtherScanLink from '../../common/EtherScanLink';
 import ReactHelmet from '../../common/ReactHelmet';
 
@@ -19,12 +19,12 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import StrategyReports from './StrategyReports';
 interface ParamTypes {
-    id: string;
-    name: string;
+    strategyId: string;
+    vaultId: string;
 }
 
 export const SingleStrategy = () => {
-    const { id, name } = useParams<ParamTypes>();
+    const { strategyId, vaultId } = useParams<ParamTypes>();
 
     const [strategyData, setStrategyData] = useState<Strategy[]>([]);
     const [isLoaded, setIsLoaded] = useState(true);
@@ -35,16 +35,16 @@ export const SingleStrategy = () => {
     const [isReportsLoading, setIsReportsLoading] = useState(true);
 
     useEffect(() => {
-        getStrategies([id]).then((loadedStrategy) => {
+        getStrategies([strategyId]).then((loadedStrategy) => {
             setStrategyData(loadedStrategy);
             setIsLoaded(false);
         });
 
-        getReportsForStrategy(id).then((reports) => {
+        getReportsForStrategy(strategyId).then((reports) => {
             setStrategyReports(reports);
             setIsReportsLoading(false);
         });
-    }, [id]);
+    }, [strategyId]);
 
     const strategy = strategyData && strategyData[0];
 
@@ -83,11 +83,7 @@ export const SingleStrategy = () => {
     return (
         <React.Fragment>
             <ReactHelmet title={strategy ? strategy.name : ''} />
-            <MuiBreadcrumbs
-                strategyVault={strategy ? strategy.vault : ''}
-                strategyName={strategy ? strategy.name : ''}
-                name={name}
-            />
+            <BreadCrumbs vaultId={vaultId} strategyId={strategyId} />
 
             {isLoaded || isReportsLoading ? (
                 <div

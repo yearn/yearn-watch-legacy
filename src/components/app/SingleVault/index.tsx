@@ -4,15 +4,10 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Link from '@material-ui/core/Link';
-
 import { useParams } from 'react-router-dom';
-
 import { Vault } from '../../../types';
 import { getVault } from '../../../utils/vaults';
-
+import BreadCrumbs from '../SingleStrategy/BreadCrumbs';
 import Pie from '../Charts/Pie';
 import { StrategistList } from '../StrategistList';
 
@@ -60,7 +55,7 @@ function a11yProps(index: any) {
 }
 
 interface ParamTypes {
-    id: string;
+    vaultId: string;
 }
 export const SingleVault = () => {
     const [value, setValue] = React.useState(0);
@@ -68,18 +63,18 @@ export const SingleVault = () => {
     const handleChange = (event: any, newValue: number) => {
         setValue(newValue);
     };
-    const { id } = useParams<ParamTypes>();
+    const { vaultId } = useParams<ParamTypes>();
 
     const [vault, setVault] = useState<Vault | undefined>();
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         setIsLoading(true);
-        getVault(id).then((loadedVault) => {
+        getVault(vaultId).then((loadedVault) => {
             setVault(loadedVault);
             setIsLoading(false);
         });
-    }, [id]);
+    }, [vaultId]);
     const useStyles = makeStyles((theme: Theme) => ({
         root: {
             [theme.breakpoints.down('sm')]: {
@@ -134,15 +129,7 @@ export const SingleVault = () => {
     return (
         <React.Fragment>
             <ReactHelmet title={vault ? vault.name : ''} />
-            <Breadcrumbs className={classes.crumbs}>
-                <Link color="inherit" href="/">
-                    vaults
-                </Link>
-
-                <Typography className={classes.text}>
-                    {vault ? vault.name : ''}
-                </Typography>
-            </Breadcrumbs>
+            <BreadCrumbs vaultId={vaultId} />
             <Card className={classes.root}>
                 {isLoading ? (
                     <div

@@ -5,7 +5,7 @@ import { ProtocolsList } from '../../common/ProtocolsList';
 import { getStrategyTVLsPerProtocol } from '../../../utils/strategiesHelper';
 import { ProtocolTVL } from '../../../types/protocol-tvl';
 
-export const Dashboard = () => {
+export const Query = () => {
     const [protocolsTVL, setProtocolsTVL] = useState<ProtocolTVL[]>([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const onSearchProtocol = async (protocol: string) => {
