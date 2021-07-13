@@ -5,7 +5,7 @@ import {
     InputAdornment,
     TextField,
 } from '@material-ui/core';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles({
@@ -41,13 +41,21 @@ const SearchProtocolInput = (props: SearchProtocolInputProps) => {
         const value = (event.target as HTMLInputElement).value;
         setSearchText(value);
     };
-    const handleClickSearch = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        setIsSearching(true);
+    const doSearch = () => {
         props.onSearch(searchText.trim()).then(() => {
             setIsSearching(false);
             setSearchText('');
         });
+    };
+    const handleClickSearchIcon = (event: MouseEvent<HTMLElement>) => {
+        event.preventDefault();
+        setIsSearching(true);
+        doSearch();
+    };
+    const handleClickSearch = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setIsSearching(true);
+        doSearch();
     };
     const renderSearchingLabel = () => {
         let render: any;
@@ -72,13 +80,14 @@ const SearchProtocolInput = (props: SearchProtocolInputProps) => {
                     value={searchText}
                     onChange={handleOnChange}
                     disabled={isSearching}
-                    placeholder="Type your terms (protocol name -ex: maker, convex-) and click on the search icon."
+                    placeholder="Type your terms (protocol name -ex: maker, convex-) and click on the search icon or press enter."
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
                                 <IconButton
                                     aria-label="search"
                                     disabled={isSearchDisabled}
+                                    onClick={handleClickSearchIcon}
                                 >
                                     <SearchIcon />
                                 </IconButton>
