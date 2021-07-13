@@ -1,23 +1,38 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { Home, SingleVault, NavBar, SingleStrategy } from './components/app';
+import {
+    Home,
+    SingleVault,
+    NavBar,
+    SingleStrategy,
+    Scores,
+} from './components/app';
+import SignIn from './components/common/SignIn';
+import PrivateRoute from './components/common/PrivateRoute';
+import { AuthProvider } from './contexts/AuthContext';
 
 class App extends React.Component {
     render() {
         return (
-            <BrowserRouter>
+            <Router>
                 <NavBar />
                 <Switch>
                     <Route exact path="/" component={Home} />
+
                     <Route exact path="/vault/:id" component={SingleVault} />
                     <Route
                         exact
                         path="/strategy/:name/:id"
                         component={SingleStrategy}
                     />
+                    <AuthProvider>
+                        <Route exact path="/signin" component={SignIn} />
+                        <Route exact path="/signout" component={SignIn} />
+                        <PrivateRoute path="/scores" component={Scores} />
+                    </AuthProvider>
                 </Switch>
-            </BrowserRouter>
+            </Router>
         );
     }
 }

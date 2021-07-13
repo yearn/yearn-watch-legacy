@@ -43,7 +43,7 @@ const internalGetVaults = async (
     try {
         const response = await BuildGet('/all');
         let payload = response.data as VaultApi[];
-        console.log('payload', payload);
+
         payload = payload.filter(
             (vault) =>
                 (vault.endorsed && vault.type === VaultVersion.V2) ||
