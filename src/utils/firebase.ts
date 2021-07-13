@@ -1,6 +1,8 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import { collection, Collection } from 'typesaurus';
+import { Groups } from '../types/grouping';
 import { getEnv } from './env';
 
 const { fbAuthDomain, fbApiKey, fbProjectId } = getEnv();
@@ -15,13 +17,13 @@ const config = {
 
 export type FirebaseProps = {
     firebase: firebase.app.App;
-    groupings: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>;
+    groupings: Collection<Groups>;
     auth: firebase.auth.Auth;
     initialized: boolean;
 };
 
 let app: firebase.app.App;
-let groupings: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>;
+let groupings: Collection<Groups>;
 let auth: firebase.auth.Auth;
 let initialized = false;
 export const init = (): FirebaseProps => {
@@ -34,7 +36,7 @@ export const init = (): FirebaseProps => {
     ) {
         app = firebase.initializeApp(config);
         console.log('connection initialized');
-        groupings = firebase?.firestore().collection('groupings');
+        groupings = collection<Groups>('groupings');
         auth = firebase?.auth();
         initialized = true;
     }
@@ -46,8 +48,5 @@ export const init = (): FirebaseProps => {
         initialized,
     };
 };
-
-// export const groupings = firebase?.firestore().collection('groupings');
-// export const auth = firebase?.auth();
 
 export default firebase;

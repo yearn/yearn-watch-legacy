@@ -1,8 +1,8 @@
 // Import FirebaseAuth and firebase.
-import React, { useState } from 'react';
+import React from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { Typography } from '@material-ui/core';
-import firebase, { init as initFB } from '../../../utils/firebase';
+import firebase from '../../../utils/firebase';
 import { useAuth } from '../../../contexts/AuthContext';
 
 // Configure FirebaseUI.
@@ -18,19 +18,7 @@ const uiConfig = {
 };
 
 const SignInScreen = () => {
-    const [groups, setGroupings] = useState<any>(null); // Local signed-in state.
     const { currentUser, isSignedIn, signOut } = useAuth();
-
-    console.log('groups', groups);
-    if (isSignedIn && !groups) {
-        const { groupings } = initFB();
-        console.log('load groupings');
-        groupings
-            .doc('default')
-            .get()
-            .then((result) => setGroupings(result.data()));
-    }
-
     if (!isSignedIn) {
         return (
             <div>

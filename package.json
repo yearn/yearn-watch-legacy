@@ -16,6 +16,7 @@
         "@types/react-dom": "^17.0.0",
         "@types/react-responsive": "^8.0.2",
         "@types/react-router-dom": "^5.1.7",
+        "@typesaurus/react": "^4.0.1",
         "axios": "^0.21.1",
         "bignumber.js": "^9.0.1",
         "dayjs": "^1.10.4",
@@ -23,6 +24,7 @@
         "ethereum-multicall": "^2.0.2",
         "ethers": "^5.0.32",
         "firebase": "^8.7.1",
+        "firestore-export-import": "^0.15.0",
         "global": "^4.4.0",
         "highcharts": "^9.0.1",
         "highcharts-react-official": "^3.0.0",
@@ -38,6 +40,7 @@
         "react-router-dom": "^5.2.0",
         "react-scripts": "4.0.3",
         "styled-components": "^5.2.1",
+        "typesaurus": "^7.2.0",
         "typescript": "^4.1.2",
         "web-vitals": "^1.0.1"
     },
