@@ -5,7 +5,7 @@ import {
     InputAdornment,
     TextField,
 } from '@material-ui/core';
-import { ChangeEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles({
@@ -41,10 +41,13 @@ const SearchProtocolInput = (props: SearchProtocolInputProps) => {
         const value = (event.target as HTMLInputElement).value;
         setSearchText(value);
     };
-    const handleClickSearch = (event: MouseEvent<HTMLElement>) => {
+    const handleClickSearch = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setIsSearching(true);
-        props.onSearch(searchText.trim()).then(() => setIsSearching(false));
+        props.onSearch(searchText.trim()).then(() => {
+            setIsSearching(false);
+            setSearchText('');
+        });
     };
     const renderSearchingLabel = () => {
         let render: any;
@@ -60,7 +63,7 @@ const SearchProtocolInput = (props: SearchProtocolInputProps) => {
 
     return (
         <Container maxWidth="lg">
-            <form className={classes.root}>
+            <form className={classes.root} onSubmit={handleClickSearch}>
                 <TextField
                     className={classes.searchInput}
                     id="outlined-basic"
@@ -76,7 +79,6 @@ const SearchProtocolInput = (props: SearchProtocolInputProps) => {
                                 <IconButton
                                     aria-label="search"
                                     disabled={isSearchDisabled}
-                                    onClick={handleClickSearch}
                                 >
                                     <SearchIcon />
                                 </IconButton>
