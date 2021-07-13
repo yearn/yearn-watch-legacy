@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
-import firebase, { auth } from '../utils/firebase';
+import firebase, { init } from '../utils/firebase';
+
+const { auth, initialized } = init();
 
 type ContextProps = {
     isSignedIn: boolean;
@@ -30,7 +32,7 @@ export const AuthProvider: React.FC = ({ children }: Props) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
+        const unsubscribe = auth?.onAuthStateChanged((user) => {
             if (user) {
                 setIsSignedIn(true);
             } else {
@@ -40,7 +42,7 @@ export const AuthProvider: React.FC = ({ children }: Props) => {
             setLoading(false);
         });
         // Make sure we un-register Firebase observers when the component unmounts.
-        return () => unsubscribe();
+        return () => unsubscribe && unsubscribe();
     }, []);
 
     const value = {
@@ -49,9 +51,11 @@ export const AuthProvider: React.FC = ({ children }: Props) => {
         signOut,
     };
 
+    const readyToLoad = initialized ? !loading : true;
+
     return (
         <AuthContext.Provider value={value}>
-            {!loading && children}
+            {readyToLoad && children}
         </AuthContext.Provider>
     );
 };

@@ -16,25 +16,22 @@ class App extends React.Component {
     render() {
         return (
             <Router>
-                <AuthProvider>
-                    <NavBar />
-                    <Switch>
-                        <Route exact path="/" component={Home} />
+                <NavBar />
+                <Switch>
+                    <Route exact path="/" component={Home} />
+
+                    <Route exact path="/vault/:id" component={SingleVault} />
+                    <Route
+                        exact
+                        path="/strategy/:name/:id"
+                        component={SingleStrategy}
+                    />
+                    <AuthProvider>
                         <Route exact path="/signin" component={SignIn} />
                         <Route exact path="/signout" component={SignIn} />
-                        <Route
-                            exact
-                            path="/vault/:id"
-                            component={SingleVault}
-                        />
-                        <Route
-                            exact
-                            path="/strategy/:name/:id"
-                            component={SingleStrategy}
-                        />
                         <PrivateRoute path="/dashboard" component={Dashboard} />
-                    </Switch>
-                </AuthProvider>
+                    </AuthProvider>
+                </Switch>
             </Router>
         );
     }

@@ -13,12 +13,41 @@ const config = {
     // ...
 };
 
-if (firebase.apps.length === 0) {
-    firebase.initializeApp(config);
-    console.log('connection initialized');
-}
+export type FirebaseProps = {
+    firebase: firebase.app.App;
+    groupings: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>;
+    auth: firebase.auth.Auth;
+    initialized: boolean;
+};
 
-export const groupings = firebase?.firestore().collection('groupings');
-export const auth = firebase?.auth();
+let app: firebase.app.App;
+let groupings: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>;
+let auth: firebase.auth.Auth;
+let initialized = false;
+export const init = (): FirebaseProps => {
+    if (
+        firebase.apps.length === 0 &&
+        config.apiKey &&
+        config.projectId &&
+        config.authDomain &&
+        !initialized
+    ) {
+        app = firebase.initializeApp(config);
+        console.log('connection initialized');
+        groupings = firebase?.firestore().collection('groupings');
+        auth = firebase?.auth();
+        initialized = true;
+    }
+
+    return {
+        firebase: app,
+        groupings,
+        auth,
+        initialized,
+    };
+};
+
+// export const groupings = firebase?.firestore().collection('groupings');
+// export const auth = firebase?.auth();
 
 export default firebase;

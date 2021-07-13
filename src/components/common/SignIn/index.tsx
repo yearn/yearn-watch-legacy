@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { Typography } from '@material-ui/core';
-import firebase, { groupings } from '../../../utils/firebase';
+import firebase, { init as initFB } from '../../../utils/firebase';
 import { useAuth } from '../../../contexts/AuthContext';
 
 // Configure FirebaseUI.
@@ -23,6 +23,7 @@ const SignInScreen = () => {
 
     console.log('groups', groups);
     if (isSignedIn && !groups) {
+        const { groupings } = initFB();
         console.log('load groupings');
         groupings
             .doc('default')
