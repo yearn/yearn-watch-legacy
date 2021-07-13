@@ -3,14 +3,14 @@ import { Typography } from '@material-ui/core';
 
 // TODO: complete this component
 
-export const Dashboard = () => {
+export const Scores = () => {
     return (
         <div>
             <Typography style={{ color: '#fff' }}>
-                <p> Welcome to the Dashboard!</p>
+                <p> Welcome to the Scores!</p>
             </Typography>
         </div>
     );
 };
 
-export default Dashboard;
+export default Scores;

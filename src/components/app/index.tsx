@@ -4,4 +4,4 @@ export * from './StrategistList';
 export * from './SingleVault';
 export * from './NavBar';
 export * from './SingleStrategy';
-export * from './Dashboard';
+export * from './Scores';

@@ -6,7 +6,7 @@ import {
     SingleVault,
     NavBar,
     SingleStrategy,
-    Dashboard,
+    Scores,
 } from './components/app';
 import SignIn from './components/common/SignIn';
 import PrivateRoute from './components/common/PrivateRoute';
@@ -29,7 +29,7 @@ class App extends React.Component {
                     <AuthProvider>
                         <Route exact path="/signin" component={SignIn} />
                         <Route exact path="/signout" component={SignIn} />
-                        <PrivateRoute path="/dashboard" component={Dashboard} />
+                        <PrivateRoute path="/scores" component={Scores} />
                     </AuthProvider>
                 </Switch>
             </Router>
