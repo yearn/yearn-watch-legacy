@@ -15,9 +15,10 @@ const config = {
 
 if (firebase.apps.length === 0) {
     firebase.initializeApp(config);
+    console.log('connection initialized');
 }
 
 export const groupings = firebase?.firestore().collection('groupings');
-console.log('connection initialized');
+export const auth = firebase?.auth();
 
 export default firebase;
