@@ -6,14 +6,16 @@ import Hidden from '@material-ui/core/Hidden';
 import CallMadeIcon from '@material-ui/icons/CallMade';
 import Tooltip from '@material-ui/core/Tooltip';
 import { FileCopy } from '@material-ui/icons';
+import { Link } from '@material-ui/core';
 
 type EtherScanLinkProps = {
     address?: string;
     transactionHash?: string;
     dark?: boolean | false;
+    internalHref?: string;
 };
 const EtherScanLink = (props: EtherScanLinkProps) => {
-    const { address, transactionHash, dark } = props;
+    const { address, transactionHash, dark, internalHref } = props;
     const [copied, setCopied] = useState(false);
 
     useEffect(() => {
@@ -73,9 +75,17 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
     return (
         <span>
             <span className={classes.address}>
-                <Hidden smUp>{maskedValue}</Hidden>
-
-                <Hidden xsDown>{value}</Hidden>
+                {internalHref ? (
+                    <Link color="inherit" href={internalHref}>
+                        <Hidden smUp>{`${maskedValue}`}</Hidden>
+                        <Hidden xsDown>{value}</Hidden>
+                    </Link>
+                ) : (
+                    <>
+                        <Hidden smUp>{maskedValue}</Hidden>
+                        <Hidden xsDown>{value}</Hidden>
+                    </>
+                )}
             </span>
             <Tooltip title="Copy to clipboard" aria-label="Clipboard">
                 <Button onClick={(e) => onCopyToClipboard(e)}>

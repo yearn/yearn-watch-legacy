@@ -24,7 +24,7 @@ import { ProtocolTVL } from '../../../types/protocol-tvl';
 import {
     amountToMMs,
     extractAddress,
-    getTVLRiskLevel,
+    getTvlImpact,
 } from '../../../utils/commonUtils';
 import { Link } from 'react-router-dom';
 
@@ -32,7 +32,7 @@ interface Data {
     name: string;
     estimatedTotalAssetsUsdcNumber: number;
     totalTvlPercentage: number;
-    tvlRiskLevel: number;
+    tvlImpact: number;
 }
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -96,10 +96,10 @@ const headCells: HeadCell[] = [
         label: 'TVL %',
     },
     {
-        id: 'tvlRiskLevel',
+        id: 'tvlImpact',
         numeric: true,
         disablePadding: false,
-        label: 'Risk Level (5-1 Extreme-Low)',
+        label: 'TVL Impact (5-1 Extreme-Low)',
     },
 ];
 
@@ -247,7 +247,7 @@ export const StrategyProtocolList = (props: StrategyProtocolListProps) => {
                 .times(100)
                 .div(props.item.tvl)
                 .toNumber(),
-            tvlRiskLevel: getTVLRiskLevel(amountInMMs),
+            tvlImpact: getTvlImpact(amountInMMs),
         };
     });
 
@@ -323,8 +323,7 @@ export const StrategyProtocolList = (props: StrategyProtocolListProps) => {
                                             >
                                                 <Link
                                                     color="inherit"
-                                                    href={`/`}
-                                                    to=""
+                                                    to={`/vault/${row.vault.toLowerCase()}/strategy/${row.address.toLowerCase()}`}
                                                 >
                                                     {`${
                                                         row.name
@@ -344,9 +343,7 @@ export const StrategyProtocolList = (props: StrategyProtocolListProps) => {
                                                 )} %`}
                                             </TableCell>
                                             <TableCell align="right">
-                                                {`${row.tvlRiskLevel.toFixed(
-                                                    0
-                                                )}`}
+                                                {`${row.tvlImpact.toFixed(0)}`}
                                             </TableCell>
                                         </TableRow>
                                     );

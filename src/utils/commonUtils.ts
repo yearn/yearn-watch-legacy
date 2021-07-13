@@ -167,7 +167,7 @@ export const amountToMMs = (amount: BN): number => {
     Medium 	less than 10M	2
     Low	less than 1M	1
 */
-export const getTVLRiskLevel = (tvl: number): number => {
+export const getTvlImpact = (tvl: number): number => {
     if (tvl < 1) {
         return 1;
     }
