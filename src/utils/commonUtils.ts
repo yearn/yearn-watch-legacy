@@ -88,8 +88,8 @@ export const mapContractCalls = (result: ContractCallReturnContext) => {
 export const ORACLE_CONTRACT_ADDRESS =
     '0x83d95e0D5f402511dB06817Aff3f9eA88224B030';
 
-const STRATEGIES_HELPER_CONTRACT_ADDRESS =
-    '0xae813841436fe29b95a14AC701AFb1502C4CB789';
+export const STRATEGIES_HELPER_CONTRACT_ADDRESS =
+    '0x2114d9a16da30fA5B59795e4f8C9eAd19E40f0a0';
 
 export const createStrategiesHelperCallAssetStrategiesAddresses = (
     vaults: VaultApi[]
@@ -142,4 +142,43 @@ export const mapToStrategyAddressQueueIndex = (
         );
     }
     return strategiesQueueIndexes;
+};
+
+export const amountToString = (amount: BN): string => {
+    const amountInMMs = amount.div(new BN(1000000));
+    if (amountInMMs.gt(0)) {
+        return `${amountInMMs.toFixed(2)} MM`;
+    }
+    const amountInKs = amount.div(new BN(100000));
+    if (amountInKs.gt(0)) {
+        return `${amountInKs.toFixed(2)} K`;
+    }
+    return `${amount.toFixed(2)}`;
+};
+
+export const amountToMMs = (amount: BN): number => {
+    return amount.div(new BN(1000000)).toNumber();
+};
+
+/*
+    Extreme	> 100M	5
+    Very High	less than 100M	4
+    High	less than 50M	3
+    Medium 	less than 10M	2
+    Low	less than 1M	1
+*/
+export const getTvlImpact = (tvl: number): number => {
+    if (tvl < 1) {
+        return 1;
+    }
+    if (tvl < 10) {
+        return 2;
+    }
+    if (tvl < 50) {
+        return 3;
+    }
+    if (tvl < 100) {
+        return 4;
+    }
+    return 5;
 };

@@ -1,8 +1,9 @@
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-
+import Hidden from '@material-ui/core/Hidden';
 import MuiBreadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import { Typography } from '@material-ui/core';
+import { extractAddress } from '../../../utils/commonUtils';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -21,24 +22,44 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 type BreadCrumbsProps = {
-    strategyVault: string;
-    name: string;
-    strategyName: string;
+    vaultId: string;
+    strategyId?: string;
 };
 const BreadCrumbs = (props: BreadCrumbsProps) => {
-    const { strategyVault, name, strategyName } = props;
+    const { vaultId, strategyId } = props;
     const classes = useStyles();
+
+    let strategyLevel;
+    if (strategyId !== undefined) {
+        strategyLevel = (
+            <>
+                <Link
+                    color="inherit"
+                    href={`/vault/${vaultId.toLowerCase()}/strategy/${strategyId.toLowerCase()}`}
+                >
+                    <Typography className={classes.text}>
+                        <Hidden smUp>{`${extractAddress(
+                            strategyId.toLowerCase()
+                        )}`}</Hidden>
+                        <Hidden xsDown>{strategyId.toLowerCase()}</Hidden>
+                    </Typography>
+                </Link>
+            </>
+        );
+    }
 
     return (
         <MuiBreadcrumbs className={classes.crumbs}>
             <Link color="inherit" href="/">
                 vaults
             </Link>
-            <Link color="inherit" href={`/vault/${strategyVault}`}>
-                {name}
+            <Link color="inherit" href={`/vault/${vaultId.toLowerCase()}`}>
+                <Hidden smUp>{`${extractAddress(
+                    vaultId.toLowerCase()
+                )}`}</Hidden>
+                <Hidden xsDown>{vaultId.toLowerCase()}</Hidden>
             </Link>
-
-            <Typography className={classes.text}>{strategyName}</Typography>
+            {strategyLevel}
         </MuiBreadcrumbs>
     );
 };

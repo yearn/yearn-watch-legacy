@@ -5,6 +5,7 @@ import {
     Home,
     SingleVault,
     NavBar,
+    Query,
     SingleStrategy,
     Scores,
 } from './components/app';
@@ -19,11 +20,15 @@ class App extends React.Component {
                 <NavBar />
                 <Switch>
                     <Route exact path="/" component={Home} />
-
-                    <Route exact path="/vault/:id" component={SingleVault} />
+                    <Route exact path="/query" component={Query} />
                     <Route
                         exact
-                        path="/strategy/:name/:id"
+                        path="/vault/:vaultId"
+                        component={SingleVault}
+                    />
+                    <Route
+                        exact
+                        path="/vault/:vaultId/strategy/:strategyId"
                         component={SingleStrategy}
                     />
                     <AuthProvider>
