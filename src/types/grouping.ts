@@ -1,5 +1,5 @@
-export type DefaultGroups = {
-    defaultGroups: Grouping[];
+export type Groups = {
+    groups: Grouping[];
 };
 
 export type Grouping = {
