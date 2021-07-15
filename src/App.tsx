@@ -23,6 +23,11 @@ class App extends React.Component {
                     <Route exact path="/query" component={Query} />
                     <Route
                         exact
+                        path="/query/:groupingId/group/:groups"
+                        component={Query}
+                    />
+                    <Route
+                        exact
                         path="/vault/:vaultId"
                         component={SingleVault}
                     />

@@ -180,7 +180,7 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
         { key: ' Strategist:', value: strategist },
         { key: ' Vault:', value: vaults },
     ];
-    return <CardContent data={data} />;
+    return <CardContent data={data} key={strategy.address} />;
 };
 
 export default StrategyDetail;
