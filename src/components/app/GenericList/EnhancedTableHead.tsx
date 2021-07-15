@@ -39,7 +39,7 @@ export const EnhancedTableHead = (props: EnhancedTableProps) => {
 
     const collapseCell = shouldCollapse ? (
         <TableCell key="collapse" align="center" padding="default">
-            Collapse
+            Details
         </TableCell>
     ) : (
         ''
