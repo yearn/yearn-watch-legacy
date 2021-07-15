@@ -19,7 +19,7 @@ const headCells: HeadCell[] = [
         id: 'averageScore',
         numeric: false,
         disablePadding: false,
-        label: 'Semaphore',
+        label: 'Score',
         align: 'center',
         format: (item: GenericListItem, value: string | number | boolean) => {
             return <Semaphore value={value} />;
