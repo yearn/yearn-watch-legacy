@@ -1,59 +1,43 @@
-import { MouseEvent, useState } from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { Typography } from '@material-ui/core';
-import { ProtocolsList } from '../../common/ProtocolsList';
-import { getStrategyTVLsPerProtocol } from '../../../utils/strategiesHelper';
-import { ProtocolTVL } from '../../../types/protocol-tvl';
+import { useState } from 'react';
+import { useParams } from 'react-router';
+import SearchProtocolInput from '../../common/SearchProtocolInput';
+import { GroupQuery } from '../../common/GroupQuery';
+
+interface ParamTypes {
+    groupingId?: string;
+    groups?: string;
+}
 
 export const Query = () => {
-    const [protocolsTVL, setProtocolsTVL] = useState<ProtocolTVL[]>([]);
-    const [isLoaded, setIsLoaded] = useState(false);
+    const { groups } = useParams<ParamTypes>();
+    const initialGroups = groups
+        ? groups.split(',').map((group) => group.toLowerCase())
+        : [];
+    const [protocols, setProtocols] = useState<string[]>(initialGroups);
     const onSearchProtocol = async (protocol: string) => {
-        const protocolTVL = await getStrategyTVLsPerProtocol(protocol);
-        const newProtocolsTVL = [...protocolsTVL, protocolTVL];
-        setProtocolsTVL(newProtocolsTVL);
+        if (!protocols.includes(protocol.toLowerCase())) {
+            const newProtocols = [...protocols, protocol.toLowerCase()];
+            setProtocols(newProtocols);
+        }
     };
-    /*
-    useEffect(() => {
-        const settings = [];
-        getStrategyTVLsPerProtocol(settings.protocol).then((protocolTVL: ProtocolTVL) => {
-            protocolsTVL.push(protocolTVL);
-            setProtocolsTVL(protocolsTVL);
-            setIsLoaded(true);
-        });
-    }, []);
-    */
-    const onRemoveProtocol = async (
-        event: MouseEvent,
-        protocolName: string
-    ) => {
-        event.preventDefault();
-        setProtocolsTVL(
-            protocolsTVL.filter((protocol) => !protocol.hasName(protocolName))
+    const onRemoveProtocol = async (protocolName: string) => {
+        setProtocols(
+            protocols.filter(
+                (protocol) =>
+                    protocol.toLowerCase() !== protocolName.toLowerCase()
+            )
         );
     };
 
     return (
         <div>
-            {isLoaded ? (
-                <div
-                    style={{
-                        textAlign: 'center',
-                        marginTop: '100px',
-                    }}
-                >
-                    <CircularProgress style={{ color: '#fff' }} />
-                    <Typography style={{ color: '#fff' }}>
-                        Loading protocols information.
-                    </Typography>
-                </div>
-            ) : (
-                <ProtocolsList
-                    items={protocolsTVL}
-                    onSearch={onSearchProtocol}
-                    onRemove={onRemoveProtocol}
+            <>
+                <SearchProtocolInput onSearch={onSearchProtocol} />
+                <GroupQuery
+                    protocols={protocols}
+                    onRemoveProtocol={onRemoveProtocol}
                 />
-            )}
+            </>
         </div>
     );
 };

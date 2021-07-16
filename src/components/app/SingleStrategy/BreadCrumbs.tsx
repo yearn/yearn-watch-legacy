@@ -32,19 +32,17 @@ const BreadCrumbs = (props: BreadCrumbsProps) => {
     let strategyLevel;
     if (strategyId !== undefined) {
         strategyLevel = (
-            <>
-                <Link
-                    color="inherit"
-                    href={`/vault/${vaultId.toLowerCase()}/strategy/${strategyId.toLowerCase()}`}
-                >
-                    <Typography className={classes.text}>
-                        <Hidden smUp>{`${extractAddress(
-                            strategyId.toLowerCase()
-                        )}`}</Hidden>
-                        <Hidden xsDown>{strategyId.toLowerCase()}</Hidden>
-                    </Typography>
-                </Link>
-            </>
+            <Link
+                color="inherit"
+                href={`/vault/${vaultId.toLowerCase()}/strategy/${strategyId.toLowerCase()}`}
+            >
+                <Typography className={classes.text}>
+                    <Hidden smUp>{`${extractAddress(
+                        strategyId.toLowerCase()
+                    )}`}</Hidden>
+                    <Hidden xsDown>{strategyId.toLowerCase()}</Hidden>
+                </Typography>
+            </Link>
         );
     }
 

@@ -92,7 +92,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 type ProtocolsListProps = {
     items: ProtocolTVL[];
-    onSearch: (text: string) => Promise<void>;
     onRemove: (event: MouseEvent, protocol: string) => Promise<void>;
 };
 
@@ -111,7 +110,6 @@ export const ProtocolsList = (props: ProtocolsListProps) => {
 
     return (
         <>
-            <SearchProtocolInput onSearch={props.onSearch} />
             {render}
             {props.items.map((protocol: ProtocolTVL, index: number) => (
                 <Container maxWidth="lg" key={index}>
