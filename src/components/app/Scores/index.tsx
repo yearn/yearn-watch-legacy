@@ -16,19 +16,9 @@ import MonetizationOnRoundedIcon from '@material-ui/icons/MonetizationOnRounded'
 
 const headCells: HeadCell[] = [
     {
-        id: 'averageScore',
         numeric: false,
         disablePadding: false,
-        label: 'Score',
-        align: 'center',
-        format: (item: GenericListItem, value: string | number | boolean) => {
-            return <Semaphore value={value} />;
-        },
-    },
-    {
-        numeric: false,
-        disablePadding: false,
-        label: 'Actions',
+        label: 'Links',
         align: 'center',
         format: (item: GenericListItem) => {
             return (

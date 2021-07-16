@@ -1,7 +1,7 @@
 import { MouseEvent, useEffect, useState } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Typography } from '@material-ui/core';
-import { ProtocolsList } from '../../common/ProtocolsList';
+import { ProtocolsList } from '../ProtocolsList';
 import { getStrategyTVLsPerProtocol } from '../../../utils/strategiesHelper';
 import { ProtocolTVL } from '../../../types/protocol-tvl';
 
@@ -10,7 +10,7 @@ export interface ProtocolQueryProps {
     onRemoveProtocol: (protocolName: string) => void;
 }
 
-export const ProtocolQuery = (props: ProtocolQueryProps) => {
+export const GroupQuery = (props: ProtocolQueryProps) => {
     const [protocolsTVL, setProtocolsTVL] = useState<ProtocolTVL[]>([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const uniqueProtocolNames = props.protocols.filter((elem, index, self) => {

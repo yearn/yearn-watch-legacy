@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams } from 'react-router';
 import SearchProtocolInput from '../../common/SearchProtocolInput';
-import { ProtocolQuery } from '../../common/ProtocolQuery';
+import { GroupQuery } from '../../common/GroupQuery';
 
 interface ParamTypes {
     groupingId?: string;
@@ -33,7 +33,7 @@ export const Query = () => {
         <div>
             <>
                 <SearchProtocolInput onSearch={onSearchProtocol} />
-                <ProtocolQuery
+                <GroupQuery
                     protocols={protocols}
                     onRemoveProtocol={onRemoveProtocol}
                 />
