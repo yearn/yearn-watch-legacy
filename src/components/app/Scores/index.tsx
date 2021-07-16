@@ -18,7 +18,7 @@ const headCells: HeadCell[] = [
     {
         numeric: false,
         disablePadding: false,
-        label: 'Links',
+        label: 'TVL Link',
         align: 'center',
         format: (item: GenericListItem) => {
             return (
