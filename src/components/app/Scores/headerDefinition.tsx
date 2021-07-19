@@ -10,7 +10,7 @@ export const headCells: HeadCell[] = [
     {
         numeric: false,
         disablePadding: false,
-        label: 'TVL Link',
+        label: 'Links',
         align: 'center',
         format: (item: GenericListItem) => {
             return (
