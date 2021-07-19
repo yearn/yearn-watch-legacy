@@ -27,10 +27,13 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Risk = () => {
     const [groups, setGroups] = useState<Grouping[]>([]);
     const [items, setItems] = useState<any[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoadingItems, setIsLoadingItems] = useState<boolean>(true);
     const { groupings } = initFB();
     const groupingId = 'default';
-    const [groupData, { loading, error }] = useOnGet(groupings, groupingId);
+    const [groupData, { loading: isLoadingGroupData, error }] = useOnGet(
+        groupings,
+        groupingId
+    );
     const classes = useStyles();
     if (groups.length === 0 && groupData) {
         setGroups(groupData.data.groups);
@@ -65,24 +68,14 @@ export const Risk = () => {
         });
         Promise.all(itemPromises).then((items) => {
             setItems(items);
-            setIsLoading(false);
+            setIsLoadingItems(false);
         });
     }, [groups]);
     if (error) {
         return <div>Failed to load the scores!</div>;
     }
-    console.log(`Loading: ${loading} - IsLoading: ${isLoading}`);
-    if (loading) {
-        return (
-            <div className={classes.root}>
-                <Typography style={{ color: '#fff' }}>
-                    <p>Loading... </p>
-                </Typography>
-            </div>
-        );
-    }
 
-    if (isLoading) {
+    if (isLoadingItems || isLoadingGroupData) {
         return (
             <div className={classes.root}>
                 <Typography style={{ color: '#fff' }}>

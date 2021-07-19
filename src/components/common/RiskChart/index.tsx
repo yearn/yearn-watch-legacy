@@ -1,5 +1,6 @@
 /* eslint-disable react/display-name */
-import { GenericList, GenericListItem } from '../../app';
+import { Link } from 'react-router-dom';
+import { GenericList, GenericListItem } from '../../app/GenericList';
 import { CellPosition, HeadCell } from '../../app/GenericList/HeadCell';
 import { colors, getSemaphoreInfo } from '../Semaphore';
 
@@ -9,6 +10,25 @@ const splitString = (
     defaultList: string[]
 ) => {
     return item === '' ? defaultList : item.split(separator);
+};
+
+type GroupQueryLinkProps = {
+    key: string;
+    group: string;
+    grouping: string;
+};
+const GroupQueryLink = (props: GroupQueryLinkProps) => {
+    const { group, key, grouping } = props;
+    if (group === '-') {
+        return <li key={key}>{group}</li>;
+    }
+    return (
+        <li key={key}>
+            <Link to={`/query/${grouping}/group/${group}`} target="_blank">
+                {group}
+            </Link>
+        </li>
+    );
 };
 
 export const headCells: HeadCell[] = [
@@ -34,11 +54,11 @@ export const headCells: HeadCell[] = [
             return (
                 <ol>
                     {groups.map((group, index) => (
-                        <li
-                            key={`unlikely-${position.columnNumber}-${position.rowNumber}`}
-                        >
-                            {group}
-                        </li>
+                        <GroupQueryLink
+                            key={`rare-${position.columnNumber}-${position.rowNumber}`}
+                            group={group}
+                            grouping={item.grouping.toString()}
+                        />
                     ))}
                 </ol>
             );
@@ -65,11 +85,11 @@ export const headCells: HeadCell[] = [
             return (
                 <ol>
                     {groups.map((group, index) => (
-                        <li
+                        <GroupQueryLink
                             key={`unlikely-${position.columnNumber}-${position.rowNumber}`}
-                        >
-                            {group}
-                        </li>
+                            group={group}
+                            grouping={item.grouping.toString()}
+                        />
                     ))}
                 </ol>
             );
@@ -96,11 +116,11 @@ export const headCells: HeadCell[] = [
             return (
                 <ol>
                     {groups.map((group, index) => (
-                        <li
-                            key={`unlikely-${position.columnNumber}-${position.rowNumber}`}
-                        >
-                            {group}
-                        </li>
+                        <GroupQueryLink
+                            key={`even-chance-${position.columnNumber}-${position.rowNumber}`}
+                            group={group}
+                            grouping={item.grouping.toString()}
+                        />
                     ))}
                 </ol>
             );
@@ -127,11 +147,11 @@ export const headCells: HeadCell[] = [
             return (
                 <ol>
                     {groups.map((group, index) => (
-                        <li
-                            key={`unlikely-${position.columnNumber}-${position.rowNumber}`}
-                        >
-                            {group}
-                        </li>
+                        <GroupQueryLink
+                            key={`likely-${position.columnNumber}-${position.rowNumber}`}
+                            group={group}
+                            grouping={item.grouping.toString()}
+                        />
                     ))}
                 </ol>
             );
@@ -160,11 +180,11 @@ export const headCells: HeadCell[] = [
             return (
                 <ol>
                     {groups.map((group, index) => (
-                        <li
-                            key={`unlikely-${position.columnNumber}-${position.rowNumber}`}
-                        >
-                            {group}
-                        </li>
+                        <GroupQueryLink
+                            key={`almost-certain-${position.columnNumber}-${position.rowNumber}`}
+                            group={group}
+                            grouping={item.grouping.toString()}
+                        />
                     ))}
                 </ol>
             );
@@ -186,6 +206,7 @@ type RiskChartProps = {
 
 type RiskItem = {
     label: string;
+    grouping: string;
     rareLabels: string;
     rareImpact: number;
     rareLikelihood: number;
@@ -210,6 +231,7 @@ type RiskItem = {
 const createRiskItem = (label: string, impact: number): RiskItem => {
     return {
         label,
+        grouping: 'default',
         rareLabels: '',
         rareImpact: impact,
         rareLikelihood: 1,
