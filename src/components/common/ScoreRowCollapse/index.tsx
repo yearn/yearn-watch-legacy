@@ -28,6 +28,10 @@ export const ScoreRowCollapse = (props: ScoreRowCollapseProps) => {
     const classes = useStyles();
     const data = [
         {
+            key: 'TVL Impact:',
+            value: item.tvlImpact.toString(),
+        },
+        {
             key: 'Audit Score:',
             value: item.auditScore.toString(),
         },

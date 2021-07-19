@@ -25,16 +25,18 @@ type GenericListProps<ItemType extends GenericListItem> = {
     collapse?: (index: number, item: ItemType) => React.ReactNode;
     headCells: HeadCell[];
     title: string;
+    defaultRowsPerPage?: number;
 };
 
 export const GenericList = <T extends GenericListItem>(
     props: GenericListProps<T>
 ) => {
+    const { defaultRowsPerPage = 10 } = props;
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof GenericListItem>('id');
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(defaultRowsPerPage);
     const { items, title, headCells } = props;
 
     const shouldCollapse = props.collapse !== undefined;

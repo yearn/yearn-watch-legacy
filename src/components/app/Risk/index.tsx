@@ -1,11 +1,9 @@
 /* eslint-disable react/display-name */
 import { useEffect, useState } from 'react';
 import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
-
 import { useOnGet } from '@typesaurus/react';
 import { init as initFB } from '../../../utils/firebase';
 import { Grouping } from '../../../types/grouping';
-import { GenericList, GenericListItem } from '../GenericList';
 import _ from 'lodash';
 import {
     amountToMMs,
@@ -13,9 +11,8 @@ import {
     getMedian,
     getTvlImpact,
 } from '../../../utils/commonUtils';
-import { ScoreRowCollapse } from '../../common/ScoreRowCollapse';
 import { getStrategyTVLsPerProtocol } from '../../../utils/strategiesHelper';
-import { headCells } from './headerDefinition';
+import { RiskChart } from '../../common/RiskChart';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -27,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export const Scores = () => {
+export const Risk = () => {
     const [groups, setGroups] = useState<Grouping[]>([]);
     const [items, setItems] = useState<any[]>([]);
     const [isLoadingItems, setIsLoadingItems] = useState<boolean>(true);
@@ -37,12 +34,12 @@ export const Scores = () => {
         groupings,
         groupingId
     );
-    const classes = useStyles();
     if (groups.length === 0 && groupData) {
         setGroups(groupData.data.groups);
     }
+    const classes = useStyles();
     useEffect(() => {
-        if (groups.length === 0) {
+        if (groups.length == 0) {
             return;
         }
         const itemPromises = groups.map(async (item) => {
@@ -62,6 +59,9 @@ export const Scores = () => {
             const medianLikelihood = getMedian(values);
             return {
                 ...newItem,
+                label: item.label,
+                likelihood: medianLikelihood,
+                impact: tvlImpact,
                 tvlImpact,
                 averageLikelihood,
                 medianLikelihood,
@@ -77,33 +77,23 @@ export const Scores = () => {
     if (error) {
         return <div>Failed to load the scores!</div>;
     }
+
     if (isLoadingItems || isLoadingGroupData) {
         return (
             <div className={classes.root}>
                 <Typography style={{ color: '#fff' }}>
-                    <p>Loading info to calculate scores... </p>
+                    <p>Loading info... </p>
                 </Typography>
             </div>
         );
     }
 
-    const collapseRow = (index: number, item: GenericListItem) => (
-        <ScoreRowCollapse index={index} item={item} />
+    return (
+        <div>
+            <Typography style={{ color: '#fff' }}>
+                <p>Welcome to the Risk Chart!</p>
+            </Typography>
+            <RiskChart items={items} />
+        </div>
     );
-
-    if (groups) {
-        return (
-            <div>
-                <Typography style={{ color: '#fff' }}>
-                    <p> Welcome to the Scores!</p>
-                </Typography>
-                <GenericList
-                    headCells={headCells}
-                    items={items}
-                    title={`Scores List - ${items.length} Groups`}
-                    collapse={collapseRow}
-                />
-            </div>
-        );
-    }
 };
