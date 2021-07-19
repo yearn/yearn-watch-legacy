@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Scores = () => {
     const [groups, setGroups] = useState<Grouping[]>([]);
     const [items, setItems] = useState<any[]>([]);
-    const [isLoadingItems, setIsLoadingItems] = useState<boolean>(false);
+    const [isLoadingItems, setIsLoadingItems] = useState<boolean>(true);
     const { groupings } = initFB();
     const groupingId = 'default';
     const [groupData, { loading: isLoadingGroupData, error }] = useOnGet(
@@ -42,6 +42,9 @@ export const Scores = () => {
         setGroups(groupData.data.groups);
     }
     useEffect(() => {
+        if (groups.length === 0) {
+            return;
+        }
         const itemPromises = groups.map(async (item) => {
             const newItem = _.omit(item, 'criteria');
             const protocol = await getStrategyTVLsPerProtocol(item.label);
@@ -78,7 +81,7 @@ export const Scores = () => {
         return (
             <div className={classes.root}>
                 <Typography style={{ color: '#fff' }}>
-                    <p>Loading... </p>
+                    <p>Loading info to calculate scores... </p>
                 </Typography>
             </div>
         );

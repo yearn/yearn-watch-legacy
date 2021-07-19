@@ -34,11 +34,14 @@ export const Risk = () => {
         groupings,
         groupingId
     );
-    const classes = useStyles();
     if (groups.length === 0 && groupData) {
         setGroups(groupData.data.groups);
     }
+    const classes = useStyles();
     useEffect(() => {
+        if (groups.length == 0) {
+            return;
+        }
         const itemPromises = groups.map(async (item) => {
             const newItem = _.omit(item, 'criteria');
             const protocol = await getStrategyTVLsPerProtocol(item.label);
@@ -79,7 +82,7 @@ export const Risk = () => {
         return (
             <div className={classes.root}>
                 <Typography style={{ color: '#fff' }}>
-                    <p>Loading... </p>
+                    <p>Loading info... </p>
                 </Typography>
             </div>
         );
