@@ -27,6 +27,13 @@ export const ItemRow = <T extends GenericListItem>(props: ItemRowProps<T>) => {
     const itemRow = headCells.map((headCell, headIndex) => {
         const itemRowKey = `${labelId}-${headIndex}`;
         const itemIdValue = headCell.id ? item[headCell.id] : '';
+        const position = {
+            rowNumber: index + 1,
+            columnNumber: headIndex + 1,
+        };
+        const cellStyle = headCell.getStyle
+            ? headCell.getStyle(item, position)
+            : undefined;
         return (
             <TableCell
                 component="th"
@@ -35,9 +42,10 @@ export const ItemRow = <T extends GenericListItem>(props: ItemRowProps<T>) => {
                 padding="default"
                 key={itemRowKey}
                 align={headCell.align}
+                style={cellStyle}
             >
                 {headCell.format
-                    ? headCell.format(item, itemIdValue)
+                    ? headCell.format(item, itemIdValue, position)
                     : itemIdValue}
             </TableCell>
         );

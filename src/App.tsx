@@ -12,6 +12,7 @@ import {
 import SignIn from './components/common/SignIn';
 import PrivateRoute from './components/common/PrivateRoute';
 import { AuthProvider } from './contexts/AuthContext';
+import { Risk } from './components/app/Risk';
 
 class App extends React.Component {
     render() {
@@ -39,7 +40,8 @@ class App extends React.Component {
                     <AuthProvider>
                         <Route exact path="/signin" component={SignIn} />
                         <Route exact path="/signout" component={SignIn} />
-                        <PrivateRoute path="/scores" component={Scores} />
+                        <PrivateRoute exact path="/scores" component={Scores} />
+                        <PrivateRoute exact path="/risk" component={Risk} />
                     </AuthProvider>
                 </Switch>
             </Router>
