@@ -26,6 +26,7 @@ type GenericListProps<ItemType extends GenericListItem> = {
     headCells: HeadCell[];
     title: string;
     defaultRowsPerPage?: number;
+    displayPagination?: boolean;
 };
 
 export const GenericList = <T extends GenericListItem>(
@@ -37,7 +38,7 @@ export const GenericList = <T extends GenericListItem>(
     const [orderBy, setOrderBy] = React.useState<keyof GenericListItem>('id');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(defaultRowsPerPage);
-    const { items, title, headCells } = props;
+    const { items, title, headCells, displayPagination = true } = props;
 
     const shouldCollapse = props.collapse !== undefined;
 
@@ -112,15 +113,19 @@ export const GenericList = <T extends GenericListItem>(
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={items.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                />
+                {displayPagination ? (
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={items.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                    />
+                ) : (
+                    ''
+                )}
             </Paper>
         </div>
     );

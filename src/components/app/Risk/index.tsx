@@ -13,6 +13,9 @@ import {
 } from '../../../utils/commonUtils';
 import { getStrategyTVLsPerProtocol } from '../../../utils/strategiesHelper';
 import { RiskChart } from '../../common/RiskChart';
+import { GenericList, GenericListItem } from '../GenericList';
+import { ScoreRowCollapse } from '../../common/ScoreRowCollapse';
+import { headCells as scoresHeadCells } from '../Scores/headerDefinition';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -44,7 +47,7 @@ export const Risk = () => {
         }
         const itemPromises = groups.map(async (item) => {
             const newItem = _.omit(item, 'criteria');
-            const protocol = await getStrategyTVLsPerProtocol(item.label);
+            const protocol = await getStrategyTVLsPerProtocol(item.id);
             const tvlImpact = getTvlImpact(amountToMMs(protocol.tvl));
             const values = [
                 item.auditScore,
@@ -87,6 +90,9 @@ export const Risk = () => {
             </div>
         );
     }
+    const collapseRow = (index: number, item: GenericListItem) => (
+        <ScoreRowCollapse index={index} item={item} />
+    );
 
     return (
         <div>
@@ -94,6 +100,12 @@ export const Risk = () => {
                 <p>Welcome to the Risk Chart!</p>
             </Typography>
             <RiskChart items={items} />
+            <GenericList
+                headCells={scoresHeadCells}
+                items={items}
+                title={`Scores List - ${items.length} Groups`}
+                collapse={collapseRow}
+            />
         </div>
     );
 };

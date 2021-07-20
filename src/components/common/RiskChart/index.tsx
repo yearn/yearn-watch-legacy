@@ -14,18 +14,19 @@ const splitString = (
 
 type GroupQueryLinkProps = {
     key: string;
-    group: string;
+    groupLabel: string;
+    groupId: string;
     grouping: string;
 };
 const GroupQueryLink = (props: GroupQueryLinkProps) => {
-    const { group, key, grouping } = props;
-    if (group === '-') {
-        return <li key={key}>{group}</li>;
+    const { groupLabel, groupId, key, grouping } = props;
+    if (groupId === '-') {
+        return <li key={key}>{groupId}</li>;
     }
     return (
         <li key={key}>
-            <Link to={`/query/${grouping}/group/${group}`} target="_blank">
-                {group}
+            <Link to={`/query/${grouping}/group/${groupId}`} target="_blank">
+                {groupLabel}
             </Link>
         </li>
     );
@@ -49,14 +50,17 @@ export const headCells: HeadCell[] = [
             value: string | number | boolean,
             position: CellPosition
         ) => {
-            const groups = splitString(item.rareLabels.toString(), ',', ['-']);
-
+            const groupLabels = splitString(item.rareLabels.toString(), ',', [
+                '-',
+            ]);
+            const groupIds = splitString(item.rareIds.toString(), ',', ['-']);
             return (
                 <ol>
-                    {groups.map((group, index) => (
+                    {groupLabels.map((group, index) => (
                         <GroupQueryLink
-                            key={`rare-${position.columnNumber}-${position.rowNumber}`}
-                            group={group}
+                            key={`rare-${groupIds[index]}-${position.columnNumber}-${position.rowNumber}`}
+                            groupLabel={group}
+                            groupId={groupIds[index]}
                             grouping={item.grouping.toString()}
                         />
                     ))}
@@ -79,15 +83,21 @@ export const headCells: HeadCell[] = [
             value: string | number | boolean,
             position: CellPosition
         ) => {
-            const groups = splitString(item.unlikelyLabels.toString(), ',', [
+            const groupLabels = splitString(
+                item.unlikelyLabels.toString(),
+                ',',
+                ['-']
+            );
+            const groupIds = splitString(item.unlikelyIds.toString(), ',', [
                 '-',
             ]);
             return (
                 <ol>
-                    {groups.map((group, index) => (
+                    {groupLabels.map((groupLabel, index) => (
                         <GroupQueryLink
-                            key={`unlikely-${position.columnNumber}-${position.rowNumber}`}
-                            group={group}
+                            key={`unlikely-${groupIds[index]}-${position.columnNumber}-${position.rowNumber}`}
+                            groupLabel={groupLabel}
+                            groupId={groupIds[index]}
                             grouping={item.grouping.toString()}
                         />
                     ))}
@@ -110,15 +120,21 @@ export const headCells: HeadCell[] = [
             value: string | number | boolean,
             position: CellPosition
         ) => {
-            const groups = splitString(item.evenChanceLabels.toString(), ',', [
+            const groupLabels = splitString(
+                item.evenChanceLabels.toString(),
+                ',',
+                ['-']
+            );
+            const groupIds = splitString(item.evenChanceIds.toString(), ',', [
                 '-',
             ]);
             return (
                 <ol>
-                    {groups.map((group, index) => (
+                    {groupLabels.map((group, index) => (
                         <GroupQueryLink
-                            key={`even-chance-${position.columnNumber}-${position.rowNumber}`}
-                            group={group}
+                            key={`even-chance-${groupIds[index]}-${position.columnNumber}-${position.rowNumber}`}
+                            groupLabel={group}
+                            groupId={groupIds[index]}
                             grouping={item.grouping.toString()}
                         />
                     ))}
@@ -141,15 +157,17 @@ export const headCells: HeadCell[] = [
             value: string | number | boolean,
             position: CellPosition
         ) => {
-            const groups = splitString(item.likelyLabels.toString(), ',', [
+            const groupLabels = splitString(item.likelyLabels.toString(), ',', [
                 '-',
             ]);
+            const groupIds = splitString(item.likelyIds.toString(), ',', ['-']);
             return (
                 <ol>
-                    {groups.map((group, index) => (
+                    {groupLabels.map((groupLabel, index) => (
                         <GroupQueryLink
-                            key={`likely-${position.columnNumber}-${position.rowNumber}`}
-                            group={group}
+                            key={`likely-${groupIds[index]}-${position.columnNumber}-${position.rowNumber}`}
+                            groupLabel={groupLabel}
+                            groupId={groupIds[index]}
                             grouping={item.grouping.toString()}
                         />
                     ))}
@@ -172,17 +190,23 @@ export const headCells: HeadCell[] = [
             value: string | number | boolean,
             position: CellPosition
         ) => {
-            const groups = splitString(
+            const groupLabels = splitString(
                 item.almostCertainLabels.toString(),
+                ',',
+                ['-']
+            );
+            const groupIds = splitString(
+                item.almostCertainIds.toString(),
                 ',',
                 ['-']
             );
             return (
                 <ol>
-                    {groups.map((group, index) => (
+                    {groupLabels.map((groupLabel, index) => (
                         <GroupQueryLink
-                            key={`almost-certain-${position.columnNumber}-${position.rowNumber}`}
-                            group={group}
+                            key={`almost-certain-${groupIds[index]}-${position.columnNumber}-${position.rowNumber}`}
+                            groupLabel={groupLabel}
+                            groupId={groupIds[index]}
                             grouping={item.grouping.toString()}
                         />
                     ))}
@@ -198,6 +222,7 @@ export const headCells: HeadCell[] = [
 ];
 type RiskChartProps = {
     items: Array<{
+        id: string;
         label: string;
         impact: number;
         likelihood: number;
@@ -208,21 +233,26 @@ type RiskItem = {
     label: string;
     grouping: string;
     rareLabels: string;
+    rareIds: string;
     rareImpact: number;
     rareLikelihood: number;
 
+    unlikelyIds: string;
     unlikelyLabels: string;
     unlikelyImpact: number;
     unlikelyLikelihood: number;
 
+    evenChanceIds: string;
     evenChanceLabels: string;
     evenChanceImpact: number;
     evenChanceLikelihood: number;
 
+    likelyIds: string;
     likelyLabels: string;
     likelyImpact: number;
     likelyLikelihood: number;
 
+    almostCertainIds: string;
     almostCertainLabels: string;
     almostCertainImpact: number;
     almostCertainLikelihood: number;
@@ -232,22 +262,27 @@ const createRiskItem = (label: string, impact: number): RiskItem => {
     return {
         label,
         grouping: 'default',
+        rareIds: '',
         rareLabels: '',
         rareImpact: impact,
         rareLikelihood: 1,
 
+        unlikelyIds: '',
         unlikelyLabels: '',
         unlikelyImpact: impact,
         unlikelyLikelihood: 2,
 
+        evenChanceIds: '',
         evenChanceLabels: '',
         evenChanceImpact: impact,
         evenChanceLikelihood: 3,
 
+        likelyIds: '',
         likelyLabels: '',
         likelyImpact: impact,
         likelyLikelihood: 4,
 
+        almostCertainIds: '',
         almostCertainLabels: '',
         almostCertainImpact: impact,
         almostCertainLikelihood: 5,
@@ -272,30 +307,50 @@ export const RiskChart = (props: RiskChartProps) => {
                 riskItem.rareLabels === ''
                     ? item.label
                     : `${riskItem.rareLabels},${item.label}`;
+            riskItem.rareIds =
+                riskItem.rareIds === ''
+                    ? item.id
+                    : `${riskItem.rareIds},${item.id}`;
         }
         if (semaphoreInfo.likelihoodIndex === 1) {
             riskItem.unlikelyLabels =
                 riskItem.unlikelyLabels === ''
                     ? item.label
                     : `${riskItem.unlikelyLabels},${item.label}`;
+            riskItem.unlikelyIds =
+                riskItem.unlikelyIds === ''
+                    ? item.id
+                    : `${riskItem.unlikelyIds},${item.id}`;
         }
         if (semaphoreInfo.likelihoodIndex === 2) {
             riskItem.evenChanceLabels =
                 riskItem.evenChanceLabels === ''
                     ? item.label
                     : `${riskItem.evenChanceLabels},${item.label}`;
+            riskItem.evenChanceIds =
+                riskItem.evenChanceIds === ''
+                    ? item.id
+                    : `${riskItem.evenChanceIds},${item.id}`;
         }
         if (semaphoreInfo.likelihoodIndex === 3) {
             riskItem.likelyLabels =
                 riskItem.likelyLabels === ''
                     ? item.label
                     : `${riskItem.likelyLabels},${item.label}`;
+            riskItem.likelyIds =
+                riskItem.likelyIds === ''
+                    ? item.id
+                    : `${riskItem.likelyIds},${item.id}`;
         }
         if (semaphoreInfo.likelihoodIndex === 4) {
             riskItem.almostCertainLabels =
                 riskItem.almostCertainLabels === ''
                     ? item.label
                     : `${riskItem.almostCertainLabels},${item.label}`;
+            riskItem.almostCertainIds =
+                riskItem.almostCertainIds === ''
+                    ? item.id
+                    : `${riskItem.almostCertainIds},${item.id}`;
         }
     });
     return (

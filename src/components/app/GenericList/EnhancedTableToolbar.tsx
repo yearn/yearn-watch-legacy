@@ -5,9 +5,7 @@ import {
     makeStyles,
     Theme,
 } from '@material-ui/core/styles';
-import { Toolbar, Tooltip, Typography } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import { Toolbar, Typography } from '@material-ui/core';
 
 const useToolbarStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -47,14 +45,10 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                 variant="h6"
                 id="tableTitle"
                 component="div"
+                align="center"
             >
                 {props.title}
             </Typography>
-            <Tooltip title="Filter list">
-                <IconButton aria-label="filter list">
-                    <FilterListIcon />
-                </IconButton>
-            </Tooltip>
         </Toolbar>
     );
 };
