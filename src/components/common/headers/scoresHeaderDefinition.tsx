@@ -1,12 +1,13 @@
 /* eslint-disable react/display-name */
 import { Tooltip } from '@material-ui/core';
-import { GenericListItem } from '../GenericList';
+import { GenericListItem } from '../../app/GenericList';
 import { Link } from 'react-router-dom';
 import MonetizationOnRoundedIcon from '@material-ui/icons/MonetizationOnRounded';
-import { HeadCell } from '../GenericList/HeadCell';
-import { Semaphore } from '../../common/Semaphore';
+import { HeadCell } from '../../app/GenericList/HeadCell';
+import { Semaphore } from '../Semaphore';
+import { TVLImpactTooltip } from '../TVLImpactTooltip';
 
-export const headCells: HeadCell[] = [
+export const scoreHeadCells: HeadCell[] = [
     {
         numeric: false,
         disablePadding: false,
@@ -18,7 +19,7 @@ export const headCells: HeadCell[] = [
                     <Link
                         color="inherit"
                         target="_blank"
-                        to={`/query/${item.groupingId}/group/${item.label}`}
+                        to={`/query/${item.groupingId}/group/${item.id}`}
                     >
                         <Tooltip
                             title={`View how the total TVL is allocated in the group ${item.label}`}
@@ -47,7 +48,12 @@ export const headCells: HeadCell[] = [
         label: 'Impact',
         align: 'center',
         format: (item: GenericListItem, value: string | number | boolean) => {
-            return parseFloat(value.toString()).toFixed(0);
+            return (
+                <div>
+                    {parseFloat(value.toString()).toFixed(0)}
+                    <TVLImpactTooltip value={parseFloat(value.toString())} />
+                </div>
+            );
         },
     },
     {

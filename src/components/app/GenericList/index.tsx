@@ -26,18 +26,27 @@ type GenericListProps<ItemType extends GenericListItem> = {
     headCells: HeadCell[];
     title: string;
     defaultRowsPerPage?: number;
+    displayPagination?: boolean;
+    defaultOrderBy?: string;
+    defaultOrder?: Order;
 };
 
 export const GenericList = <T extends GenericListItem>(
     props: GenericListProps<T>
 ) => {
-    const { defaultRowsPerPage = 10 } = props;
+    const {
+        defaultRowsPerPage = 10,
+        defaultOrder = 'asc',
+        defaultOrderBy = 'id',
+    } = props;
     const classes = useStyles();
-    const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof GenericListItem>('id');
+    const [order, setOrder] = React.useState<Order>(defaultOrder);
+    const [orderBy, setOrderBy] = React.useState<keyof GenericListItem>(
+        defaultOrderBy
+    );
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(defaultRowsPerPage);
-    const { items, title, headCells } = props;
+    const { items, title, headCells, displayPagination = true } = props;
 
     const shouldCollapse = props.collapse !== undefined;
 
@@ -112,15 +121,19 @@ export const GenericList = <T extends GenericListItem>(
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={items.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                />
+                {displayPagination ? (
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={items.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                    />
+                ) : (
+                    ''
+                )}
             </Paper>
         </div>
     );

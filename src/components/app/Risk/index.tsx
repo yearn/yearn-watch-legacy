@@ -13,6 +13,10 @@ import {
 } from '../../../utils/commonUtils';
 import { getStrategyTVLsPerProtocol } from '../../../utils/strategiesHelper';
 import { RiskChart } from '../../common/RiskChart';
+import { GenericList, GenericListItem } from '../GenericList';
+import { ScoreRowCollapse } from '../../common/ScoreRowCollapse';
+import { scoreHeadCells } from '../../common/headers/scoresHeaderDefinition';
+import { CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -44,7 +48,7 @@ export const Risk = () => {
         }
         const itemPromises = groups.map(async (item) => {
             const newItem = _.omit(item, 'criteria');
-            const protocol = await getStrategyTVLsPerProtocol(item.label);
+            const protocol = await getStrategyTVLsPerProtocol(item.id);
             const tvlImpact = getTvlImpact(amountToMMs(protocol.tvl));
             const values = [
                 item.auditScore,
@@ -81,12 +85,16 @@ export const Risk = () => {
     if (isLoadingItems || isLoadingGroupData) {
         return (
             <div className={classes.root}>
+                <CircularProgress />
                 <Typography style={{ color: '#fff' }}>
                     <p>Loading info... </p>
                 </Typography>
             </div>
         );
     }
+    const collapseRow = (index: number, item: GenericListItem) => (
+        <ScoreRowCollapse index={index} item={item} />
+    );
 
     return (
         <div>
@@ -94,6 +102,14 @@ export const Risk = () => {
                 <p>Welcome to the Risk Chart!</p>
             </Typography>
             <RiskChart items={items} />
+            <GenericList
+                headCells={scoreHeadCells}
+                items={items}
+                title={`Scores List - ${items.length} Groups`}
+                collapse={collapseRow}
+                defaultOrder="desc"
+                defaultOrderBy="totalScore"
+            />
         </div>
     );
 };
