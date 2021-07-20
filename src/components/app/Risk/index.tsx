@@ -16,6 +16,7 @@ import { RiskChart } from '../../common/RiskChart';
 import { GenericList, GenericListItem } from '../GenericList';
 import { ScoreRowCollapse } from '../../common/ScoreRowCollapse';
 import { headCells as scoresHeadCells } from '../Scores/headerDefinition';
+import { CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -84,6 +85,7 @@ export const Risk = () => {
     if (isLoadingItems || isLoadingGroupData) {
         return (
             <div className={classes.root}>
+                <CircularProgress />
                 <Typography style={{ color: '#fff' }}>
                     <p>Loading info... </p>
                 </Typography>
