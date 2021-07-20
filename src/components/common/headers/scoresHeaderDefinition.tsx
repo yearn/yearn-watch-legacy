@@ -1,13 +1,13 @@
 /* eslint-disable react/display-name */
 import { Tooltip } from '@material-ui/core';
-import { GenericListItem } from '../GenericList';
+import { GenericListItem } from '../../app/GenericList';
 import { Link } from 'react-router-dom';
 import MonetizationOnRoundedIcon from '@material-ui/icons/MonetizationOnRounded';
-import { HeadCell } from '../GenericList/HeadCell';
-import { Semaphore } from '../../common/Semaphore';
-import { TVLImpactTooltip } from '../../common/TVLImpactTooltip';
+import { HeadCell } from '../../app/GenericList/HeadCell';
+import { Semaphore } from '../Semaphore';
+import { TVLImpactTooltip } from '../TVLImpactTooltip';
 
-export const headCells: HeadCell[] = [
+export const scoreHeadCells: HeadCell[] = [
     {
         numeric: false,
         disablePadding: false,

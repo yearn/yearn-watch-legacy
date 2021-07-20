@@ -7,7 +7,6 @@ import {
     NavBar,
     Query,
     SingleStrategy,
-    Scores,
 } from './components/app';
 import SignIn from './components/common/SignIn';
 import PrivateRoute from './components/common/PrivateRoute';
@@ -40,7 +39,6 @@ class App extends React.Component {
                     <AuthProvider>
                         <Route exact path="/signin" component={SignIn} />
                         <Route exact path="/signout" component={SignIn} />
-                        <PrivateRoute exact path="/scores" component={Scores} />
                         <PrivateRoute exact path="/risk" component={Risk} />
                     </AuthProvider>
                 </Switch>

@@ -27,15 +27,23 @@ type GenericListProps<ItemType extends GenericListItem> = {
     title: string;
     defaultRowsPerPage?: number;
     displayPagination?: boolean;
+    defaultOrderBy?: string;
+    defaultOrder?: Order;
 };
 
 export const GenericList = <T extends GenericListItem>(
     props: GenericListProps<T>
 ) => {
-    const { defaultRowsPerPage = 10 } = props;
+    const {
+        defaultRowsPerPage = 10,
+        defaultOrder = 'asc',
+        defaultOrderBy = 'id',
+    } = props;
     const classes = useStyles();
-    const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof GenericListItem>('id');
+    const [order, setOrder] = React.useState<Order>(defaultOrder);
+    const [orderBy, setOrderBy] = React.useState<keyof GenericListItem>(
+        defaultOrderBy
+    );
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(defaultRowsPerPage);
     const { items, title, headCells, displayPagination = true } = props;

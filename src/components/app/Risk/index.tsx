@@ -15,7 +15,7 @@ import { getStrategyTVLsPerProtocol } from '../../../utils/strategiesHelper';
 import { RiskChart } from '../../common/RiskChart';
 import { GenericList, GenericListItem } from '../GenericList';
 import { ScoreRowCollapse } from '../../common/ScoreRowCollapse';
-import { headCells as scoresHeadCells } from '../Scores/headerDefinition';
+import { scoreHeadCells } from '../../common/headers/scoresHeaderDefinition';
 import { CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -103,10 +103,12 @@ export const Risk = () => {
             </Typography>
             <RiskChart items={items} />
             <GenericList
-                headCells={scoresHeadCells}
+                headCells={scoreHeadCells}
                 items={items}
                 title={`Scores List - ${items.length} Groups`}
                 collapse={collapseRow}
+                defaultOrder="desc"
+                defaultOrderBy="totalScore"
             />
         </div>
     );
