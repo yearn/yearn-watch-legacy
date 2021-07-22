@@ -193,3 +193,11 @@ export const getMedian = (arr: number[]) => {
 
 export const getAverage = (arr: number[]) =>
     arr.reduce((a, b) => a + b, 0) / arr.length;
+
+export const flattenArrays = (arr: any[]): string[] => {
+    return arr.reduce((flat, toFlatten) => {
+        return flat.concat(
+            Array.isArray(toFlatten) ? flattenArrays(toFlatten) : toFlatten
+        );
+    }, []);
+};

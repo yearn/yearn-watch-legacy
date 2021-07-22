@@ -25,7 +25,7 @@ export const GroupQuery = (props: ProtocolQueryProps) => {
                 return found === undefined;
             })
             .map((protocolName) => {
-                return getStrategyTVLsPerProtocol(protocolName);
+                return getStrategyTVLsPerProtocol(protocolName, [], []);
             });
         Promise.all(getStrategyTVLsPerProtocolPromises)
             .then((newProtocolTVLs) => {

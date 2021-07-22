@@ -48,7 +48,12 @@ export const Risk = () => {
         }
         const itemPromises = groups.map(async (item) => {
             const newItem = _.omit(item, 'criteria');
-            const protocol = await getStrategyTVLsPerProtocol(item.id);
+            const protocol = await getStrategyTVLsPerProtocol(
+                item.id,
+                item.criteria.nameLike,
+                item.criteria.strategies,
+                item.criteria.exclude
+            );
             const tvlImpact = getTvlImpact(amountToMMs(protocol.tvl));
             const values = [
                 item.auditScore,
