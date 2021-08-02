@@ -28,7 +28,7 @@ const shouldHighlightStrategy = (strat: Strategy) => {
 
 const _StrategiesList = (props: StrategiesListProps) => {
     const { vault, expand = true } = props;
-    const config = vault.configOK;
+
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
             root: {},
@@ -47,6 +47,15 @@ const _StrategiesList = (props: StrategiesListProps) => {
                 fontSize: '18px',
                 margin: 10,
             },
+            subTitle: {
+                color: '#828282',
+                textDecoration: 'none',
+                fontWeight: 'normal',
+                fontFamily: 'Roboto',
+                lineHeight: '16px',
+                fontSize: '16px',
+                style: 'normal',
+            },
             iconCall: {
                 backgroundColor: 'white',
                 borderRadius: 3,
@@ -57,15 +66,15 @@ const _StrategiesList = (props: StrategiesListProps) => {
                 border: 'none',
             },
             accordion: {
-                background: props.dark ? (config ? '#040e20' : '#0552aa') : '',
-                borderRadius: 5,
+                background: 'rgba(255,255,255, 0.5)',
+
+                backdropFilter: 'blur(4px)',
+                borderRadius: '8px',
                 margin: 10,
             },
             link: {
                 color: props.dark ? '#ffff' : 'black',
-                '&:hover': {
-                    fontWeight: 600,
-                },
+                fontWeight: 700,
             },
             heading: {
                 fontSize: theme.typography.pxToRem(15),
@@ -85,9 +94,9 @@ const _StrategiesList = (props: StrategiesListProps) => {
 
     return (
         <div className={classes.root}>
-            <Typography variant="body2" className={classes.text} component="p">
+            {/* <Typography variant="body2" className={classes.text} component="p">
                 Strategies
-            </Typography>
+            </Typography> */}
             {vault.strategies &&
                 vault.strategies.map((strategy: Strategy, index: number) => (
                     <Accordion
@@ -219,10 +228,10 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                 >
                                     Debt ratio
                                     <br />
-                                    {formatBPS(
-                                        strategy.params.debtRatio.toString()
-                                    )}{' '}
-                                    %
+                                    <span className={classes.subTitle}>
+                                        {' '}
+                                        Total debt
+                                    </span>
                                 </Grid>
                                 <Grid
                                     item
@@ -232,11 +241,10 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                 >
                                     Credit available
                                     <br />
-                                    {vault &&
-                                        displayAmount(
-                                            strategy.creditAvailable.toString(),
-                                            vault.token.decimals
-                                        )}
+                                    <span className={classes.subTitle}>
+                                        {' '}
+                                        Credit available
+                                    </span>
                                 </Grid>
                                 <Grid
                                     item

@@ -38,12 +38,16 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
                 boxShadow: '0 3px 6px 0 rgba(0,0,0,0.2)',
             },
             address: {
-                fontSize: '14px',
-                opacity: '0.7',
-                color: dark ? '#fff' : 'black',
+                color: '#828282',
+                textDecoration: 'none',
+                fontWeight: 400,
+                fontFamily: 'Roboto',
+                lineHeight: '14px',
+                fontSize: '16px',
+                style: 'normal',
             },
             copiedText: {
-                color: dark ? '#fff' : 'black',
+                color: 'black',
             },
         })
     );

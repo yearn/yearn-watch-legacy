@@ -1,4 +1,5 @@
 import { ChangeEvent, useState, useCallback } from 'react';
+/* eslint-disable jsx-a11y/no-autofocus */
 import { makeStyles } from '@material-ui/core/styles';
 import { debounce } from 'lodash';
 import {
@@ -8,9 +9,11 @@ import {
     InputAdornment,
     Switch,
     TextField,
+    Grid,
 } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Delete } from '@material-ui/icons';
+
+import { Delete, Search } from '@material-ui/icons';
 import ResultsLabel from '../ResultsLabel';
 
 const useStyles = makeStyles({
@@ -22,16 +25,32 @@ const useStyles = makeStyles({
         width: '100%',
         alignItems: 'center',
         alignContent: 'center',
+        backgroundColor: 'white',
+        color: 'black',
+        opacity: 0.7,
+        borderRadius: 8,
     },
     switch: {
-        color: 'white',
-        margin: '12px',
+        color: 'black',
+        margin: '8px',
+        opacity: 1,
     },
     searchInput: {
         width: '100%',
-        margin: '15px',
-        backgroundColor: 'white',
+
+        backgroundColor: 'transparent',
         alignContent: 'center',
+        '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+                borderColor: 'transparent',
+            },
+            '&:hover fieldset': {
+                borderColor: 'transparent',
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: 'transparent',
+            },
+        },
     },
     resultText: {
         width: '90%',
@@ -147,43 +166,67 @@ const SearchInput = (props: SearchInputProps) => {
     return (
         <Container maxWidth="lg">
             <form className={classes.root}>
-                <Container maxWidth="lg" className={classes.formContainer}>
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={filterVaultsWithWarnings}
-                                onChange={onFilterVaultsWithWarnings}
-                                color="primary"
+                <Grid container direction="row" alignItems="center" spacing={3}>
+                    <Grid item xs={12} sm={8}>
+                        <Container
+                            maxWidth="lg"
+                            className={classes.formContainer}
+                        >
+                            <TextField
+                                variant="outlined"
+                                className={classes.searchInput}
+                                id="outlined-basic"
+                                onChange={onChange}
+                                type="search"
+                                value={searchText}
+                                placeholder="Search by vault/strategy address/name, strategist address, token name/symbol, share token symbol/name or API version."
+                                InputProps={
+                                    searchText == ''
+                                        ? {
+                                              startAdornment: (
+                                                  <InputAdornment position="end">
+                                                      <Search />
+                                                  </InputAdornment>
+                                              ),
+                                          }
+                                        : {
+                                              endAdornment: (
+                                                  <InputAdornment position="end">
+                                                      <IconButton
+                                                          aria-label="delete"
+                                                          onClick={
+                                                              handleClickClearSearch
+                                                          }
+                                                      >
+                                                          <Delete />
+                                                      </IconButton>
+                                                  </InputAdornment>
+                                              ),
+                                          }
+                                }
                             />
-                        }
-                        className={classes.switch}
-                        label="Only show Vaults with warnings"
-                    />
-                </Container>
-                <TextField
-                    className={classes.searchInput}
-                    id="outlined-basic"
-                    variant="outlined"
-                    onChange={onChange}
-                    type="search"
-                    value={searchText}
-                    placeholder="Search by vault/strategy address/name, strategist address, token name/symbol, share token symbol/name or API version."
-                    InputProps={{
-                        endAdornment:
-                            searchText !== '' ? (
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="delete"
-                                        onClick={handleClickClearSearch}
-                                    >
-                                        <Delete />
-                                    </IconButton>
-                                </InputAdornment>
-                            ) : (
-                                ''
-                            ),
-                    }}
-                />
+                        </Container>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <Container
+                            maxWidth="lg"
+                            className={classes.formContainer}
+                        >
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={filterVaultsWithWarnings}
+                                        onChange={onFilterVaultsWithWarnings}
+                                        color="primary"
+                                    />
+                                }
+                                className={classes.switch}
+                                labelPlacement="start"
+                                label="Only show Vaults with warnings"
+                            />
+                        </Container>
+                    </Grid>
+                </Grid>
             </form>
             <Container maxWidth="lg" className={classes.resultText}>
                 {renderSearchingLabel()}
