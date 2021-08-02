@@ -19,6 +19,7 @@ import { VaultDescription } from './VaultDescription';
 import EtherScanLink from '../../common/EtherScanLink';
 import { ErrorAlert } from '../../common/Alerts';
 import ReactHelmet from '../../common/ReactHelmet';
+import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -154,8 +155,7 @@ export const SingleVault = () => {
                             marginTop: '100px',
                         }}
                     >
-                        <CircularProgress />{' '}
-                        <Typography>Loading vault..</Typography>
+                        <ProgressSpinnerBar />
                     </div>
                 ) : (
                     !error && (

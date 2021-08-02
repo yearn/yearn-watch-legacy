@@ -7,7 +7,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Divider from '@material-ui/core/Divider';
+
 import { Vault } from '../../../types';
 import { StrategistList } from '../StrategistList';
 import EtherScanLink from '../../common/EtherScanLink';
@@ -34,17 +34,24 @@ export const VaultItemList = (props: VaultItemListProps) => {
                 margin: '5px',
                 borderRadius: '5px',
             },
-            link: {
-                color: '#fff',
+
+            strats: {
+                color: '#828282',
                 textDecoration: 'none',
-                '&:hover': {
-                    textDecoration: 'underline',
-                },
+                fontWeight: 'normal',
+                fontFamily: 'Roboto',
+                lineHeight: '16px',
+                fontSize: '16px',
+                style: 'normal',
             },
             textVault: {
-                fontFamily: 'Open Sans',
-                lineHeight: '27px',
-                fontSize: '18px',
+                color: '#333333',
+                textDecoration: 'underline',
+                fontWeight: 'bold',
+                fontFamily: 'Roboto',
+                lineHeight: '24px',
+                fontSize: '16px',
+                fontStyle: 'normal',
                 '&:hover': {
                     fontSize: 19,
                 },
@@ -55,7 +62,7 @@ export const VaultItemList = (props: VaultItemListProps) => {
                 boxShadow: '0px 0px 0px 0 rgba(0,0,0,0.2)',
             },
             expandIcon: {
-                color: '#fff',
+                color: 'black',
             },
             list: {
                 padding: 0,
@@ -66,16 +73,12 @@ export const VaultItemList = (props: VaultItemListProps) => {
                 fontWeight: 400,
             },
 
-            divider: {
-                background: '#1d265f',
-                opacity: '0.3',
-                marginLeft: '10px',
-                marginRight: '10px',
-            },
             accordion: {
-                background: config ? '#0a1d3f' : '#006ae3',
+                background: 'rgba(255,255,255, 0.7)',
+                border: config ? '3px solid transparent' : ' 4px solid red',
+
                 borderRadius: '8px',
-                color: '#ffffff',
+                color: 'black',
                 marginTop: 10,
             },
             heading: {
@@ -136,7 +139,7 @@ export const VaultItemList = (props: VaultItemListProps) => {
                                         <HtmlTooltip
                                             title={
                                                 <Fragment>
-                                                    <Typography color="inherit">
+                                                    <Typography>
                                                         {
                                                             vault.configErrors
                                                                 .length
@@ -162,17 +165,19 @@ export const VaultItemList = (props: VaultItemListProps) => {
                                         ''
                                     )}
                                     <a
-                                        className={classes.link}
                                         href={`/vault/${vault.address}`}
                                         rel="noreferrer"
                                     >
                                         <span className={classes.textVault}>
                                             {' '}
-                                            {vault.name}{' '}
+                                            {vault.name}
                                             {`v${vault.apiVersion}`}
-                                            {` (${vault.strategies.length}  strats)`}
                                         </span>
                                     </a>
+                                    <br />
+                                    <span className={classes.strats}>
+                                        {` ${vault.strategies.length}  strats`}
+                                    </span>
                                 </Grid>
                                 <Hidden xsDown>
                                     {' '}
@@ -199,10 +204,10 @@ export const VaultItemList = (props: VaultItemListProps) => {
                         </Grid>
                     </Grid>
                 </Hidden>
-                <Divider className={classes.divider} />
+
                 <AccordionDetails>
                     <Container>
-                        <StrategistList vault={vault} dark={true} />
+                        <StrategistList vault={vault} dark={false} />
                     </Container>
                 </AccordionDetails>
             </MuiAccordion>

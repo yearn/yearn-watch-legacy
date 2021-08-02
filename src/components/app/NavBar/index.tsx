@@ -2,10 +2,9 @@ import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Avatar from '@material-ui/core/Avatar';
-import ImageYH from './yearnwatch.png';
+// import ImageYH from './yearnwatch.png';
+import ImageYH from '../../../images/yearn_watch.svg';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -32,11 +31,14 @@ export const NavBar = () => {
     return (
         <AppBar
             position="static"
-            style={{ background: 'transparent', boxShadow: 'none' }}
+            style={{
+                background: 'transparent',
+                boxShadow: 'none',
+                textAlign: 'center',
+            }}
         >
-            <Toolbar>
+            <span>
                 <IconButton
-                    edge="start"
                     className={classes.menuButton}
                     color="inherit"
                     aria-label="menu"
@@ -48,7 +50,7 @@ export const NavBar = () => {
                         className={classes.logoYearnWatch}
                     />
                 </IconButton>
-            </Toolbar>
+            </span>
         </AppBar>
     );
 };
