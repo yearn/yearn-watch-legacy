@@ -54,7 +54,7 @@ export const displayAmount = (amount: string, decimals: number): string => {
 };
 
 export const msToHours = (ms: number): number => {
-    return ms / 1000 / 60 / 24;
+    return Number((ms / (1000 * 60 * 60)).toFixed(2));
 };
 
 export const sub = (amountA: string, amountB: string): string => {
