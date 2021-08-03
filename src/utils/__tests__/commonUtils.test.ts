@@ -1,4 +1,4 @@
-import { displayAmount } from '../commonUtils';
+import { displayAmount, msToHours } from '../commonUtils';
 
 describe('#DisplayAmount', () => {
     it.each([
@@ -14,4 +14,14 @@ describe('#DisplayAmount', () => {
             expect(res).toBe(expected);
         }
     );
+});
+
+describe('#msToHours', () => {
+    it.each([
+        [1131227000, 314.23],
+        [229752000, 63.82],
+    ])('should display %i as %j', (ms, expected) => {
+        const res = msToHours(ms);
+        expect(res).toBe(expected);
+    });
 });
