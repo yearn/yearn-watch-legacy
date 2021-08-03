@@ -45,9 +45,12 @@ export type ChartSeriesData = {
 
 export const getChartData = (vault: Vault): ChartSeriesData[] => {
     const strategiesAllocations = vault.strategies.map(({ name, params }) => {
+        console.log('debtratio', params.debtRatio.toString());
         return {
             name,
-            y: parseInt(params.debtRatio.toString(), 10) / 100,
+            y: Number(
+                (parseInt(params.debtRatio.toString(), 10) / 100).toFixed(2)
+            ),
         };
     });
 
@@ -56,7 +59,7 @@ export const getChartData = (vault: Vault): ChartSeriesData[] => {
     if (debtUsage < 100) {
         strategiesAllocations.push({
             name: 'Not Allocated',
-            y: 100 - debtUsage,
+            y: Number((100 - debtUsage).toFixed(2)),
         });
     }
 
