@@ -6,6 +6,8 @@ import MonetizationOnRoundedIcon from '@material-ui/icons/MonetizationOnRounded'
 import { HeadCell } from '../../app/GenericList/HeadCell';
 import { Semaphore } from '../Semaphore';
 import { TVLImpactTooltip } from '../TVLImpactTooltip';
+import { amountToMMs } from '../../../utils/commonUtils';
+import BigNumber from 'bignumber.js';
 
 export const scoreHeadCells: HeadCell[] = [
     {
@@ -15,22 +17,20 @@ export const scoreHeadCells: HeadCell[] = [
         align: 'center',
         format: (item: GenericListItem) => {
             return (
-                <>
+                <Tooltip
+                    title={`View how the total TVL is allocated in the group ${item.label}`}
+                >
                     <Link
                         color="inherit"
                         target="_blank"
-                        to={`/query/${item.groupingId}/group/${item.id}`}
+                        to={`/query/${item.groupingId}/group/${item.groups}/${item.urlParam}`}
                     >
-                        <Tooltip
-                            title={`View how the total TVL is allocated in the group ${item.label}`}
-                        >
-                            <MonetizationOnRoundedIcon
-                                fontSize="small"
-                                htmlColor="gray"
-                            />
-                        </Tooltip>
+                        <MonetizationOnRoundedIcon
+                            fontSize="small"
+                            htmlColor="gray"
+                        />
                     </Link>
-                </>
+                </Tooltip>
             );
         },
     },
@@ -39,6 +39,13 @@ export const scoreHeadCells: HeadCell[] = [
         numeric: false,
         disablePadding: false,
         label: 'Group',
+        align: 'center',
+    },
+    {
+        id: 'totalStrategies',
+        numeric: true,
+        disablePadding: false,
+        label: '# Strategies',
         align: 'center',
     },
     {
@@ -52,6 +59,9 @@ export const scoreHeadCells: HeadCell[] = [
                 <div>
                     {parseFloat(value.toString()).toFixed(0)}
                     <TVLImpactTooltip value={parseFloat(value.toString())} />
+                    {` (USD ${amountToMMs(
+                        (item.tvl as unknown) as BigNumber
+                    ).toFixed(2)} MM)`}
                 </div>
             );
         },

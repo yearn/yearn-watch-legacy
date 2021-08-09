@@ -2,47 +2,36 @@ import { MouseEvent, useEffect, useState } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Typography } from '@material-ui/core';
 import { ProtocolsList } from '../ProtocolsList';
-import { getStrategyTVLsPerProtocol } from '../../../utils/strategiesHelper';
+import { groupStrategyTVLsPerProtocols } from '../../../utils/strategiesHelper';
 import { ProtocolTVL } from '../../../types/protocol-tvl';
 
 export interface ProtocolQueryProps {
-    protocols: string[];
+    groups: string[];
+    exclude: string[];
+    include: string[];
     onRemoveProtocol: (protocolName: string) => void;
 }
 
 export const GroupQuery = (props: ProtocolQueryProps) => {
     const [protocolsTVL, setProtocolsTVL] = useState<ProtocolTVL[]>([]);
     const [isLoaded, setIsLoaded] = useState(false);
-    const uniqueProtocolNames = props.protocols.filter((elem, index, self) => {
+    const groupNames = props.groups.filter((elem, index, self) => {
         return index === self.indexOf(elem);
     });
     useEffect(() => {
-        const getStrategyTVLsPerProtocolPromises = uniqueProtocolNames
-            .filter((protocolName) => {
-                const found = protocolsTVL.find((protocolTVL) =>
-                    protocolTVL.hasName(protocolName)
-                );
-                return found === undefined;
-            })
-            .map((protocolName) => {
-                return getStrategyTVLsPerProtocol(
-                    protocolName,
-                    [protocolName],
-                    [],
-                    []
-                );
-            });
-        Promise.all(getStrategyTVLsPerProtocolPromises)
-            .then((newProtocolTVLs) => {
-                const allNewProtocolTVLs = [
-                    ...protocolsTVL,
-                    ...newProtocolTVLs,
-                ];
-                setProtocolsTVL(allNewProtocolTVLs);
-                setIsLoaded(true);
-            })
-            .catch((error) => console.log('Error on getting TVLs   ', error));
-    }, [props.protocols]);
+        groupStrategyTVLsPerProtocols(
+            groupNames,
+            props.include,
+            props.exclude
+        ).then((groupedTVLsPerProtocols) => {
+            const allNewProtocolTVLs = [
+                ...protocolsTVL,
+                groupedTVLsPerProtocols,
+            ];
+            setProtocolsTVL(allNewProtocolTVLs);
+            setIsLoaded(true);
+        });
+    }, [props.groups]);
 
     const onRemoveProtocol = async (
         event: MouseEvent,

@@ -16,6 +16,10 @@ export interface ItemRowProps<ItemType extends GenericListItem> {
     item: ItemType;
     index: number;
     collapse?: (index: number, item: ItemType) => React.ReactNode;
+    getRowStyle?: (
+        index: number,
+        item: ItemType
+    ) => React.CSSProperties | undefined;
 }
 
 export const ItemRow = <T extends GenericListItem>(props: ItemRowProps<T>) => {
@@ -88,7 +92,17 @@ export const ItemRow = <T extends GenericListItem>(props: ItemRowProps<T>) => {
     );
     return (
         <>
-            <TableRow hover role="checkbox" tabIndex={-1} key={item.key}>
+            <TableRow
+                hover
+                role="checkbox"
+                tabIndex={-1}
+                key={item.key}
+                style={
+                    props.getRowStyle
+                        ? props.getRowStyle(index, item)
+                        : undefined
+                }
+            >
                 {collapseButton}
                 {itemRow}
             </TableRow>

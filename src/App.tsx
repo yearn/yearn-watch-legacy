@@ -22,7 +22,6 @@ class App extends React.Component {
                     <Route exact path="/" component={Home} />
                     <Route exact path="/query" component={Query} />
                     <Route
-                        exact
                         path="/query/:groupingId/group/:groups"
                         component={Query}
                     />

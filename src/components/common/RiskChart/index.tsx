@@ -1,5 +1,5 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable react/display-name */
-import { Link } from 'react-router-dom';
 import { GenericList, GenericListItem } from '../../app/GenericList';
 import { CellPosition, HeadCell } from '../../app/GenericList/HeadCell';
 import { colors, getSemaphoreInfo } from '../Semaphore';
@@ -13,23 +13,19 @@ const splitString = (
 };
 
 type GroupQueryLinkProps = {
-    key: string;
+    keyValue: string;
+    groups: string;
     groupLabel: string;
     groupId: string;
     grouping: string;
+    urlParam: string;
 };
 const GroupQueryLink = (props: GroupQueryLinkProps) => {
-    const { groupLabel, groupId, key, grouping } = props;
+    const { groupLabel, groupId, keyValue } = props;
     if (groupId === '-') {
-        return <li key={key}>{groupId}</li>;
+        return <li key={keyValue}>{groupId}</li>;
     }
-    return (
-        <li key={key}>
-            <Link to={`/query/${grouping}/group/${groupId}`} target="_blank">
-                {groupLabel}
-            </Link>
-        </li>
-    );
+    return <li key={keyValue}>{groupLabel}</li>;
 };
 
 export const headCells: HeadCell[] = [
@@ -58,10 +54,12 @@ export const headCells: HeadCell[] = [
                 <ol>
                     {groupLabels.map((group, index) => (
                         <GroupQueryLink
-                            key={`rare-${groupIds[index]}-${position.columnNumber}-${position.rowNumber}`}
+                            keyValue={`rare-${groupIds[index]}-${position.columnNumber}-${position.rowNumber}`}
                             groupLabel={group}
+                            groups={item.groups.toString()}
                             groupId={groupIds[index]}
                             grouping={item.grouping.toString()}
+                            urlParam={`${item.urlParam}`}
                         />
                     ))}
                 </ol>
@@ -95,10 +93,12 @@ export const headCells: HeadCell[] = [
                 <ol>
                     {groupLabels.map((groupLabel, index) => (
                         <GroupQueryLink
-                            key={`unlikely-${groupIds[index]}-${position.columnNumber}-${position.rowNumber}`}
+                            keyValue={`unlikely-${groupIds[index]}-${position.columnNumber}-${position.rowNumber}`}
                             groupLabel={groupLabel}
+                            groups={item.groups.toString()}
                             groupId={groupIds[index]}
                             grouping={item.grouping.toString()}
+                            urlParam={`${item.urlParam}`}
                         />
                     ))}
                 </ol>
@@ -132,10 +132,12 @@ export const headCells: HeadCell[] = [
                 <ol>
                     {groupLabels.map((group, index) => (
                         <GroupQueryLink
-                            key={`even-chance-${groupIds[index]}-${position.columnNumber}-${position.rowNumber}`}
+                            keyValue={`even-chance-${groupIds[index]}-${position.columnNumber}-${position.rowNumber}`}
                             groupLabel={group}
+                            groups={item.groups.toString()}
                             groupId={groupIds[index]}
                             grouping={item.grouping.toString()}
+                            urlParam={`${item.urlParam}`}
                         />
                     ))}
                 </ol>
@@ -165,10 +167,12 @@ export const headCells: HeadCell[] = [
                 <ol>
                     {groupLabels.map((groupLabel, index) => (
                         <GroupQueryLink
-                            key={`likely-${groupIds[index]}-${position.columnNumber}-${position.rowNumber}`}
+                            keyValue={`likely-${groupIds[index]}-${position.columnNumber}-${position.rowNumber}`}
                             groupLabel={groupLabel}
+                            groups={item.groups.toString()}
                             groupId={groupIds[index]}
                             grouping={item.grouping.toString()}
+                            urlParam={`${item.urlParam}`}
                         />
                     ))}
                 </ol>
@@ -204,10 +208,12 @@ export const headCells: HeadCell[] = [
                 <ol>
                     {groupLabels.map((groupLabel, index) => (
                         <GroupQueryLink
-                            key={`almost-certain-${groupIds[index]}-${position.columnNumber}-${position.rowNumber}`}
+                            keyValue={`almost-certain-${groupIds[index]}-${position.columnNumber}-${position.rowNumber}`}
                             groupLabel={groupLabel}
+                            groups={item.groups.toString()}
                             groupId={groupIds[index]}
                             grouping={item.grouping.toString()}
+                            urlParam={`${item.urlParam}`}
                         />
                     ))}
                 </ol>
@@ -223,15 +229,20 @@ export const headCells: HeadCell[] = [
 type RiskChartProps = {
     items: Array<{
         id: string;
+        groups: string;
         label: string;
         impact: number;
         likelihood: number;
+        urlParam: string;
     }>;
 };
 
 type RiskItem = {
     label: string;
     grouping: string;
+    urlParam: string;
+    groups: string;
+
     rareLabels: string;
     rareIds: string;
     rareImpact: number;
@@ -262,6 +273,9 @@ const createRiskItem = (label: string, impact: number): RiskItem => {
     return {
         label,
         grouping: 'default',
+        urlParam: '',
+        groups: '',
+
         rareIds: '',
         rareLabels: '',
         rareImpact: impact,
@@ -302,6 +316,14 @@ export const RiskChart = (props: RiskChartProps) => {
             likelihood: item.likelihood,
         });
         const riskItem = riskItems[semaphoreInfo.impactIndex];
+        riskItem.groups =
+            riskItem.groups === ''
+                ? item.groups
+                : `${riskItem.groups};${item.groups}`;
+        riskItem.urlParam =
+            riskItem.urlParam === ''
+                ? item.urlParam
+                : `${riskItem.urlParam};${item.urlParam}`;
         if (semaphoreInfo.likelihoodIndex === 0) {
             riskItem.rareLabels =
                 riskItem.rareLabels === ''

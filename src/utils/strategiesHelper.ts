@@ -4,12 +4,20 @@ import { getTokenPrice } from './oracle';
 import BigNumber from 'bignumber.js';
 import { ProtocolTVL } from '../types/protocol-tvl';
 import { StrategyTVL } from '../types/strategy-tvl';
-import { getStrategies } from './strategies';
+import { getAllStrategies, getStrategies } from './strategies';
 import { flattenArrays } from './commonUtils';
+import { isAddress } from 'ethers/lib/utils';
 
 export const getAssetsStrategiesAddressesByFilterNames = async (
     ...names: string[]
 ): Promise<string[]> => {
+    if (names.map((name) => name.toLowerCase()).includes('all')) {
+        console.time('GetAllStrategies');
+        const allStrategies = await getAllStrategies();
+        console.timeLog('GetAllStrategies');
+        console.log(`Total Strats: ${allStrategies.length}`);
+        return allStrategies.map((strategy) => strategy.address);
+    }
     const helper = getStrategiesHelperInstance();
 
     const callPromises = names.map((name) =>
@@ -24,24 +32,49 @@ export const getAssetsStrategiesAddressesByFilterNames = async (
     return Array.from(new Set(flattenResults));
 };
 
+export const getStrategyAddresses = async (namesOrAddresses: string[]) => {
+    const addresses = new Array<string>();
+    for (const nameOrAddress of namesOrAddresses) {
+        if (isAddress(nameOrAddress)) {
+            if (!addresses.includes(nameOrAddress.toLowerCase())) {
+                addresses.push(nameOrAddress.toLowerCase());
+            }
+        } else {
+            const nameAddresses = await getAssetsStrategiesAddressesByFilterNames(
+                nameOrAddress
+            );
+            addresses.push(...nameAddresses);
+        }
+    }
+    return Array.from(new Set<string>(addresses));
+};
+
 export const getStrategyTVLsPerProtocol = async (
     protocolName: string,
     aliases: string[],
     includeStrategies: string[] = [],
     excludeStrategies: string[] = []
 ): Promise<ProtocolTVL> => {
-    const isExcluded = (strategy: string) =>
-        excludeStrategies
+    const [
+        excludeStrategyAddresses,
+        includeStrategyAddresses,
+    ] = await Promise.all([
+        getStrategyAddresses(excludeStrategies),
+        getStrategyAddresses(includeStrategies),
+    ]);
+    const isStrategyAddressExcluded = (strategy: string) =>
+        excludeStrategyAddresses
             .map((address) => address.toLowerCase())
             .includes(strategy.toLowerCase());
 
     const result = await getAssetsStrategiesAddressesByFilterNames(...aliases);
     const filteredStrategyAddresses = result.filter(
-        (address: any) => address !== undefined && !isExcluded(address)
+        (address: string) =>
+            address !== undefined && !isStrategyAddressExcluded(address)
     );
     const strategyAddresses = [
         ...filteredStrategyAddresses,
-        ...includeStrategies.map((strategy) => strategy.toLowerCase()),
+        ...includeStrategyAddresses.map((strategy) => strategy.toLowerCase()),
     ];
     if (strategyAddresses.length === 0) {
         return new ProtocolTVL(protocolName, new BigNumber(0), []);
@@ -71,4 +104,19 @@ export const getStrategyTVLsPerProtocol = async (
         protocolTVL = protocolTVL.plus(strategy.estimatedTotalAssetsUsdc);
     }
     return new ProtocolTVL(protocolName, protocolTVL, strategies);
+};
+
+export const groupStrategyTVLsPerProtocols = async (
+    protocolsToGroup: string[],
+    includeStrategies: string[] = [],
+    excludeStrategies: string[] = [],
+    alias?: string
+): Promise<ProtocolTVL> => {
+    const protocolName = alias ? alias : protocolsToGroup.join(' OR ');
+    return await getStrategyTVLsPerProtocol(
+        protocolName,
+        protocolsToGroup,
+        includeStrategies,
+        excludeStrategies
+    );
 };

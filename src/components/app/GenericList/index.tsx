@@ -29,6 +29,10 @@ type GenericListProps<ItemType extends GenericListItem> = {
     displayPagination?: boolean;
     defaultOrderBy?: string;
     defaultOrder?: Order;
+    getRowStyle?: (
+        index: number,
+        item: ItemType
+    ) => React.CSSProperties | undefined;
 };
 
 export const GenericList = <T extends GenericListItem>(
@@ -106,6 +110,7 @@ export const GenericList = <T extends GenericListItem>(
                                             index={index}
                                             key={labelId}
                                             collapse={props.collapse}
+                                            getRowStyle={props.getRowStyle}
                                         />
                                     );
                                 })}
@@ -123,7 +128,7 @@ export const GenericList = <T extends GenericListItem>(
                 </TableContainer>
                 {displayPagination ? (
                     <TablePagination
-                        rowsPerPageOptions={[5, 10, 25]}
+                        rowsPerPageOptions={[5, 10, 20, 40, 60, 75, 100]}
                         component="div"
                         count={items.length}
                         rowsPerPage={rowsPerPage}
