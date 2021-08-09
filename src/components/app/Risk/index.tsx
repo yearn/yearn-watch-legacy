@@ -8,8 +8,10 @@ import _ from 'lodash';
 import {
     amountToMMs,
     getAverage,
+    getExcludeIncludeUrlParams,
     getMedian,
     getTvlImpact,
+    sumAll,
 } from '../../../utils/commonUtils';
 import { getStrategyTVLsPerProtocol } from '../../../utils/strategiesHelper';
 import { RiskChart } from '../../common/RiskChart';
@@ -30,6 +32,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const Risk = () => {
     const [groups, setGroups] = useState<Grouping[]>([]);
+    const [totalStrategies, setTotalStrategies] = useState<number>(0);
+    const [totalTVL, setTotalTVL] = useState<number>(0);
     const [items, setItems] = useState<any[]>([]);
     const [isLoadingItems, setIsLoadingItems] = useState<boolean>(true);
     const { groupings } = initFB();
@@ -38,6 +42,7 @@ export const Risk = () => {
         groupings,
         groupingId
     );
+
     if (groups.length === 0 && groupData) {
         setGroups(groupData.data.groups);
     }
@@ -54,6 +59,10 @@ export const Risk = () => {
                 item.criteria.strategies,
                 item.criteria.exclude
             );
+            const urlParam = getExcludeIncludeUrlParams({
+                exclude: (item.criteria.exclude as unknown) as string,
+                include: (item.criteria.strategies as unknown) as string,
+            });
             const tvlImpact = getTvlImpact(amountToMMs(protocol.tvl));
             const values = [
                 item.auditScore,
@@ -76,9 +85,20 @@ export const Risk = () => {
                 medianLikelihood,
                 totalScore: tvlImpact * medianLikelihood,
                 groupingId,
+                groups: item.criteria.nameLike.join(','),
+                urlParam,
+                tvl: protocol.tvl,
+                hasTVL: protocol.tvl.isGreaterThan(0),
+                totalStrategies: protocol.strategies.length,
             };
         });
         Promise.all(itemPromises).then((items) => {
+            const totalStrategies = sumAll(
+                items.map((item) => item.totalStrategies as number)
+            );
+            const totalTVL = sumAll(items.map((item) => amountToMMs(item.tvl)));
+            setTotalStrategies(totalStrategies);
+            setTotalTVL(totalTVL);
             setItems(items);
             setIsLoadingItems(false);
         });
@@ -101,6 +121,15 @@ export const Risk = () => {
         <ScoreRowCollapse index={index} item={item} />
     );
 
+    const getRowStyle = (_index: number, item: GenericListItem) => {
+        if (!item.hasTVL) {
+            return {
+                borderColor: 'red',
+                borderStyle: 'groove',
+            };
+        }
+    };
+
     return (
         <div>
             <Typography style={{ color: '#fff' }}>
@@ -110,10 +139,16 @@ export const Risk = () => {
             <GenericList
                 headCells={scoreHeadCells}
                 items={items}
-                title={`Scores List - ${items.length} Groups`}
+                title={`Scores List - ${
+                    items.length
+                } Groups - ${totalStrategies} Strategies - Total TVL: USD ${totalTVL.toFixed(
+                    2
+                )} MM`}
                 collapse={collapseRow}
                 defaultOrder="desc"
                 defaultOrderBy="totalScore"
+                getRowStyle={getRowStyle}
+                defaultRowsPerPage={20}
             />
         </div>
     );

@@ -2,6 +2,7 @@ import {
     ContractCallContext,
     ContractCallReturnContext,
 } from 'ethereum-multicall';
+import qs from 'query-string';
 import { get } from 'lodash';
 import { BigNumber, BigNumberish, constants } from 'ethers';
 import { BigNumber as BN } from 'bignumber.js';
@@ -12,6 +13,7 @@ import {
 } from 'ethereum-multicall/dist/models';
 import { getABIStrategiesHelper } from './abi';
 import { values } from 'lodash';
+import { GenericListItem } from '../components/app';
 
 export const USDC_DECIMALS = 6;
 export const USDC_ADDRESS = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48';
@@ -197,7 +199,22 @@ export const getAverage = (arr: number[]) =>
 export const flattenArrays = (arr: any[]): string[] => {
     return arr.reduce((flat, toFlatten) => {
         return flat.concat(
-            Array.isArray(toFlatten) ? flattenArrays(toFlatten) : toFlatten
+            Array.isArray(toFlatten)
+                ? flattenArrays(toFlatten)
+                : toFlatten.toString().toLowerCase()
         );
     }, []);
 };
+
+export const getExcludeIncludeUrlParams = (item: GenericListItem) => {
+    const include = item.include ? ((item.include as unknown) as string[]) : [];
+    const exclude = item.exclude ? ((item.exclude as unknown) as string[]) : [];
+    const params = qs.stringify({ exclude, include });
+    const urlParam = params.length > 0 ? `?${params}` : '';
+    return urlParam;
+};
+
+export const sumAll = (items: number[]) =>
+    items.reduce((sum, item) => {
+        return sum + item;
+    }, 0);

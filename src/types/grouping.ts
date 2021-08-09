@@ -18,3 +18,5 @@ export type Grouping = {
     complexityScore: number;
     teamKnowledgeScore: number;
 };
+
+export type GroupingsList = Array<Grouping>;

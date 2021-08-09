@@ -243,10 +243,12 @@ export const StrategyProtocolList = (props: StrategyProtocolListProps) => {
         return {
             ...strategyTVL,
             estimatedTotalAssetsUsdcNumber: amountInMMs,
-            totalTvlPercentage: strategyTVL.estimatedTotalAssetsUsdc
-                .times(100)
-                .div(props.item.tvl)
-                .toNumber(),
+            totalTvlPercentage: strategyTVL.estimatedTotalAssetsUsdc.isZero()
+                ? strategyTVL.estimatedTotalAssetsUsdc.toNumber()
+                : strategyTVL.estimatedTotalAssetsUsdc
+                      .times(100)
+                      .div(props.item.tvl)
+                      .toNumber(),
             tvlImpact: getTvlImpact(amountInMMs),
         };
     });

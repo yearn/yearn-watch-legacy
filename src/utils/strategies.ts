@@ -19,6 +19,7 @@ import { mapContractCalls } from './commonUtils';
 
 import StratABI from './ABI/Strategy.json';
 import TokenABI from './ABI/Token.json';
+import { getVaults } from './vaults';
 
 interface VaultVersionInfo {
     apiVersion: string;
@@ -250,3 +251,10 @@ const innerGetStrategies = async (addresses: string[]): Promise<Strategy[]> => {
 };
 
 export const getStrategies = memoize(innerGetStrategies);
+
+export const _getAllStrategies = async (): Promise<Strategy[]> => {
+    const allVaults = await getVaults();
+    return allVaults.flatMap((vault) => vault.strategies);
+};
+
+export const getAllStrategies = memoize(_getAllStrategies);

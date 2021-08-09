@@ -141,7 +141,9 @@ export const ProtocolsList = (props: ProtocolsListProps) => {
                                                 index + 1
                                             } - ${protocol.name.toUpperCase()} - ${amountToString(
                                                 protocol.tvl
-                                            )} - TVL Impact: ${getTvlImpact(
+                                            )} - # ${
+                                                protocol.strategies.length
+                                            } Strategies - TVL Impact: ${getTvlImpact(
                                                 amountToMMs(protocol.tvl)
                                             )}`}
                                         </Grid>
