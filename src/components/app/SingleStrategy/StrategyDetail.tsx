@@ -146,11 +146,13 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
         ''
     );
     const tokenPrice = (
-        <TokenPrice
-            label="Total Estimated Assets (USD):"
-            token={strategy.token}
-            amount={strategy.estimatedTotalAssets}
-        />
+        <>
+            <TokenPrice
+                label="Total Estimated Assets (USD):"
+                token={strategy.token}
+                amount={strategy.estimatedTotalAssets}
+            />
+        </>
     );
     const data = [
         { key: 'API Version:', value: apiVersion },
@@ -161,8 +163,8 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
         { key: ' Total Estimated Assets:', value: estimatedAsset },
         {
             key: ' Total Estimated Assets (USD):',
-            value: tokenPrice,
-            render: true,
+            value: strategy.estimatedTotalAssets.toString(),
+            renderValue: tokenPrice,
         },
         { key: ' Credit Available:', value: creditAvailable },
         { key: ' Debt Outstanding:', value: debtOutstanding },
