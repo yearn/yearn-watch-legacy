@@ -9,6 +9,7 @@ import {
     amountToMMs,
     getAverage,
     getExcludeIncludeUrlParams,
+    getLongevityScore,
     getMedian,
     getTvlImpact,
     sumAll,
@@ -64,11 +65,14 @@ export const Risk = () => {
                 include: (item.criteria.strategies as unknown) as string,
             });
             const tvlImpact = getTvlImpact(amountToMMs(protocol.tvl));
+            const longevityScore = getLongevityScore(
+                protocol.getLongevityDays()
+            );
             const values = [
                 item.auditScore,
                 item.codeReviewScore,
                 item.complexityScore,
-                item.longevityScore,
+                longevityScore,
                 item.protocolSafetyScore,
                 item.teamKnowledgeScore,
                 item.testingScore,
@@ -77,6 +81,7 @@ export const Risk = () => {
             const medianLikelihood = getMedian(values);
             return {
                 ...newItem,
+                longevityScore,
                 label: item.label,
                 likelihood: medianLikelihood,
                 impact: tvlImpact,
