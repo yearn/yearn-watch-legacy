@@ -3,7 +3,7 @@ import { memoize } from 'lodash';
 
 export const { get, all, post, put, spread } = axios;
 
-const API_URL = 'https://vaults.finance';
+const API_URL = 'https://api.yearn.finance/v1/chains/1';
 const SUBGRAPH_URL =
     'https://api.thegraph.com/subgraphs/name/salazarguille/yearn-vaults-v2-subgraph-mainnet';
 
