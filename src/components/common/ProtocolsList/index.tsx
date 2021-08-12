@@ -14,11 +14,8 @@ import { StrategyProtocolList } from '../../app/StrategyProtocolList';
 import SearchProtocolInput from '../SearchProtocolInput';
 import Divider from '@material-ui/core/Divider';
 import { Grid } from '@material-ui/core';
-import {
-    amountToMMs,
-    amountToString,
-    getTvlImpact,
-} from '../../../utils/commonUtils';
+import { amountToMMs, amountToString } from '../../../utils/commonUtils';
+import { getTvlImpact } from '../../../utils/risk';
 import { ProtocolTVL } from '../../../types/protocol-tvl';
 import { Delete } from '@material-ui/icons';
 

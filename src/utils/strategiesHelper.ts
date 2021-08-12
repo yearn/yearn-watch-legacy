@@ -7,6 +7,7 @@ import { StrategyTVL } from '../types/strategy-tvl';
 import { getAllStrategies, getStrategies } from './strategies';
 import { flattenArrays } from './commonUtils';
 import { isAddress } from 'ethers/lib/utils';
+import _ from 'lodash';
 
 export const getAssetsStrategiesAddressesByFilterNames = async (
     ...names: string[]
@@ -77,7 +78,7 @@ export const getStrategyTVLsPerProtocol = async (
         ...includeStrategyAddresses.map((strategy) => strategy.toLowerCase()),
     ];
     if (strategyAddresses.length === 0) {
-        return new ProtocolTVL(protocolName, new BigNumber(0), []);
+        return new ProtocolTVL(protocolName, new BigNumber(0), 0, []);
     }
     const strategiesInfo = await getStrategies(strategyAddresses);
     const strategiesPromises = strategiesInfo.map(
@@ -100,10 +101,18 @@ export const getStrategyTVLsPerProtocol = async (
     );
 
     let protocolTVL = new BigNumber(0);
+    const minActivation = _.min(
+        strategies.map((strat) => Date.parse(strat.params.activation))
+    ) as number;
     for (const strategy of strategies) {
         protocolTVL = protocolTVL.plus(strategy.estimatedTotalAssetsUsdc);
     }
-    return new ProtocolTVL(protocolName, protocolTVL, strategies);
+    return new ProtocolTVL(
+        protocolName,
+        protocolTVL,
+        minActivation,
+        strategies
+    );
 };
 
 export const groupStrategyTVLsPerProtocols = async (

@@ -162,29 +162,6 @@ export const amountToMMs = (amount: BN): number => {
     return amount.div(new BN(1000000)).toNumber();
 };
 
-/*
-    Extreme	> 100M	5
-    Very High	less than 100M	4
-    High	less than 50M	3
-    Medium 	less than 10M	2
-    Low	less than 1M	1
-*/
-export const getTvlImpact = (tvl: number): number => {
-    if (tvl < 1) {
-        return 1;
-    }
-    if (tvl < 10) {
-        return 2;
-    }
-    if (tvl < 50) {
-        return 3;
-    }
-    if (tvl < 100) {
-        return 4;
-    }
-    return 5;
-};
-
 export const getMedian = (arr: number[]) => {
     const mid = Math.floor(arr.length / 2),
         numbers = [...arr].sort((a, b) => a - b);
@@ -204,14 +181,6 @@ export const flattenArrays = (arr: any[]): string[] => {
                 : toFlatten.toString().toLowerCase()
         );
     }, []);
-};
-
-export const getExcludeIncludeUrlParams = (item: GenericListItem) => {
-    const include = item.include ? ((item.include as unknown) as string[]) : [];
-    const exclude = item.exclude ? ((item.exclude as unknown) as string[]) : [];
-    const params = qs.stringify({ exclude, include });
-    const urlParam = params.length > 0 ? `?${params}` : '';
-    return urlParam;
 };
 
 export const sumAll = (items: number[]) =>

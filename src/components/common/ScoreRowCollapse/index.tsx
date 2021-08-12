@@ -1,8 +1,12 @@
+/* eslint-disable react/display-name */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import CardContent from '../../app/SingleStrategy/CardContent';
-import { Paper, Grid } from '@material-ui/core';
+import { Paper, Grid, TableCell, TableRow } from '@material-ui/core';
 import { GenericListItem } from '../../app';
 import { SpiderWeb } from '../../app/Charts/SpiderWeb';
+import { LongevityTooltip } from '../LongevityTooltip';
+import MediaQuery from 'react-responsive';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -26,6 +30,14 @@ export interface ScoreRowCollapseProps {
 export const ScoreRowCollapse = (props: ScoreRowCollapseProps) => {
     const { item, index } = props;
     const classes = useStyles();
+    const longevityValue = (
+        <>
+            {parseInt(item.longevityScore.toString())}
+            <LongevityTooltip
+                value={parseInt(item.longevityScore.toString())}
+            />
+        </>
+    );
     const data = [
         {
             key: 'TVL Impact:',
@@ -46,6 +58,21 @@ export const ScoreRowCollapse = (props: ScoreRowCollapseProps) => {
         {
             key: 'Longevity Score:',
             value: item.longevityScore.toString(),
+            renderValue: (
+                <TableRow key={index}>
+                    <TableCell>
+                        {'Longevity Score:'}
+                        <MediaQuery query="(max-device-width: 1224px)">
+                            <br />
+                            {longevityValue}
+                        </MediaQuery>{' '}
+                    </TableCell>
+                    <MediaQuery query="(min-device-width: 1224px)">
+                        {' '}
+                        <TableCell>{longevityValue}</TableCell>
+                    </MediaQuery>
+                </TableRow>
+            ),
         },
         {
             key: 'Protocol Safety Score:',
