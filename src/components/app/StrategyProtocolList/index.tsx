@@ -21,11 +21,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { ProtocolTVL } from '../../../types/protocol-tvl';
-import {
-    amountToMMs,
-    extractAddress,
-    getTvlImpact,
-} from '../../../utils/commonUtils';
+import { amountToMMs, extractAddress } from '../../../utils/commonUtils';
+import { getTvlImpact } from '../../../utils/risk';
 import { Link } from 'react-router-dom';
 
 interface Data {

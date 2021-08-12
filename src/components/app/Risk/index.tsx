@@ -8,12 +8,14 @@ import _ from 'lodash';
 import {
     amountToMMs,
     getAverage,
-    getExcludeIncludeUrlParams,
-    getLongevityScore,
     getMedian,
-    getTvlImpact,
     sumAll,
 } from '../../../utils/commonUtils';
+import {
+    getExcludeIncludeUrlParams,
+    getLongevityScore,
+    getTvlImpact,
+} from '../../../utils/risk';
 import { getStrategyTVLsPerProtocol } from '../../../utils/strategiesHelper';
 import { RiskChart } from '../../common/RiskChart';
 import { GenericList, GenericListItem } from '../GenericList';
