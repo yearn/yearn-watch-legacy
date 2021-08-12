@@ -3,7 +3,8 @@ import {
     ContractCallResults,
     ContractCallContext,
 } from 'ethereum-multicall';
-import { utils } from 'ethers';
+import { BigNumber, utils } from 'ethers';
+import { BigNumber as BigNumberJS } from 'bignumber.js';
 import { get, memoize } from 'lodash';
 import { getEthersDefaultProvider } from './ethers';
 import { Vault, VaultApi, VaultVersion, Strategy } from '../types';
@@ -31,6 +32,44 @@ const VAULT_VIEW_METHODS = [
     'rewards',
 ];
 
+const filterAndMapVaultsData = (
+    data: any,
+    additional: Set<string> = new Set<string>()
+): VaultApi[] => {
+    return data
+        .filter(
+            (vault: any) =>
+                (vault.endorsed &&
+                    vault.type.toLowerCase() === VaultVersion.V2) ||
+                additional.has(vault.address.toLowerCase())
+        )
+        .map((vault: any) => {
+            return {
+                ...vault,
+                apiVersion: vault.version,
+                name: vault.display_name,
+                emergencyShutdown: vault.emergency_shutdown,
+                fees: {
+                    general: {
+                        managementFee: vault.apy.fees.management
+                            ? vault.apy.fees.management * 10000
+                            : 0,
+                        performanceFee: vault.apy.fees.performance
+                            ? vault.apy.fees.performance * 10000
+                            : 0,
+                    },
+                },
+                tvl: {
+                    totalAssets: BigNumber.from(
+                        new BigNumberJS(
+                            vault.tvl.total_assets.toString()
+                        ).toFixed(0)
+                    ),
+                },
+            } as VaultApi;
+        });
+};
+
 const internalGetVaults = async (
     allowList: string[] = []
 ): Promise<Vault[]> => {
@@ -41,13 +80,10 @@ const internalGetVaults = async (
     const additional = new Set(allowList.map((addr) => addr.toLowerCase()));
 
     try {
-        const response = await BuildGet('/all');
-        let payload = response.data as VaultApi[];
-
-        payload = payload.filter(
-            (vault) =>
-                (vault.endorsed && vault.type === VaultVersion.V2) ||
-                additional.has(vault.address.toLowerCase())
+        const response = await BuildGet('/vaults/all');
+        const payload: VaultApi[] = filterAndMapVaultsData(
+            response.data,
+            additional
         );
 
         const vaultMap = new Map<string, VaultApi>();
