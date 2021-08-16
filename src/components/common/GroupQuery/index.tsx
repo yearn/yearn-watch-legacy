@@ -19,6 +19,10 @@ export const GroupQuery = (props: ProtocolQueryProps) => {
         return index === self.indexOf(elem);
     });
     useEffect(() => {
+        if (groupNames.length === 0) {
+            setIsLoaded(true);
+            return;
+        }
         groupStrategyTVLsPerProtocols(
             groupNames,
             props.include,
