@@ -38,7 +38,7 @@ const items = [
         value: 4,
     },
     {
-        description: '1 to 2+ months live',
+        description: '1 to <4 months live',
         value: 3,
     },
     {
