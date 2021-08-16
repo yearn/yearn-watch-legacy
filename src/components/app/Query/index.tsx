@@ -18,7 +18,7 @@ export const Query = () => {
     const paramTypes = useParams<ParamTypes>();
     const location = useLocation<QueryParams>();
     const params = qs.parse(location.search, { arrayFormatSeparator: ',' });
-    const nameGroups = paramTypes.groups.split(',');
+    const nameGroups = paramTypes.groups ? paramTypes.groups.split(',') : [];
     const excludeStrategies =
         params.exclude === undefined
             ? new Array<string>()
