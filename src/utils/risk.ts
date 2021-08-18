@@ -28,7 +28,7 @@ export const getLongevityScore = (days: number): number => {
     /*
         5: Worst Score, new code, did not go to ape tax before
         4: Code has been live less than a month
-        3: 1 to 2+ months live
+        3: 1 to <4 months live
         2: 4+ months live
         1: Best score, Has had a 8+ months live in prod with no critical issues found and No changes in code base
     */
@@ -38,10 +38,10 @@ export const getLongevityScore = (days: number): number => {
     if (days <= 30) {
         return 4;
     }
-    if (days <= 60) {
+    if (days < 120) {
         return 3;
     }
-    if (days <= 120) {
+    if (days <= 240) {
         return 2;
     }
     return 1;

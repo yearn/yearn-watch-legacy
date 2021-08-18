@@ -17,18 +17,21 @@ interface QueryParams {
 export const Query = () => {
     const paramTypes = useParams<ParamTypes>();
     const location = useLocation<QueryParams>();
-    const params = qs.parse(location.search);
-    const nameGroups = paramTypes.groups.split(',');
-    const excludeStrategies = (params.exclude as string[]) || [];
-    const includeStrategies = (params.include as string[]) || [];
-    /*
-    console.log('nameGroups');
-    console.log(nameGroups);
-    console.log('excludeStrategies');
-    console.log(excludeStrategies);
-    console.log('includeStrategies');
-    console.log(includeStrategies);
-    */
+    const params = qs.parse(location.search, { arrayFormatSeparator: ',' });
+    const nameGroups = paramTypes.groups ? paramTypes.groups.split(',') : [];
+    const excludeStrategies =
+        params.exclude === undefined
+            ? new Array<string>()
+            : typeof params.exclude === 'string'
+            ? [params.exclude.toString()]
+            : (params.exclude as string[]);
+    const includeStrategies =
+        params.include === undefined
+            ? new Array<string>()
+            : typeof params.include === 'string'
+            ? [params.include.toString()]
+            : (params.include as string[]);
+
     const initialGroups = nameGroups.map((group) => group.toLowerCase());
     const [groups, setGroups] = useState<string[]>(initialGroups);
     const onSearchProtocol = async (protocol: string) => {

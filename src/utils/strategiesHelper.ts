@@ -10,17 +10,13 @@ import { isAddress } from 'ethers/lib/utils';
 import _ from 'lodash';
 
 export const getAssetsStrategiesAddressesByFilterNames = async (
-    ...names: string[]
+    names: string[]
 ): Promise<string[]> => {
     if (names.map((name) => name.toLowerCase()).includes('all')) {
-        console.time('GetAllStrategies');
         const allStrategies = await getAllStrategies();
-        console.timeLog('GetAllStrategies');
-        console.log(`Total Strats: ${allStrategies.length}`);
         return allStrategies.map((strategy) => strategy.address);
     }
     const helper = getStrategiesHelperInstance();
-
     const callPromises = names.map((name) =>
         helper['assetsStrategiesAddressesByFilter(string[][])']([
             ['KEY', 'name', 'STRING'],
@@ -42,7 +38,7 @@ export const getStrategyAddresses = async (namesOrAddresses: string[]) => {
             }
         } else {
             const nameAddresses = await getAssetsStrategiesAddressesByFilterNames(
-                nameOrAddress
+                [nameOrAddress]
             );
             addresses.push(...nameAddresses);
         }
@@ -67,8 +63,7 @@ export const getStrategyTVLsPerProtocol = async (
         excludeStrategyAddresses
             .map((address) => address.toLowerCase())
             .includes(strategy.toLowerCase());
-
-    const result = await getAssetsStrategiesAddressesByFilterNames(...aliases);
+    const result = await getAssetsStrategiesAddressesByFilterNames(aliases);
     const filteredStrategyAddresses = result.filter(
         (address: string) =>
             address !== undefined && !isStrategyAddressExcluded(address)
