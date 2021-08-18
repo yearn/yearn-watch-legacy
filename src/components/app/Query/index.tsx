@@ -31,8 +31,7 @@ export const Query = () => {
             : typeof params.include === 'string'
             ? [params.include.toString()]
             : (params.include as string[]);
-    console.log(`Query: excludeStrategies: ${typeof excludeStrategies}`);
-    console.log(excludeStrategies);
+
     const initialGroups = nameGroups.map((group) => group.toLowerCase());
     const [groups, setGroups] = useState<string[]>(initialGroups);
     const onSearchProtocol = async (protocol: string) => {

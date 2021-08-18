@@ -13,14 +13,10 @@ export const getAssetsStrategiesAddressesByFilterNames = async (
     names: string[]
 ): Promise<string[]> => {
     if (names.map((name) => name.toLowerCase()).includes('all')) {
-        console.time('GetAllStrategies');
         const allStrategies = await getAllStrategies();
-        console.timeLog('GetAllStrategies');
-        console.log(`Total Strats: ${allStrategies.length}`);
         return allStrategies.map((strategy) => strategy.address);
     }
     const helper = getStrategiesHelperInstance();
-    console.log(names);
     const callPromises = names.map((name) =>
         helper['assetsStrategiesAddressesByFilter(string[][])']([
             ['KEY', 'name', 'STRING'],
