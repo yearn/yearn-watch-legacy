@@ -15,7 +15,6 @@ const SUBGRAPH_URL =
 
 const filterToExperimentals = (res: any): ApiDataResponse => {
     const response = { data: [] };
-    console.log('filterToExperimental');
     response.data =
         res &&
         res.data &&
@@ -24,7 +23,6 @@ const filterToExperimentals = (res: any): ApiDataResponse => {
                 vault.endorsed === false &&
                 vault.type.toLowerCase() === VaultVersion.V2
         );
-    console.log('filterToExperimental end');
     return response;
 };
 
