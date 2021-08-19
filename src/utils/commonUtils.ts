@@ -42,17 +42,23 @@ export const extractText = (text: string) => {
     return text.substring(0, 20) + '...';
 };
 
-export const displayAmount = (amount: string, decimals: number): string => {
+export const displayAmount = (
+    amount: string,
+    decimals: number,
+    precision: number | undefined = 5
+): string => {
     if (amount === constants.MaxUint256.toString()) return ' ∞';
     const tokenBits = BigNumber.from(10).pow(decimals);
 
+    const trailingZeros = '.' + '0'.repeat(precision);
+
     const display = new BN(amount)
         .div(tokenBits.toString())
-        .toFormat(5)
+        .toFormat(precision)
         // strip trailing zeros for display
-        .replace('.00000', '');
+        .replace(trailingZeros, '');
 
-    return display;
+    return display.toString();
 };
 
 export const msToHours = (ms: number): number => {

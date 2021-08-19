@@ -6,18 +6,26 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Hidden from '@material-ui/core/Hidden';
 import EtherScanLink from '../../common/EtherScanLink';
+import Grid from '@material-ui/core/Grid';
 import {
     extractText,
     displayAmount,
     formatBPS,
 } from '../../../utils/commonUtils';
+import {
+    isStrategyActiveWithZeroDebt,
+    isDebtRatioTotalDebtMismatch,
+} from '../../../utils/alerts';
 import { Strategy, Vault } from '../../../types';
-import Grid from '@material-ui/core/Grid';
 
 type StrategistListProps = {
     vault: Vault;
     dark: boolean;
     expand?: boolean;
+};
+
+const shouldHighlightStrategy = (strat: Strategy) => {
+    return isStrategyActiveWithZeroDebt(strat);
 };
 
 export const StrategistList = (props: StrategistListProps) => {
@@ -88,6 +96,11 @@ export const StrategistList = (props: StrategistListProps) => {
                         key={index}
                         className={classes.accordion}
                         defaultExpanded={expand}
+                        style={{
+                            border: shouldHighlightStrategy(strategy)
+                                ? '5px solid #ff6c6c'
+                                : '',
+                        }}
                     >
                         <AccordionSummary
                             expandIcon={
@@ -159,7 +172,7 @@ export const StrategistList = (props: StrategistListProps) => {
                                 <Grid
                                     item
                                     xs={12}
-                                    md={3}
+                                    md={8}
                                     className={classes.link}
                                 >
                                     Time Since Last Report:
@@ -170,19 +183,40 @@ export const StrategistList = (props: StrategistListProps) => {
                                     xs={12}
                                     md={2}
                                     className={classes.link}
+                                    style={{
+                                        backgroundColor:
+                                            strategy.withdrawalQueueIndex < 0
+                                                ? 'red'
+                                                : '',
+                                    }}
+                                >
+                                    Index
+                                    <br />
+                                    {vault &&
+                                        displayAmount(
+                                            strategy.withdrawalQueueIndex.toString(),
+                                            0
+                                        )}
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={3}
+                                    className={classes.link}
                                 >
                                     Total debt
                                     <br />
                                     {vault &&
                                         displayAmount(
                                             strategy.params.totalDebt.toString(),
+                                            vault.token.decimals,
                                             vault.token.decimals
                                         )}
                                 </Grid>
                                 <Grid
                                     item
                                     xs={12}
-                                    md={2}
+                                    md={3}
                                     className={classes.link}
                                 >
                                     Debt ratio
@@ -195,7 +229,7 @@ export const StrategistList = (props: StrategistListProps) => {
                                 <Grid
                                     item
                                     xs={12}
-                                    md={2}
+                                    md={3}
                                     className={classes.link}
                                 >
                                     Credit available
@@ -211,19 +245,15 @@ export const StrategistList = (props: StrategistListProps) => {
                                     xs={12}
                                     md={3}
                                     className={classes.link}
-                                    style={{
-                                        backgroundColor:
-                                            strategy.withdrawalQueueIndex < 0
-                                                ? 'red'
-                                                : '',
-                                    }}
                                 >
-                                    Index
+                                    Total Estimated Assets
                                     <br />
                                     {vault &&
+                                        strategy.estimatedTotalAssets &&
                                         displayAmount(
-                                            strategy.withdrawalQueueIndex.toString(),
-                                            0
+                                            strategy.estimatedTotalAssets.toString(),
+                                            vault.token.decimals,
+                                            vault.token.decimals
                                         )}
                                 </Grid>
                             </Grid>
