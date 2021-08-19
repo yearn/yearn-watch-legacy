@@ -1,25 +1,56 @@
 import axios from 'axios';
 import { memoize } from 'lodash';
+import { VaultVersion } from '../types';
 
 export const { get, all, post, put, spread } = axios;
 
+type ApiDataResponse = {
+    data: any[];
+};
+
+const LEGACY_API_URL = 'https://vaults.finance';
 const API_URL = 'https://api.yearn.finance/v1/chains/1';
 const SUBGRAPH_URL =
     'https://api.thegraph.com/subgraphs/name/salazarguille/yearn-vaults-v2-subgraph-mainnet';
 
-const getData = async (url: string) => {
-    const payload: any = [];
-    try {
-        const response = await axios.get(`${API_URL}${url}`);
+const filterToExperimentals = (res: any): ApiDataResponse => {
+    const response = { data: [] };
+    response.data =
+        res &&
+        res.data &&
+        res.data.filter(
+            (vault: any) =>
+                vault.endorsed === false &&
+                vault.type.toLowerCase() === VaultVersion.V2
+        );
+    return response;
+};
 
-        return response;
+const getData = async (
+    url: string,
+    useExperimentals = false
+): Promise<ApiDataResponse> => {
+    const payload: ApiDataResponse = { data: [] };
+    const apiUrl = useExperimentals ? LEGACY_API_URL : API_URL;
+    try {
+        const response = await axios.get(`${apiUrl}${url}`);
+
+        if (!useExperimentals) {
+            return response;
+        }
+
+        return filterToExperimentals(response);
     } catch (error) {
-        console.log('error');
+        console.log('error fetching data', error);
     }
-    return payload.data;
+
+    return payload;
 };
 
 export const BuildGet = memoize(getData);
+export const BuildGetExperimental = memoize((url: string) =>
+    getData(url, true)
+);
 
 type SubgraphAPIResponse = {
     data: {
