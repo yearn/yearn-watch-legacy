@@ -17,6 +17,7 @@
         "@types/react-responsive": "^8.0.2",
         "@types/react-router-dom": "^5.1.7",
         "@typesaurus/react": "^4.0.1",
+        "@yfi/sdk": "^0.0.45",
         "axios": "^0.21.1",
         "bignumber.js": "^9.0.1",
         "dotenv": "^8.2.0",

@@ -110,22 +110,23 @@ const internalGetVaults = async (
             );
         });
 
-        // check if we have missing vaults from requested
-        if (vaultsAreMissing(vaultMap, additional)) {
-            // need to fetch experimental data
-            console.log('...fetching experimental vaults data');
-            const response = await BuildGetExperimental('/vaults/all');
-            const experimentalPayload: VaultApi[] = filterAndMapVaultsData(
-                response.data,
-                additional
-            );
-            experimentalPayload.forEach((vault) => {
-                vaultMap.set(vault.address, vault);
-                vault.strategies.forEach((strat) =>
-                    strategyMap.set(strat.address, vault.address)
-                );
-            });
-        }
+        // TODO: uncomment and improve this
+        // // check if we have missing vaults from requested
+        // if (vaultsAreMissing(vaultMap, additional)) {
+        //     // need to fetch experimental data
+        //     console.log('...fetching experimental vaults data');
+        //     const response = await BuildGetExperimental('/vaults/all');
+        //     const experimentalPayload: VaultApi[] = filterAndMapVaultsData(
+        //         response.data,
+        //         additional
+        //     );
+        //     experimentalPayload.forEach((vault) => {
+        //         vaultMap.set(vault.address, vault);
+        //         vault.strategies.forEach((strat) =>
+        //             strategyMap.set(strat.address, vault.address)
+        //         );
+        //     });
+        // }
 
         const vaultCalls: ContractCallContext[] = payload.map(({ address }) => {
             const calls = VAULT_VIEW_METHODS.map((method) => ({
