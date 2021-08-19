@@ -8,7 +8,7 @@ import { BigNumber as BigNumberJS } from 'bignumber.js';
 import { get, memoize } from 'lodash';
 import { getEthersDefaultProvider } from './ethers';
 import { Vault, VaultApi, VaultVersion, Strategy } from '../types';
-import { BuildGet } from './apisRequest';
+import { BuildGet, BuildGetExperimental } from './apisRequest';
 import { vaultChecks } from './checks';
 import {
     mapContractCalls,
@@ -70,6 +70,20 @@ const filterAndMapVaultsData = (
         });
 };
 
+const vaultsAreMissing = (
+    vaultMap: Map<string, VaultApi>,
+    additional: Set<string>
+): boolean => {
+    let missing = false;
+    additional.forEach((vaultAddr) => {
+        if (vaultMap.has(vaultAddr.toLowerCase()) === false) {
+            missing = true;
+        }
+    });
+
+    return missing;
+};
+
 const internalGetVaults = async (
     allowList: string[] = []
 ): Promise<Vault[]> => {
@@ -95,6 +109,23 @@ const internalGetVaults = async (
                 strategyMap.set(strat.address, vault.address)
             );
         });
+
+        // check if we have missing vaults from requested
+        if (vaultsAreMissing(vaultMap, additional)) {
+            // need to fetch experimental data
+            console.log('...fetching experimental vaults data');
+            const response = await BuildGetExperimental('/vaults/all');
+            const experimentalPayload: VaultApi[] = filterAndMapVaultsData(
+                response.data,
+                additional
+            );
+            experimentalPayload.forEach((vault) => {
+                vaultMap.set(vault.address, vault);
+                vault.strategies.forEach((strat) =>
+                    strategyMap.set(strat.address, vault.address)
+                );
+            });
+        }
 
         const vaultCalls: ContractCallContext[] = payload.map(({ address }) => {
             const calls = VAULT_VIEW_METHODS.map((method) => ({
