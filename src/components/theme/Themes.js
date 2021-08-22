@@ -1,5 +1,5 @@
-import backgroundImageLight from '../../images/backgroung_yearn_watch.svg';
-import backgroundImageDark from '../../images/background_image_dark.jpeg';
+import backgroundImageLight from '../../images/background_image_yearn_watch_light.svg';
+import backgroundImageDark from '../../images/background_image_yearn_watch_dark.jpeg';
 export const lightTheme = {
     backgroundImage: `url(${backgroundImageLight})`,
 
