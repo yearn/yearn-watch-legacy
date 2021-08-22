@@ -1,5 +1,4 @@
 import React from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -7,25 +6,19 @@ import IconButton from '@material-ui/core/IconButton';
 import styled from 'styled-components';
 import Brightness2Icon from '@material-ui/icons/Brightness2';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
-import ImageYH from '../../../images/yearn_watch.svg';
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            flexGrow: 1,
-        },
-        menuButton: {
-            marginRight: theme.spacing(2),
-        },
-        title: {
-            flexGrow: 1,
-            textAlign: 'center',
-        },
-    })
-);
+import logoYearnLight from '../../../images/logo_yearn_watch_light.svg';
+import logoYearnDark from '../../../images/logo_yearn_watch_dark.svg';
+
+const StyledRoot = styled.div`
+    flex-grow: 1;
+`;
+const StyledMainImage = styled.div`
+    flex-grow: 1;
+    text-align: center;
+`;
 
 const StyledAppBar = styled(AppBar)`
-    background: transparent;
-    box-shadow: none;
+    background-color: transparent !important;
 `;
 const StyledImg = styled.img`
     height: 64px;
@@ -41,15 +34,20 @@ interface NavBarProps {
 
 // (event: React.MouseEvent<HTMLButtonElement>) => void
 export const NavBar: React.FC<NavBarProps> = ({ themeToggler, theme }) => {
-    const classes = useStyles();
-
     return (
-        <div className={classes.root}>
-            <StyledAppBar position="static">
+        <StyledRoot>
+            <StyledAppBar position="static" elevation={0}>
                 <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
-                        <StyledImg alt="yearn watch" src={ImageYH} />
-                    </Typography>
+                    <StyledMainImage>
+                        <StyledImg
+                            alt="yearn watch"
+                            src={
+                                theme === 'light'
+                                    ? logoYearnLight
+                                    : logoYearnDark
+                            }
+                        />
+                    </StyledMainImage>
 
                     <div>
                         <IconButton
@@ -67,6 +65,6 @@ export const NavBar: React.FC<NavBarProps> = ({ themeToggler, theme }) => {
                     </div>
                 </Toolbar>
             </StyledAppBar>
-        </div>
+        </StyledRoot>
     );
 };
