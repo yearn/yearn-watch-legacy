@@ -8,6 +8,9 @@ import {
 
 import { ErrorAlert } from '../../common/Alerts';
 
+import React, { useEffect, useState, useMemo } from 'react';
+
+import { getVaults } from '../../../utils/vaults';
 import { VaultsList } from '../../common/VaultsList';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 import { Vault } from '../../../types';
