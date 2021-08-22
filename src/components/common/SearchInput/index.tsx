@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/no-autofocus */
-import { makeStyles } from '@material-ui/core/styles';
+
+import styled from 'styled-components';
 import { debounce } from 'lodash';
 import {
     Container,
@@ -14,50 +15,58 @@ import { ChangeEvent, useState } from 'react';
 import { Delete, Search } from '@material-ui/icons';
 import ResultsLabel from '../ResultsLabel';
 
-const useStyles = makeStyles({
-    root: {
-        width: '100%',
-        alignItems: 'center',
-    },
-    formContainer: {
-        width: '100%',
-        alignItems: 'center',
-        alignContent: 'center',
-        backgroundColor: 'white',
-        color: 'black',
-        opacity: 0.7,
-        borderRadius: 8,
-    },
-    switch: {
-        color: 'black',
-        margin: '8px',
-        opacity: 1,
-    },
-    searchInput: {
-        width: '100%',
+const StyledForm = styled.form`
+    && {
+        width: 100%;
+        align-items: center;
+    }
+`;
+const StyledTextField = styled(TextField)`
+    && {
+        width: 100%;
+        background-color: transparent;
+        align-content: center;
+        border-color: transparent;
+        .MuiOutlinedInput-root {
+            fieldset {
+                border-color: transparent !important;
+            }
+            &:hover fieldset {
+                border-color: transparent !important;
+            }
+            &.Mui-focused fieldset {
+                border-color: transparent;
+            }
+            color: ${({ theme }) => theme.text} !important;
+        }
+    }
+`;
 
-        backgroundColor: 'transparent',
-        alignContent: 'center',
-        '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-                borderColor: 'transparent',
-            },
-            '&:hover fieldset': {
-                borderColor: 'transparent',
-            },
-            '&.Mui-focused fieldset': {
-                borderColor: 'transparent',
-            },
-        },
-    },
-    resultText: {
-        width: '90%',
-        padding: '10px',
-        color: 'white',
-        textAlign: 'center',
-    },
-});
+const StyledContainer = styled(Container)`
+    && {
+        width: 100%;
+        align-items: center;
+        align-content: center;
+        background-color: ${({ theme }) => theme.container} !important;
 
+        border-radius: 8px;
+    }
+`;
+const StyledContainerResult = styled(Container)`
+    && {
+        width: 90%;
+        padding: 10px;
+
+        text-align: center;
+    }
+`;
+const StyledFormControlLabel = styled(FormControlLabel)`
+    && {
+        color: ${({ theme }) => theme.text} !important;
+        margin: 8px;
+        opacity: 1;
+    }
+`;
 export type Flags = {
     onlyWithWarnings: boolean;
 };
@@ -77,7 +86,6 @@ const SearchInput = (props: SearchInputProps) => {
     const [filterVaultsWithWarnings, setFilterVaultsWithWarnings] = useState(
         false
     );
-    const classes = useStyles();
 
     const getCurrentFlags = (onlyWithWarnings: boolean) => ({
         onlyWithWarnings,
@@ -106,6 +114,7 @@ const SearchInput = (props: SearchInputProps) => {
         setFilterVaultsWithWarnings(false);
         props.onFilter('', getCurrentFlags(false));
     };
+
     const renderSearchingLabel = () => {
         let render: any;
         if (isSearching) {
@@ -130,23 +139,18 @@ const SearchInput = (props: SearchInputProps) => {
                 </>
             );
         }
-        // }
+
         return render;
     };
 
     return (
         <Container maxWidth="lg">
-            <form className={classes.root}>
+            <StyledForm>
                 <Grid container direction="row" alignItems="center" spacing={3}>
                     <Grid item xs={12} sm={8}>
-                        <Container
-                            maxWidth="lg"
-                            className={classes.formContainer}
-                        >
-                            <TextField
+                        <StyledContainer maxWidth="lg">
+                            <StyledTextField
                                 variant="outlined"
-                                className={classes.searchInput}
-                                id="outlined-basic"
                                 onChange={onChange}
                                 type="search"
                                 value={searchText}
@@ -176,14 +180,11 @@ const SearchInput = (props: SearchInputProps) => {
                                           }
                                 }
                             />
-                        </Container>
+                        </StyledContainer>
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                        <Container
-                            maxWidth="lg"
-                            className={classes.formContainer}
-                        >
-                            <FormControlLabel
+                        <StyledContainer maxWidth="lg">
+                            <StyledFormControlLabel
                                 control={
                                     <Switch
                                         checked={filterVaultsWithWarnings}
@@ -191,17 +192,16 @@ const SearchInput = (props: SearchInputProps) => {
                                         color="primary"
                                     />
                                 }
-                                className={classes.switch}
                                 labelPlacement="start"
                                 label="Only show Vaults with warnings"
                             />
-                        </Container>
+                        </StyledContainer>
                     </Grid>
                 </Grid>
-            </form>
-            <Container maxWidth="lg" className={classes.resultText}>
+            </StyledForm>
+            <StyledContainerResult maxWidth="lg">
                 {renderSearchingLabel()}
-            </Container>
+            </StyledContainerResult>
         </Container>
     );
 };

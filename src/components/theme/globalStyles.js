@@ -10,7 +10,7 @@ export const GlobalStyles = createGlobalStyle`
         background-size: cover;
 
         color: ${({ theme }) => theme.text};
-        font-family: Tahoma, Helvetica, Arial, Roboto, sans-serif;
+        font-family: 'Roboto', sans-serif;
      
   }
   `;
