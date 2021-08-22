@@ -9,6 +9,7 @@ export const lightTheme = {
     text: '#363537',
     toggleBorder: '#FFF',
     background: '#363537',
+    container: 'rgba(255, 255, 255, 0.7)',
 };
 export const darkTheme = {
     backgroundImage: `url(${backgroundImageDark})`,
@@ -18,4 +19,5 @@ export const darkTheme = {
     text: '#FAFAFA',
     toggleBorder: '#6B8096',
     background: '#999',
+    container: '#0a1d3f',
 };
