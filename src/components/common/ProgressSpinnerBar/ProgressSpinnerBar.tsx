@@ -1,27 +1,27 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import styled from 'styled-components';
+
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { Container } from '@material-ui/core';
 
-const theme = createMuiTheme({
-    palette: {
-        secondary: {
-            main: '#EFD631',
-        },
-    },
-});
-const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%',
-        '& > * + *': {
-            marginTop: theme.spacing(2),
-        },
-    },
-}));
+import { Container, Typography } from '@material-ui/core';
 
+const StyledTypography = styled(Typography)`
+    text-align: center;
+    font-weight: 200;
+    color: white;
+`;
+const StyledRootDiv = styled.div`
+    width: 100%;
+    margin-top: 2;
+`;
+const StyledLinearProgress = styled(LinearProgress)`
+    && {
+        .MuiLinearProgress-bar {
+            background-color: ${({ theme }) => theme.barProgress} !important;
+        }
+    }
+`;
 export default function LinearDeterminate() {
-    const classes = useStyles();
     const [completed, setCompleted] = React.useState(0);
 
     React.useEffect(() => {
@@ -43,25 +43,15 @@ export default function LinearDeterminate() {
 
     return (
         <Container>
-            <div className={classes.root}>
-                <div
-                    style={{
-                        color: 'white',
-                        textAlign: 'center',
-                        fontWeight: 200,
-                    }}
-                >
-                    Loading
-                </div>
-                <MuiThemeProvider theme={theme}>
-                    {' '}
-                    <LinearProgress
-                        variant="determinate"
-                        value={completed}
-                        color="secondary"
-                    />
-                </MuiThemeProvider>
-            </div>
+            <StyledRootDiv>
+                <StyledTypography>Loading</StyledTypography>
+
+                <StyledLinearProgress
+                    variant="determinate"
+                    value={completed}
+                    color="primary"
+                />
+            </StyledRootDiv>
         </Container>
     );
 }
