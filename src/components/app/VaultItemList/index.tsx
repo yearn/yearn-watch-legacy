@@ -1,11 +1,6 @@
 import { Fragment, useState, memo } from 'react';
-
-import {
-    Theme,
-    createStyles,
-    makeStyles,
-    withStyles,
-} from '@material-ui/core/styles';
+import styled from 'styled-components';
+import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import MuiAccordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -34,70 +29,67 @@ const _VaultItemList = (props: VaultItemListProps) => {
     const config = vault.configOK;
     //hook to render list only when panel actually expanded
     const [expanded, setExpanded] = useState(false);
+    const StyledDivRoot = styled.div`
+        && {
+            width: 100%;
+            margin: 5px;
+            border-radius: 5px;
+        }
+    `;
+    const StyledExpandMoreIcon = styled(ExpandMoreIcon)`
+        && {
+            color: ${({ theme }) => theme.text} !important;
+        }
+    `;
+    const StyledStrats = styled.span`
+        && {
+            color: ${({ theme }) => theme.subtitle} !important;
 
-    const useStyles = makeStyles((theme: Theme) =>
-        createStyles({
-            root: {
-                width: '100%',
-                margin: '5px',
-                borderRadius: '5px',
-            },
+            text-decoration: none;
+            font-weight: normal;
 
-            strats: {
-                color: '#828282',
-                textDecoration: 'none',
-                fontWeight: 'normal',
-                fontFamily: 'Roboto',
-                lineHeight: '16px',
-                fontSize: '16px',
-                style: 'normal',
-            },
-            textVault: {
-                color: '#333333',
-                textDecoration: 'underline',
-                fontWeight: 'bold',
-                fontFamily: 'Roboto',
-                lineHeight: '24px',
-                fontSize: '16px',
-                fontStyle: 'normal',
-                '&:hover': {
-                    fontSize: 19,
-                },
-            },
-            warningIcon: {
-                borderRadius: 3,
-                padding: 1,
-                boxShadow: '0px 0px 0px 0 rgba(0,0,0,0.2)',
-            },
-            expandIcon: {
-                color: 'black',
-            },
-            list: {
-                padding: 0,
-            },
-            alert: {
-                background: 'transparent',
-                color: '#EB5757',
-                fontWeight: 400,
-            },
+            line-height: 16px;
+            font-size: 16px;
+        }
+    `;
+    const StyledTextValue = styled.span`
+        && {
+            color: ${({ theme }) => theme.title} !important;
 
-            accordion: {
-                background: 'rgba(255,255,255, 0.7)',
-                border: config ? '3px solid transparent' : ' 4px solid #EB5757',
+            text-decoration: underline;
+            font-weight: bold;
+            font-family: Roboto;
+            line-height: 24px;
+            font-size: 16px;
+            font-style: normal;
+            &:hover {
+                font-size: 19;
+            }
+        }
+    `;
+    const StyledReportProblem = styled(ReportProblem)`
+        && {
+            color: ${({ theme }) => theme.title} !important;
+            border-radius: 3;
+            padding: 1;
+            box-shadow: 0px 0px 0px 0 rgba(0, 0, 0, 0.2);
+        }
+    `;
 
-                borderRadius: '8px',
-                color: 'black',
-                marginTop: 10,
-            },
-            heading: {
-                fontSize: theme.typography.pxToRem(15),
-                fontWeight: theme.typography.fontWeightRegular,
-            },
-            paper: {
-                padding: theme.spacing(2),
-            },
-        })
-    );
+    const StyledMuiAccordion = styled(MuiAccordion)`
+        && {
+            width: 100%;
+            align-items: center;
+            align-content: center;
+            background-color: ${({ theme }) =>
+                config ? theme.container : theme.backgroundConfig} !important;
+            border: ${({ theme }) =>
+                config
+                    ? '3px solid transparent'
+                    : `4px solid ${theme.borderConfig}`};
+            border-radius: 8px;
+        }
+    `;
     const BlueOnGreenTooltip = withStyles({
         tooltip: {
             color: config ? 'transparent' : '#F2F2F2',
@@ -106,20 +98,16 @@ const _VaultItemList = (props: VaultItemListProps) => {
         },
     })(Tooltip);
 
-    const classes = useStyles();
-
     return (
-        <div className={classes.root}>
-            <MuiAccordion className={classes.accordion}>
+        <StyledDivRoot>
+            <StyledMuiAccordion>
                 <AccordionSummary
-                    expandIcon={
-                        <ExpandMoreIcon className={classes.expandIcon} />
-                    }
+                    expandIcon={<StyledExpandMoreIcon />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                     onClick={() => setExpanded(!expanded)}
                 >
-                    <Grid container className={classes.root} spacing={2}>
+                    <Grid container spacing={2}>
                         <Grid item md={12} xs={12}>
                             <BlueOnGreenTooltip
                                 title="Incorrect performance fee"
@@ -178,11 +166,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
                                                     </Fragment>
                                                 }
                                             >
-                                                <ReportProblem
-                                                    className={
-                                                        classes.warningIcon
-                                                    }
-                                                />
+                                                <StyledReportProblem />
                                             </HtmlTooltip>
                                         ) : (
                                             ''
@@ -191,16 +175,16 @@ const _VaultItemList = (props: VaultItemListProps) => {
                                             href={`/vault/${vault.address}`}
                                             rel="noreferrer"
                                         >
-                                            <span className={classes.textVault}>
+                                            <StyledTextValue>
                                                 {' '}
                                                 {vault.name}
                                                 {`v${vault.apiVersion}`}
-                                            </span>
+                                            </StyledTextValue>
                                         </a>
                                         <br />
-                                        <span className={classes.strats}>
+                                        <StyledStrats>
                                             {` ${vault.strategies.length}  strats`}
-                                        </span>
+                                        </StyledStrats>
                                     </Grid>
                                     <Hidden xsDown>
                                         {' '}
@@ -218,7 +202,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
                     </Grid>
                 </AccordionSummary>
                 <Hidden smUp>
-                    <Grid container className={classes.root} spacing={2}>
+                    <Grid container spacing={2}>
                         <Grid item md={8} xs={12}>
                             {' '}
                             <EtherScanLink
@@ -240,8 +224,8 @@ const _VaultItemList = (props: VaultItemListProps) => {
                         </Container>
                     )}
                 </AccordionDetails>
-            </MuiAccordion>
-        </div>
+            </StyledMuiAccordion>
+        </StyledDivRoot>
     );
 };
 
