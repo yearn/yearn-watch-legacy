@@ -8,7 +8,7 @@ import { BigNumber as BigNumberJS } from 'bignumber.js';
 import { get, memoize } from 'lodash';
 import { getEthersDefaultProvider } from './ethers';
 import { Vault, VaultApi, VaultVersion, Strategy } from '../types';
-import { BuildGet, BuildGetExperimental } from './apisRequest';
+import { BuildGet } from './apisRequest';
 import { vaultChecks } from './checks';
 import {
     mapContractCalls,
@@ -32,15 +32,42 @@ const VAULT_VIEW_METHODS = [
     'rewards',
 ];
 
+type VaultData = {
+    apiVersion?: string;
+    version?: string;
+};
+
+// this list is for testing or debugging an issue when loading vault data
+const FILTERED_VAULTS: Set<string> = new Set(
+    [
+        // '0xe2F6b9773BF3A015E2aA70741Bde1498bdB9425b',
+        // '0xBFa4D8AA6d8a379aBFe7793399D3DdaCC5bBECBB',
+    ].map((addr: string) => addr.toLowerCase())
+);
+
+const hasValidVersion = (vault: VaultData): boolean => {
+    if (vault.apiVersion && vault.apiVersion.startsWith('0.2')) {
+        return false;
+    }
+
+    if (vault.version && vault.version.startsWith('0.2')) {
+        return false;
+    }
+
+    return true;
+};
+
 const filterAndMapVaultsData = (
     data: any,
     additional: Set<string> = new Set<string>()
 ): VaultApi[] => {
-    return data
+    const vaultData: VaultApi[] = data
         .filter(
             (vault: any) =>
                 (vault.endorsed &&
-                    vault.type.toLowerCase() === VaultVersion.V2) ||
+                    vault.type.toLowerCase() === VaultVersion.V2 &&
+                    hasValidVersion(vault) &&
+                    !FILTERED_VAULTS.has(vault.address.toLowerCase())) ||
                 additional.has(vault.address.toLowerCase())
         )
         .map((vault: any) => {
@@ -68,6 +95,10 @@ const filterAndMapVaultsData = (
                 },
             } as VaultApi;
         });
+    // DEV NOTE: this is a helper method from debug.ts for debugging the data, should do nothing in prod
+    // vaultData = debugFilter(vaultData);
+
+    return vaultData;
 };
 
 const vaultsAreMissing = (
