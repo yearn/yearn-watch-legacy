@@ -22,6 +22,8 @@ import { getTotalDebtUsage } from './strategyParams';
 
 const VAULT_VIEW_METHODS = [
     'management',
+    'managementFee',
+    'performanceFee',
     'governance',
     'guardian',
     'depositLimit',
@@ -76,16 +78,6 @@ const filterAndMapVaultsData = (
                 apiVersion: vault.version,
                 name: vault.display_name,
                 emergencyShutdown: vault.emergency_shutdown,
-                fees: {
-                    general: {
-                        managementFee: vault.apy.fees.management
-                            ? vault.apy.fees.management * 10000
-                            : 0,
-                        performanceFee: vault.apy.fees.performance
-                            ? vault.apy.fees.performance * 10000
-                            : 0,
-                    },
-                },
                 tvl: {
                     totalAssets: BigNumber.from(
                         new BigNumberJS(
@@ -208,7 +200,7 @@ const _getVault = async (address: string): Promise<Vault> => {
         throw new Error('Error: expect a valid vault address');
     }
 
-    const vaults = await getVaults([address]);
+    const vaults = await getVaults();
 
     const [foundVault]: Vault[] = vaults.filter(
         (vault) => vault.address.toLowerCase() === address.toLowerCase()
@@ -256,17 +248,6 @@ const mapVaultData = (
             token,
             icon,
             emergencyShutdown,
-            managementFee: get(
-                vault,
-                'fees.general.managementFee',
-                'unknown'
-            ) as string,
-            performanceFee: get(
-                vault,
-                'fees.general.performanceFee',
-                'unknown'
-            ) as string,
-            // totalAssets: get(vault, 'tvl.value', 'unknown') as string,
         };
 
         const stratAddresses = strategies.map(({ address }) => address);
@@ -282,6 +263,11 @@ const mapVaultData = (
         const vaultData = contractCallsResults.results[address];
 
         const mappedVaultContractCalls = mapContractCalls(vaultData);
+        const mappedVaultContractCallsConverted = {
+            ...mappedVaultContractCalls,
+            managementFee: parseInt(mappedVaultContractCalls.managementFee),
+            performanceFee: parseInt(mappedVaultContractCalls.performanceFee),
+        };
 
         mappedVault.lastReportText = toHumanDateText(
             mappedVaultContractCalls.lastReport
@@ -290,7 +276,7 @@ const mapVaultData = (
         vaults.push(
             vaultChecks({
                 ...mappedVault,
-                ...mappedVaultContractCalls,
+                ...mappedVaultContractCallsConverted,
                 strategies: mappedStrategies,
             })
         );

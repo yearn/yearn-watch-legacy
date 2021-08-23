@@ -75,6 +75,22 @@
       "type": "function"
     },
     {
+      "stateMutability": "view",
+      "type": "function",
+      "name": "managementFee",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "uint256" }],
+      "gas": 4248
+    },
+    {
+      "stateMutability": "view",
+      "type": "function",
+      "name": "performanceFee",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "uint256" }],
+      "gas": 4278
+    },
+    {
       "inputs": [],
       "name": "apiVersion",
       "outputs": [

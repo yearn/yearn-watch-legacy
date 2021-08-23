@@ -16,7 +16,7 @@ const TREASURY = '0x93a62da5a14c80f265dabc077fcee437b1a0efde';
 
 const MANAGEMENT_FEE = 200;
 
-const PERF_FEE = 2000;
+const PERF_FEE = 1000;
 
 const addressMap = new Map<string, string>();
 addressMap.set(GOVERNANCE.toLowerCase(), 'ychad.eth');
