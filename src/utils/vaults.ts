@@ -116,88 +116,79 @@ const internalGetVaults = async (
     // accepts non endorsed experimental vaults to access
     const additional = new Set(allowList.map((addr) => addr.toLowerCase()));
 
-    try {
-        const response = await BuildGet('/vaults/all');
-        const payload: VaultApi[] = filterAndMapVaultsData(
-            response.data,
-            additional
-        );
+    const response = await BuildGet('/vaults/all');
+    const payload: VaultApi[] = filterAndMapVaultsData(
+        response.data,
+        additional
+    );
 
-        const vaultMap = new Map<string, VaultApi>();
-        const strategyMap = new Map<string, string>();
+    const vaultMap = new Map<string, VaultApi>();
+    const strategyMap = new Map<string, string>();
 
-        payload.forEach((vault) => {
-            vaultMap.set(vault.address, vault);
-            vault.strategies.forEach((strat) =>
-                strategyMap.set(strat.address, vault.address)
-            );
-        });
+    payload.forEach((vault) => {
+        vaultMap.set(vault.address, vault);
+        vault.strategies.forEach((strat) =>
+            strategyMap.set(strat.address, vault.address)
+        );
+    });
 
-        // TODO: uncomment and improve this
-        // // check if we have missing vaults from requested
-        // if (vaultsAreMissing(vaultMap, additional)) {
-        //     // need to fetch experimental data
-        //     console.log('...fetching experimental vaults data');
-        //     const response = await BuildGetExperimental('/vaults/all');
-        //     const experimentalPayload: VaultApi[] = filterAndMapVaultsData(
-        //         response.data,
-        //         additional
-        //     );
-        //     experimentalPayload.forEach((vault) => {
-        //         vaultMap.set(vault.address, vault);
-        //         vault.strategies.forEach((strat) =>
-        //             strategyMap.set(strat.address, vault.address)
-        //         );
-        //     });
-        // }
+    // TODO: uncomment and improve this
+    // // check if we have missing vaults from requested
+    // if (vaultsAreMissing(vaultMap, additional)) {
+    //     // need to fetch experimental data
+    //     console.log('...fetching experimental vaults data');
+    //     const response = await BuildGetExperimental('/vaults/all');
+    //     const experimentalPayload: VaultApi[] = filterAndMapVaultsData(
+    //         response.data,
+    //         additional
+    //     );
+    //     experimentalPayload.forEach((vault) => {
+    //         vaultMap.set(vault.address, vault);
+    //         vault.strategies.forEach((strat) =>
+    //             strategyMap.set(strat.address, vault.address)
+    //         );
+    //     });
+    // }
 
-        const vaultCalls: ContractCallContext[] = payload.map(({ address }) => {
-            const calls = VAULT_VIEW_METHODS.map((method) => ({
-                reference: method,
-                methodName: method,
-                methodParameters: [],
-            }));
-            return {
-                reference: address,
-                contractAddress: address,
-                abi: getABI_032(), // only this abi version has the vault view methods
-                calls,
-            };
-        });
-        const stratCalls: ContractCallContext[] = payload.flatMap(
-            ({ strategies }) => {
-                const stratAddresses = strategies.map(({ address }) => address);
-                return buildStrategyCalls(
-                    stratAddresses,
-                    vaultMap,
-                    strategyMap
-                );
-            }
-        );
-        const strategiesHelperCallResults: ContractCallResults = await multicall.call(
-            createStrategiesHelperCallAssetStrategiesAddresses(payload)
-        );
-        const results: ContractCallResults = await multicall.call(
-            vaultCalls.concat(stratCalls)
-        );
+    const vaultCalls: ContractCallContext[] = payload.map(({ address }) => {
+        const calls = VAULT_VIEW_METHODS.map((method) => ({
+            reference: method,
+            methodName: method,
+            methodParameters: [],
+        }));
+        return {
+            reference: address,
+            contractAddress: address,
+            abi: getABI_032(), // only this abi version has the vault view methods
+            calls,
+        };
+    });
+    const stratCalls: ContractCallContext[] = payload.flatMap(
+        ({ strategies }) => {
+            const stratAddresses = strategies.map(({ address }) => address);
+            return buildStrategyCalls(stratAddresses, vaultMap, strategyMap);
+        }
+    );
+    const strategiesHelperCallResults: ContractCallResults = await multicall.call(
+        createStrategiesHelperCallAssetStrategiesAddresses(payload)
+    );
+    const results: ContractCallResults = await multicall.call(
+        vaultCalls.concat(stratCalls)
+    );
 
-        return mapVaultData(
-            results,
-            strategiesHelperCallResults,
-            vaultMap,
-            strategyMap
-        );
-    } catch (error) {
-        console.error(error);
-        return Promise.resolve([]);
-    }
+    return mapVaultData(
+        results,
+        strategiesHelperCallResults,
+        vaultMap,
+        strategyMap
+    );
 };
 
 export const getVaults = memoize(internalGetVaults);
 
 const _getVault = async (address: string): Promise<Vault> => {
     if (!address || !utils.isAddress(address)) {
-        throw new Error('Error: expect a valid vault address');
+        throw new Error('Expected a valid vault address');
     }
 
     const vaults = await getVaults();
@@ -207,7 +198,7 @@ const _getVault = async (address: string): Promise<Vault> => {
     );
 
     if (!foundVault) {
-        throw new Error('Error: vault not recognized as a yearn vault');
+        throw new Error('Requested address not recognized as a yearn vault');
     }
 
     return foundVault;

@@ -187,12 +187,12 @@ export const mapStrategiesCalls = (
 
 const innerGetStrategies = async (addresses: string[]): Promise<Strategy[]> => {
     if (addresses.length === 0) {
-        throw new Error('Error: expect a valid strategy address');
+        throw new Error('Expected a valid strategy address');
     }
 
     addresses.forEach((address) => {
         if (!address || !utils.isAddress(address)) {
-            throw new Error('Error: expect a valid strategy address');
+            throw new Error('Expected a valid strategy address');
         }
     });
 
