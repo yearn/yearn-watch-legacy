@@ -79,6 +79,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
     const StyledMuiAccordion = styled(MuiAccordion)`
         && {
             width: 100%;
+            margin-bottom: 15px;
             align-items: center;
             align-content: center;
             background-color: ${({ theme }) =>
@@ -107,7 +108,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
                     id="panel1a-header"
                     onClick={() => setExpanded(!expanded)}
                 >
-                    <Grid container spacing={2}>
+                    <Grid container spacing={1} justify="flex-start">
                         <Grid item md={12} xs={12}>
                             <BlueOnGreenTooltip
                                 title="Incorrect performance fee"
@@ -117,7 +118,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
                                     container
                                     spacing={1}
                                     direction="row"
-                                    justify="center"
+                                    justify="flex-start"
                                     alignItems="center"
                                 >
                                     <Grid item md={1} xs={3}>
@@ -142,7 +143,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
                                             </ListItemAvatar>
                                         )}
                                     </Grid>
-                                    <Grid item md={5} xs={9}>
+                                    <Grid item md={4} xs={9}>
                                         {vault.configErrors ? (
                                             <HtmlTooltip
                                                 title={
@@ -203,7 +204,8 @@ const _VaultItemList = (props: VaultItemListProps) => {
                 </AccordionSummary>
                 <Hidden smUp>
                     <Grid container spacing={2}>
-                        <Grid item md={8} xs={12}>
+                        <Grid item md={1} xs={3}></Grid>
+                        <Grid item md={8} xs={8}>
                             {' '}
                             <EtherScanLink
                                 address={vault.address}
