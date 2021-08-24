@@ -77,6 +77,7 @@ export const VaultItemList = (props: VaultItemListProps) => {
     const StyledMuiAccordion = styled(MuiAccordion)`
         && {
             width: 100%;
+            margin-bottom: 15px;
             align-items: center;
             align-content: center;
             background-color: ${({ theme }) =>
@@ -104,7 +105,7 @@ export const VaultItemList = (props: VaultItemListProps) => {
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                 >
-                    <Grid container spacing={2}>
+                    <Grid container spacing={1} justify="flex-start">
                         <Grid item md={12} xs={12}>
                             <BlueOnGreenTooltip
                                 title="Incorrect performance fee"
@@ -114,7 +115,7 @@ export const VaultItemList = (props: VaultItemListProps) => {
                                     container
                                     spacing={1}
                                     direction="row"
-                                    justify="center"
+                                    justify="flex-start"
                                     alignItems="center"
                                 >
                                     <Grid item md={1} xs={3}>
@@ -139,7 +140,7 @@ export const VaultItemList = (props: VaultItemListProps) => {
                                             </ListItemAvatar>
                                         )}
                                     </Grid>
-                                    <Grid item md={5} xs={9}>
+                                    <Grid item md={4} xs={9}>
                                         {vault.configErrors ? (
                                             <HtmlTooltip
                                                 title={
@@ -200,7 +201,8 @@ export const VaultItemList = (props: VaultItemListProps) => {
                 </AccordionSummary>
                 <Hidden smUp>
                     <Grid container spacing={2}>
-                        <Grid item md={8} xs={12}>
+                        <Grid item md={1} xs={3}></Grid>
+                        <Grid item md={8} xs={8}>
                             {' '}
                             <EtherScanLink
                                 address={vault.address}
@@ -210,8 +212,15 @@ export const VaultItemList = (props: VaultItemListProps) => {
                     </Grid>
                 </Hidden>
 
-                <AccordionDetails>
-                    <Container>
+                <AccordionDetails style={{ padding: 0, margin: 0 }}>
+                    <Container
+                        maxWidth="lg"
+                        style={{
+                            padding: 0,
+                            margin: 0,
+                            border: '5px solid transparent',
+                        }}
+                    >
                         <StrategistList vault={vault} dark={false} />
                     </Container>
                 </AccordionDetails>

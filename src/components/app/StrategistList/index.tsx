@@ -1,6 +1,6 @@
-import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Accordion from '@material-ui/core/Accordion';
+import styled from 'styled-components';
+import MuiAccordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -17,6 +17,7 @@ import {
     isDebtRatioTotalDebtMismatch,
 } from '../../../utils/alerts';
 import { Strategy, Vault } from '../../../types';
+import DebTooltip from '../../common/DebToolTip';
 
 type StrategistListProps = {
     vault: Vault;
@@ -30,80 +31,93 @@ const shouldHighlightStrategy = (strat: Strategy) => {
 
 export const StrategistList = (props: StrategistListProps) => {
     const { vault, expand = true } = props;
+    const StyledDivRoot = styled.div`
+        && {
+            width: 99%;
+            margin: 5px;
+            border-radius: 5px;
+        }
+    `;
+    const StyledMuiAccordion = styled(MuiAccordion)`
+        && {
+            width: 100%;
+            align-items: center;
+            align-content: center;
+            background-color: ${({ theme }) =>
+                theme.containerConfig} !important;
 
-    const useStyles = makeStyles((theme: Theme) =>
-        createStyles({
-            root: {},
-            rootGrid: {
-                width: '100%',
-            },
-            address: {
-                fontSize: '14px',
-                opacity: '0.6',
-                color: '#ffff',
-            },
-            text: {
-                color: props.dark ? '#ffff' : 'black',
-                fontFamily: 'Open Sans',
-                lineHeight: '27px',
-                fontSize: '18px',
-                margin: 10,
-            },
-            subTitle: {
-                color: '#828282',
-                textDecoration: 'none',
-                fontWeight: 'normal',
-                fontFamily: 'Roboto',
-                lineHeight: '16px',
-                fontSize: '16px',
-                style: 'normal',
-            },
-            iconCall: {
-                backgroundColor: 'white',
-                borderRadius: 3,
-                padding: 2,
-            },
-            list: {
-                background: 'transparent',
-                border: 'none',
-            },
-            accordion: {
-                background: 'rgba(255,255,255, 0.5)',
+            border-radius: 8px;
+        }
+    `;
+    const StyledExpandMoreIcon = styled(ExpandMoreIcon)`
+        && {
+            color: ${({ theme }) => theme.text} !important;
+        }
+    `;
+    const StyledSubtitle = styled(Typography)`
+        && {
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 16px;
 
-                backdropFilter: 'blur(4px)',
-                borderRadius: '8px',
-                margin: 10,
-            },
-            link: {
-                color: props.dark ? '#ffff' : 'black',
-                fontWeight: 700,
-            },
-            heading: {
-                fontSize: theme.typography.pxToRem(15),
-                fontWeight: theme.typography.fontWeightRegular,
-            },
-            expandIcon: {
-                color: props.dark ? '#ffff' : 'black',
-            },
-            paper: {
-                padding: theme.spacing(2),
-                textAlign: 'center',
-                color: theme.palette.text.secondary,
-            },
-        })
-    );
-    const classes = useStyles();
+            color: ${({ theme }) => theme.subtitle} !important;
+        }
+    `;
+    const StyledTitle = styled(Typography)`
+        && {
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 22px;
+            margin-bottom: 5px;
+            color: ${({ theme }) => theme.title} !important;
+        }
+    `;
+    const StyledSubtitleQueIndex = styled(Typography)<{ error: boolean }>`
+        && {
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 16px;
 
+            color: ${({ theme, error }) =>
+                error ? theme.error : theme.subtitle} !important;
+        }
+    `;
+    const StyledTitleQueIndex = styled(Typography)<{ error: boolean }>`
+        && {
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 22px;
+            margin-bottom: 5px;
+            color: ${({ theme, error }) =>
+                error ? theme.error : theme.title} !important;
+        }
+    `;
+
+    const StyledLink = styled.a`
+        && {
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 22px;
+
+            color: ${({ theme }) => theme.subtitle} !important;
+        }
+    `;
     return (
-        <div className={classes.root}>
-            {/* <Typography variant="body2" className={classes.text} component="p">
-                Strategies
-            </Typography> */}
+        <StyledDivRoot>
             {vault.strategies &&
                 vault.strategies.map((strategy: Strategy, index: number) => (
-                    <Accordion
+                    <StyledMuiAccordion
                         key={index}
-                        className={classes.accordion}
                         defaultExpanded={expand}
                         style={{
                             border: shouldHighlightStrategy(strategy)
@@ -112,30 +126,23 @@ export const StrategistList = (props: StrategistListProps) => {
                         }}
                     >
                         <AccordionSummary
-                            expandIcon={
-                                <ExpandMoreIcon
-                                    className={classes.expandIcon}
-                                />
-                            }
+                            expandIcon={<StyledExpandMoreIcon />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Grid className={classes.rootGrid}>
+                            <Grid container spacing={1}>
                                 <Grid item md={12} xs={12}>
                                     <Grid
                                         container
                                         spacing={1}
                                         direction="row"
-                                        justify="center"
+                                        // justify="center"
                                         alignItems="center"
                                     >
-                                        <Grid item md={4} xs={12}>
-                                            <Typography
-                                                variant="subtitle1"
-                                                gutterBottom
-                                            >
-                                                <a
-                                                    className={classes.link}
+                                        <Grid item md={1} xs={3}></Grid>
+                                        <Grid item md={4} xs={9}>
+                                            <StyledTitle>
+                                                <StyledLink
                                                     href={`/vault/${strategy.vault}/strategy/${strategy.address}`}
                                                     rel="noreferrer"
                                                 >
@@ -151,12 +158,12 @@ export const StrategistList = (props: StrategistListProps) => {
                                                     <Hidden xsDown>
                                                         {strategy.name}
                                                     </Hidden>
-                                                </a>
-                                            </Typography>
+                                                </StyledLink>
+                                            </StyledTitle>
                                         </Grid>
                                         <Hidden xsDown>
                                             {' '}
-                                            <Grid item md={8} xs={6}>
+                                            <Grid item md={6} xs={9}>
                                                 <EtherScanLink
                                                     address={strategy.address}
                                                     dark={props.dark}
@@ -167,107 +174,192 @@ export const StrategistList = (props: StrategistListProps) => {
                                 </Grid>
                             </Grid>
                         </AccordionSummary>
-                        <AccordionDetails>
-                            <Grid container spacing={1}>
-                                <Hidden smUp>
+                        <Hidden smUp>
+                            <Grid container spacing={2}>
+                                <Grid item md={1} xs={3}></Grid>
+                                <Grid item md={8} xs={8}>
                                     {' '}
-                                    <Typography>
-                                        <EtherScanLink
-                                            address={strategy.address}
-                                            dark={props.dark}
-                                        />
-                                    </Typography>
-                                </Hidden>
-                                <Grid
-                                    item
-                                    xs={12}
-                                    md={8}
-                                    className={classes.link}
-                                >
-                                    Time Since Last Report:
-                                    <br /> {strategy.params.lastReportText}
+                                    <EtherScanLink
+                                        address={strategy.address}
+                                        dark={props.dark}
+                                    />
                                 </Grid>
-                                <Grid
-                                    item
-                                    xs={12}
-                                    md={2}
-                                    className={classes.link}
-                                    style={{
-                                        backgroundColor:
-                                            strategy.withdrawalQueueIndex < 0
-                                                ? 'red'
-                                                : '',
-                                    }}
-                                >
-                                    Index
-                                    <br />
-                                    {vault &&
-                                        displayAmount(
-                                            strategy.withdrawalQueueIndex.toString(),
-                                            0
-                                        )}
-                                </Grid>
-                                <Grid
-                                    item
-                                    xs={12}
-                                    md={3}
-                                    className={classes.link}
-                                >
-                                    Total debt
-                                    <br />
-                                    {vault &&
-                                        displayAmount(
-                                            strategy.params.totalDebt.toString(),
-                                            vault.token.decimals,
-                                            vault.token.decimals
-                                        )}
-                                </Grid>
-                                <Grid
-                                    item
-                                    xs={12}
-                                    md={3}
-                                    className={classes.link}
-                                >
-                                    Debt ratio
-                                    <br />
-                                    <span className={classes.subTitle}>
-                                        {' '}
-                                        Total debt
-                                    </span>
-                                </Grid>
-                                <Grid
-                                    item
-                                    xs={12}
-                                    md={3}
-                                    className={classes.link}
-                                >
-                                    Credit available
-                                    <br />
-                                    <span className={classes.subTitle}>
-                                        {' '}
-                                        Credit available
-                                    </span>
-                                </Grid>
-                                <Grid
-                                    item
-                                    xs={12}
-                                    md={3}
-                                    className={classes.link}
-                                >
-                                    Total Estimated Assets
-                                    <br />
-                                    {vault &&
-                                        strategy.estimatedTotalAssets &&
-                                        displayAmount(
-                                            strategy.estimatedTotalAssets.toString(),
-                                            vault.token.decimals,
-                                            vault.token.decimals
-                                        )}
+                            </Grid>
+                        </Hidden>
+                        <AccordionDetails>
+                            <Grid container spacing={2}>
+                                <Grid item md={12} xs={12}>
+                                    <Grid
+                                        container
+                                        spacing={1}
+                                        direction="row"
+                                        justify="flex-start"
+                                        alignItems="center"
+                                    >
+                                        <Grid item md={1} xs={3}></Grid>
+                                        <Grid item md={10} xs={9}>
+                                            <Grid container spacing={2}>
+                                                <Grid item md={12} xs={12}>
+                                                    <Grid
+                                                        container
+                                                        spacing={1}
+                                                        direction="row"
+                                                        justify="flex-start"
+                                                        alignItems="center"
+                                                    >
+                                                        <Grid
+                                                            item
+                                                            xs={12}
+                                                            md={3}
+                                                        >
+                                                            <StyledTitle>
+                                                                {
+                                                                    strategy
+                                                                        .params
+                                                                        .lastReportText
+                                                                }
+                                                            </StyledTitle>
+
+                                                            <StyledSubtitle>
+                                                                Since Last
+                                                                Report
+                                                            </StyledSubtitle>
+                                                        </Grid>
+
+                                                        <Grid
+                                                            item
+                                                            xs={12}
+                                                            md={2}
+                                                        >
+                                                            <StyledTitle>
+                                                                <DebTooltip
+                                                                    label={
+                                                                        vault &&
+                                                                        displayAmount(
+                                                                            strategy.params.totalDebt.toString(),
+                                                                            vault
+                                                                                .token
+                                                                                .decimals,
+                                                                            vault
+                                                                                .token
+                                                                                .decimals
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </StyledTitle>
+
+                                                            <StyledSubtitle>
+                                                                {' '}
+                                                                Total debt
+                                                            </StyledSubtitle>
+                                                        </Grid>
+                                                        <Grid
+                                                            item
+                                                            xs={12}
+                                                            md={2}
+                                                        >
+                                                            <StyledTitle>
+                                                                <DebTooltip
+                                                                    label={`${formatBPS(
+                                                                        strategy.params.debtRatio.toString()
+                                                                    )}%`}
+                                                                />
+                                                            </StyledTitle>
+
+                                                            <StyledSubtitle>
+                                                                {' '}
+                                                                Debt ratio
+                                                            </StyledSubtitle>
+                                                        </Grid>
+                                                        <Grid
+                                                            item
+                                                            xs={12}
+                                                            md={2}
+                                                        >
+                                                            <StyledTitle>
+                                                                {' '}
+                                                                <DebTooltip
+                                                                    label={
+                                                                        vault &&
+                                                                        displayAmount(
+                                                                            strategy.creditAvailable.toString(),
+                                                                            vault
+                                                                                .token
+                                                                                .decimals
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </StyledTitle>
+
+                                                            <StyledSubtitle>
+                                                                {' '}
+                                                                Credit available
+                                                            </StyledSubtitle>
+                                                        </Grid>
+                                                        <Grid
+                                                            item
+                                                            xs={12}
+                                                            md={2}
+                                                        >
+                                                            <StyledTitle>
+                                                                <DebTooltip
+                                                                    label={
+                                                                        vault &&
+                                                                        strategy.estimatedTotalAssets &&
+                                                                        displayAmount(
+                                                                            strategy.estimatedTotalAssets.toString(),
+                                                                            vault
+                                                                                .token
+                                                                                .decimals,
+                                                                            vault
+                                                                                .token
+                                                                                .decimals
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </StyledTitle>
+                                                            <StyledSubtitle>
+                                                                {' '}
+                                                                Total Estimated
+                                                                Assets
+                                                            </StyledSubtitle>
+                                                        </Grid>
+                                                        <Grid
+                                                            item
+                                                            xs={12}
+                                                            md={1}
+                                                        >
+                                                            <StyledTitleQueIndex
+                                                                error={
+                                                                    strategy.withdrawalQueueIndex <
+                                                                    0
+                                                                }
+                                                            >
+                                                                {vault &&
+                                                                    displayAmount(
+                                                                        strategy.withdrawalQueueIndex.toString(),
+                                                                        0
+                                                                    )}
+                                                            </StyledTitleQueIndex>
+                                                            <StyledSubtitleQueIndex
+                                                                error={
+                                                                    strategy.withdrawalQueueIndex <
+                                                                    0
+                                                                }
+                                                            >
+                                                                Index
+                                                            </StyledSubtitleQueIndex>
+                                                        </Grid>
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </AccordionDetails>
-                    </Accordion>
+                    </StyledMuiAccordion>
                 ))}
-        </div>
+        </StyledDivRoot>
     );
 };

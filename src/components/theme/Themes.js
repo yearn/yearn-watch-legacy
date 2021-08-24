@@ -1,6 +1,7 @@
 import backgroundImageLight from '../../images/background_image_yearn_watch_light.svg';
 import backgroundImageDark from '../../images/background_image_yearn_watch_dark.jpeg';
 export const lightTheme = {
+    error: '#EB5757',
     backgroundImage: `url(${backgroundImageLight})`,
     borderConfig: '#EB5757',
     backgroundConfig: 'rgba(255, 255, 255, 0.7)',
@@ -13,8 +14,10 @@ export const lightTheme = {
     toggleBorder: '#FFF',
     background: '#363537',
     container: 'rgba(255, 255, 255, 0.7)',
+    containerConfig: 'rgba(255, 255, 255, 0.7)',
 };
 export const darkTheme = {
+    error: '#EB5757',
     borderConfig: 'transparent',
     backgroundConfig: '#006AE3',
     backgroundImage: `url(${backgroundImageDark})`,
@@ -27,4 +30,5 @@ export const darkTheme = {
     toggleBorder: '#6B8096',
     background: '#999',
     container: '#0a1d3f',
+    containerConfig: '#0552aa',
 };
