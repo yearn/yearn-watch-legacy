@@ -3,23 +3,42 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { Typography } from '@material-ui/core';
 import { getVaults } from '../../../utils/vaults';
 import { VaultsList } from '../../common/VaultsList';
+import { ErrorAlert } from '../../common/Alerts';
 import { Vault } from '../../../types';
 
 export const Home = () => {
     const [vaults, setVaults] = useState<Vault[]>([]);
-    const [isLoaded, setIsLoaded] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     useEffect(() => {
-        getVaults().then((loadedVaults) => {
-            if (loadedVaults.length > 0) {
-                setVaults(loadedVaults);
-                setIsLoaded(false);
+        const loadVaultData = async () => {
+            setIsLoading(true);
+            setError(null);
+            try {
+                const loadedVaults = await getVaults();
+                if (loadedVaults.length > 0) {
+                    setVaults(loadedVaults);
+                }
+                setIsLoading(false);
+            } catch (error) {
+                console.log('Error:', error);
+                setIsLoading(false);
+                setError(error);
             }
-        });
+        };
+        loadVaultData();
     }, []);
 
     return (
         <div>
-            {isLoaded ? (
+            {error && (
+                <ErrorAlert
+                    message={'Error while loading vaults:'}
+                    details={error}
+                />
+            )}
+
+            {isLoading ? (
                 <div
                     style={{
                         textAlign: 'center',
@@ -32,7 +51,7 @@ export const Home = () => {
                     </Typography>
                 </div>
             ) : (
-                <VaultsList items={vaults} />
+                !error && <VaultsList items={vaults} />
             )}
         </div>
     );

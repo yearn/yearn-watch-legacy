@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from 'react';
-
+import { useParams } from 'react-router-dom';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
+import Avatar from '@material-ui/core/Avatar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { useParams } from 'react-router-dom';
+
 import { Vault } from '../../../types';
 import { getVault } from '../../../utils/vaults';
 import BreadCrumbs from '../SingleStrategy/BreadCrumbs';
 import Pie from '../Charts/Pie';
 import { StrategistList } from '../StrategistList';
-
 import { VaultDescription } from './VaultDescription';
-import Avatar from '@material-ui/core/Avatar';
-
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
 import EtherScanLink from '../../common/EtherScanLink';
+import { ErrorAlert } from '../../common/Alerts';
 import ReactHelmet from '../../common/ReactHelmet';
 
 interface TabPanelProps {
@@ -58,23 +57,34 @@ interface ParamTypes {
     vaultId: string;
 }
 export const SingleVault = () => {
-    const [value, setValue] = React.useState(0);
-
-    const handleChange = (event: any, newValue: number) => {
-        setValue(newValue);
-    };
     const { vaultId } = useParams<ParamTypes>();
 
     const [vault, setVault] = useState<Vault | undefined>();
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [value, setValue] = useState(0);
+
+    const handleChange = (event: any, newValue: number) => {
+        setValue(newValue);
+    };
 
     useEffect(() => {
-        setIsLoading(true);
-        getVault(vaultId).then((loadedVault) => {
-            setVault(loadedVault);
-            setIsLoading(false);
-        });
+        const loadVaultData = async () => {
+            setIsLoading(true);
+            setError(null);
+            try {
+                const loadedVault = await getVault(vaultId);
+                setVault(loadedVault);
+                setIsLoading(false);
+            } catch (error) {
+                console.log('Error:', error);
+                setIsLoading(false);
+                setError(error);
+            }
+        };
+        loadVaultData();
     }, [vaultId]);
+
     const useStyles = makeStyles((theme: Theme) => ({
         root: {
             [theme.breakpoints.down('sm')]: {
@@ -131,6 +141,12 @@ export const SingleVault = () => {
             <ReactHelmet title={vault ? vault.name : ''} />
             <BreadCrumbs vaultId={vaultId} />
             <Card className={classes.root}>
+                {error && (
+                    <ErrorAlert
+                        message={`Error while loading vault ${vaultId}:`}
+                        details={error}
+                    />
+                )}
                 {isLoading ? (
                     <div
                         style={{
@@ -142,66 +158,70 @@ export const SingleVault = () => {
                         <Typography>Loading vault..</Typography>
                     </div>
                 ) : (
-                    <React.Fragment>
-                        <CardHeader
-                            avatar={
-                                <Avatar
-                                    src={vault ? vault.icon : ''}
-                                    aria-label="recipe"
+                    !error && (
+                        <React.Fragment>
+                            <CardHeader
+                                avatar={
+                                    <Avatar
+                                        src={vault ? vault.icon : ''}
+                                        aria-label="recipe"
+                                    />
+                                }
+                                title={vault ? vault.name : ''}
+                                subheader={
+                                    vault ? (
+                                        <EtherScanLink
+                                            address={vault.address}
+                                        />
+                                    ) : (
+                                        ''
+                                    )
+                                }
+                            />
+
+                            <Tabs
+                                value={value}
+                                onChange={handleChange}
+                                indicatorColor="primary"
+                                textColor="primary"
+                                variant="scrollable"
+                                scrollButtons="auto"
+                                aria-label="scrollable auto tabs example"
+                            >
+                                <Tab label="Details" {...a11yProps(0)} />
+                                <Tab label="Allocation" {...a11yProps(1)} />
+                                <Tab label="Strategies" {...a11yProps(2)} />
+                            </Tabs>
+
+                            <TabPanel value={value} index={0}>
+                                <VaultDescription
+                                    vault={vault}
+                                    isLoading={isLoading}
                                 />
-                            }
-                            title={vault ? vault.name : ''}
-                            subheader={
-                                vault ? (
-                                    <EtherScanLink address={vault.address} />
+                            </TabPanel>
+                            <TabPanel value={value} index={1}>
+                                {vault && vault.strategies.length > 0 ? (
+                                    <div>
+                                        <Pie vault={vault} />
+                                    </div>
                                 ) : (
                                     ''
-                                )
-                            }
-                        />
-
-                        <Tabs
-                            value={value}
-                            onChange={handleChange}
-                            indicatorColor="primary"
-                            textColor="primary"
-                            variant="scrollable"
-                            scrollButtons="auto"
-                            aria-label="scrollable auto tabs example"
-                        >
-                            <Tab label="Details" {...a11yProps(0)} />
-                            <Tab label="Allocation" {...a11yProps(1)} />
-                            <Tab label="Strategies" {...a11yProps(2)} />
-                        </Tabs>
-
-                        <TabPanel value={value} index={0}>
-                            <VaultDescription
-                                vault={vault}
-                                isLoading={isLoading}
-                            />
-                        </TabPanel>
-                        <TabPanel value={value} index={1}>
-                            {vault && vault.strategies.length > 0 ? (
-                                <div>
-                                    <Pie vault={vault} />
-                                </div>
-                            ) : (
-                                ''
-                            )}
-                        </TabPanel>
-                        <TabPanel value={value} index={2}>
-                            {vault && vault.strategies.length > 0 ? (
-                                <div>
-                                    <StrategistList
-                                        vault={vault}
-                                        dark={false}
-                                    />
-                                </div>
-                            ) : (
-                                ''
-                            )}
-                        </TabPanel>
-                    </React.Fragment>
+                                )}
+                            </TabPanel>
+                            <TabPanel value={value} index={2}>
+                                {vault && vault.strategies.length > 0 ? (
+                                    <div>
+                                        <StrategistList
+                                            vault={vault}
+                                            dark={false}
+                                        />
+                                    </div>
+                                ) : (
+                                    ''
+                                )}
+                            </TabPanel>
+                        </React.Fragment>
+                    )
                 )}
             </Card>
         </React.Fragment>
