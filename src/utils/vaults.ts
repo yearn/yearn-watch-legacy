@@ -6,6 +6,7 @@ import {
 import { BigNumber, utils } from 'ethers';
 import { BigNumber as BigNumberJS } from 'bignumber.js';
 import { get, memoize } from 'lodash';
+import compareVersions from 'compare-versions';
 import { getEthersDefaultProvider } from './ethers';
 import { Vault, VaultApi, VaultVersion, Strategy } from '../types';
 import { BuildGet } from './apisRequest';
@@ -34,9 +35,20 @@ const VAULT_VIEW_METHODS = [
     'rewards',
 ];
 
-type VaultData = {
-    apiVersion?: string;
+interface VaultData {
+    apiVersion: string;
     version?: string;
+}
+
+// sort in desc by version
+export const sortVaultsByVersion = (vaults: VaultData[]): any[] => {
+    vaults.sort((x, y) => {
+        const xVersion = x.version || x.apiVersion;
+        const yVersion = y.version || y.apiVersion;
+        return compareVersions(xVersion || '0.0.0', yVersion || '0.0.0');
+    });
+
+    return vaults.reverse();
 };
 
 // this list is for testing or debugging an issue when loading vault data
@@ -61,16 +73,17 @@ const hasValidVersion = (vault: VaultData): boolean => {
 
 const filterAndMapVaultsData = (
     data: any,
-    additional: Set<string> = new Set<string>()
+    filterList: Set<string> = new Set<string>()
 ): VaultApi[] => {
     const vaultData: VaultApi[] = data
         .filter(
             (vault: any) =>
-                (vault.endorsed &&
+                (filterList.size === 0 &&
+                    vault.endorsed &&
                     vault.type.toLowerCase() === VaultVersion.V2 &&
                     hasValidVersion(vault) &&
                     !FILTERED_VAULTS.has(vault.address.toLowerCase())) ||
-                additional.has(vault.address.toLowerCase())
+                filterList.has(vault.address.toLowerCase())
         )
         .map((vault: any) => {
             return {
@@ -107,21 +120,39 @@ const vaultsAreMissing = (
     return missing;
 };
 
-const internalGetVaults = async (
-    allowList: string[] = []
+export const getTotalVaults = async (): Promise<number> => {
+    const response = await BuildGet('/vaults/all');
+
+    const payload: VaultApi[] = filterAndMapVaultsData(response.data);
+
+    return payload.length;
+};
+
+const _internalGetVaults = async (
+    allowList: string[] = [],
+    offset = 0,
+    limit = 200
 ): Promise<Vault[]> => {
     const provider = getEthersDefaultProvider();
 
     const multicall = new Multicall({ ethersProvider: provider });
     // accepts non endorsed experimental vaults to access
-    const additional = new Set(allowList.map((addr) => addr.toLowerCase()));
+    const filterList = new Set(allowList.map((addr) => addr.toLowerCase()));
 
     const response = await BuildGet('/vaults/all');
-    const payload: VaultApi[] = filterAndMapVaultsData(
-        response.data,
-        additional
+    const sortedVaultList = sortVaultsByVersion(response.data);
+    let payload: VaultApi[] = filterAndMapVaultsData(
+        sortedVaultList,
+        filterList
     );
 
+    if (offset >= payload.length) {
+        return [];
+    }
+    payload = payload.slice(
+        Math.max(0, offset),
+        Math.min(payload.length, offset + limit)
+    );
     const vaultMap = new Map<string, VaultApi>();
     const strategyMap = new Map<string, string>();
 
@@ -183,15 +214,17 @@ const internalGetVaults = async (
         strategyMap
     );
 };
-
-export const getVaults = memoize(internalGetVaults);
+export const getVaultsWithPagination = memoize((offset = 0, limit = 100) =>
+    _internalGetVaults([], offset, limit)
+);
+export const getVaults = memoize(_internalGetVaults);
 
 const _getVault = async (address: string): Promise<Vault> => {
     if (!address || !utils.isAddress(address)) {
         throw new Error('Expected a valid vault address');
     }
 
-    const vaults = await getVaults();
+    const vaults = await getVaults([address]);
 
     const [foundVault]: Vault[] = vaults.filter(
         (vault) => vault.address.toLowerCase() === address.toLowerCase()
