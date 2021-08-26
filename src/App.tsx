@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyles } from './components/theme/globalStyles';
@@ -17,42 +18,42 @@ import { Risk } from './components/app/Risk';
 
 const App = () => {
     const [theme, themeToggler, mountedComponent] = useDarkMode();
-    const themeMode = theme === 'light' ? lightTheme : darkTheme;
-    if (!mountedComponent) return <div />;
-    return (
-        <ThemeProvider theme={themeMode}>
-            <>
-                <GlobalStyles />
-                <Router>
-                    <NavBar themeToggler={themeToggler} theme={theme} />
+    const themeMode = useMemo(() => {
+        return theme === 'light' ? lightTheme : darkTheme;
+    }, [theme]);
+    // if (!mountedComponent) return <div />;
 
-                    <Switch>
-                        <Route exact path="/" component={Home} />
-                        <Route exact path="/query" component={Query} />
-                        <Route
-                            exact
-                            path="/query/:groupingId/group/:groups"
-                            component={Query}
-                        />
-                        <Route
-                            exact
-                            path="/vault/:vaultId"
-                            component={SingleVault}
-                        />
-                        <Route
-                            exact
-                            path="/vault/:vaultId/strategy/:strategyId"
-                            component={SingleStrategy}
-                        />
-                        <AuthProvider>
-                            <Route exact path="/signin" component={SignIn} />
-                            <Route exact path="/signout" component={SignIn} />
-                            <PrivateRoute exact path="/risk" component={Risk} />
-                        </AuthProvider>
-                    </Switch>
-                </Router>
-            </>
-        </ThemeProvider>
+    return (
+        <Router>
+            <NavBar themeToggler={themeToggler} theme={theme} />
+
+            <Switch>
+                <ThemeProvider theme={themeMode}>
+                    <GlobalStyles /> <Route exact path="/" component={Home} />
+                    <Route exact path="/query" component={Query} />
+                    <Route
+                        exact
+                        path="/query/:groupingId/group/:groups"
+                        component={Query}
+                    />
+                    <Route
+                        exact
+                        path="/vault/:vaultId"
+                        component={SingleVault}
+                    />
+                    <Route
+                        exact
+                        path="/vault/:vaultId/strategy/:strategyId"
+                        component={SingleStrategy}
+                    />
+                    <AuthProvider>
+                        <Route exact path="/signin" component={SignIn} />
+                        <Route exact path="/signout" component={SignIn} />
+                        <PrivateRoute exact path="/risk" component={Risk} />
+                    </AuthProvider>
+                </ThemeProvider>
+            </Switch>
+        </Router>
     );
 };
 

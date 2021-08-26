@@ -15,6 +15,7 @@ export const lightTheme = {
     background: '#363537',
     container: 'rgba(255, 255, 255, 0.7)',
     containerConfig: 'rgba(255, 255, 255, 0.7)',
+    subContainer: 'rgba(255, 255, 255, 0.7)',
 };
 export const darkTheme = {
     error: '#EB5757',
@@ -31,4 +32,5 @@ export const darkTheme = {
     background: '#999',
     container: '#0a1d3f',
     containerConfig: '#0552aa',
+    subContainer: '#040e20',
 };
