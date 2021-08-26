@@ -16,5 +16,11 @@ export const useDarkMode = () => {
         localTheme && setTheme(localTheme);
         setMountedComponent(true);
     }, []);
+    useEffect(() => {
+        const jssStyles = document.querySelector('#jss-server-side');
+        if (jssStyles) {
+            jssStyles.parentElement?.removeChild(jssStyles);
+        }
+    }, []);
     return [theme, themeToggler, mountedComponent];
 };
