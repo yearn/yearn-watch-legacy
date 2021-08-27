@@ -9,6 +9,10 @@ import {
 import { VaultsList } from '../../common/VaultsList';
 import { ErrorAlert } from '../../common/Alerts';
 import { Vault } from '../../../types';
+import {
+    DEFAULT_QUERY_PARAM,
+    toQueryParam,
+} from '../../../utils/types/QueryParam';
 
 const BATCH_NUMBER = 30;
 
@@ -25,8 +29,7 @@ export const Home = () => {
                 const numVaults = await getTotalVaults();
                 setTotal(numVaults);
                 const loadedVaults = await getVaultsWithPagination(
-                    0,
-                    BATCH_NUMBER
+                    DEFAULT_QUERY_PARAM
                 );
                 if (loadedVaults.length > 0) {
                     setVaults([...sortVaultsByVersion(loadedVaults)]);
@@ -42,8 +45,7 @@ export const Home = () => {
                     for (let i = 0; i <= iterations; i++) {
                         ((innerOffset: number) => {
                             const batchedVaultsPromise = getVaultsWithPagination(
-                                innerOffset,
-                                BATCH_NUMBER
+                                toQueryParam(innerOffset, BATCH_NUMBER)
                             );
                             batchResultsPromises.push(batchedVaultsPromise);
                         })(offset);
