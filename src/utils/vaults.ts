@@ -111,6 +111,9 @@ const _getExperimentalVaults = async (
     allowList: string[] = [],
     queryParams: QueryParam = DEFAULT_QUERY_PARAM
 ): Promise<Vault[]> => {
+    const {
+        pagination: { offset, limit },
+    } = queryParams;
     // accepts non endorsed experimental vaults to access
     const filterList = new Set(allowList.map((addr) => addr.toLowerCase()));
 
@@ -121,15 +124,12 @@ const _getExperimentalVaults = async (
         filterList
     );
 
-    if (queryParams.pagination.offset >= payload.length) {
+    if (offset >= payload.length) {
         return [];
     }
     payload = payload.slice(
-        Math.max(0, queryParams.pagination.offset),
-        Math.min(
-            payload.length,
-            queryParams.pagination.offset + queryParams.pagination.limit
-        )
+        Math.max(0, offset),
+        Math.min(payload.length, offset + limit)
     );
     const vaults: Vault[] = await mapVaultDataToVault(payload);
 
