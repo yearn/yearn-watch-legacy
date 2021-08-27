@@ -8,7 +8,8 @@ type ApiDataResponse = {
     data: any[];
 };
 
-const LEGACY_API_URL = 'https://vaults.finance';
+export const VAULTS_ALL_EXPERIMENTAL = '/vaults/experimental';
+export const VAULTS_ALL = '/vaults/all';
 const API_URL = 'https://api.yearn.finance/v1/chains/1';
 const SUBGRAPH_URL =
     'https://api.thegraph.com/subgraphs/name/salazarguille/yearn-vaults-v2-subgraph-mainnet';
@@ -26,31 +27,17 @@ const filterToExperimentals = (res: any): ApiDataResponse => {
     return response;
 };
 
-const getData = async (
-    url: string,
-    useExperimentals = false
-): Promise<ApiDataResponse> => {
-    const payload: ApiDataResponse = { data: [] };
-    const apiUrl = useExperimentals ? LEGACY_API_URL : API_URL;
+const getData = async (url: string): Promise<ApiDataResponse> => {
     try {
-        const response = await axios.get(`${apiUrl}${url}`);
-
-        if (!useExperimentals) {
-            return response;
-        }
-
-        return filterToExperimentals(response);
+        const response = await axios.get(`${API_URL}${url}`);
+        return response as ApiDataResponse;
     } catch (error) {
         console.log('error fetching data', error);
+        throw error;
     }
-
-    return payload;
 };
 
 export const BuildGet = memoize(getData);
-export const BuildGetExperimental = memoize((url: string) =>
-    getData(url, true)
-);
 
 type SubgraphAPIResponse = {
     data: {
