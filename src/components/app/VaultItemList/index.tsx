@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, memo } from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import MuiAccordion from '@material-ui/core/Accordion';
@@ -23,7 +23,7 @@ type VaultItemListProps = {
     key: number;
 };
 
-export const VaultItemList = (props: VaultItemListProps) => {
+const _VaultItemList = (props: VaultItemListProps) => {
     const { vault } = props;
     const config = vault.configOK;
 
@@ -209,3 +209,5 @@ export const VaultItemList = (props: VaultItemListProps) => {
         </div>
     );
 };
+
+export const VaultItemList = memo(_VaultItemList);

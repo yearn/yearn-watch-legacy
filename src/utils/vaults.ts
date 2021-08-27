@@ -5,7 +5,7 @@ import {
 } from 'ethereum-multicall';
 import { BigNumber, utils } from 'ethers';
 import { BigNumber as BigNumberJS } from 'bignumber.js';
-import { get, memoize } from 'lodash';
+import { uniqBy, memoize } from 'lodash';
 import compareVersions from 'compare-versions';
 import { Vault, VaultApi, VaultVersion } from '../types';
 import { BuildGet, VAULTS_ALL, VAULTS_ALL_EXPERIMENTAL } from './apisRequest';
@@ -15,17 +15,19 @@ import { fillVaultData, mapVaultDataToVault } from './vaultDataMapping';
 interface VaultData {
     apiVersion: string;
     version?: string;
+    address: string;
 }
 
 // sort in desc by version
 export const sortVaultsByVersion = (vaults: VaultData[]): any[] => {
-    vaults.sort((x, y) => {
+    const uniqueVaults = uniqBy(vaults, 'address');
+    uniqueVaults.sort((x, y) => {
         const xVersion = x.version || x.apiVersion;
         const yVersion = y.version || y.apiVersion;
         return compareVersions(xVersion || '0.0.0', yVersion || '0.0.0');
     });
 
-    return vaults.reverse();
+    return uniqueVaults.reverse();
 };
 
 // this list is for testing or debugging an issue when loading vault data
