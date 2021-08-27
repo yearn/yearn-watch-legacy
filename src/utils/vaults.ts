@@ -140,7 +140,8 @@ const _internalGetVaults = async (
     const filterList = new Set(allowList.map((addr) => addr.toLowerCase()));
 
     const response = await BuildGet('/vaults/all');
-    const sortedVaultList = sortVaultsByVersion(response.data);
+    // DEV NOTE: we need to copy the response.data array since its memoized and we don't want to mutate the original
+    const sortedVaultList = sortVaultsByVersion([...response.data]);
     let payload: VaultApi[] = filterAndMapVaultsData(
         sortedVaultList,
         filterList
