@@ -165,6 +165,9 @@ const _getEndorsedOrExperimentalVault = async (
     return foundVault;
 };
 
-export const getEndorsedOrExperimentalVault = memoize(
-    _getEndorsedOrExperimentalVault
-);
+/**
+ * @dev It tries to find an endorsed vault first. If it is not found, it will try to find it as experimental vault.
+ *
+ * @dev If vault is not found, it throws an error.
+ */
+export const getVault = memoize(_getEndorsedOrExperimentalVault);

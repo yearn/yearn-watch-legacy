@@ -11,7 +11,7 @@ import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { Vault } from '../../../types';
-import { getEndorsedOrExperimentalVault } from '../../../utils/vaults';
+import { getVault } from '../../../utils/vaults';
 import BreadCrumbs from '../SingleStrategy/BreadCrumbs';
 import Pie from '../Charts/Pie';
 import { StrategistList } from '../StrategistList';
@@ -73,9 +73,7 @@ export const SingleVault = () => {
             setIsLoading(true);
             setError(null);
             try {
-                const loadedVault = await getEndorsedOrExperimentalVault(
-                    vaultId
-                );
+                const loadedVault = await getVault(vaultId);
                 setVault(loadedVault);
                 setIsLoading(false);
             } catch (error) {
