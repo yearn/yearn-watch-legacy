@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import sum from 'lodash/sum';
 import { Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,24 +21,13 @@ const useStyles = makeStyles({
     },
 });
 
-const filterStrategies = (vault: Vault, newText: string) => {
-    const strategies = vault.strategies.filter((strategy) => {
-        return (
-            strategy.address.toLowerCase().includes(newText) ||
-            strategy.name.toLowerCase().includes(newText) ||
-            strategy.strategist.toLowerCase().includes(newText)
-        );
-    });
-    return strategies;
-};
-
 const getTotalStrategies = (items: Vault[]): number =>
     sum(items.map((item) => item.strategies.length));
 
-export const VaultsList = (props: VaultsListProps) => {
+const _VaultsList = (props: VaultsListProps) => {
     const { totalItems, items } = props;
     const [filteredItems, setFilteredItems] = useState(items);
-    const totalStrategies = getTotalStrategies(items);
+    const totalStrategies = useMemo(() => getTotalStrategies(items), [items]);
     const [totalStrategiesFound, setTotalStrategiesFound] = useState(
         totalStrategies
     );
@@ -47,12 +36,30 @@ export const VaultsList = (props: VaultsListProps) => {
         return <>Vaults not found.</>;
     }
 
+    const filterStrategies = useMemo(
+        () => (vault: Vault, newText: string) => {
+            const strategies = vault.strategies.filter((strategy) => {
+                return (
+                    strategy.address.toLowerCase().includes(newText) ||
+                    strategy.name.toLowerCase().includes(newText) ||
+                    strategy.strategist.toLowerCase().includes(newText)
+                );
+            });
+            return strategies;
+        },
+        []
+    );
+
     const onFilter = useCallback(
         (newText: string, flags: Flags) => {
+            console.time('timer');
             const hasFlags = flags.onlyWithWarnings;
             if (!hasFlags && newText.trim() === '') {
+                console.log('click clear');
+                console.time('clear');
                 setFilteredItems(items);
                 setTotalStrategiesFound(getTotalStrategies(items));
+                console.timeEnd('clear');
             } else {
                 let totalStrategiesFound = 0;
                 const filteredItems = items
@@ -83,6 +90,7 @@ export const VaultsList = (props: VaultsListProps) => {
                 setFilteredItems(filteredItems);
                 setTotalStrategiesFound(totalStrategiesFound);
             }
+            console.timeEnd('timer');
         },
         [items]
     );
@@ -91,7 +99,7 @@ export const VaultsList = (props: VaultsListProps) => {
         setFilteredItems(items);
         const totalStrategies = getTotalStrategies(items);
         setTotalStrategiesFound(totalStrategies);
-    }, [props]);
+    }, [items, totalStrategies]);
 
     const classes = useStyles();
 
@@ -101,7 +109,7 @@ export const VaultsList = (props: VaultsListProps) => {
         <>
             <SearchInput
                 onFilter={onFilter}
-                debounceWait={1000}
+                debounceWait={250}
                 totalItems={props.items.length}
                 foundItems={filteredItems.length}
                 totalSubItems={totalStrategies}
@@ -120,3 +128,5 @@ export const VaultsList = (props: VaultsListProps) => {
         </>
     );
 };
+
+export const VaultsList = memo(_VaultsList);

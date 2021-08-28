@@ -19,6 +19,7 @@ interface VaultData {
 }
 
 // sort in desc by version
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const sortVaultsByVersion = (vaults: VaultData[]): any[] => {
     const uniqueVaults = uniqBy(vaults, 'address');
     uniqueVaults.sort((x, y) => {
@@ -51,11 +52,13 @@ const hasValidVersion = (vault: VaultData): boolean => {
 };
 
 const filterAndMapVaultsData = (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any,
     filterList: Set<string> = new Set<string>()
 ): VaultApi[] => {
     const vaultData: VaultApi[] = data
         .filter(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (vault: any) =>
                 (filterList.size === 0 &&
                     vault.endorsed &&

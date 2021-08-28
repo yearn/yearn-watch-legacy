@@ -37,43 +37,45 @@ export const isLegacyVault = (apiVersion: string): boolean => {
     return INCOMPATIBLE_VERSIONS_API.has(apiVersion);
 };
 
+type ValueLike = string | number;
+
 const checks = [
     {
         field: 'governance',
-        validate: (value: any): boolean =>
+        validate: (value: ValueLike): boolean =>
             typeof value === 'string' &&
             value.toLowerCase() === GOVERNANCE.toLowerCase(),
         error: 'value incorrect for governance',
     },
     {
         field: 'guardian',
-        validate: (value: any): boolean =>
+        validate: (value: ValueLike): boolean =>
             typeof value === 'string' &&
             value.toLowerCase() === GUARDIAN.toLowerCase(),
         error: 'value incorrect for guardian',
     },
     {
         field: 'management',
-        validate: (value: any): boolean =>
+        validate: (value: ValueLike): boolean =>
             typeof value === 'string' &&
             value.toLowerCase() === MANAGEMENT.toLowerCase(),
         error: 'value incorrect for management',
     },
     {
         field: 'managementFee',
-        validate: (value: any): boolean =>
+        validate: (value: ValueLike): boolean =>
             typeof value === 'number' && value === MANAGEMENT_FEE,
         error: 'value incorrect for management fee',
     },
     {
         field: 'performanceFee',
-        validate: (value: any): boolean =>
+        validate: (value: ValueLike): boolean =>
             typeof value === 'number' && value === PERF_FEE,
         error: 'value incorrect for performance fee',
     },
     {
         field: 'rewards',
-        validate: (value: any): boolean =>
+        validate: (value: ValueLike): boolean =>
             typeof value === 'string' &&
             value.toLowerCase() === TREASURY.toLowerCase(),
         error: 'value incorrect for rewards',

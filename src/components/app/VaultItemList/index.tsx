@@ -1,4 +1,4 @@
-import { Fragment, memo } from 'react';
+import { Fragment, useState, memo } from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import MuiAccordion from '@material-ui/core/Accordion';
@@ -26,6 +26,8 @@ type VaultItemListProps = {
 const _VaultItemList = (props: VaultItemListProps) => {
     const { vault } = props;
     const config = vault.configOK;
+    //hook to render list only when panel actually expanded
+    const [expanded, setExpanded] = useState(false);
 
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
@@ -99,6 +101,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
                     }
                     aria-controls="panel1a-content"
                     id="panel1a-header"
+                    onClick={() => setExpanded(!expanded)}
                 >
                     <Grid container className={classes.root} spacing={2}>
                         <Grid item md={12} xs={12}>
@@ -201,9 +204,15 @@ const _VaultItemList = (props: VaultItemListProps) => {
                 </Hidden>
                 <Divider className={classes.divider} />
                 <AccordionDetails>
-                    <Container>
-                        <StrategistList vault={vault} dark={true} />
-                    </Container>
+                    {expanded && (
+                        <Container>
+                            <StrategistList
+                                vault={vault}
+                                dark={true}
+                                expand={expanded}
+                            />
+                        </Container>
+                    )}
                 </AccordionDetails>
             </MuiAccordion>
         </div>

@@ -73,6 +73,7 @@ export const getChartData = (vault: Vault): ChartSeriesData[] => {
     return sortedAllocs;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mapParamDisplayValues = (param: any): StrategyParams => {
     if (param.activation && isValidTimestamp(param.activation)) {
         param.activation = toIsoString(param.activation);
@@ -98,6 +99,7 @@ export const mapStrategyParams = (
     result: ContractCallReturnContext,
     apiVersion: string
 ): StrategyParams => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const params: any = {};
     result.callsReturnContext.forEach(({ methodName, returnValues }) => {
         if (

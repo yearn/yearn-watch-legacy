@@ -2,7 +2,6 @@ import {
     ContractCallContext,
     ContractCallReturnContext,
 } from 'ethereum-multicall';
-import qs from 'query-string';
 import { get } from 'lodash';
 import { BigNumber, BigNumberish, constants } from 'ethers';
 import { BigNumber as BN } from 'bignumber.js';
@@ -13,7 +12,6 @@ import {
 } from 'ethereum-multicall/dist/models';
 import { getABIStrategiesHelper } from './abi';
 import { values } from 'lodash';
-import { GenericListItem } from '../components/app';
 
 export const USDC_DECIMALS = 6;
 export const USDC_ADDRESS = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48';
@@ -74,6 +72,7 @@ export const formatBPS = (val: string): string => {
 };
 
 export const mapContractCalls = (result: ContractCallReturnContext) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const mappedObj: any = {};
     result.callsReturnContext.forEach(({ methodName, returnValues }) => {
         if (returnValues && returnValues.length > 0) {
@@ -179,6 +178,7 @@ export const getMedian = (arr: number[]) => {
 export const getAverage = (arr: number[]) =>
     arr.reduce((a, b) => a + b, 0) / arr.length;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const flattenArrays = (arr: any[]): string[] => {
     return arr.reduce((flat, toFlatten) => {
         return flat.concat(

@@ -1,10 +1,10 @@
-import { ethers, providers, BigNumber, BigNumberish } from 'ethers';
+import { ethers, providers, BigNumber } from 'ethers';
 import { getEnv } from './env';
 
 export const getEthersDefaultProvider = (
     network = 'homestead'
 ): ethers.providers.BaseProvider => {
-    const { infuraProjectId, alchemyKey } = getEnv();
+    const { alchemyKey } = getEnv();
     // return new providers.InfuraProvider(network, infuraProjectId);
     return new providers.AlchemyProvider(network, alchemyKey);
 };
