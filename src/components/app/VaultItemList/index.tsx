@@ -9,7 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Divider from '@material-ui/core/Divider';
 import { Vault } from '../../../types';
-import { StrategistList } from '../StrategistList';
+import { StrategiesList } from '../StrategiesList';
 import EtherScanLink from '../../common/EtherScanLink';
 
 import Grid from '@material-ui/core/Grid';
@@ -206,7 +206,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
                 <AccordionDetails>
                     {expanded && (
                         <Container>
-                            <StrategistList
+                            <StrategiesList
                                 vault={vault}
                                 dark={true}
                                 expand={expanded}

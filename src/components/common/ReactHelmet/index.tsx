@@ -1,7 +1,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-const ReactHelmet = (props: any) => {
+type ReactHelmetProps = {
+    title: string;
+};
+
+const ReactHelmet = (props: ReactHelmetProps) => {
     return (
         <Helmet>
             <meta charSet="utf-8" />

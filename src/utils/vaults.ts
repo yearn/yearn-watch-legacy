@@ -1,10 +1,4 @@
-import {
-    Multicall,
-    ContractCallResults,
-    ContractCallContext,
-} from 'ethereum-multicall';
-import { BigNumber, utils } from 'ethers';
-import { BigNumber as BigNumberJS } from 'bignumber.js';
+import { utils } from 'ethers';
 import { uniqBy, memoize } from 'lodash';
 import compareVersions from 'compare-versions';
 import { Vault, VaultApi, VaultVersion } from '../types';

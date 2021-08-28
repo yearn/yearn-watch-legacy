@@ -11,7 +11,6 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { StrategyProtocolList } from '../../app/StrategyProtocolList';
-import SearchProtocolInput from '../SearchProtocolInput';
 import Divider from '@material-ui/core/Divider';
 import { Grid } from '@material-ui/core';
 import { amountToMMs, amountToString } from '../../../utils/commonUtils';
@@ -95,6 +94,7 @@ type ProtocolsListProps = {
 export const ProtocolsList = (props: ProtocolsListProps) => {
     const classes = useStyles();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let render: any = '';
     if (props.items.length === 0) {
         render = (

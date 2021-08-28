@@ -11,6 +11,7 @@ const useStyles = makeStyles({
     },
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Table = (props: any) => {
     const classes = useStyles();
 

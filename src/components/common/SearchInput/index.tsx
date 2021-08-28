@@ -111,6 +111,7 @@ const SearchInput = (props: SearchInputProps) => {
     }, [onFilter]);
 
     const renderSearchingLabel = useCallback(() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let render: any;
         if (isSearching) {
             render = (

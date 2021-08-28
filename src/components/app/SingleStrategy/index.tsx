@@ -35,6 +35,7 @@ export const SingleStrategy = () => {
     const [error, setError] = useState<string | null>(null);
     const [value, setValue] = React.useState(0);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
         setValue(newValue);
     };

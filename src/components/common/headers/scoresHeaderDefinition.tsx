@@ -82,7 +82,7 @@ export const scoreHeadCells: HeadCell[] = [
         disablePadding: false,
         label: 'Score',
         align: 'center',
-        format: (item: GenericListItem, _value: string | number | boolean) => {
+        format: (item: GenericListItem) => {
             return (
                 <Semaphore
                     impact={parseInt(item.tvlImpact.toString())}

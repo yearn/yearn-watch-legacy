@@ -13,7 +13,7 @@ const headCells: HeadCell[] = [
         disablePadding: false,
         align: 'center',
         label: 'Strategy Name',
-        format: (item: GenericListItem, _value: string | number | boolean) => {
+        format: (item: GenericListItem) => {
             return (
                 <Link
                     color="inherit"
@@ -32,7 +32,7 @@ const headCells: HeadCell[] = [
         disablePadding: false,
         align: 'center',
         label: 'Activation',
-        format: (item: GenericListItem, _value: string | number | boolean) => {
+        format: (item: GenericListItem) => {
             return <div>{new Date(item.activation).toUTCString()}</div>;
         },
     },

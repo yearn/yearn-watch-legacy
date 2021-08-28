@@ -37,6 +37,7 @@ export const Risk = () => {
     const [groups, setGroups] = useState<Grouping[]>([]);
     const [totalStrategies, setTotalStrategies] = useState<number>(0);
     const [totalTVL, setTotalTVL] = useState<number>(0);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [items, setItems] = useState<any[]>([]);
     const [isLoadingItems, setIsLoadingItems] = useState<boolean>(true);
     const { groupings } = initFB();
