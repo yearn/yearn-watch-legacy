@@ -49,8 +49,8 @@ const STRAT_PARAM_METHODS: string[] = [
 
 const TOKEN_VIEW_METHODS: string[] = ['decimals', 'symbol', 'name'];
 // DEV NOTE: this filter was used in this strategy since it was failing to load the estimatedTotalAsset value
-const filterList = ['0x2923a58c1831205c854dbea001809b194fdb3fa5'];
-// const filterList: string[] = [];
+// const filterList = ['0x2923a58c1831205c854dbea001809b194fdb3fa5'];
+const filterList: string[] = [];
 const buildViewMethodsCall = (strategies: string[]): ContractCallContext[] => {
     return strategies.map((stratAddres) => {
         // TODO: this is a hack since a strategy is failing on this specific call
