@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Order } from './Order';
 
 export function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -10,6 +11,7 @@ export function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     return 0;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getComparator<T, Key extends keyof any>(
     order: Order,
     orderBy: Key

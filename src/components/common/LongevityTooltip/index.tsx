@@ -2,7 +2,7 @@ import { HtmlTooltip } from '../HtmlTooltip';
 import { Fragment } from 'react';
 import { HelpOutlined } from '@material-ui/icons';
 import { GenericList, GenericListItem } from '../../app';
-import { CellPosition, HeadCell } from '../../app/GenericList/HeadCell';
+import { HeadCell } from '../../app/GenericList/HeadCell';
 
 export const headCells: HeadCell[] = [
     {
@@ -57,7 +57,7 @@ type LongevityTooltipProps = {
 };
 
 export const LongevityTooltip = (props: LongevityTooltipProps) => {
-    const getStyle = (item: GenericListItem, _position: CellPosition) => {
+    const getStyle = (item: GenericListItem) => {
         if (item.value === props.value) {
             return {
                 backgroundColor: '#bebebe',

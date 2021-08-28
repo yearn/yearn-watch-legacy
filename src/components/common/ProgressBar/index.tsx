@@ -31,6 +31,7 @@ const useStyles = makeStyles({
     },
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ProgressBars = (props: any) => {
     const classes = useStyles();
     const vault = props.vault;

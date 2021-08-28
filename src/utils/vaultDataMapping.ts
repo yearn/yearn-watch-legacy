@@ -32,6 +32,7 @@ const VAULT_VIEW_METHODS = [
     'rewards',
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const fillVaultData = (vault: any): VaultApi => {
     return {
         ...vault,
@@ -46,6 +47,7 @@ export const fillVaultData = (vault: any): VaultApi => {
     } as VaultApi;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mapVaultDataToVault = async (payload: any): Promise<Vault[]> => {
     const provider = getEthersDefaultProvider();
 
@@ -54,8 +56,10 @@ export const mapVaultDataToVault = async (payload: any): Promise<Vault[]> => {
     const vaultMap = new Map<string, VaultApi>();
     const strategyMap = new Map<string, string>();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     payload.forEach((vault: any) => {
         vaultMap.set(vault.address, vault);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         vault.strategies.forEach((strat: any) =>
             strategyMap.set(strat.address, vault.address)
         );
@@ -80,6 +84,7 @@ export const mapVaultDataToVault = async (payload: any): Promise<Vault[]> => {
     // }
 
     const vaultCalls: ContractCallContext[] = payload.map(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ({ address }: any) => {
             const calls = VAULT_VIEW_METHODS.map((method) => ({
                 reference: method,
@@ -95,8 +100,10 @@ export const mapVaultDataToVault = async (payload: any): Promise<Vault[]> => {
         }
     );
     const stratCalls: ContractCallContext[] = payload.flatMap(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ({ strategies }: any) => {
             const stratAddresses = strategies.map(
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 ({ address }: any) => address
             );
             return buildStrategyCalls(stratAddresses, vaultMap, strategyMap);
@@ -125,7 +132,7 @@ const mapVaultData = (
 ): Vault[] => {
     const vaults: Vault[] = [];
 
-    vaultMap.forEach((vault, key) => {
+    vaultMap.forEach((vault) => {
         const {
             address,
             apiVersion,
@@ -142,6 +149,7 @@ const mapVaultData = (
             strategiesHelperCallsResults
         );
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const mappedVault: any = {
             address,
             apiVersion,

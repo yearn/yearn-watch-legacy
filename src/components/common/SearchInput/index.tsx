@@ -1,3 +1,4 @@
+import { ChangeEvent, useState, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { debounce } from 'lodash';
 import {
@@ -8,7 +9,7 @@ import {
     Switch,
     TextField,
 } from '@material-ui/core';
-import { ChangeEvent, useState } from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Delete } from '@material-ui/icons';
 import ResultsLabel from '../ResultsLabel';
 
@@ -53,7 +54,19 @@ type SearchInputProps = {
     onFilter: (text: string, flags: Flags) => void;
 };
 
+const getCurrentFlags = (onlyWithWarnings: boolean) => ({
+    onlyWithWarnings,
+});
+
 const SearchInput = (props: SearchInputProps) => {
+    const {
+        onFilter,
+        debounceWait,
+        totalItems,
+        foundItems,
+        totalSubItems,
+        foundSubItems,
+    } = props;
     const [searchText, setSearchText] = useState('');
     const [isSearching, setIsSearching] = useState(false);
     const [filterVaultsWithWarnings, setFilterVaultsWithWarnings] = useState(
@@ -61,51 +74,66 @@ const SearchInput = (props: SearchInputProps) => {
     );
     const classes = useStyles();
 
-    const getCurrentFlags = (onlyWithWarnings: boolean) => ({
-        onlyWithWarnings,
-    });
-
-    const debounceFilter = debounce((newSearchText, flags) => {
-        const newSearchTextLowerCase = newSearchText.toLowerCase();
-        props.onFilter(newSearchTextLowerCase, flags);
-        setIsSearching(false);
-    }, props.debounceWait);
+    const debounceFilter = useCallback(
+        debounce((newSearchText, flags) => {
+            const newSearchTextLowerCase = newSearchText.toLowerCase();
+            onFilter(newSearchTextLowerCase, flags);
+            setIsSearching(false);
+        }, debounceWait),
+        [debounceWait, isSearching]
+    );
 
     // Event listener called on every change
-    const onChange = (event: ChangeEvent) => {
-        const value = (event.target as HTMLInputElement).value;
-        setIsSearching(true);
-        setSearchText(value);
-        debounceFilter(value, getCurrentFlags(filterVaultsWithWarnings));
-    };
-    const onFilterVaultsWithWarnings = (e: ChangeEvent<HTMLInputElement>) => {
-        setFilterVaultsWithWarnings(e.target.checked);
-        setIsSearching(true);
-        debounceFilter(searchText, getCurrentFlags(e.target.checked));
-    };
-    const handleClickClearSearch = () => {
+    const onChange = useCallback(
+        (event: ChangeEvent) => {
+            const value = (event.target as HTMLInputElement).value;
+            setIsSearching(true);
+            setSearchText(value);
+            debounceFilter(value, getCurrentFlags(filterVaultsWithWarnings));
+        },
+        [filterVaultsWithWarnings, searchText, isSearching]
+    );
+
+    const onFilterVaultsWithWarnings = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            setFilterVaultsWithWarnings(e.target.checked);
+            setIsSearching(true);
+            const newSearchTextLowerCase = searchText.toLowerCase();
+            onFilter(newSearchTextLowerCase, getCurrentFlags(e.target.checked));
+            setIsSearching(false);
+        },
+        [searchText, isSearching]
+    );
+    const handleClickClearSearch = useCallback(() => {
         setSearchText('');
         setFilterVaultsWithWarnings(false);
-        props.onFilter('', getCurrentFlags(false));
-    };
-    const renderSearchingLabel = () => {
+        onFilter('', getCurrentFlags(false));
+    }, [onFilter]);
+
+    const renderSearchingLabel = useCallback(() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let render: any;
         if (isSearching) {
-            render = 'Searching items...';
+            render = (
+                <div>
+                    {'...loading results'}
+                    <CircularProgress style={{ color: '#fff' }} />
+                </div>
+            );
         } else {
             render = (
                 <>
                     <ResultsLabel
                         title="Vaults"
-                        totalItems={props.totalItems}
-                        foundItems={props.foundItems}
+                        totalItems={totalItems}
+                        foundItems={foundItems}
                         displayFound={true}
                         isSearching={isSearching}
                     />
                     <ResultsLabel
                         title="Strategies"
-                        totalItems={props.totalSubItems}
-                        foundItems={props.foundSubItems}
+                        totalItems={totalSubItems}
+                        foundItems={foundSubItems}
                         displayFound={true}
                         isSearching={isSearching}
                     />
@@ -114,7 +142,7 @@ const SearchInput = (props: SearchInputProps) => {
         }
         // }
         return render;
-    };
+    }, [isSearching, totalItems, foundItems, totalSubItems, foundSubItems]);
 
     return (
         <Container maxWidth="lg">

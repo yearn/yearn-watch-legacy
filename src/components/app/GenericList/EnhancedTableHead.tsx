@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import { HeadCell } from './HeadCell';
 import { GenericListItem } from '.'; // Data,
-import { HelpOutlineRounded, QuestionAnswerRounded } from '@material-ui/icons';
+import { HelpOutlineRounded } from '@material-ui/icons';
 
 interface EnhancedTableProps {
     classes: ReturnType<typeof useStyles>;

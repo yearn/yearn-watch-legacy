@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { memoize } from 'lodash';
-import { VaultVersion } from '../types';
 
 export const { get, all, post, put, spread } = axios;
 
@@ -14,18 +14,18 @@ const API_URL = 'https://api.yearn.finance/v1/chains/1';
 const SUBGRAPH_URL =
     'https://api.thegraph.com/subgraphs/name/salazarguille/yearn-vaults-v2-subgraph-mainnet';
 
-const filterToExperimentals = (res: any): ApiDataResponse => {
-    const response = { data: [] };
-    response.data =
-        res &&
-        res.data &&
-        res.data.filter(
-            (vault: any) =>
-                vault.endorsed === false &&
-                vault.type.toLowerCase() === VaultVersion.V2
-        );
-    return response;
-};
+// const filterToExperimentals = (res: any): ApiDataResponse => {
+//     const response = { data: [] };
+//     response.data =
+//         res &&
+//         res.data &&
+//         res.data.filter(
+//             (vault: any) =>
+//                 vault.endorsed === false &&
+//                 vault.type.toLowerCase() === VaultVersion.V2
+//         );
+//     return response;
+// };
 
 const getData = async (url: string): Promise<ApiDataResponse> => {
     try {

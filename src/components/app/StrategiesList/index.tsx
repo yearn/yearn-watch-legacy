@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Accordion from '@material-ui/core/Accordion';
@@ -12,13 +13,10 @@ import {
     displayAmount,
     formatBPS,
 } from '../../../utils/commonUtils';
-import {
-    isStrategyActiveWithZeroDebt,
-    isDebtRatioTotalDebtMismatch,
-} from '../../../utils/alerts';
+import { isStrategyActiveWithZeroDebt } from '../../../utils/alerts';
 import { Strategy, Vault } from '../../../types';
 
-type StrategistListProps = {
+type StrategiesListProps = {
     vault: Vault;
     dark: boolean;
     expand?: boolean;
@@ -28,7 +26,7 @@ const shouldHighlightStrategy = (strat: Strategy) => {
     return isStrategyActiveWithZeroDebt(strat);
 };
 
-export const StrategistList = (props: StrategistListProps) => {
+const _StrategiesList = (props: StrategiesListProps) => {
     const { vault, expand = true } = props;
     const config = vault.configOK;
     const useStyles = makeStyles((theme: Theme) =>
@@ -263,3 +261,5 @@ export const StrategistList = (props: StrategistListProps) => {
         </div>
     );
 };
+
+export const StrategiesList = memo(_StrategiesList);

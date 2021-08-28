@@ -5,6 +5,7 @@ import Link from '@material-ui/core/Link';
 import { Typography } from '@material-ui/core';
 import { extractAddress } from '../../../utils/commonUtils';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         crumbs: {

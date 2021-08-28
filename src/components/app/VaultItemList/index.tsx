@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useState, memo } from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import MuiAccordion from '@material-ui/core/Accordion';
@@ -9,7 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Divider from '@material-ui/core/Divider';
 import { Vault } from '../../../types';
-import { StrategistList } from '../StrategistList';
+import { StrategiesList } from '../StrategiesList';
 import EtherScanLink from '../../common/EtherScanLink';
 
 import Grid from '@material-ui/core/Grid';
@@ -23,9 +23,11 @@ type VaultItemListProps = {
     key: number;
 };
 
-export const VaultItemList = (props: VaultItemListProps) => {
+const _VaultItemList = (props: VaultItemListProps) => {
     const { vault } = props;
     const config = vault.configOK;
+    //hook to render list only when panel actually expanded
+    const [expanded, setExpanded] = useState(false);
 
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
@@ -99,6 +101,7 @@ export const VaultItemList = (props: VaultItemListProps) => {
                     }
                     aria-controls="panel1a-content"
                     id="panel1a-header"
+                    onClick={() => setExpanded(!expanded)}
                 >
                     <Grid container className={classes.root} spacing={2}>
                         <Grid item md={12} xs={12}>
@@ -201,11 +204,19 @@ export const VaultItemList = (props: VaultItemListProps) => {
                 </Hidden>
                 <Divider className={classes.divider} />
                 <AccordionDetails>
-                    <Container>
-                        <StrategistList vault={vault} dark={true} />
-                    </Container>
+                    {expanded && (
+                        <Container>
+                            <StrategiesList
+                                vault={vault}
+                                dark={true}
+                                expand={expanded}
+                            />
+                        </Container>
+                    )}
                 </AccordionDetails>
             </MuiAccordion>
         </div>
     );
 };
+
+export const VaultItemList = memo(_VaultItemList);

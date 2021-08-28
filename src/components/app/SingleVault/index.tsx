@@ -14,7 +14,7 @@ import { Vault } from '../../../types';
 import { getVault } from '../../../utils/vaults';
 import BreadCrumbs from '../SingleStrategy/BreadCrumbs';
 import Pie from '../Charts/Pie';
-import { StrategistList } from '../StrategistList';
+import { StrategiesList } from '../StrategiesList';
 import { VaultDescription } from './VaultDescription';
 import EtherScanLink from '../../common/EtherScanLink';
 import { ErrorAlert } from '../../common/Alerts';
@@ -22,7 +22,9 @@ import ReactHelmet from '../../common/ReactHelmet';
 
 interface TabPanelProps {
     children?: React.ReactNode;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     index: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any;
 }
 
@@ -46,6 +48,7 @@ function TabPanel(props: TabPanelProps) {
     );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function a11yProps(index: any) {
     return {
         id: `scrollable-auto-tab-${index}`,
@@ -64,6 +67,7 @@ export const SingleVault = () => {
     const [error, setError] = useState<string | null>(null);
     const [value, setValue] = useState(0);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleChange = (event: any, newValue: number) => {
         setValue(newValue);
     };
@@ -211,7 +215,7 @@ export const SingleVault = () => {
                             <TabPanel value={value} index={2}>
                                 {vault && vault.strategies.length > 0 ? (
                                     <div>
-                                        <StrategistList
+                                        <StrategiesList
                                             vault={vault}
                                             dark={false}
                                         />

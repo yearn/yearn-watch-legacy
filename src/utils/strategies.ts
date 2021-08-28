@@ -150,7 +150,9 @@ export const mapStrategiesCalls = (
             contractCallsResults.results[
                 `${address}_${strategyMap.get(address)}`
             ];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const mappedStrat: any = mapContractCalls(stratData);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const mappedVaultStratInfo: any = omit(
             mapContractCalls(vaultStratData),
             'strategies'
@@ -211,6 +213,7 @@ const innerGetStrategies = async (addresses: string[]): Promise<Strategy[]> => {
 
     addresses.forEach((address) => {
         const stratData = resultsViewMethods.results[address];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const mappedStrat: any = mapContractCalls(stratData);
         strategyMap.set(address, mappedStrat.vault);
         vaultMap.set(mappedStrat.vault, {
