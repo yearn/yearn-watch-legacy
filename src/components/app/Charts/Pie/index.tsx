@@ -1,4 +1,3 @@
-import React from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
@@ -14,16 +13,29 @@ const Pie = (props: PieProps) => {
 
     const options = {
         chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
+            backgroundColor: 'transparent',
+
             type: 'pie',
         },
+
         title: {
             text: `${vault.name} Debt Allocation`,
+            style: { color: '#80699B', position: 'absolute' },
         },
+        colors: [
+            '#4572A7',
+            '#AA4643',
+            '#89A54E',
+            '#80699B',
+            '#3D96AE',
+            '#DB843D',
+            '#92A8CD',
+            '#A47D7C',
+            '#B5CA92',
+        ],
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+            style: { color: '#4572A7', position: 'absolute' },
         },
         accessibility: {
             point: {
@@ -37,6 +49,9 @@ const Pie = (props: PieProps) => {
                 dataLabels: {
                     enabled: true,
                     format: '<b>{point.name}</b>: {point.percentage:.2f} %',
+                    style: {
+                        color: '#A47D7C',
+                    },
                 },
             },
         },
@@ -49,11 +64,7 @@ const Pie = (props: PieProps) => {
         ],
     };
 
-    return (
-        <div>
-            <HighchartsReact highcharts={Highcharts} options={options} />
-        </div>
-    );
+    return <HighchartsReact highcharts={Highcharts} options={options} />;
 };
 
 export default Pie;

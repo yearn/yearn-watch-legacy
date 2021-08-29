@@ -27,95 +27,101 @@ type StrategiesListProps = {
 const shouldHighlightStrategy = (strat: Strategy) => {
     return isStrategyActiveWithZeroDebt(strat);
 };
+const StyledDivRoot = styled.div`
+    && {
+        width: 99%;
+        margin: 5px;
+        border-radius: 5px;
+    }
+`;
+const StyledMuiAccordion = styled(MuiAccordion)<{ config: string }>`
+    && {
+        width: 100%;
+        align-items: center;
+        align-content: center;
+        margin-top: 10px;
+        background-color: ${({ theme, config }) =>
+            config === 'true'
+                ? theme.subContainer
+                : theme.containerConfig} !important;
 
+        border-radius: 8px;
+    }
+`;
+const StyledExpandMoreIcon = styled(ExpandMoreIcon)`
+    && {
+        color: ${({ theme }) => theme.text} !important;
+    }
+`;
+const StyledSubtitle = styled(Typography)`
+    && {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 16px;
+
+        color: ${({ theme }) => theme.subtitle} !important;
+    }
+`;
+const StyledTitle = styled(Typography)`
+    && {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 22px;
+        margin-bottom: 5px;
+        color: ${({ theme }) => theme.title} !important;
+    }
+`;
+const StyledSubtitleQueIndex = styled(Typography)<{ error: boolean }>`
+    && {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 16px;
+
+        color: ${({ theme, error }) =>
+            error ? theme.error : theme.subtitle} !important;
+    }
+`;
+const StyledTitleQueIndex = styled(Typography)<{ error: boolean }>`
+    && {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 22px;
+        margin-bottom: 5px;
+        color: ${({ theme, error }) =>
+            error ? theme.error : theme.title} !important;
+    }
+`;
+
+const StyledLink = styled.a`
+    && {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 22px;
+
+        color: ${({ theme }) => theme.subtitle} !important;
+    }
+`;
 const _StrategiesList = (props: StrategiesListProps) => {
     const { vault, expand = true } = props;
-    const StyledDivRoot = styled.div`
-        && {
-            width: 99%;
-            margin: 5px;
-            border-radius: 5px;
-        }
-    `;
-    const StyledMuiAccordion = styled(MuiAccordion)`
-        && {
-            width: 100%;
-            align-items: center;
-            align-content: center;
-            background-color: ${({ theme }) =>
-                theme.containerConfig} !important;
+    const config = vault.configOK;
+    console.log('vault', vault);
 
-            border-radius: 8px;
-        }
-    `;
-    const StyledExpandMoreIcon = styled(ExpandMoreIcon)`
-        && {
-            color: ${({ theme }) => theme.text} !important;
-        }
-    `;
-    const StyledSubtitle = styled(Typography)`
-        && {
-            font-family: Roboto;
-            font-style: normal;
-            font-weight: normal;
-            font-size: 14px;
-            line-height: 16px;
-
-            color: ${({ theme }) => theme.subtitle} !important;
-        }
-    `;
-    const StyledTitle = styled(Typography)`
-        && {
-            font-family: Roboto;
-            font-style: normal;
-            font-weight: bold;
-            font-size: 16px;
-            line-height: 22px;
-            margin-bottom: 5px;
-            color: ${({ theme }) => theme.title} !important;
-        }
-    `;
-    const StyledSubtitleQueIndex = styled(Typography)<{ error: boolean }>`
-        && {
-            font-family: Roboto;
-            font-style: normal;
-            font-weight: normal;
-            font-size: 14px;
-            line-height: 16px;
-
-            color: ${({ theme, error }) =>
-                error ? theme.error : theme.subtitle} !important;
-        }
-    `;
-    const StyledTitleQueIndex = styled(Typography)<{ error: boolean }>`
-        && {
-            font-family: Roboto;
-            font-style: normal;
-            font-weight: bold;
-            font-size: 16px;
-            line-height: 22px;
-            margin-bottom: 5px;
-            color: ${({ theme, error }) =>
-                error ? theme.error : theme.title} !important;
-        }
-    `;
-
-    const StyledLink = styled.a`
-        && {
-            font-family: Roboto;
-            font-style: normal;
-            font-weight: bold;
-            font-size: 16px;
-            line-height: 22px;
-
-            color: ${({ theme }) => theme.subtitle} !important;
-        }
-    `;
     return (
         <StyledDivRoot>
             {vault.strategies &&
                 vault.strategies.map((strategy: Strategy, index: number) => (
                     <StyledMuiAccordion
+                        config={config.toString()}
                         key={index}
                         defaultExpanded={expand}
                         style={{

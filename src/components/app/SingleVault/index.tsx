@@ -124,30 +124,20 @@ export const SingleVault = () => {
     return (
         <React.Fragment>
             <ReactHelmet title={vault ? vault.name : ''} />
-            <BreadCrumbs vaultId={vaultId} />
+
             <Container>
                 {error && (
-                    <StyledCard>
-                        <ErrorAlert
-                            message={`Error while loading vault ${vaultId}:`}
-                            details={error}
-                        />
-                    </StyledCard>
+                    <ErrorAlert
+                        message={`Error while loading vault ${vaultId}:`}
+                        details={error}
+                    />
                 )}
                 {isLoading ? (
-                    <StyledCard>
-                        <div
-                            style={{
-                                textAlign: 'center',
-                                marginTop: '100px',
-                            }}
-                        >
-                            <ProgressSpinnerBar />
-                        </div>
-                    </StyledCard>
+                    <ProgressSpinnerBar />
                 ) : (
                     !error && (
                         <React.Fragment>
+                            <BreadCrumbs vaultId={vaultId} />
                             <StyledCard>
                                 <CardHeader
                                     avatar={
@@ -206,9 +196,7 @@ export const SingleVault = () => {
                                 </TabPanel>
                                 <TabPanel value={value} index={1}>
                                     {vault && vault.strategies.length > 0 ? (
-                                        <div>
-                                            <Pie vault={vault} />
-                                        </div>
+                                        <Pie vault={vault} />
                                     ) : (
                                         ''
                                     )}

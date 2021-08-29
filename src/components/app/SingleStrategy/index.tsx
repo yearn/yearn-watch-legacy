@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import MuiCard from '@material-ui/core/Card';
@@ -99,7 +100,7 @@ export const SingleStrategy = () => {
     return (
         <React.Fragment>
             <ReactHelmet title={strategy ? strategy.name : ''} />
-            <BreadCrumbs vaultId={vaultId} strategyId={strategyId} />
+
             {error && (
                 <ErrorAlert
                     message={'Error while loading strategy data:'}
@@ -118,6 +119,11 @@ export const SingleStrategy = () => {
             ) : (
                 !error && (
                     <MuiCard className={classes.root}>
+                        <BreadCrumbs
+                            vaultId={vaultId}
+                            strategyId={strategyId}
+                        />
+
                         <CardHeader
                             title={strategy ? strategy.name : ''}
                             subheader={

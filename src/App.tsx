@@ -17,7 +17,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { Risk } from './components/app/Risk';
 
 const App = () => {
-    const [theme, themeToggler, mountedComponent] = useDarkMode();
+    const [theme, themeToggler] = useDarkMode();
     const themeMode = useMemo(() => {
         return theme === 'light' ? lightTheme : darkTheme;
     }, [theme]);

@@ -23,74 +23,76 @@ type VaultItemListProps = {
     vault: Vault;
     key: number;
 };
+const StyledDivRoot = styled.div`
+    && {
+        width: 100%;
+        margin: 5px;
+        border-radius: 5px;
+    }
+`;
+const StyledExpandMoreIcon = styled(ExpandMoreIcon)`
+    && {
+        color: ${({ theme }) => theme.text} !important;
+    }
+`;
+const StyledStrats = styled.span`
+    && {
+        color: ${({ theme }) => theme.subtitle} !important;
 
+        text-decoration: none;
+        font-weight: normal;
+
+        line-height: 16px;
+        font-size: 16px;
+    }
+`;
+const StyledTextValue = styled.span`
+    && {
+        color: ${({ theme }) => theme.title} !important;
+
+        text-decoration: underline;
+        font-weight: bold;
+        font-family: Roboto;
+        line-height: 24px;
+        font-size: 16px;
+        font-style: normal;
+        &:hover {
+            font-size: 19;
+        }
+    }
+`;
+const StyledReportProblem = styled(ReportProblem)`
+    && {
+        color: ${({ theme }) => theme.title} !important;
+        border-radius: 3;
+        padding: 1;
+        box-shadow: 0px 0px 0px 0 rgba(0, 0, 0, 0.2);
+    }
+`;
+
+const StyledMuiAccordion = styled(MuiAccordion)<{ config: string }>`
+    && {
+        width: 100%;
+        margin-bottom: 15px;
+        align-items: center;
+        align-content: center;
+        background-color: ${({ theme, config }) =>
+            config === 'true'
+                ? theme.container
+                : theme.backgroundConfig} !important;
+        border: ${({ theme, config }) =>
+            config === 'true'
+                ? '3px solid transparent'
+                : `4px solid ${theme.borderConfig}`};
+        border-radius: 8px;
+    }
+`;
 const _VaultItemList = (props: VaultItemListProps) => {
     const { vault } = props;
     const config = vault.configOK;
     //hook to render list only when panel actually expanded
     const [expanded, setExpanded] = useState(false);
-    const StyledDivRoot = styled.div`
-        && {
-            width: 100%;
-            margin: 5px;
-            border-radius: 5px;
-        }
-    `;
-    const StyledExpandMoreIcon = styled(ExpandMoreIcon)`
-        && {
-            color: ${({ theme }) => theme.text} !important;
-        }
-    `;
-    const StyledStrats = styled.span`
-        && {
-            color: ${({ theme }) => theme.subtitle} !important;
 
-            text-decoration: none;
-            font-weight: normal;
-
-            line-height: 16px;
-            font-size: 16px;
-        }
-    `;
-    const StyledTextValue = styled.span`
-        && {
-            color: ${({ theme }) => theme.title} !important;
-
-            text-decoration: underline;
-            font-weight: bold;
-            font-family: Roboto;
-            line-height: 24px;
-            font-size: 16px;
-            font-style: normal;
-            &:hover {
-                font-size: 19;
-            }
-        }
-    `;
-    const StyledReportProblem = styled(ReportProblem)`
-        && {
-            color: ${({ theme }) => theme.title} !important;
-            border-radius: 3;
-            padding: 1;
-            box-shadow: 0px 0px 0px 0 rgba(0, 0, 0, 0.2);
-        }
-    `;
-
-    const StyledMuiAccordion = styled(MuiAccordion)`
-        && {
-            width: 100%;
-            margin-bottom: 15px;
-            align-items: center;
-            align-content: center;
-            background-color: ${({ theme }) =>
-                config ? theme.container : theme.backgroundConfig} !important;
-            border: ${({ theme }) =>
-                config
-                    ? '3px solid transparent'
-                    : `4px solid ${theme.borderConfig}`};
-            border-radius: 8px;
-        }
-    `;
     const BlueOnGreenTooltip = withStyles({
         tooltip: {
             color: config ? 'transparent' : '#F2F2F2',
@@ -101,7 +103,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
 
     return (
         <StyledDivRoot>
-            <StyledMuiAccordion>
+            <StyledMuiAccordion config={config.toString()}>
                 <AccordionSummary
                     expandIcon={<StyledExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -179,7 +181,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
                                             <StyledTextValue>
                                                 {' '}
                                                 {vault.name}
-                                                {`v${vault.apiVersion}`}
+                                                {` v${vault.apiVersion}`}
                                             </StyledTextValue>
                                         </a>
                                         <br />
