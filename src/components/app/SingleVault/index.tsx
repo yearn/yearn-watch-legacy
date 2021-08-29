@@ -22,6 +22,34 @@ import { ErrorAlert } from '../../common/Alerts';
 import ReactHelmet from '../../common/ReactHelmet';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 
+const StyledCard = styled(Card)<{ config: string }>`
+    && {
+        background-color: ${({ theme }) => theme.container};
+        color: ${({ theme }) => theme.title};
+        margin-left: auto;
+        margin-right: auto;
+        border: ${({ theme, config }) =>
+            config === 'false' ? theme.error : ''} !important;
+        @media (max-width: 1400px) {
+            max-width: 85%;
+        }
+        @media (max-width: 700px) {
+            max-width: 100%;
+        }
+    }
+`;
+const StyledSpan = styled.span`
+    && {
+        color: ${({ theme }) => theme.subtitle};
+    }
+`;
+const StyledTitle = styled.span`
+    && {
+        color: ${({ theme }) => theme.title};
+        font-weight: bold;
+        font-size: 18px;
+    }
+`;
 interface TabPanelProps {
     children?: React.ReactNode;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -68,8 +96,9 @@ export const SingleVault = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [value, setValue] = useState(0);
-
+    const config = vault?.configOK;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const handleChange = (event: any, newValue: number) => {
         setValue(newValue);
     };
@@ -91,36 +120,6 @@ export const SingleVault = () => {
         loadVaultData();
     }, [vaultId]);
 
-    const StyledCard = styled(Card)`
-        && {
-            background-color: ${({ theme }) => theme.container};
-            color: ${({ theme }) => theme.title};
-            margin-left: auto;
-            margin-right: auto;
-            border: ${({ theme }) =>
-                vault && vault.configOK === false
-                    ? theme.error
-                    : ''} !important;
-            @media (max-width: 1400px) {
-                max-width: 85%;
-            }
-            @media (max-width: 700px) {
-                max-width: 100%;
-            }
-        }
-    `;
-    const StyledSpan = styled.span`
-        && {
-            color: ${({ theme }) => theme.subtitle};
-        }
-    `;
-    const StyledTitle = styled.span`
-        && {
-            color: ${({ theme }) => theme.title};
-            font-weight: bold;
-            font-size: 18px;
-        }
-    `;
     return (
         <React.Fragment>
             <ReactHelmet title={vault ? vault.name : ''} />
@@ -138,7 +137,13 @@ export const SingleVault = () => {
                     !error && (
                         <React.Fragment>
                             <BreadCrumbs vaultId={vaultId} />
-                            <StyledCard>
+                            <StyledCard
+                                config={
+                                    config === undefined
+                                        ? 'true'
+                                        : config.toString()
+                                }
+                            >
                                 <CardHeader
                                     avatar={
                                         <Avatar
@@ -174,7 +179,13 @@ export const SingleVault = () => {
                                 />
                             </StyledCard>
                             <br />
-                            <StyledCard>
+                            <StyledCard
+                                config={
+                                    config === undefined
+                                        ? 'true'
+                                        : config.toString()
+                                }
+                            >
                                 <Tabs
                                     value={value}
                                     onChange={handleChange}

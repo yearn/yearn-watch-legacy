@@ -1,20 +1,32 @@
-import { makeStyles } from '@material-ui/core/styles';
+import styled from 'styled-components';
 import Grid, { GridSize } from '@material-ui/core/Grid';
 import { Typography } from '@material-ui/core';
 import { HelpOutlined } from '@material-ui/icons';
 import { HtmlTooltip } from '../HtmlTooltip';
 import { Fragment, ReactNode } from 'react';
 
-const useStyles = makeStyles({
-    subText: {
-        marginBottom: 10,
-    },
-    grid: {
-        marginBottom: 10,
-        borderBottom: '1px solid #e8e8e8',
-    },
-});
+const StyledSubtitle = styled(Typography)`
+    && {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 16px;
 
+        color: ${({ theme }) => theme.subtitle} !important;
+    }
+`;
+const StyledTitle = styled(Typography)`
+    && {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 22px;
+        margin-bottom: 5px;
+        color: ${({ theme }) => theme.title} !important;
+    }
+`;
 type ItemDescriptionProps = {
     label: string;
     value: number | string;
@@ -27,7 +39,7 @@ type ItemDescriptionProps = {
 
 const ItemDescription = (props: ItemDescriptionProps) => {
     const { xs = 12, visible = true } = props;
-    const classes = useStyles();
+
     if (!visible) {
         return <></>;
     }
@@ -51,12 +63,17 @@ const ItemDescription = (props: ItemDescriptionProps) => {
         );
 
     return (
-        <Grid item xs={xs} md={props.md} className={classes.grid}>
-            <Typography className={classes.subText}>
+        <Grid item xs={xs} md={props.md} style={{ marginBottom: 50 }}>
+            <StyledTitle>
+                {' '}
+                {props.value}
+                <br />
+            </StyledTitle>
+
+            <StyledSubtitle>
                 {' '}
                 {props.label}: {helpTooltip}
-                <br /> {props.value}
-            </Typography>
+            </StyledSubtitle>
         </Grid>
     );
 };
