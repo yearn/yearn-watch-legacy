@@ -25,7 +25,7 @@ const StyledTypography = styled(Typography)`
 `;
 const StyledSubTypography = styled(Typography)`
     && {
-        color: ${({ theme }) => theme.title};
+        color: ${({ theme }) => theme.subtitle};
     }
 `;
 const StyledAccordion = styled(Accordion)`
@@ -85,26 +85,16 @@ const AccordionReport = (props: AccordionReportProps) => {
                                 aria-controls="panel1a-content"
                                 id="panel1a-header"
                             >
-                                <Grid container spacing={1}>
-                                    <Grid item xs={12} md={9}>
-                                        <Typography>
-                                            <EtherScanLink
-                                                transactionHash={
-                                                    res.transactionHash
-                                                }
-                                            />
-                                        </Typography>
-                                    </Grid>
+                                <EtherScanLink
+                                    transactionHash={res.transactionHash}
+                                />
 
-                                    <Grid item xs={12} md={3}>
-                                        <StyledSubTypography>
-                                            {' '}
-                                            Timestamp:
-                                            <br />
-                                            {unixMsToIsoString(res.timestamp)}
-                                        </StyledSubTypography>
-                                    </Grid>
-                                </Grid>
+                                <StyledSubTypography>
+                                    {' '}
+                                    Timestamp:
+                                    <br />
+                                    {unixMsToIsoString(res.timestamp)}
+                                </StyledSubTypography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Grid container spacing={1}>

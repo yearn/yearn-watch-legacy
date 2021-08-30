@@ -1,7 +1,7 @@
 import { Fragment, useState, memo } from 'react';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+
 import MuiAccordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -219,13 +219,11 @@ const _VaultItemList = (props: VaultItemListProps) => {
 
                 <AccordionDetails>
                     {expanded && (
-                        <Container>
-                            <StrategiesList
-                                vault={vault}
-                                dark={true}
-                                expand={expanded}
-                            />
-                        </Container>
+                        <StrategiesList
+                            vault={vault}
+                            dark={true}
+                            expand={expanded}
+                        />
                     )}
                 </AccordionDetails>
             </StyledMuiAccordion>
