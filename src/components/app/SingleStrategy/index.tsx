@@ -86,7 +86,6 @@ export const SingleStrategy = () => {
             try {
                 const loadedStrategy = await getStrategies([strategyId]);
                 setStrategyData(loadedStrategy);
-                console.log(loadedStrategy);
                 setIsLoading(false);
             } catch (error) {
                 console.log('Error:', error);
@@ -155,7 +154,7 @@ export const SingleStrategy = () => {
                                             )}
                                             {vault ? (
                                                 <StyledSpan>
-                                                    (Strategy: {vault.name})
+                                                    (Vault: {vault.name})
                                                 </StyledSpan>
                                             ) : (
                                                 ''
