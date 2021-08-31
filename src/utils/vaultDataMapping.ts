@@ -168,9 +168,21 @@ const mapVaultData = (
             strategyMap
         );
 
-        const sortedStrategies: Strategy[] = mappedStrategies.sort(
-            (a, b) => a.withdrawalQueueIndex - b.withdrawalQueueIndex
-        );
+        const sortedStrategies: Strategy[] = mappedStrategies.sort(function (
+            a: Strategy,
+            b: Strategy
+        ) {
+            if (a.withdrawalQueueIndex === -1) {
+                // put "a" last (out of queue)
+                return 1;
+            } else if (b.withdrawalQueueIndex === -1) {
+                // put "b" last (out of queue)
+                return -1;
+            } else {
+                // numerical sort order (0, 1, 2, etc.)
+                return a.withdrawalQueueIndex - b.withdrawalQueueIndex;
+            }
+        });
 
         mappedVault.debtUsage = getTotalDebtUsage(sortedStrategies);
 
