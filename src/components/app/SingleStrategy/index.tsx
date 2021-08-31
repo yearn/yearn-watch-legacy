@@ -103,7 +103,7 @@ export const SingleStrategy = () => {
             }
         };
         loadStrategyData();
-    }, [strategyId]);
+    }, [strategyId, vaultId]);
 
     const strategy = strategyData && strategyData[0];
 
