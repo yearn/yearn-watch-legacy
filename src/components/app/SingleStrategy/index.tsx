@@ -117,7 +117,7 @@ export const SingleStrategy = () => {
                         details={error}
                     />
                 )}
-                {isLoading || isVaultLoading || isReportsLoading ? (
+                {isLoading || isReportsLoading ? (
                     <div
                         style={{
                             textAlign: 'center',
@@ -152,13 +152,14 @@ export const SingleStrategy = () => {
                                             ) : (
                                                 ''
                                             )}
-                                            {vault ? (
-                                                <StyledSpan>
-                                                    (Vault: {vault.name})
-                                                </StyledSpan>
-                                            ) : (
-                                                ''
-                                            )}
+
+                                            <StyledSpan>
+                                                (Vault:{' '}
+                                                {isVaultLoading
+                                                    ? '... loading vault name'
+                                                    : vault && vault.name}
+                                                )
+                                            </StyledSpan>
                                         </>
                                     }
                                 />
