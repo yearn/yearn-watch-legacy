@@ -12,7 +12,7 @@ import Tab from '@material-ui/core/Tab';
 import StrategyDetail from './StrategyDetail';
 
 import { ErrorAlert } from '../../common/Alerts';
-import { Strategy } from '../../../types';
+import { Strategy, Vault } from '../../../types';
 
 import BreadCrumbs from './BreadCrumbs';
 import EtherScanLink from '../../common/EtherScanLink';
@@ -20,6 +20,7 @@ import ReactHelmet from '../../common/ReactHelmet';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 
 import { getStrategies } from '../../../utils/strategies';
+import { getVault } from '../../../utils/vaults';
 import { getReportsForStrategy, StrategyReport } from '../../../utils/reports';
 
 import StrategyReports from './StrategyReports';
@@ -41,6 +42,11 @@ const StyledCard = styled(Card)<{ emergencyExit: string }>`
         }
     }
 `;
+const StyledSpan = styled.span`
+    && {
+        color: ${({ theme }) => theme.subtitle};
+    }
+`;
 
 interface ParamTypes {
     strategyId: string;
@@ -49,8 +55,11 @@ interface ParamTypes {
 
 export const SingleStrategy = () => {
     const { strategyId, vaultId } = useParams<ParamTypes>();
+
     const [strategyData, setStrategyData] = useState<Strategy[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [vault, setVault] = useState<Vault | undefined>();
+    const [isVaultLoading, setIsVaultLoading] = useState(true);
     const [strategyReports, setStrategyReports] = useState<StrategyReport[]>(
         []
     );
@@ -66,6 +75,7 @@ export const SingleStrategy = () => {
     useEffect(() => {
         const loadStrategyData = async () => {
             setIsLoading(true);
+            setIsVaultLoading(true);
             setIsReportsLoading(true);
             setError(null);
             // we don't want to handle error here for now
@@ -82,9 +92,18 @@ export const SingleStrategy = () => {
                 setIsLoading(false);
                 setError(error);
             }
+            try {
+                const loadedVault = await getVault(vaultId);
+                setVault(loadedVault);
+                setIsVaultLoading(false);
+            } catch (error) {
+                console.log('Error:', error);
+                setIsVaultLoading(false);
+                setError(error);
+            }
         };
         loadStrategyData();
-    }, [strategyId]);
+    }, [strategyId, vaultId]);
 
     const strategy = strategyData && strategyData[0];
 
@@ -125,13 +144,23 @@ export const SingleStrategy = () => {
                                 <CardHeader
                                     title={strategy ? strategy.name : ''}
                                     subheader={
-                                        strategy ? (
-                                            <EtherScanLink
-                                                address={strategy.address}
-                                            />
-                                        ) : (
-                                            ''
-                                        )
+                                        <>
+                                            {strategy ? (
+                                                <EtherScanLink
+                                                    address={strategy.address}
+                                                />
+                                            ) : (
+                                                ''
+                                            )}
+
+                                            <StyledSpan>
+                                                (Vault:{' '}
+                                                {isVaultLoading
+                                                    ? '... loading vault name'
+                                                    : vault && vault.name}
+                                                )
+                                            </StyledSpan>
+                                        </>
                                     }
                                 />
                                 <Tabs
