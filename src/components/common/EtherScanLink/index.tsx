@@ -1,12 +1,13 @@
+import React from 'react';
 import { MouseEvent, useEffect, useState } from 'react';
+import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { extractAddress } from '../../../utils/commonUtils';
 import Hidden from '@material-ui/core/Hidden';
 import CallMadeIcon from '@material-ui/icons/CallMade';
 import Tooltip from '@material-ui/core/Tooltip';
 import { FileCopy } from '@material-ui/icons';
-import { Link } from '@material-ui/core';
+import { Link, Grid } from '@material-ui/core';
 
 type EtherScanLinkProps = {
     address?: string;
@@ -14,8 +15,40 @@ type EtherScanLinkProps = {
     dark?: boolean | false;
     internalHref?: string;
 };
+const StyledFileCopy = styled(FileCopy)`
+    && {
+        color: ${({ theme }) => theme.text} !important;
+
+        border-radius: 3;
+        padding: 2;
+    }
+`;
+const StyledCallMadeIcon = styled(CallMadeIcon)`
+    && {
+        color: ${({ theme }) => theme.text} !important;
+        border-radius: 3;
+        padding: 2;
+    }
+`;
+const StyledAddress = styled.span`
+    && {
+        color: ${({ theme }) => theme.subtitle} !important;
+
+        text-decoration: none;
+        font-weight: 400;
+
+        line-height: 14px;
+        font-size: 16px;
+        font-style: normal;
+    }
+`;
+const StyledCopiedText = styled.span`
+    && {
+        color: ${({ theme }) => theme.subtitle} !important;
+    }
+`;
 const EtherScanLink = (props: EtherScanLinkProps) => {
-    const { address, transactionHash, dark, internalHref } = props;
+    const { address, transactionHash, internalHref } = props;
     const [copied, setCopied] = useState(false);
 
     useEffect(() => {
@@ -26,28 +59,6 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
         return () => clearTimeout(timeId);
     }, [copied]);
 
-    const useStyles = makeStyles((theme: Theme) =>
-        createStyles({
-            button: {
-                margin: theme.spacing(1),
-            },
-            iconCall: {
-                backgroundColor: '#fff',
-                borderRadius: 3,
-                padding: 2,
-                boxShadow: '0 3px 6px 0 rgba(0,0,0,0.2)',
-            },
-            address: {
-                fontSize: '14px',
-                opacity: '0.7',
-                color: dark ? '#fff' : 'black',
-            },
-            copiedText: {
-                color: dark ? '#fff' : 'black',
-            },
-        })
-    );
-    const classes = useStyles();
     let value = '';
     let extractedValue = '';
     if (address) {
@@ -73,39 +84,40 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
         ? `https://etherscan.io/tx/${value}`
         : `https://etherscan.io/address/${value}`;
     return (
-        <span>
-            <span className={classes.address}>
-                {internalHref ? (
-                    <Link color="inherit" href={internalHref}>
-                        <Hidden smUp>{`${maskedValue}`}</Hidden>
-                        <Hidden xsDown>{value}</Hidden>
-                    </Link>
-                ) : (
-                    <>
-                        <Hidden smUp>{maskedValue}</Hidden>
-                        <Hidden xsDown>{value}</Hidden>
-                    </>
-                )}
-            </span>
-            <Tooltip title="Copy to clipboard" aria-label="Clipboard">
-                <Button onClick={(e) => onCopyToClipboard(e)}>
-                    <FileCopy fontSize="inherit" className={classes.iconCall} />
-                    {copied ? (
-                        <span className={classes.copiedText}> Copied</span>
+        <Grid container spacing={2} alignItems="center">
+            <Grid item xs={6} md={8}>
+                <StyledAddress>
+                    {internalHref ? (
+                        <Link color="inherit" href={internalHref}>
+                            <Hidden smUp>{`${maskedValue}`}</Hidden>
+                            <Hidden xsDown>{value}</Hidden>
+                        </Link>
                     ) : (
-                        ''
+                        <>
+                            <Hidden smUp>{maskedValue}</Hidden>
+                            <Hidden xsDown>{value.toUpperCase()}</Hidden>
+                        </>
                     )}
-                </Button>
-            </Tooltip>
-            <Tooltip title="View on Etherscan" aria-label="Etherscan">
-                <Button href={refLink} target="_blank">
-                    <CallMadeIcon
-                        fontSize="inherit"
-                        className={classes.iconCall}
-                    />
-                </Button>
-            </Tooltip>
-        </span>
+                </StyledAddress>
+            </Grid>
+            <Grid item xs={6} md={4}>
+                <Tooltip title="Copy to clipboard" aria-label="Clipboard">
+                    <Button onClick={(e) => onCopyToClipboard(e)}>
+                        <StyledFileCopy fontSize="inherit" />
+                        {copied ? (
+                            <StyledCopiedText> Copied</StyledCopiedText>
+                        ) : (
+                            ''
+                        )}
+                    </Button>
+                </Tooltip>
+                <Tooltip title="View on Etherscan" aria-label="Etherscan">
+                    <Button href={refLink} target="_blank">
+                        <StyledCallMadeIcon fontSize="inherit" />
+                    </Button>
+                </Tooltip>
+            </Grid>
+        </Grid>
     );
 };
 

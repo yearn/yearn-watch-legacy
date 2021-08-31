@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { Typography } from '@material-ui/core';
+import { useEffect, useState } from 'react';
+
 import {
     getVaultsWithPagination,
     getTotalVaults,
     sortVaultsByVersion,
 } from '../../../utils/vaults';
-import { VaultsList } from '../../common/VaultsList';
+
 import { ErrorAlert } from '../../common/Alerts';
+
+import { VaultsList } from '../../common/VaultsList';
+import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 import { Vault } from '../../../types';
 import {
     DEFAULT_QUERY_PARAM,
     toQueryParam,
 } from '../../../utils/types/QueryParam';
+
+import { GlobalStylesLoading } from '../../theme/globalStyles';
 
 const BATCH_NUMBER = 30;
 
@@ -21,9 +25,11 @@ export const Home = () => {
     const [vaults, setVaults] = useState<Vault[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
     useEffect(() => {
         const loadVaultData = async () => {
             setIsLoading(true);
+
             setError(null);
             try {
                 const numVaults = await getTotalVaults();
@@ -70,7 +76,7 @@ export const Home = () => {
     }, []);
 
     return (
-        <div>
+        <div style={{ marginTop: 20 }}>
             {error && (
                 <ErrorAlert
                     message={'Error while loading vaults:'}
@@ -79,19 +85,17 @@ export const Home = () => {
             )}
 
             {isLoading ? (
-                <div
-                    style={{
-                        textAlign: 'center',
-                        marginTop: '100px',
-                    }}
-                >
-                    <CircularProgress style={{ color: '#fff' }} />
-                    <Typography style={{ color: '#fff' }}>
-                        Loading vaults..
-                    </Typography>
-                </div>
+                <span>
+                    <GlobalStylesLoading />
+                    <ProgressSpinnerBar />
+                </span>
             ) : (
-                !error && <VaultsList items={vaults} totalItems={total} />
+                !error && (
+                    <span>
+                        {' '}
+                        <VaultsList items={vaults} totalItems={total} />
+                    </span>
+                )
             )}
         </div>
     );

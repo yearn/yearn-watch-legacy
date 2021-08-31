@@ -1,4 +1,5 @@
 import MuiCardContent from '@material-ui/core/CardContent';
+import styled from 'styled-components';
 import Table from '../../common/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -14,7 +15,17 @@ type KeyValue = {
 type CardContentProps = {
     data: KeyValue[];
 };
-
+const StyledTableRow = styled(TableRow)`
+    && {
+        background-color: ${({ theme }) => theme.container} !important;
+    }
+`;
+const StyledTableCell = styled(TableCell)`
+    && {
+        color: ${({ theme }) => theme.title} !important;
+        border-bottom: 1px solid ${({ theme }) => theme.border} !important;
+    }
+`;
 const CardContent = (props: CardContentProps) => {
     const { data } = props;
 
@@ -28,19 +39,21 @@ const CardContent = (props: CardContentProps) => {
                             return renderValue;
                         }
                         return (
-                            <TableRow key={index}>
-                                <TableCell>
+                            <StyledTableRow key={index}>
+                                <StyledTableCell>
                                     {res.key}
                                     <MediaQuery query="(max-device-width: 1224px)">
                                         <br />
                                         {res.value}
                                     </MediaQuery>{' '}
-                                </TableCell>
+                                </StyledTableCell>
                                 <MediaQuery query="(min-device-width: 1224px)">
                                     {' '}
-                                    <TableCell>{res.value}</TableCell>
+                                    <StyledTableCell>
+                                        {res.value}
+                                    </StyledTableCell>
                                 </MediaQuery>
-                            </TableRow>
+                            </StyledTableRow>
                         );
                     })}
                 </TableHead>

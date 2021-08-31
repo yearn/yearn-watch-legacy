@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import { HtmlTooltip } from '../HtmlTooltip';
 import { HelpOutlineRounded } from '@material-ui/icons';
@@ -23,6 +24,17 @@ const useStyles = makeStyles({
     },
 });
 
+const StyledTableRow = styled(TableRow)`
+    && {
+        background-color: ${({ theme }) => theme.container} !important;
+    }
+`;
+const StyledTableCell = styled(TableCell)`
+    && {
+        color: ${({ theme }) => theme.title} !important;
+        border-bottom: 1px solid ${({ theme }) => theme.border} !important;
+    }
+`;
 type TokenPriceProps = {
     token: Token;
     label?: string;
@@ -58,21 +70,21 @@ const TokenPrice = (props: TokenPriceProps) => {
 
     if (!tokenPrice || !tokenUnitPrice) {
         return (
-            <TableRow>
-                <TableCell>
+            <StyledTableRow>
+                <StyledTableCell>
                     {label}
                     <MediaQuery query="(max-device-width: 1224px)">
                         <CircularProgress color="inherit" size="0.6rem" />{' '}
                         {loadingLabel}
                     </MediaQuery>
-                </TableCell>
+                </StyledTableCell>
                 <MediaQuery query="(min-device-width: 1224px)">
-                    <TableCell>
+                    <StyledTableCell>
                         <CircularProgress color="inherit" size="0.6rem" />{' '}
                         {loadingLabel}
-                    </TableCell>
+                    </StyledTableCell>
                 </MediaQuery>
-            </TableRow>
+            </StyledTableRow>
         );
     }
     const tooltip = (
@@ -93,8 +105,8 @@ const TokenPrice = (props: TokenPriceProps) => {
     );
 
     return (
-        <TableRow>
-            <TableCell>
+        <StyledTableRow>
+            <StyledTableCell>
                 {label}
                 <MediaQuery query="(max-device-width: 1224px)">
                     {' '}
@@ -104,16 +116,16 @@ const TokenPrice = (props: TokenPriceProps) => {
                         : '-'}{' '}
                     USD
                 </MediaQuery>{' '}
-            </TableCell>
+            </StyledTableCell>
             <MediaQuery query="(min-device-width: 1224px)">
-                <TableCell>
+                <StyledTableCell>
                     {tokenPrice
                         ? `${displayAmount(tokenPrice?.toFixed(2), 0)} USD`
                         : '-'}{' '}
                     {tooltip}
-                </TableCell>
+                </StyledTableCell>
             </MediaQuery>
-        </TableRow>
+        </StyledTableRow>
     );
 };
 

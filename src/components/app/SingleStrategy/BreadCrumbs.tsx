@@ -9,9 +9,6 @@ import { extractAddress } from '../../../utils/commonUtils';
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         crumbs: {
-            maxWidth: '80%',
-            marginLeft: 'auto',
-            marginRight: 'auto',
             marginBottom: 15,
             marginTop: 15,
             color: '#fff',
