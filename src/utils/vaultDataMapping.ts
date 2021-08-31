@@ -168,7 +168,11 @@ const mapVaultData = (
             strategyMap
         );
 
-        mappedVault.debtUsage = getTotalDebtUsage(mappedStrategies);
+        const sortedStrategies: Strategy[] = mappedStrategies.sort(
+            (a, b) => a.withdrawalQueueIndex - b.withdrawalQueueIndex
+        );
+
+        mappedVault.debtUsage = getTotalDebtUsage(sortedStrategies);
 
         const vaultData = contractCallsResults.results[address];
 
