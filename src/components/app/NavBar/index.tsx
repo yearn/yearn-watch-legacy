@@ -25,7 +25,9 @@ const StyledImg = styled.img`
 const StyledBrightness2Icon = styled(Brightness2Icon)`
     color: ${({ theme }) => theme.iconTheme};
 `;
+
 interface NavBarProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     themeToggler: any;
 
     theme: string | boolean | (() => void);

@@ -19,6 +19,7 @@ const StyledTooltip = styled(Tooltip)`
 `;
 
 interface DebTooltipProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     label: any;
 }
 export default function DebTooltip(props: DebTooltipProps) {

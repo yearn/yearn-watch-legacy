@@ -23,9 +23,11 @@ export const Home = () => {
     const [vaults, setVaults] = useState<Vault[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
     useEffect(() => {
         const loadVaultData = async () => {
             setIsLoading(true);
+
             setError(null);
             try {
                 const numVaults = await getTotalVaults();

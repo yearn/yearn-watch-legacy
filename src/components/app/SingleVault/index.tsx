@@ -97,8 +97,8 @@ export const SingleVault = () => {
     const [error, setError] = useState<string | null>(null);
     const [value, setValue] = useState(0);
     const config = vault?.configOK;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleChange = (event: any, newValue: number) => {
         setValue(newValue);
     };

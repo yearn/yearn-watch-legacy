@@ -1,6 +1,9 @@
 import backgroundImageLight from '../../images/background_image_yearn_watch_light.svg';
 import backgroundImageDark from '../../images/background_image_yearn_watch_dark.jpeg';
-export const lightTheme = {
+// import backgroundImageLightNoMitch from '../../images/yearn_background_light_no_mitch.svg';
+// import backgroundLoading from '../../images/loadingBackground.svg';
+
+export let lightTheme = {
     error: '#EB5757',
     backgroundImage: `url(${backgroundImageLight})`,
     borderConfig: '#EB5757',
@@ -18,7 +21,7 @@ export const lightTheme = {
     subContainer: 'rgba(255, 255, 255, 0.7)',
     border: '#e0e0e0',
 };
-export const darkTheme = {
+export let darkTheme = {
     error: '#EB5757',
     borderConfig: 'transparent',
     backgroundConfig: '#006AE3',
