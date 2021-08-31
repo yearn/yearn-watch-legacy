@@ -114,7 +114,6 @@ const StyledLink = styled.a`
 const _StrategiesList = (props: StrategiesListProps) => {
     const { vault, expand = true } = props;
     const config = vault.configOK;
-    console.log('vault', vault);
 
     return (
         <StyledDivRoot>
@@ -141,7 +140,6 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                         container
                                         spacing={1}
                                         direction="row"
-                                        // justify="center"
                                         alignItems="center"
                                     >
                                         <Grid item md={1} xs={3}></Grid>

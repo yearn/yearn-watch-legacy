@@ -33,7 +33,6 @@ interface NavBarProps {
     theme: string | boolean | (() => void);
 }
 
-// (event: React.MouseEvent<HTMLButtonElement>) => void
 export const NavBar: React.FC<NavBarProps> = ({ themeToggler, theme }) => {
     return (
         <StyledRoot>

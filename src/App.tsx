@@ -22,7 +22,6 @@ const App = () => {
     const themeMode = useMemo(() => {
         return theme === 'light' ? lightTheme : darkTheme;
     }, [theme]);
-    // if (!mountedComponent) return <div />;
 
     return (
         <Router>
