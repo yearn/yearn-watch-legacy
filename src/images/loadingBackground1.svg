@@ -4,7 +4,7 @@
 <g filter="url(#filter0_f)">
 <rect width="1920" height="1702" fill="url(#pattern0)"/>
 </g>
-<rect x="732" y="516" width="740" height="1186" fill="url(#pattern1)"/>
+<rect x="718" y="632" width="656" height="1070" fill="url(#pattern1)"/>
 </g>
 <defs>
 <filter id="filter0_f" x="-16" y="-16" width="1952" height="1734" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
@@ -16,7 +16,7 @@
 <use xlink:href="#image0" transform="translate(0 -0.502742) scale(0.000925926 0.00104452)"/>
 </pattern>
 <pattern id="pattern1" patternContentUnits="objectBoundingBox" width="1" height="1">
-<use xlink:href="#image1" transform="translate(0 -0.00318229) scale(0.00322581 0.00201273)"/>
+<use xlink:href="#image1" transform="translate(-0.00564024) scale(0.0032622 0.002)"/>
 </pattern>
 <clipPath id="clip0">
 <rect width="1920" height="1702" fill="white"/>

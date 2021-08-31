@@ -16,6 +16,8 @@ import {
     toQueryParam,
 } from '../../../utils/types/QueryParam';
 
+import { GlobalStylesLoading } from '../../theme/globalStyles';
+
 const BATCH_NUMBER = 30;
 
 export const Home = () => {
@@ -83,9 +85,17 @@ export const Home = () => {
             )}
 
             {isLoading ? (
-                <ProgressSpinnerBar />
+                <span>
+                    <GlobalStylesLoading />
+                    <ProgressSpinnerBar />
+                </span>
             ) : (
-                !error && <VaultsList items={vaults} totalItems={total} />
+                !error && (
+                    <span>
+                        {' '}
+                        <VaultsList items={vaults} totalItems={total} />
+                    </span>
+                )
             )}
         </div>
     );

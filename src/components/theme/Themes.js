@@ -1,11 +1,12 @@
-import backgroundImageLight from '../../images/background_image_yearn_watch_light.svg';
+// import backgroundImageLight from '../../images/background_image_yearn_watch_light.svg';
 import backgroundImageDark from '../../images/background_image_yearn_watch_dark.jpeg';
-// import backgroundImageLightNoMitch from '../../images/yearn_background_light_no_mitch.svg';
-// import backgroundLoading from '../../images/loadingBackground.svg';
+import backgroundImageLightNoMitch from '../../images/yearn_background_light_no_mitch.svg';
+import backgroundLoading from '../../images/loadingBackground1.svg';
 
 export let lightTheme = {
     error: '#EB5757',
-    backgroundImage: `url(${backgroundImageLight})`,
+    backgroundImage: `url(${backgroundImageLightNoMitch})`,
+    backgroundImageLoading: `url(${backgroundLoading})`,
     borderConfig: '#EB5757',
     backgroundConfig: 'rgba(255, 255, 255, 0.7)',
     iconTheme: '#212121',
@@ -26,6 +27,7 @@ export let darkTheme = {
     borderConfig: 'transparent',
     backgroundConfig: '#006AE3',
     backgroundImage: `url(${backgroundImageDark})`,
+    backgroundImageLoading: `url(${backgroundImageDark})`,
     iconTheme: '#FAFAFA',
     barProgress: '#006AE3',
     body: '#363537',

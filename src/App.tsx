@@ -18,6 +18,7 @@ import { Risk } from './components/app/Risk';
 
 const App = () => {
     const [theme, themeToggler] = useDarkMode();
+
     const themeMode = useMemo(() => {
         return theme === 'light' ? lightTheme : darkTheme;
     }, [theme]);
@@ -29,7 +30,9 @@ const App = () => {
 
             <Switch>
                 <ThemeProvider theme={themeMode}>
-                    <GlobalStyles /> <Route exact path="/" component={Home} />
+                    <GlobalStyles />
+
+                    <Route exact path="/" component={Home} />
                     <Route exact path="/query" component={Query} />
                     <Route
                         exact

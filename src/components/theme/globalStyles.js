@@ -14,3 +14,18 @@ export const GlobalStyles = createGlobalStyle`
      
   }
   `;
+
+export const GlobalStylesLoading = createGlobalStyle`
+  body {
+       
+        background-image: ${({ theme }) => theme.backgroundImageLoading};
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+        background-size: cover;
+
+        color: ${({ theme }) => theme.text};
+        font-family: 'Roboto', sans-serif;
+     
+  }
+  `;

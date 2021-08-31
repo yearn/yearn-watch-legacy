@@ -23,6 +23,7 @@ import { getStrategies } from '../../../utils/strategies';
 import { getReportsForStrategy, StrategyReport } from '../../../utils/reports';
 
 import StrategyReports from './StrategyReports';
+import { GlobalStylesLoading } from '../../theme/globalStyles';
 
 const StyledCard = styled(Card)<{ emergencyExit: string }>`
     && {
@@ -105,6 +106,7 @@ export const SingleStrategy = () => {
                         }}
                     >
                         <ProgressSpinnerBar />
+                        <GlobalStylesLoading />
                     </div>
                 ) : (
                     !error && (

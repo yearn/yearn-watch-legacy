@@ -21,6 +21,7 @@ import EtherScanLink from '../../common/EtherScanLink';
 import { ErrorAlert } from '../../common/Alerts';
 import ReactHelmet from '../../common/ReactHelmet';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
+import { GlobalStylesLoading } from '../../theme/globalStyles';
 
 const StyledCard = styled(Card)<{ config: string }>`
     && {
@@ -132,7 +133,10 @@ export const SingleVault = () => {
                     />
                 )}
                 {isLoading ? (
-                    <ProgressSpinnerBar />
+                    <span>
+                        <ProgressSpinnerBar />
+                        <GlobalStylesLoading />
+                    </span>
                 ) : (
                     !error && (
                         <React.Fragment>
