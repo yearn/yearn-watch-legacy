@@ -203,7 +203,7 @@ const mapVaultData = (
             vaultChecks({
                 ...mappedVault,
                 ...mappedVaultContractCallsConverted,
-                strategies: mappedStrategies,
+                strategies: sortedStrategies,
             })
         );
     });
