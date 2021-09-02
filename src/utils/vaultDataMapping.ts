@@ -168,7 +168,23 @@ const mapVaultData = (
             strategyMap
         );
 
-        mappedVault.debtUsage = getTotalDebtUsage(mappedStrategies);
+        const sortedStrategies: Strategy[] = mappedStrategies.sort(function (
+            a: Strategy,
+            b: Strategy
+        ) {
+            if (a.withdrawalQueueIndex === -1) {
+                // put "a" last (out of queue)
+                return 1;
+            } else if (b.withdrawalQueueIndex === -1) {
+                // put "b" last (out of queue)
+                return -1;
+            } else {
+                // numerical sort order (0, 1, 2, etc.)
+                return a.withdrawalQueueIndex - b.withdrawalQueueIndex;
+            }
+        });
+
+        mappedVault.debtUsage = getTotalDebtUsage(sortedStrategies);
 
         const vaultData = contractCallsResults.results[address];
 
@@ -187,7 +203,7 @@ const mapVaultData = (
             vaultChecks({
                 ...mappedVault,
                 ...mappedVaultContractCallsConverted,
-                strategies: mappedStrategies,
+                strategies: sortedStrategies,
             })
         );
     });
