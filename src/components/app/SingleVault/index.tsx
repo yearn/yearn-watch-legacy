@@ -53,6 +53,7 @@ const StyledTitle = styled.span`
 `;
 interface TabPanelProps {
     children?: React.ReactNode;
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     index: any;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -90,7 +91,12 @@ function a11yProps(index: any) {
 interface ParamTypes {
     vaultId: string;
 }
-export const SingleVault = () => {
+type SingleVaultProps = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    theme?: any;
+};
+
+export const SingleVault = (props: SingleVaultProps) => {
     const { vaultId } = useParams<ParamTypes>();
 
     const [vault, setVault] = useState<Vault | undefined>();
@@ -211,7 +217,10 @@ export const SingleVault = () => {
                                 </TabPanel>
                                 <TabPanel value={value} index={1}>
                                     {vault && vault.strategies.length > 0 ? (
-                                        <Pie vault={vault} />
+                                        <Pie
+                                            vault={vault}
+                                            theme={props.theme}
+                                        />
                                     ) : (
                                         ''
                                     )}

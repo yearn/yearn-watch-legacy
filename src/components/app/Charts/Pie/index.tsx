@@ -1,4 +1,5 @@
 import Highcharts from 'highcharts';
+
 import HighchartsReact from 'highcharts-react-official';
 
 import { Vault } from '../../../../types';
@@ -6,6 +7,8 @@ import { getChartData } from '../../../../utils/strategyParams';
 
 interface PieProps {
     vault: Vault;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    theme?: any;
 }
 
 const Pie = (props: PieProps) => {
@@ -20,7 +23,10 @@ const Pie = (props: PieProps) => {
 
         title: {
             text: `${vault.name} Debt Allocation`,
-            style: { color: '#80699B', position: 'absolute' },
+            style: {
+                color: `${props.theme === 'light' ? 'black' : 'white'}`,
+                position: 'absolute',
+            },
         },
         colors: [
             '#4572A7',
@@ -46,11 +52,12 @@ const Pie = (props: PieProps) => {
             pie: {
                 allowPointSelect: true,
                 cursor: 'pointer',
+
                 dataLabels: {
                     enabled: true,
                     format: '<b>{point.name}</b>: {point.percentage:.2f} %',
                     style: {
-                        color: '#A47D7C',
+                        color: `${props.theme === 'light' ? 'black' : 'white'}`,
                     },
                 },
             },

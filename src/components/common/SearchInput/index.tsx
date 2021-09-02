@@ -12,7 +12,7 @@ import {
     TextField,
     Grid,
 } from '@material-ui/core';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 
 import { Delete, Search } from '@material-ui/icons';
 import ResultsLabel from '../ResultsLabel';
@@ -143,8 +143,7 @@ const SearchInput = (props: SearchInputProps) => {
         if (isSearching) {
             render = (
                 <div>
-                    {'...loading results'}
-                    <CircularProgress style={{ color: '#fff' }} />
+                    <ProgressSpinnerBar label="results" />
                 </div>
             );
         } else {
@@ -172,7 +171,7 @@ const SearchInput = (props: SearchInputProps) => {
     }, [isSearching, totalItems, foundItems, totalSubItems, foundSubItems]);
 
     return (
-        <Container maxWidth="lg">
+        <div>
             <StyledForm>
                 <Grid container direction="row" alignItems="center" spacing={3}>
                     <Grid item xs={12} sm={8}>
@@ -230,7 +229,7 @@ const SearchInput = (props: SearchInputProps) => {
             <StyledContainerResult maxWidth="lg">
                 {renderSearchingLabel()}
             </StyledContainerResult>
-        </Container>
+        </div>
     );
 };
 

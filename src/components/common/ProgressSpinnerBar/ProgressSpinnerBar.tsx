@@ -21,7 +21,10 @@ const StyledLinearProgress = styled(LinearProgress)`
         }
     }
 `;
-export default function LinearDeterminate() {
+interface LinearDeterminateProps {
+    label?: string;
+}
+export default function LinearDeterminate(props: LinearDeterminateProps) {
     const [completed, setCompleted] = React.useState(0);
 
     React.useEffect(() => {
@@ -44,7 +47,7 @@ export default function LinearDeterminate() {
     return (
         <Container>
             <StyledRootDiv>
-                <StyledTypography>Loading</StyledTypography>
+                <StyledTypography>Loading {props.label}</StyledTypography>
 
                 <StyledLinearProgress
                     variant="determinate"

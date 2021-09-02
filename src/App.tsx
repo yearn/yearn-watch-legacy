@@ -25,12 +25,10 @@ const App = () => {
 
     return (
         <Router>
-            <NavBar themeToggler={themeToggler} theme={theme} />
-
             <Switch>
                 <ThemeProvider theme={themeMode}>
                     <GlobalStyles />
-
+                    <NavBar themeToggler={themeToggler} theme={theme} />
                     <Route exact path="/" component={Home} />
                     <Route exact path="/query" component={Query} />
                     <Route
@@ -41,7 +39,9 @@ const App = () => {
                     <Route
                         exact
                         path="/vault/:vaultId"
-                        component={SingleVault}
+                        render={(props) => (
+                            <SingleVault {...props} theme={theme} />
+                        )}
                     />
                     <Route
                         exact

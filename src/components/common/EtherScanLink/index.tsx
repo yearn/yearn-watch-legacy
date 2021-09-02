@@ -85,11 +85,12 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
         : `https://etherscan.io/address/${value}`;
     return (
         <Grid container spacing={2} alignItems="center">
-            <Grid item xs={6} md={8}>
+            {console.log('intera', internalHref)}
+            <Grid item>
                 <StyledAddress>
                     {internalHref ? (
                         <Link color="inherit" href={internalHref}>
-                            <Hidden smUp>{`${maskedValue}`}</Hidden>
+                            <Hidden smUp>{maskedValue}</Hidden>
                             <Hidden xsDown>{value}</Hidden>
                         </Link>
                     ) : (
@@ -99,8 +100,7 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
                         </>
                     )}
                 </StyledAddress>
-            </Grid>
-            <Grid item xs={6} md={4}>
+
                 <Tooltip title="Copy to clipboard" aria-label="Clipboard">
                     <Button onClick={(e) => onCopyToClipboard(e)}>
                         <StyledFileCopy fontSize="inherit" />

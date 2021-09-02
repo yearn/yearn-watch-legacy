@@ -45,7 +45,6 @@ export type ChartSeriesData = {
 
 export const getChartData = (vault: Vault): ChartSeriesData[] => {
     const strategiesAllocations = vault.strategies.map(({ name, params }) => {
-        console.log('debtratio', params.debtRatio.toString());
         return {
             name,
             y: Number(

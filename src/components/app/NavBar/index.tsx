@@ -14,6 +14,7 @@ const StyledRoot = styled.div`
 const StyledMainImage = styled.div`
     flex-grow: 1;
     text-align: center;
+    margin-left: 50px;
 `;
 
 const StyledAppBar = styled(AppBar)`

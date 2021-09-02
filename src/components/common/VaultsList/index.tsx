@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import sum from 'lodash/sum';
-import { Container } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
+
+import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
+
 import { Vault } from '../../../types';
 import SearchInput, { Flags } from '../SearchInput';
 import { VaultItemList } from '../../app';
@@ -11,15 +11,6 @@ type VaultsListProps = {
     items: Vault[];
     totalItems: number;
 };
-
-const useStyles = makeStyles({
-    loadingText: {
-        width: '90%',
-        padding: '10px',
-        color: 'white',
-        textAlign: 'center',
-    },
-});
 
 const getTotalStrategies = (items: Vault[]): number =>
     sum(items.map((item) => item.strategies.length));
@@ -101,8 +92,6 @@ const _VaultsList = (props: VaultsListProps) => {
         setTotalStrategiesFound(totalStrategies);
     }, [items, totalStrategies]);
 
-    const classes = useStyles();
-
     const stillLoading = totalItems !== items.length;
 
     return (
@@ -115,15 +104,15 @@ const _VaultsList = (props: VaultsListProps) => {
                 totalSubItems={totalStrategies}
                 foundSubItems={totalStrategiesFound}
             />
-            <Container maxWidth="lg" className={classes.loadingText}>
-                {stillLoading ? `Loading total Vaults ${totalItems}...` : ''}
-                {stillLoading && <CircularProgress style={{ color: '#fff' }} />}
-            </Container>
+
+            {stillLoading && (
+                <ProgressSpinnerBar label={`total Vaults ${totalItems}...`} />
+            )}
 
             {filteredItems.map((vault: Vault, index: number) => (
-                <Container maxWidth="lg" key={index}>
+                <div key={index}>
                     <VaultItemList vault={vault} key={index} />
-                </Container>
+                </div>
             ))}
         </>
     );
