@@ -64,6 +64,11 @@ const StyledSubtitle = styled(Typography)`
         color: ${({ theme }) => theme.subtitle} !important;
     }
 `;
+const StyleDiv = styled.div`
+    && {
+        margin-bottom: 75px;
+    }
+`;
 const StyledTitle = styled(Typography)`
     && {
         font-family: Roboto;
@@ -142,8 +147,8 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                         direction="row"
                                         alignItems="center"
                                     >
-                                        <Grid item md={1} xs={3}></Grid>
-                                        <Grid item md={4} xs={9}>
+                                        <Grid item md={1}></Grid>
+                                        <Grid item md={4} xs={12}>
                                             <StyledTitle>
                                                 <StyledLink
                                                     href={`/vault/${strategy.vault}/strategy/${strategy.address}`}
@@ -178,10 +183,12 @@ const _StrategiesList = (props: StrategiesListProps) => {
                             </Grid>
                         </AccordionSummary>
                         <Hidden smUp>
-                            <Grid container spacing={2}>
-                                <Grid item md={1} xs={3}></Grid>
-                                <Grid item md={8} xs={8}>
-                                    {' '}
+                            <Grid
+                                container
+                                spacing={1}
+                                style={{ marginLeft: 10 }}
+                            >
+                                <Grid item md={8} xs={12}>
                                     <EtherScanLink
                                         address={strategy.address}
                                         dark={props.dark}
@@ -199,8 +206,8 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                         justify="flex-start"
                                         alignItems="center"
                                     >
-                                        <Grid item md={1} xs={3}></Grid>
-                                        <Grid item md={10} xs={9}>
+                                        <Grid item md={1}></Grid>
+                                        <Grid item md={10} xs={12}>
                                             <Grid container spacing={2}>
                                                 <Grid item md={12} xs={12}>
                                                     <Grid
@@ -228,7 +235,7 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                                 Report
                                                             </StyledSubtitle>
                                                         </Grid>
-
+                                                        <StyleDiv />
                                                         <Grid
                                                             item
                                                             xs={12}
@@ -256,6 +263,7 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                                 Total debt
                                                             </StyledSubtitle>
                                                         </Grid>
+                                                        <StyleDiv />
                                                         <Grid
                                                             item
                                                             xs={12}
@@ -274,6 +282,7 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                                 Debt ratio
                                                             </StyledSubtitle>
                                                         </Grid>
+                                                        <StyleDiv />
                                                         <Grid
                                                             item
                                                             xs={12}
@@ -299,6 +308,7 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                                 Credit available
                                                             </StyledSubtitle>
                                                         </Grid>
+                                                        <StyleDiv />
                                                         <Grid
                                                             item
                                                             xs={12}
@@ -327,6 +337,7 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                                 Assets
                                                             </StyledSubtitle>
                                                         </Grid>
+                                                        <StyleDiv />
                                                         <Grid
                                                             item
                                                             xs={12}
