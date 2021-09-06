@@ -24,7 +24,7 @@ import { getVault } from '../../../utils/vaults';
 import { getReportsForStrategy, StrategyReport } from '../../../utils/reports';
 
 import StrategyReports from './StrategyReports';
-import { GlobalStyles, GlobalStylesLoading } from '../../theme/globalStyles';
+import { GlobalStylesLoading } from '../../theme/globalStyles';
 
 const StyledCard = styled(Card)<{ emergencyExit: string }>`
     && {
@@ -130,7 +130,6 @@ export const SingleStrategy = () => {
                 ) : (
                     !error && (
                         <React.Fragment>
-                            <GlobalStyles />
                             <BreadCrumbs
                                 vaultId={vaultId}
                                 strategyId={strategyId}

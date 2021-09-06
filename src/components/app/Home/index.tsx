@@ -16,7 +16,7 @@ import {
     toQueryParam,
 } from '../../../utils/types/QueryParam';
 
-import { GlobalStylesLoading, GlobalStyles } from '../../theme/globalStyles';
+import { GlobalStylesLoading } from '../../theme/globalStyles';
 import { Container } from '@material-ui/core';
 
 const BATCH_NUMBER = 30;
@@ -94,7 +94,6 @@ export const Home = () => {
                 ) : (
                     !error && (
                         <span>
-                            <GlobalStyles />
                             <VaultsList items={vaults} totalItems={total} />
                         </span>
                     )
