@@ -86,17 +86,14 @@ export const Home = () => {
                     />
                 )}
 
-                {isLoading ? (
+                {isLoading && (
                     <span>
-                        <GlobalStylesLoading />
                         <ProgressSpinnerBar />
+                        <GlobalStylesLoading />
                     </span>
-                ) : (
-                    !error && (
-                        <span>
-                            <VaultsList items={vaults} totalItems={total} />
-                        </span>
-                    )
+                )}
+                {!isLoading && !error && (
+                    <VaultsList items={vaults} totalItems={total} />
                 )}
             </div>
         </Container>

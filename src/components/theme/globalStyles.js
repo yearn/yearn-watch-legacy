@@ -14,15 +14,8 @@ export const GlobalStyles = createGlobalStyle`
       width:100%; 
       color: ${({ theme }) => theme.text};
       font-family: 'Roboto', sans-serif;
-
-
      background-attachment: fixed; 
-      @media (max-width:640px) {
-     
-           
-      background-attachment:initial;
   
-}
      
   }
   `;

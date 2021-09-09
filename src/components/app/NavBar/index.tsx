@@ -7,7 +7,7 @@ import Brightness2Icon from '@material-ui/icons/Brightness2';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import logoYearnLight from '../../../images/logo_yearn_watch_light.svg';
 import logoYearnDark from '../../../images/logo_yearn_watch_dark.svg';
-
+import Link from '@material-ui/core/Link';
 const StyledRoot = styled.div`
     flex-grow: 1;
 `;
@@ -40,14 +40,16 @@ export const NavBar: React.FC<NavBarProps> = ({ themeToggler, theme }) => {
             <StyledAppBar position="static" elevation={0}>
                 <Toolbar>
                     <StyledMainImage>
-                        <StyledImg
-                            alt="yearn watch"
-                            src={
-                                theme === 'light'
-                                    ? logoYearnLight
-                                    : logoYearnDark
-                            }
-                        />
+                        <Link href="/">
+                            <StyledImg
+                                alt="yearn watch"
+                                src={
+                                    theme === 'light'
+                                        ? logoYearnLight
+                                        : logoYearnDark
+                                }
+                            />
+                        </Link>
                     </StyledMainImage>
 
                     <div>
