@@ -26,7 +26,7 @@ const useStyles = makeStyles({
 
 const StyledTableRow = styled(TableRow)`
     && {
-        background-color: ${({ theme }) => theme.container} !important;
+        background-color: ${({ theme }) => theme.body} !important;
     }
 `;
 const StyledTableCell = styled(TableCell)`

@@ -206,13 +206,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
             </Hidden>
 
             <AccordionDetails>
-                {expanded && (
-                    <StrategiesList
-                        vault={vault}
-                        dark={true}
-                        expand={expanded}
-                    />
-                )}
+                {expanded && <StrategiesList vault={vault} expand={expanded} />}
             </AccordionDetails>
         </StyledMuiAccordion>
     );
