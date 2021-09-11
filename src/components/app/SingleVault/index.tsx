@@ -49,6 +49,18 @@ const StyledSpan = styled.span`
         color: ${({ theme }) => theme.subtitle};
     }
 `;
+const MuiTabs = styled(Tabs)`
+    && {
+        color: ${({ theme }) => theme.subtitle}!important;
+        .MuiTabs-indicator {
+            background-color: ${({ theme }) => theme.bodyBlue}!important;
+        }
+        .Mui-selected {
+            color: ${({ theme }) => theme.bodyBlue}!important;
+        }
+    }
+`;
+
 const StyledPaper = styled(Paper)`
     && {
         background-color: ${({ theme }) => theme.body};
@@ -216,18 +228,18 @@ export const SingleVault = (props: SingleVaultProps) => {
                                         : config.toString()
                                 }
                             >
-                                <Tabs
+                                <MuiTabs
+                                    variant="fullWidth"
                                     value={value}
                                     onChange={handleChange}
-                                    indicatorColor="primary"
-                                    variant="scrollable"
                                     scrollButtons="auto"
+                                    indicatorColor="primary"
                                     aria-label="scrollable auto tabs example"
                                 >
                                     <Tab label="Details" {...a11yProps(0)} />
+
                                     <Tab label="Strategies" {...a11yProps(1)} />
-                                    {/* <Tab label="Strategies" {...a11yProps(2)} /> */}
-                                </Tabs>
+                                </MuiTabs>
 
                                 <TabPanel value={value} index={0}>
                                     <Grid container spacing={3}>
@@ -266,14 +278,6 @@ export const SingleVault = (props: SingleVaultProps) => {
                                     ) : (
                                         ''
                                     )}
-                                    {/* {vault && vault.strategies.length > 0 ? (
-                                        <Pie
-                                            vault={vault}
-                                            theme={props.theme}
-                                        />
-                                    ) : (
-                                        ''
-                                    )} */}
                                 </TabPanel>
                                 <TabPanel value={value} index={2}>
                                     {vault && vault.strategies.length > 0 ? (

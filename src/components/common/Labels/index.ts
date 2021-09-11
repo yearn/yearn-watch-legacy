@@ -14,8 +14,7 @@ export const Title = styled(Typography)`
 export const SubTitle = styled(Typography)`
     && {
         color: ${({ theme }) => theme.subtitle};
-        margin-bottom: 10px;
-        margin-top: 25px;
+
         font-family: Roboto;
         font-style: normal;
         font-weight: normal;
@@ -27,11 +26,23 @@ export const SubTitle = styled(Typography)`
         line-height: 24px;
     }
 `;
+
+export const LabelTypography = styled(Typography)`
+    && {
+        color: ${({ theme }) => theme.title};
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bolder;
+        font-size: 16px;
+        line-height: 24px;
+
+        line-height: 24px;
+    }
+`;
 export const ValuePercentage = styled(Typography)`
     && {
-        color: rgba(6, 87, 249, 1);
-        margin-bottom: 10px;
-        margin-top: 25px;
+        color: ${({ theme }) => theme.bodyBlue};
+
         float: right;
         font-family: Roboto;
         font-style: normal;

@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -11,6 +12,17 @@ import { Vault } from '../../../../types';
 import { getChartData } from '../../../../utils/strategyParams';
 import BarChart from './BarChart';
 
+const MuiTabs = styled(Tabs)`
+    && {
+        color: ${({ theme }) => theme.subtitle}!important;
+        .MuiTabs-indicator {
+            background-color: ${({ theme }) => theme.bodyBlue}!important;
+        }
+        .Mui-selected {
+            color: ${({ theme }) => theme.bodyBlue}!important;
+        }
+    }
+`;
 interface PieProps {
     vault: Vault;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -19,10 +31,9 @@ interface PieProps {
 interface TabPanelProps {
     children?: React.ReactNode;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    index: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    value: any;
+    index: number;
+
+    value: number;
 }
 function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
@@ -103,28 +114,30 @@ const Pie = (props: PieProps) => {
             },
         ],
     };
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleChange = (event: any, newValue: number) => {
+        event.preventDefault();
+        console.log('event', event);
         setValue(newValue);
     };
     return (
         <div>
-            <Tabs
+            <MuiTabs
+                variant="fullWidth"
                 value={value}
-                indicatorColor="primary"
-                textColor="primary"
                 onChange={handleChange}
-                aria-label="disabled tabs example"
+                scrollButtons="auto"
+                indicatorColor="primary"
+                aria-label="scrollable auto tabs example"
             >
                 <Tab label="Pie chart" />
                 <Tab label="Bar chart" />
-            </Tabs>
+            </MuiTabs>
             <TabPanel value={value} index={0}>
                 <HighchartsReact highcharts={Highcharts} options={options} />
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <BarChart data={DATA_CHART} />
-                {console.log('getChartData(vault)', getChartData(vault))}
             </TabPanel>
         </div>
     );

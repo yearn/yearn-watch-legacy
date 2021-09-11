@@ -17,6 +17,7 @@ import {
     USDC_DECIMALS,
 } from '../../../utils/commonUtils';
 import { Typography, CircularProgress } from '@material-ui/core';
+import { LabelTypography, SubTitle } from '../Labels';
 
 const useStyles = makeStyles({
     helpIcon: {
@@ -107,21 +108,26 @@ const TokenPrice = (props: TokenPriceProps) => {
     return (
         <StyledTableRow>
             <StyledTableCell>
-                {label}
+                <SubTitle> {label}</SubTitle>
                 <MediaQuery query="(max-device-width: 1224px)">
                     {' '}
                     <br />
-                    {tokenPrice
-                        ? displayAmount(tokenPrice?.toFixed(2), 2)
-                        : '-'}{' '}
-                    USD
+                    <LabelTypography>
+                        {tokenPrice
+                            ? displayAmount(tokenPrice?.toFixed(2), 2)
+                            : '-'}{' '}
+                        USD
+                    </LabelTypography>
                 </MediaQuery>{' '}
             </StyledTableCell>
             <MediaQuery query="(min-device-width: 1224px)">
                 <StyledTableCell>
-                    {tokenPrice
-                        ? `${displayAmount(tokenPrice?.toFixed(2), 0)} USD`
-                        : '-'}{' '}
+                    <LabelTypography>
+                        {' '}
+                        {tokenPrice
+                            ? `${displayAmount(tokenPrice?.toFixed(2), 0)} USD`
+                            : '-'}{' '}
+                    </LabelTypography>
                     {tooltip}
                 </StyledTableCell>
             </MediaQuery>

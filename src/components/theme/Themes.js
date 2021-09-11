@@ -21,6 +21,7 @@ export let lightTheme = {
     containerConfig: 'rgba(255, 255, 255, 0.7)',
     subContainer: 'rgba(255, 255, 255, 0.7)',
     border: '#e0e0e0',
+    bodyBlue: '#0657F9',
 };
 export let darkTheme = {
     error: '#EB5757',
@@ -40,4 +41,5 @@ export let darkTheme = {
     containerConfig: '#0552aa',
     subContainer: '#040e20',
     border: '#040e20',
+    bodyBlue: '#006AE3',
 };

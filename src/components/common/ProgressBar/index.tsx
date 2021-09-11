@@ -1,30 +1,20 @@
-import {
-    makeStyles,
-    createStyles,
-    withStyles,
-    Theme,
-} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-const BorderLinearProgress = withStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            height: 10,
-            borderRadius: 5,
-        },
-        colorPrimary: {
-            backgroundColor:
-                theme.palette.grey[theme.palette.type === 'light' ? 200 : 700],
-        },
-        bar: {
-            borderRadius: 5,
-            backgroundColor: '#1a90ff',
-        },
-    })
-)(LinearProgress);
+const BorderLinearProgress = styled(LinearProgress)`
+    && {
+        height: 12px !important;
+        border-radius: 5px !important;
+        background-color: #f2f2f2 !important;
 
+        .MuiLinearProgress-bar {
+            background-color: ${({ theme }) => theme.bodyBlue} !important;
+        }
+    }
+`;
 const useStyles = makeStyles({
     root: {
         flexGrow: 1,
