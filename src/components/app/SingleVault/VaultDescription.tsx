@@ -234,6 +234,7 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                     </StyledTableRow>
                     {vault ? (
                         <TokenPrice
+                            bckDark="true"
                             label="Total Assets (USD):"
                             token={vault.token}
                             amount={vault.totalAssets}

@@ -25,9 +25,10 @@ const useStyles = makeStyles({
     },
 });
 
-const StyledTableRow = styled(TableRow)`
+const StyledTableRow = styled(TableRow)<{ bckDark?: string }>`
     && {
-        background-color: ${({ theme }) => theme.body} !important;
+        background-color: ${({ theme, bckDark }) =>
+            bckDark == 'true' ? theme.body : theme.container} !important;
     }
 `;
 const StyledTableCell = styled(TableCell)`
@@ -41,6 +42,7 @@ type TokenPriceProps = {
     label?: string;
     loadingLabel?: string;
     amount: BigNumberish;
+    bckDark?: string | undefined;
 };
 
 const TokenPrice = (props: TokenPriceProps) => {
@@ -106,7 +108,7 @@ const TokenPrice = (props: TokenPriceProps) => {
     );
 
     return (
-        <StyledTableRow>
+        <StyledTableRow bckDark={props.bckDark === 'true' ? 'true' : 'false'}>
             <StyledTableCell>
                 <SubTitle> {label}</SubTitle>
                 <MediaQuery query="(max-device-width: 1224px)">

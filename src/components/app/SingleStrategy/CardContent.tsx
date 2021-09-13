@@ -5,6 +5,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import MediaQuery from 'react-responsive';
+import { LabelTypography, SubTitle } from '../../common/Labels';
 
 type KeyValue = {
     key: string;
@@ -22,7 +23,6 @@ const StyledTableRow = styled(TableRow)`
 `;
 const StyledTableCell = styled(TableCell)`
     && {
-        color: ${({ theme }) => theme.title} !important;
         border-bottom: 1px solid ${({ theme }) => theme.border} !important;
     }
 `;
@@ -41,16 +41,23 @@ const CardContent = (props: CardContentProps) => {
                         return (
                             <StyledTableRow key={index}>
                                 <StyledTableCell>
-                                    {res.key}
-                                    <MediaQuery query="(max-device-width: 1224px)">
-                                        <br />
-                                        {res.value}
-                                    </MediaQuery>{' '}
+                                    <SubTitle>
+                                        {' '}
+                                        {res.key}
+                                        <MediaQuery query="(max-device-width: 1224px)">
+                                            <br />
+                                            {res.value}
+                                        </MediaQuery>{' '}
+                                    </SubTitle>
                                 </StyledTableCell>
+
                                 <MediaQuery query="(min-device-width: 1224px)">
                                     {' '}
                                     <StyledTableCell>
-                                        {res.value}
+                                        <LabelTypography>
+                                            {' '}
+                                            {res.value}
+                                        </LabelTypography>
                                     </StyledTableCell>
                                 </MediaQuery>
                             </StyledTableRow>
