@@ -16,7 +16,7 @@ import {
     toQueryParam,
 } from '../../../utils/types/QueryParam';
 
-import { GlobalStylesLoading, GlobalStyles } from '../../theme/globalStyles';
+import { GlobalStylesLoading } from '../../theme/globalStyles';
 import { Container } from '@material-ui/core';
 
 const BATCH_NUMBER = 30;
@@ -86,18 +86,14 @@ export const Home = () => {
                     />
                 )}
 
-                {isLoading ? (
+                {isLoading && (
                     <span>
-                        <GlobalStylesLoading />
                         <ProgressSpinnerBar />
+                        <GlobalStylesLoading />
                     </span>
-                ) : (
-                    !error && (
-                        <span>
-                            <GlobalStyles />
-                            <VaultsList items={vaults} totalItems={total} />
-                        </span>
-                    )
+                )}
+                {!isLoading && !error && (
+                    <VaultsList items={vaults} totalItems={total} />
                 )}
             </div>
         </Container>

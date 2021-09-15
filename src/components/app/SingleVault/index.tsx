@@ -23,9 +23,14 @@ import ReactHelmet from '../../common/ReactHelmet';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 import { GlobalStylesLoading } from '../../theme/globalStyles';
 
-const StyledCard = styled(Card)<{ config: string }>`
+const StyledCard = styled(Card)<{
+    config?: string | undefined;
+    bck?: string | undefined;
+}>`
     && {
-        background-color: ${({ theme }) => theme.container};
+        background-color: ${({ theme, bck }) =>
+            bck === 'true' ? 'transparent' : theme.container};
+        box-shadow: none;
         color: ${({ theme }) => theme.title};
         margin-left: auto;
         margin-right: auto;
@@ -146,7 +151,10 @@ export const SingleVault = (props: SingleVaultProps) => {
                 ) : (
                     !error && (
                         <React.Fragment>
-                            <BreadCrumbs vaultId={vaultId} />
+                            <StyledCard bck="true">
+                                {' '}
+                                <BreadCrumbs vaultId={vaultId} />
+                            </StyledCard>
                             <StyledCard
                                 config={
                                     config === undefined
