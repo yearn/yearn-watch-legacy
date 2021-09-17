@@ -117,7 +117,7 @@ const Pie = (props: PieProps) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleChange = (event: any, newValue: number) => {
         event.preventDefault();
-        console.log('event', event);
+
         setValue(newValue);
     };
     return (
