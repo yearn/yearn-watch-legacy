@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container } from '@material-ui/core';
+import { Container, Grid, Paper } from '@material-ui/core';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
@@ -47,6 +47,30 @@ const StyledCard = styled(Card)<{
 const StyledSpan = styled.span`
     && {
         color: ${({ theme }) => theme.subtitle};
+    }
+`;
+const MuiTabs = styled(Tabs)`
+    && {
+        color: ${({ theme }) => theme.subtitle}!important;
+        .MuiTabs-indicator {
+            background-color: ${({ theme }) => theme.bodyBlue}!important;
+        }
+        .Mui-selected {
+            color: ${({ theme }) => theme.bodyBlue}!important;
+        }
+    }
+`;
+
+const StyledPaper = styled(Paper)`
+    && {
+        background-color: ${({ theme }) => theme.body};
+    }
+`;
+const TitleDetails = styled.span`
+    && {
+        color: ${({ theme }) => theme.title};
+        font-weight: bolder;
+        font-size: 20px;
     }
 `;
 const StyledTitle = styled.span`
@@ -204,31 +228,53 @@ export const SingleVault = (props: SingleVaultProps) => {
                                         : config.toString()
                                 }
                             >
-                                <Tabs
+                                <MuiTabs
+                                    variant="fullWidth"
                                     value={value}
                                     onChange={handleChange}
-                                    indicatorColor="primary"
-                                    variant="scrollable"
                                     scrollButtons="auto"
+                                    indicatorColor="primary"
                                     aria-label="scrollable auto tabs example"
                                 >
                                     <Tab label="Details" {...a11yProps(0)} />
-                                    <Tab label="Allocation" {...a11yProps(1)} />
-                                    <Tab label="Strategies" {...a11yProps(2)} />
-                                </Tabs>
+
+                                    <Tab label="Strategies" {...a11yProps(1)} />
+                                </MuiTabs>
 
                                 <TabPanel value={value} index={0}>
-                                    <VaultDescription
-                                        vault={vault}
-                                        isLoading={isLoading}
-                                    />
+                                    <Grid container spacing={3}>
+                                        <Grid item xs={12} md={6}>
+                                            <TitleDetails> About</TitleDetails>
+
+                                            <VaultDescription
+                                                vault={vault}
+                                                isLoading={isLoading}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} md={6}>
+                                            <TitleDetails>
+                                                {' '}
+                                                Strategy Allocation
+                                            </TitleDetails>
+                                            <StyledPaper>
+                                                {vault &&
+                                                vault.strategies.length > 0 ? (
+                                                    <Pie
+                                                        vault={vault}
+                                                        theme={props.theme}
+                                                    />
+                                                ) : (
+                                                    ''
+                                                )}
+                                            </StyledPaper>
+                                        </Grid>
+                                    </Grid>
                                 </TabPanel>
                                 <TabPanel value={value} index={1}>
                                     {vault && vault.strategies.length > 0 ? (
-                                        <Pie
-                                            vault={vault}
-                                            theme={props.theme}
-                                        />
+                                        <div>
+                                            <StrategiesList vault={vault} />
+                                        </div>
                                     ) : (
                                         ''
                                     )}
@@ -236,10 +282,7 @@ export const SingleVault = (props: SingleVaultProps) => {
                                 <TabPanel value={value} index={2}>
                                     {vault && vault.strategies.length > 0 ? (
                                         <div>
-                                            <StrategiesList
-                                                vault={vault}
-                                                dark={false}
-                                            />
+                                            <StrategiesList vault={vault} />
                                         </div>
                                     ) : (
                                         ''

@@ -13,6 +13,7 @@ import { formatBPS, displayAmount, sub } from '../../../utils/commonUtils';
 import Table from '../../common/Table';
 import ProgressBars from '../../common/ProgressBar';
 import { Vault } from '../../../types';
+import { LabelTypography, SubTitle } from '../../common/Labels';
 
 interface VaultDescriptionProps {
     vault: Vault | undefined;
@@ -20,12 +21,12 @@ interface VaultDescriptionProps {
 }
 const StyledTableRow = styled(TableRow)`
     && {
-        background-color: ${({ theme }) => theme.container} !important;
+        background-color: ${({ theme }) => theme.body} !important;
     }
 `;
 const StyledTableCell = styled(TableCell)`
     && {
-        color: ${({ theme }) => theme.title} !important;
+        /* color: ${({ theme }) => theme.title} !important; */
         border-bottom: 1px solid ${({ theme }) => theme.border} !important;
     }
 `;
@@ -105,107 +106,135 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                 <TableHead>
                     <StyledTableRow>
                         <StyledTableCell>
-                            API Version:
+                            <SubTitle> API Version:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
                                 <br />
-                                {api_version}
+                                <LabelTypography>{api_version}</LabelTypography>
                             </MediaQuery>{' '}
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
-                            <StyledTableCell>{api_version}</StyledTableCell>
-                        </MediaQuery>
-                    </StyledTableRow>
-                    <StyledTableRow>
-                        <StyledTableCell>
-                            Emergency shut down:
-                            <MediaQuery query="(max-device-width: 1224px)">
-                                <br /> {emergency_shut_down}
-                            </MediaQuery>{' '}
-                        </StyledTableCell>
-                        <MediaQuery query="(min-device-width: 1224px)">
-                            {' '}
                             <StyledTableCell>
-                                {emergency_shut_down}
+                                <LabelTypography>{api_version}</LabelTypography>
                             </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
                     <StyledTableRow>
                         <StyledTableCell>
-                            Governance:
+                            <SubTitle> Emergency shut down:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                {' '}
-                                <br />
-                                {governance}
+                                <br />{' '}
+                                <LabelTypography>
+                                    {emergency_shut_down}
+                                </LabelTypography>
                             </MediaQuery>{' '}
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
                             {' '}
-                            <StyledTableCell>{governance}</StyledTableCell>
+                            <StyledTableCell>
+                                <LabelTypography>
+                                    {emergency_shut_down}
+                                </LabelTypography>
+                            </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
                     <StyledTableRow>
                         <StyledTableCell>
-                            Management:
+                            <SubTitle>Governance:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
                                 {' '}
                                 <br />
-                                {management}
+                                <LabelTypography>{governance}</LabelTypography>
                             </MediaQuery>{' '}
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
-                            <StyledTableCell>{management}</StyledTableCell>
+                            {' '}
+                            <StyledTableCell>
+                                <LabelTypography>{governance}</LabelTypography>
+                            </StyledTableCell>
+                        </MediaQuery>
+                    </StyledTableRow>
+                    <StyledTableRow>
+                        <StyledTableCell>
+                            <SubTitle>Management:</SubTitle>
+                            <MediaQuery query="(max-device-width: 1224px)">
+                                {' '}
+                                <br />
+                                <LabelTypography>{management}</LabelTypography>
+                            </MediaQuery>{' '}
+                        </StyledTableCell>
+                        <MediaQuery query="(min-device-width: 1224px)">
+                            <StyledTableCell>
+                                {' '}
+                                <LabelTypography>{management}</LabelTypography>
+                            </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
 
                     <StyledTableRow>
                         <StyledTableCell>
-                            Guardian:
+                            <SubTitle>Guardian:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
                                 <br />
-                                {guardian}
+                                <LabelTypography>{guardian}</LabelTypography>
                             </MediaQuery>{' '}
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
                             {' '}
-                            <StyledTableCell>{guardian}</StyledTableCell>
+                            <StyledTableCell>
+                                {' '}
+                                <LabelTypography>
+                                    {guardian}
+                                </LabelTypography>{' '}
+                            </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
                     <StyledTableRow>
                         <StyledTableCell>
-                            Rewards:
+                            <SubTitle>Rewards:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
                                 <br />
-                                {rewards}
+                                <LabelTypography>{rewards}</LabelTypography>
                             </MediaQuery>{' '}
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
                             {' '}
-                            <StyledTableCell>{rewards}</StyledTableCell>
+                            <StyledTableCell>
+                                {' '}
+                                <LabelTypography>
+                                    {rewards}
+                                </LabelTypography>{' '}
+                            </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
                     <StyledTableRow>
                         <StyledTableCell>
-                            Assets:
+                            <SubTitle>Assets:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
                                 {' '}
                                 <br />
-                                Total asset:
-                                {total_asset}
+                                <LabelTypography>
+                                    Total asset:
+                                    {total_asset}
+                                </LabelTypography>
                                 <ProgressBars vault={vault} />
-                                {vault_list}
+                                <LabelTypography>{vault_list}</LabelTypography>
                             </MediaQuery>
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
                             <StyledTableCell>
-                                Total asset:
-                                {total_asset}
+                                <LabelTypography>
+                                    {' '}
+                                    Total asset:
+                                    {total_asset}
+                                </LabelTypography>
                                 <ProgressBars vault={vault} />
-                                {vault_list}
+                                <LabelTypography>{vault_list}</LabelTypography>
                             </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
                     {vault ? (
                         <TokenPrice
+                            bckDark="true"
                             label="Total Assets (USD):"
                             token={vault.token}
                             amount={vault.totalAssets}
@@ -215,97 +244,138 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                     )}
                     <StyledTableRow>
                         <StyledTableCell>
-                            Management fee:
+                            <SubTitle>Management fee:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
                                 <br />
-                                {management_fee} %
-                            </MediaQuery>{' '}
-                        </StyledTableCell>
-                        <MediaQuery query="(min-device-width: 1224px)">
-                            {' '}
-                            <StyledTableCell>{management_fee}%</StyledTableCell>
-                        </MediaQuery>
-                    </StyledTableRow>
-                    <StyledTableRow>
-                        <StyledTableCell>
-                            Performance fee:
-                            <MediaQuery query="(max-device-width: 1224px)">
-                                <br />
-                                {performance_fee}%
+                                <LabelTypography>
+                                    {' '}
+                                    {management_fee} %
+                                </LabelTypography>
                             </MediaQuery>{' '}
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
                             {' '}
                             <StyledTableCell>
-                                {performance_fee}%
+                                {' '}
+                                <LabelTypography>
+                                    {management_fee}%
+                                </LabelTypography>{' '}
                             </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
                     <StyledTableRow>
                         <StyledTableCell>
-                            Time Since Last Report:
+                            <SubTitle>Performance fee:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
                                 <br />
-                                {last_report_text}
+                                <LabelTypography>
+                                    {performance_fee}%
+                                </LabelTypography>
                             </MediaQuery>{' '}
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
                             {' '}
                             <StyledTableCell>
-                                {last_report_text}
+                                <LabelTypography>
+                                    {performance_fee}%
+                                </LabelTypography>
+                            </StyledTableCell>
+                        </MediaQuery>
+                    </StyledTableRow>
+                    <StyledTableRow>
+                        <StyledTableCell>
+                            <SubTitle> Time Since Last Report:</SubTitle>
+                            <MediaQuery query="(max-device-width: 1224px)">
+                                <br />
+                                <LabelTypography>
+                                    {last_report_text}
+                                </LabelTypography>
+                            </MediaQuery>{' '}
+                        </StyledTableCell>
+                        <MediaQuery query="(min-device-width: 1224px)">
+                            {' '}
+                            <StyledTableCell>
+                                <LabelTypography>
+                                    {last_report_text}
+                                </LabelTypography>
                             </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
 
                     <StyledTableRow>
                         <StyledTableCell>
-                            Total Debt:
+                            <SubTitle>Total Debt:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                <br /> {total_debt}
+                                <br />{' '}
+                                <LabelTypography>{total_debt}</LabelTypography>
                             </MediaQuery>{' '}
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
                             {' '}
-                            <StyledTableCell>{total_debt}</StyledTableCell>
+                            <StyledTableCell>
+                                <LabelTypography>{total_debt}</LabelTypography>
+                            </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
 
                     <StyledTableRow>
                         <StyledTableCell>
-                            {`(Total Asset - Total Debt):`}
+                            <SubTitle>{`(Total Asset - Total Debt):`}</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                <br /> {unallocated}
+                                <br />{' '}
+                                <LabelTypography>
+                                    {' '}
+                                    {unallocated}
+                                </LabelTypography>
                             </MediaQuery>{' '}
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
                             {' '}
-                            <StyledTableCell>{unallocated}</StyledTableCell>
+                            <StyledTableCell>
+                                <LabelTypography>
+                                    {' '}
+                                    {unallocated}
+                                </LabelTypography>
+                            </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
 
                     <StyledTableRow>
                         <StyledTableCell>
-                            Total Debt Ratio:
+                            <SubTitle>Total Debt Ratio:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                <br /> {debt_ratio}%
+                                <br />{' '}
+                                <LabelTypography>{debt_ratio}%</LabelTypography>
                             </MediaQuery>{' '}
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
                             {' '}
-                            <StyledTableCell>{debt_ratio}%</StyledTableCell>
+                            <StyledTableCell>
+                                {' '}
+                                <LabelTypography>
+                                    {debt_ratio}%
+                                </LabelTypography>{' '}
+                            </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
 
                     <StyledTableRow>
                         <StyledTableCell>
-                            Debt Usage:
+                            <SubTitle>Debt Usage:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                <br /> {debt_usage}%
+                                <br />{' '}
+                                <LabelTypography>{debt_usage}%</LabelTypography>
                             </MediaQuery>{' '}
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
                             {' '}
-                            <StyledTableCell>{debt_usage}%</StyledTableCell>
+                            <StyledTableCell>
+                                {' '}
+                                <LabelTypography>
+                                    {' '}
+                                    {debt_usage}%{' '}
+                                </LabelTypography>
+                            </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
 
@@ -316,15 +386,21 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                             }}
                         >
                             <StyledTableCell>
-                                Config Warnings:
+                                <SubTitle>Config Warnings:</SubTitle>
                                 <MediaQuery query="(max-device-width: 1224px)">
                                     {' '}
-                                    <br /> {render_error}
+                                    <br />{' '}
+                                    <LabelTypography>
+                                        {render_error}
+                                    </LabelTypography>
                                 </MediaQuery>{' '}
                             </StyledTableCell>
                             <MediaQuery query="(min-device-width: 1224px)">
                                 {' '}
                                 <StyledTableCell>
+                                    <LabelTypography>
+                                        {render_error}
+                                    </LabelTypography>{' '}
                                     {render_error}
                                 </StyledTableCell>
                             </MediaQuery>

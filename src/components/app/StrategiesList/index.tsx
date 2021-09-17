@@ -20,7 +20,6 @@ import DebTooltip from '../../common/DebToolTip';
 
 type StrategiesListProps = {
     vault: Vault;
-    dark: boolean;
     expand?: boolean;
 };
 
@@ -174,7 +173,6 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                             <Grid item md={6} xs={9}>
                                                 <EtherScanLink
                                                     address={strategy.address}
-                                                    dark={props.dark}
                                                 />
                                             </Grid>
                                         </Hidden>
@@ -189,10 +187,7 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                 style={{ marginLeft: 10 }}
                             >
                                 <Grid item md={8} xs={12}>
-                                    <EtherScanLink
-                                        address={strategy.address}
-                                        dark={props.dark}
-                                    />
+                                    <EtherScanLink address={strategy.address} />
                                 </Grid>
                             </Grid>
                         </Hidden>

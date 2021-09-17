@@ -85,7 +85,6 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
         : `https://etherscan.io/address/${value}`;
     return (
         <Grid container spacing={2} alignItems="center">
-            {console.log('intera', internalHref)}
             <Grid item>
                 <StyledAddress>
                     {internalHref ? (

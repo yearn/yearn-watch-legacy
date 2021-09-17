@@ -17,6 +17,7 @@ import {
     USDC_DECIMALS,
 } from '../../../utils/commonUtils';
 import { Typography, CircularProgress } from '@material-ui/core';
+import { LabelTypography, SubTitle } from '../Labels';
 
 const useStyles = makeStyles({
     helpIcon: {
@@ -24,9 +25,10 @@ const useStyles = makeStyles({
     },
 });
 
-const StyledTableRow = styled(TableRow)`
+const StyledTableRow = styled(TableRow)<{ bckDark?: string }>`
     && {
-        background-color: ${({ theme }) => theme.container} !important;
+        background-color: ${({ theme, bckDark }) =>
+            bckDark == 'true' ? theme.body : theme.container} !important;
     }
 `;
 const StyledTableCell = styled(TableCell)`
@@ -40,6 +42,7 @@ type TokenPriceProps = {
     label?: string;
     loadingLabel?: string;
     amount: BigNumberish;
+    bckDark?: string | undefined;
 };
 
 const TokenPrice = (props: TokenPriceProps) => {
@@ -105,23 +108,28 @@ const TokenPrice = (props: TokenPriceProps) => {
     );
 
     return (
-        <StyledTableRow>
+        <StyledTableRow bckDark={props.bckDark === 'true' ? 'true' : 'false'}>
             <StyledTableCell>
-                {label}
+                <SubTitle> {label}</SubTitle>
                 <MediaQuery query="(max-device-width: 1224px)">
                     {' '}
                     <br />
-                    {tokenPrice
-                        ? displayAmount(tokenPrice?.toFixed(2), 2)
-                        : '-'}{' '}
-                    USD
+                    <LabelTypography>
+                        {tokenPrice
+                            ? displayAmount(tokenPrice?.toFixed(2), 2)
+                            : '-'}{' '}
+                        USD
+                    </LabelTypography>
                 </MediaQuery>{' '}
             </StyledTableCell>
             <MediaQuery query="(min-device-width: 1224px)">
                 <StyledTableCell>
-                    {tokenPrice
-                        ? `${displayAmount(tokenPrice?.toFixed(2), 0)} USD`
-                        : '-'}{' '}
+                    <LabelTypography>
+                        {' '}
+                        {tokenPrice
+                            ? `${displayAmount(tokenPrice?.toFixed(2), 0)} USD`
+                            : '-'}{' '}
+                    </LabelTypography>
                     {tooltip}
                 </StyledTableCell>
             </MediaQuery>
