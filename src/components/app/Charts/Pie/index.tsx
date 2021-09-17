@@ -130,14 +130,15 @@ const Pie = (props: PieProps) => {
                 indicatorColor="primary"
                 aria-label="scrollable auto tabs example"
             >
-                <Tab label="Pie chart" />
                 <Tab label="Bar chart" />
+                <Tab label="Pie chart" />
             </MuiTabs>
             <TabPanel value={value} index={0}>
-                <HighchartsReact highcharts={Highcharts} options={options} />
+                {' '}
+                <BarChart data={DATA_CHART} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <BarChart data={DATA_CHART} />
+                <HighchartsReact highcharts={Highcharts} options={options} />
             </TabPanel>
         </div>
     );
