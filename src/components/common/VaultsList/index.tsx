@@ -108,12 +108,13 @@ const _VaultsList = (props: VaultsListProps) => {
             {stillLoading && (
                 <ProgressSpinnerBar label={`total Vaults ${totalItems}...`} />
             )}
-
-            {filteredItems.map((vault: Vault, index: number) => (
-                <div key={index}>
-                    <VaultItemList vault={vault} key={index} />
-                </div>
-            ))}
+            <div style={{ height: '60vh', overflow: 'scroll' }}>
+                {filteredItems.map((vault: Vault, index: number) => (
+                    <div key={index}>
+                        <VaultItemList vault={vault} key={index} />
+                    </div>
+                ))}
+            </div>
         </>
     );
 };

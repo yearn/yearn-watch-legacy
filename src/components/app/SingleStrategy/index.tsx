@@ -26,7 +26,7 @@ import { getReportsForStrategy, StrategyReport } from '../../../utils/reports';
 import StrategyReports from './StrategyReports';
 import { GlobalStylesLoading } from '../../theme/globalStyles';
 
-const StyledCard = styled(Card)<{ emergencyExit: string }>`
+const StyledCard = styled(Card)<{ emergencyExit?: string }>`
     && {
         background-color: ${({ theme }) => theme.container};
         color: ${({ theme }) => theme.title};
@@ -34,6 +34,22 @@ const StyledCard = styled(Card)<{ emergencyExit: string }>`
         margin-right: auto;
         border: ${({ theme, emergencyExit }) =>
             emergencyExit === 'false' ? theme.error : ''} !important;
+        @media (max-width: 1400px) {
+            max-width: 85%;
+        }
+        @media (max-width: 700px) {
+            max-width: 100%;
+        }
+    }
+`;
+const StyledCardBreadCrumbs = styled(Card)`
+    && {
+        background-color: transparent;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        box-shadow: none !important;
         @media (max-width: 1400px) {
             max-width: 85%;
         }
@@ -130,17 +146,19 @@ export const SingleStrategy = () => {
                 ) : (
                     !error && (
                         <React.Fragment>
-                            <BreadCrumbs
-                                vaultId={vaultId}
-                                strategyId={strategyId}
-                            />
-
+                            <StyledCardBreadCrumbs>
+                                <BreadCrumbs
+                                    vaultId={vaultId}
+                                    strategyId={strategyId}
+                                />
+                            </StyledCardBreadCrumbs>
                             <StyledCard
                                 emergencyExit={
                                     strategy &&
                                     strategy.emergencyExit.toString()
                                 }
                             >
+                                {' '}
                                 <CardHeader
                                     title={strategy ? strategy.name : ''}
                                     subheader={
@@ -163,27 +181,42 @@ export const SingleStrategy = () => {
                                         </>
                                     }
                                 />
+                            </StyledCard>
+                            <br />
+                            <StyledCard
+                                emergencyExit={
+                                    strategy &&
+                                    strategy.emergencyExit.toString()
+                                }
+                            >
                                 <Tabs
                                     value={value}
+                                    variant="fullWidth"
                                     indicatorColor="primary"
                                     onChange={handleChange}
                                 >
                                     <Tab label="Detail" />
                                     <Tab label="Reports" />
                                 </Tabs>
-
-                                {value === 0 ? (
-                                    <StrategyDetail strategy={strategy} />
-                                ) : (
-                                    <StrategyReports
-                                        reports={strategyReports}
-                                        tokenDecimals={
-                                            strategy
-                                                ? strategy.token.decimals
-                                                : 18
-                                        }
-                                    />
-                                )}
+                                <div
+                                    style={{
+                                        height: '60vh',
+                                        overflow: 'scroll',
+                                    }}
+                                >
+                                    {value === 0 ? (
+                                        <StrategyDetail strategy={strategy} />
+                                    ) : (
+                                        <StrategyReports
+                                            reports={strategyReports}
+                                            tokenDecimals={
+                                                strategy
+                                                    ? strategy.token.decimals
+                                                    : 18
+                                            }
+                                        />
+                                    )}
+                                </div>
                             </StyledCard>
                         </React.Fragment>
                     )
