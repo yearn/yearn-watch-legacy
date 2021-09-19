@@ -3,7 +3,12 @@ import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
-
+const TitleDetails = styled(Typography)`
+    && {
+        color: ${({ theme }) => theme.title};
+        font-weight: bolder;
+    }
+`;
 const BorderLinearProgress = styled(LinearProgress)`
     && {
         height: 12px !important;
@@ -37,10 +42,7 @@ const ProgressBars = (props: any) => {
                 <Box width="100%" mr={1}>
                     <BorderLinearProgress variant="determinate" value={f} />
                 </Box>
-                <Typography
-                    variant="body2"
-                    color="textSecondary"
-                >{`${f}%`}</Typography>
+                <TitleDetails variant="body2">{`${f}%`}</TitleDetails>
             </Box>
         </div>
     );

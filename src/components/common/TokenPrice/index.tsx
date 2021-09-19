@@ -116,7 +116,7 @@ const TokenPrice = (props: TokenPriceProps) => {
                     <br />
                     <LabelTypography>
                         {tokenPrice
-                            ? displayAmount(tokenPrice?.toFixed(2), 2)
+                            ? displayAmount(tokenPrice?.toFixed(2), 0)
                             : '-'}{' '}
                         USD
                     </LabelTypography>

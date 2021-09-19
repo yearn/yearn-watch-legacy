@@ -89,6 +89,7 @@ export const Home = () => {
                 {isLoading && (
                     <span>
                         <ProgressSpinnerBar />
+
                         <GlobalStylesLoading />
                     </span>
                 )}
