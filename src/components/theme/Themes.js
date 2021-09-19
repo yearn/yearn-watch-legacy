@@ -1,6 +1,6 @@
 import backgroundImageDark from '../../images/background_image_yearn_watch_dark.jpeg';
-import backgroundImageLightNoMitch from '../../images/yearn_background_light_no_mitch.png';
-import backgroundLoading from '../../images/loadingBackground.png';
+import backgroundImageLightNoMitch from '../../images/yearn_background_light_no_mitch.svg';
+import backgroundLoading from '../../images/loadingBackground.svg';
 
 export let lightTheme = {
     error: '#EB5757',

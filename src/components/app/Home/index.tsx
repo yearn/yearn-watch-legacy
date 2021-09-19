@@ -18,7 +18,7 @@ import {
 
 import { GlobalStylesLoading } from '../../theme/globalStyles';
 import { Container } from '@material-ui/core';
-import backgroundLoading from '../../../images/mitch.svg';
+
 const BATCH_NUMBER = 30;
 
 export const Home = () => {
