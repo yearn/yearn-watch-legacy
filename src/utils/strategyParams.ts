@@ -99,23 +99,28 @@ export const mapStrategyParams = (
     apiVersion: string
 ): StrategyParams => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const params: any = {};
-    result.callsReturnContext.forEach(({ methodName, returnValues }) => {
-        if (
-            methodName === STRATEGIES_METHOD &&
-            returnValues &&
-            returnValues.length > 0
-        ) {
-            // TODO: resolve version ABI based on vault instead of strategy
-            const props = mapVersions.get(apiVersion) || STRAT_PARAMS_V032;
+    const params: any = { errors: [] };
+    result.callsReturnContext.forEach(
+        ({ methodName, returnValues, success }) => {
+            if (
+                success &&
+                methodName === STRATEGIES_METHOD &&
+                returnValues &&
+                returnValues.length > 0
+            ) {
+                // TODO: resolve version ABI based on vault instead of strategy
+                const props = mapVersions.get(apiVersion) || STRAT_PARAMS_V032;
 
-            returnValues.forEach((val, i) => {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                params[props[i]] = BigNumber.from(val).toString();
-            });
+                returnValues.forEach((val, i) => {
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    params[props[i]] = BigNumber.from(val).toString();
+                });
+            } else {
+                params.errors.push(methodName);
+            }
         }
-    });
+    );
 
     return mapParamDisplayValues(params);
 };

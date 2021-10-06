@@ -28,7 +28,7 @@ export const sortVaultsByVersion = (vaults: VaultData[]): any[] => {
 // this list is for testing or debugging an issue when loading vault data
 const FILTERED_VAULTS: Set<string> = new Set(
     [
-        '0xdA816459F1AB5631232FE5e97a05BBBb94970c95',
+        // '0xdA816459F1AB5631232FE5e97a05BBBb94970c95',
         // '0xe2F6b9773BF3A015E2aA70741Bde1498bdB9425b',
         // '0xBFa4D8AA6d8a379aBFe7793399D3DdaCC5bBECBB',
     ].map((addr: string) => addr.toLowerCase())

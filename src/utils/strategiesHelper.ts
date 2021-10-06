@@ -82,7 +82,8 @@ export const getStrategyTVLsPerProtocol = async (
                 ...strategy,
                 estimatedTotalAssetsUsdc: await getTokenPrice(
                     strategy.token,
-                    strategy.estimatedTotalAssets
+                    // TODO: fix this to not fetch token price if estimatedTotalAssets failed
+                    strategy.estimatedTotalAssets || '0'
                 ),
             };
         }

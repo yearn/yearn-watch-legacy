@@ -13,6 +13,7 @@ export type StrategyParams = {
     rateLimit?: BigNumber;
     minDebtPerHarvest?: BigNumber;
     maxDebtPerHarvest?: BigNumber;
+    errors: string[];
 };
 
 export type Strategy = {
@@ -23,7 +24,7 @@ export type Strategy = {
     token: Token;
 
     emergencyExit: boolean;
-    isActive: boolean;
+    isActive?: boolean;
 
     strategist: string;
     keeper: string;
@@ -31,11 +32,12 @@ export type Strategy = {
 
     withdrawalQueueIndex: number;
     // params
-    estimatedTotalAssets: BigNumber;
+    estimatedTotalAssets?: BigNumber;
     delgatedAssets: BigNumber;
     debtOutstanding: BigNumber;
     creditAvailable: BigNumber;
-    expectedReturn: BigNumber;
+    expectedReturn?: BigNumber;
 
     params: StrategyParams;
+    errors: string[];
 };

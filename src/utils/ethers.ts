@@ -1,9 +1,8 @@
-import { ethers, providers, BigNumber } from 'ethers';
+import { providers, BigNumber } from 'ethers';
+import { Provider } from '@ethersproject/providers';
 import { getEnv } from './env';
 
-export const getEthersDefaultProvider = (
-    network = 'homestead'
-): ethers.providers.BaseProvider => {
+export const getEthersDefaultProvider = (network = 'homestead'): Provider => {
     const { alchemyKey } = getEnv();
     // return new providers.InfuraProvider(network, infuraProjectId);
     return new providers.AlchemyProvider(network, alchemyKey);
