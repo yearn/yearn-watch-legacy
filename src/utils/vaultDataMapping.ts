@@ -51,7 +51,10 @@ export const fillVaultData = (vault: any): VaultApi => {
 export const mapVaultDataToVault = async (payload: any): Promise<Vault[]> => {
     const provider = getEthersDefaultProvider();
 
-    const multicall = new Multicall({ ethersProvider: provider });
+    const multicall = new Multicall({
+        ethersProvider: provider,
+        tryAggregate: true,
+    });
 
     const vaultMap = new Map<string, VaultApi>();
     const strategyMap = new Map<string, string>();

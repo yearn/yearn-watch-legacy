@@ -19,13 +19,13 @@ const StyledTooltip = styled(Tooltip)`
 `;
 
 interface DebTooltipProps {
-    label: string;
+    label?: string;
 }
 export default function DebTooltip(props: DebTooltipProps) {
     return (
         <div>
-            <StyledTooltip title={props.label} placement="top-start">
-                <span>{props.label.slice(0, 15)}</span>
+            <StyledTooltip title={props.label || ''} placement="top-start">
+                <span>{props.label && props.label.slice(0, 15)}</span>
             </StyledTooltip>
         </div>
     );

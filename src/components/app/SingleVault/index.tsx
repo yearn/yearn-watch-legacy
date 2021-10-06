@@ -3,6 +3,8 @@ import { Container, Grid, Paper } from '@material-ui/core';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
+import Snackbar from '@material-ui/core/Snackbar';
+import { Alert } from '@material-ui/lab';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
@@ -11,7 +13,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-import { Vault } from '../../../types';
+import { Vault, Strategy } from '../../../types';
 import { getVault } from '../../../utils/vaults';
 import BreadCrumbs from '../SingleStrategy/BreadCrumbs';
 import Pie from '../Charts/Pie';
@@ -125,18 +127,36 @@ type SingleVaultProps = {
     theme?: any;
 };
 
+// TODO: refactor this into util func
+const getWarnings = (strategies: Strategy[]): string[] => {
+    let warnings: string[] = [];
+    strategies.forEach((strat) => {
+        if (strat.errors.length > 0) {
+            warnings = warnings.concat(strat.errors);
+        }
+    });
+
+    return warnings;
+};
+
 export const SingleVault = (props: SingleVaultProps) => {
     const { vaultId } = useParams<ParamTypes>();
 
     const [vault, setVault] = useState<Vault | undefined>();
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [warningFields, setWarningFields] = useState<string[] | null>(null);
     const [value, setValue] = useState(0);
+    const [openSnackBar, setOpenSB] = React.useState(true);
     const config = vault?.configOK;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleChange = (event: any, newValue: number) => {
         setValue(newValue);
+    };
+
+    const handleCloseSnackBar = (event: any) => {
+        setOpenSB(false);
     };
 
     useEffect(() => {
@@ -145,6 +165,10 @@ export const SingleVault = (props: SingleVaultProps) => {
             setError(null);
             try {
                 const loadedVault = await getVault(vaultId);
+                const warnings = getWarnings(loadedVault.strategies);
+                if (warnings.length > 0) {
+                    setWarningFields(warnings);
+                }
                 setVault(loadedVault);
                 setIsLoading(false);
             } catch (error) {
@@ -166,6 +190,19 @@ export const SingleVault = (props: SingleVaultProps) => {
                         message={`Error while loading vault ${vaultId}:`}
                         details={error}
                     />
+                )}
+                {warningFields && warningFields.length !== 0 && (
+                    <Snackbar
+                        open={openSnackBar}
+                        onClose={handleCloseSnackBar}
+                        autoHideDuration={10000}
+                    >
+                        <Alert onClose={handleCloseSnackBar} severity="warning">
+                            {`Issue loading the following fields for some strategies: ${JSON.stringify(
+                                warningFields
+                            )}`}
+                        </Alert>
+                    </Snackbar>
                 )}
                 {isLoading ? (
                     <span>

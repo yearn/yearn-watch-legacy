@@ -1,15 +1,12 @@
 import {
     ContractCallContext,
     ContractCallReturnContext,
+    ContractCallResults,
 } from 'ethereum-multicall';
 import { get } from 'lodash';
 import { BigNumber, BigNumberish, constants } from 'ethers';
 import { BigNumber as BN } from 'bignumber.js';
-import { StrategyAddressQueueIndex, VaultApi } from '../types';
-import {
-    CallContext,
-    ContractCallResults,
-} from 'ethereum-multicall/dist/models';
+import { StrategyAddressQueueIndex, VaultApi, CallContext } from '../types';
 import { getABIStrategiesHelper } from './abi';
 import { values } from 'lodash';
 
@@ -73,22 +70,26 @@ export const formatBPS = (val: string): string => {
 
 export const mapContractCalls = (result: ContractCallReturnContext) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const mappedObj: any = {};
-    result.callsReturnContext.forEach(({ methodName, returnValues }) => {
-        if (returnValues && returnValues.length > 0) {
-            if (
-                typeof returnValues[0] === 'string' ||
-                typeof returnValues[0] === 'boolean' ||
-                typeof returnValues[0] === 'number'
-            ) {
-                mappedObj[methodName] = returnValues[0];
-            } else if (get(returnValues[0], 'type') === 'BigNumber') {
-                mappedObj[methodName] = BigNumber.from(
-                    returnValues[0]
-                ).toString();
+    const mappedObj: any = { errors: [] };
+    result.callsReturnContext.forEach(
+        ({ methodName, returnValues, success }) => {
+            if (success && returnValues && returnValues.length > 0) {
+                if (
+                    typeof returnValues[0] === 'string' ||
+                    typeof returnValues[0] === 'boolean' ||
+                    typeof returnValues[0] === 'number'
+                ) {
+                    mappedObj[methodName] = returnValues[0];
+                } else if (get(returnValues[0], 'type') === 'BigNumber') {
+                    mappedObj[methodName] = BigNumber.from(
+                        returnValues[0]
+                    ).toString();
+                }
+            } else {
+                mappedObj.errors.push(methodName);
             }
         }
-    });
+    );
     return mappedObj;
 };
 

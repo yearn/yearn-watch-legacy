@@ -200,7 +200,10 @@ const innerGetStrategies = async (addresses: string[]): Promise<Strategy[]> => {
 
     const provider = getEthersDefaultProvider();
 
-    const multicall = new Multicall({ ethersProvider: provider });
+    const multicall = new Multicall({
+        ethersProvider: provider,
+        tryAggregate: true,
+    });
 
     // do call to strategy apiVersion and vault
     const stratCalls: ContractCallContext[] = buildViewMethodsCall(addresses);

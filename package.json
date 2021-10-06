@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@ethersproject/providers": "^5.4.5",
         "@material-ui/core": "^4.11.3",
         "@material-ui/icons": "^4.11.2",
         "@material-ui/lab": "^4.0.0-alpha.57",
@@ -23,8 +24,8 @@
         "bignumber.js": "^9.0.1",
         "compare-versions": "^3.6.0",
         "dotenv": "^8.2.0",
-        "ethereum-multicall": "^2.0.2",
-        "ethers": "^5.0.32",
+        "ethereum-multicall": "^2.9.0",
+        "ethers": "^5.4.7",
         "firebase": "^8.7.1",
         "firestore-export-import": "^0.15.0",
         "global": "^4.4.0",

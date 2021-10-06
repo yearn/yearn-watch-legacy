@@ -2,7 +2,7 @@ import { Strategy } from '../types';
 
 // warning utils
 export const isStrategyActiveWithZeroDebt = (strat: Strategy): boolean => {
-    return strat.isActive && strat.params.debtRatio.toString() === '0';
+    return strat.isActive === true && strat.params.debtRatio.toString() === '0';
 };
 
 export const isDebtRatioTotalDebtMismatch = (strat: Strategy): boolean => {

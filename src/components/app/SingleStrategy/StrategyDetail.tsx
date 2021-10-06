@@ -96,12 +96,13 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
               strategy.token.decimals
           )
         : '';
-    const expectReturn = strategy
-        ? displayAmount(
-              strategy.expectedReturn.toString(),
-              strategy.token.decimals
-          )
-        : '';
+    const expectReturn =
+        strategy && strategy.expectedReturn
+            ? displayAmount(
+                  strategy.expectedReturn.toString(),
+                  strategy.token.decimals
+              )
+            : '';
     const performanceFee = strategy
         ? formatBPS(strategy.params.performanceFee.toString())
         : '';
@@ -145,7 +146,7 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
     ) : (
         ''
     );
-    const tokenPrice = (
+    const tokenPrice = strategy.estimatedTotalAssets ? (
         <>
             <TokenPrice
                 label="Total Estimated Assets (USD):"
@@ -153,7 +154,7 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
                 amount={strategy.estimatedTotalAssets}
             />
         </>
-    );
+    ) : undefined;
     const data = [
         { key: 'API Version:', value: apiVersion },
         { key: ' Activation Date', value: activationDate },
@@ -163,7 +164,10 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
         { key: ' Total Estimated Assets:', value: estimatedAsset },
         {
             key: ' Total Estimated Assets (USD):',
-            value: strategy.estimatedTotalAssets.toString(),
+            value:
+                (strategy.estimatedTotalAssets &&
+                    strategy.estimatedTotalAssets.toString()) ||
+                'error fetching this value',
             renderValue: tokenPrice,
         },
         { key: ' Credit Available:', value: creditAvailable },
