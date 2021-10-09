@@ -14,9 +14,8 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 import { Vault, Strategy, Network } from '../../../types';
-import { getVault } from '../../../utils/vaults';
+import { getService } from '../../../services/VaultService';
 import { getError } from '../../../utils/error';
-import { isNetworkSupported } from '../../../utils/network';
 import BreadCrumbs from '../SingleStrategy/BreadCrumbs';
 import Pie from '../Charts/Pie';
 import { StrategiesList } from '../StrategiesList';
@@ -167,10 +166,8 @@ export const SingleVault = (props: SingleVaultProps) => {
             setIsLoading(true);
             setError(null);
             try {
-                if (!isNetworkSupported(network)) {
-                    throw new Error(`Network ${network} not supported`);
-                }
-                const loadedVault = await getVault(vaultId);
+                const vaultService = getService(network);
+                const loadedVault = await vaultService.getVault(vaultId);
                 const warnings = getWarnings(loadedVault.strategies);
                 if (warnings.length > 0) {
                     setWarningFields(warnings);

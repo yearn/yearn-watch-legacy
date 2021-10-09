@@ -22,10 +22,9 @@ import EtherScanLink from '../../common/EtherScanLink';
 import ReactHelmet from '../../common/ReactHelmet';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 
+import { getService as getVaultService } from '../../../services/VaultService';
 import { getStrategies } from '../../../utils/strategies';
-import { getVault } from '../../../utils/vaults';
 import { getError } from '../../../utils/error';
-import { isNetworkSupported } from '../../../utils/network';
 import { getReportsForStrategy, StrategyReport } from '../../../utils/reports';
 
 import StrategyReports from './StrategyReports';
@@ -121,9 +120,6 @@ export const SingleStrategy = () => {
             setIsLoading(true);
             setError(null);
             try {
-                if (!isNetworkSupported(network)) {
-                    throw new Error(`Network ${network} not supported`);
-                }
                 setIsReportsLoading(true);
                 // we don't want to handle error here for now
                 getReportsForStrategy(strategyId).then((reports) => {
@@ -147,7 +143,8 @@ export const SingleStrategy = () => {
             // TODO: refactor this second try catch into above one
             try {
                 setIsVaultLoading(true);
-                const loadedVault = await getVault(vaultId);
+                const vaultService = getVaultService(network);
+                const loadedVault = await vaultService.getVault(vaultId);
                 setVault(loadedVault);
                 setIsVaultLoading(false);
             } catch (e: unknown) {

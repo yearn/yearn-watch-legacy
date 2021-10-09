@@ -7,3 +7,9 @@ export const isNetworkSupported = (network: string | Network): boolean => {
 
     return true;
 };
+
+export const checkNetworkSupported = (network: string | Network): void => {
+    if (!isNetworkSupported(network)) {
+        throw new Error(`Network ${network} not supported`);
+    }
+};

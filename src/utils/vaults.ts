@@ -3,7 +3,7 @@ import { uniqBy, memoize } from 'lodash';
 import compareVersions from 'compare-versions';
 import { Vault, VaultApi, VaultVersion } from '../types';
 import { BuildGet, VAULTS_ALL, VAULTS_ALL_EXPERIMENTAL } from './apisRequest';
-import { DEFAULT_QUERY_PARAM, QueryParam } from './types/QueryParam';
+import { DEFAULT_QUERY_PARAM, QueryParam } from '../types';
 import { fillVaultData, mapVaultDataToVault } from './vaultDataMapping';
 
 interface VaultData {

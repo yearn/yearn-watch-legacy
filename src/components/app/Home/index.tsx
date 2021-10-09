@@ -1,22 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Container } from '@material-ui/core';
-import {
-    getVaultsWithPagination,
-    getTotalVaults,
-    sortVaultsByVersion,
-} from '../../../utils/vaults';
+
+import { getService } from '../../../services/VaultService';
+import { sortVaultsByVersion } from '../../../utils/vaults';
 
 import { ErrorAlert } from '../../common/Alerts';
 
 import { VaultsList } from '../../common/VaultsList';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
-import { Vault, Network } from '../../../types';
 import {
+    Vault,
+    Network,
     DEFAULT_QUERY_PARAM,
     toQueryParam,
-} from '../../../utils/types/QueryParam';
-import { isNetworkSupported } from '../../../utils/network';
+} from '../../../types';
 import { getError } from '../../../utils/error';
 import { GlobalStylesLoading } from '../../theme/globalStyles';
 
@@ -39,12 +37,10 @@ export const Home = () => {
 
             setError(null);
             try {
-                if (!isNetworkSupported(network)) {
-                    throw new Error(`Network ${network} not supported`);
-                }
-                const numVaults = await getTotalVaults();
+                const vaultService = getService(network);
+                const numVaults = await vaultService.getTotalVaults();
                 setTotal(numVaults);
-                const loadedVaults = await getVaultsWithPagination(
+                const loadedVaults = await vaultService.getVaultsWithPagination(
                     DEFAULT_QUERY_PARAM
                 );
                 if (loadedVaults.length > 0) {
@@ -60,7 +56,7 @@ export const Home = () => {
                     const batchResultsPromises: Promise<Vault[]>[] = [];
                     for (let i = 0; i <= iterations; i++) {
                         ((innerOffset: number) => {
-                            const batchedVaultsPromise = getVaultsWithPagination(
+                            const batchedVaultsPromise = vaultService.getVaultsWithPagination(
                                 toQueryParam(innerOffset, BATCH_NUMBER)
                             );
                             batchResultsPromises.push(batchedVaultsPromise);
