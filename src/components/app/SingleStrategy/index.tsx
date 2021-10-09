@@ -15,7 +15,7 @@ import Tab from '@material-ui/core/Tab';
 import StrategyDetail from './StrategyDetail';
 
 import { ErrorAlert } from '../../common/Alerts';
-import { Strategy, Vault } from '../../../types';
+import { Strategy, Vault, Network } from '../../../types';
 
 import BreadCrumbs from './BreadCrumbs';
 import EtherScanLink from '../../common/EtherScanLink';
@@ -24,6 +24,8 @@ import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerB
 
 import { getStrategies } from '../../../utils/strategies';
 import { getVault } from '../../../utils/vaults';
+import { getError } from '../../../utils/error';
+import { isNetworkSupported } from '../../../utils/network';
 import { getReportsForStrategy, StrategyReport } from '../../../utils/reports';
 
 import StrategyReports from './StrategyReports';
@@ -70,6 +72,7 @@ const StyledSpan = styled.span`
 interface ParamTypes {
     strategyId: string;
     vaultId: string;
+    network?: string;
 }
 
 // TODO: refactor this into util func
@@ -85,7 +88,11 @@ const getWarnings = (strategies: Strategy[]): string[] => {
 };
 
 export const SingleStrategy = () => {
-    const { strategyId, vaultId } = useParams<ParamTypes>();
+    const {
+        strategyId,
+        vaultId,
+        network = Network.mainnet,
+    } = useParams<ParamTypes>();
 
     const [strategyData, setStrategyData] = useState<Strategy[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -112,15 +119,17 @@ export const SingleStrategy = () => {
     useEffect(() => {
         const loadStrategyData = async () => {
             setIsLoading(true);
-            setIsVaultLoading(true);
-            setIsReportsLoading(true);
             setError(null);
-            // we don't want to handle error here for now
-            getReportsForStrategy(strategyId).then((reports) => {
-                setStrategyReports(reports);
-                setIsReportsLoading(false);
-            });
             try {
+                if (!isNetworkSupported(network)) {
+                    throw new Error(`Network ${network} not supported`);
+                }
+                setIsReportsLoading(true);
+                // we don't want to handle error here for now
+                getReportsForStrategy(strategyId).then((reports) => {
+                    setStrategyReports(reports);
+                    setIsReportsLoading(false);
+                });
                 const loadedStrategy = await getStrategies([strategyId]);
                 setStrategyData(loadedStrategy);
                 const warnings = getWarnings(loadedStrategy);
@@ -128,19 +137,25 @@ export const SingleStrategy = () => {
                     setWarningFields(warnings);
                 }
                 setIsLoading(false);
-            } catch (error) {
-                console.log('Error:', error);
+            } catch (e: unknown) {
+                console.log('Error:', e);
                 setIsLoading(false);
-                setError(error);
+                setIsVaultLoading(false);
+                setIsReportsLoading(false);
+                setError(getError(e));
             }
+            // TODO: refactor this second try catch into above one
             try {
+                setIsVaultLoading(true);
                 const loadedVault = await getVault(vaultId);
                 setVault(loadedVault);
                 setIsVaultLoading(false);
-            } catch (error) {
-                console.log('Error:', error);
+            } catch (e: unknown) {
+                console.log('Error:', e);
+                setIsLoading(false);
                 setIsVaultLoading(false);
-                setError(error);
+                setIsReportsLoading(false);
+                setError(getError(e));
             }
         };
         loadStrategyData();

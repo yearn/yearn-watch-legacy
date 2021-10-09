@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-
+import { useParams } from 'react-router';
+import { Container } from '@material-ui/core';
 import {
     getVaultsWithPagination,
     getTotalVaults,
@@ -10,18 +11,23 @@ import { ErrorAlert } from '../../common/Alerts';
 
 import { VaultsList } from '../../common/VaultsList';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
-import { Vault } from '../../../types';
+import { Vault, Network } from '../../../types';
 import {
     DEFAULT_QUERY_PARAM,
     toQueryParam,
 } from '../../../utils/types/QueryParam';
-
+import { isNetworkSupported } from '../../../utils/network';
+import { getError } from '../../../utils/error';
 import { GlobalStylesLoading } from '../../theme/globalStyles';
-import { Container } from '@material-ui/core';
 
 const BATCH_NUMBER = 30;
 
+interface ParamTypes {
+    network?: string;
+}
+
 export const Home = () => {
+    const { network = Network.mainnet } = useParams<ParamTypes>();
     const [total, setTotal] = useState<number>(0);
     const [vaults, setVaults] = useState<Vault[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +39,9 @@ export const Home = () => {
 
             setError(null);
             try {
+                if (!isNetworkSupported(network)) {
+                    throw new Error(`Network ${network} not supported`);
+                }
                 const numVaults = await getTotalVaults();
                 setTotal(numVaults);
                 const loadedVaults = await getVaultsWithPagination(
@@ -67,10 +76,10 @@ export const Home = () => {
                     const sortedResults = sortVaultsByVersion(results);
                     setVaults((vaults) => [...vaults, ...sortedResults]);
                 }
-            } catch (error) {
-                console.log('Error:', error);
+            } catch (e: unknown) {
+                console.log('Error:', e);
                 setIsLoading(false);
-                setError(error);
+                setError(getError(e));
             }
         };
         loadVaultData();

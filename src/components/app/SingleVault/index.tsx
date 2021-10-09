@@ -13,8 +13,10 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-import { Vault, Strategy } from '../../../types';
+import { Vault, Strategy, Network } from '../../../types';
 import { getVault } from '../../../utils/vaults';
+import { getError } from '../../../utils/error';
+import { isNetworkSupported } from '../../../utils/network';
 import BreadCrumbs from '../SingleStrategy/BreadCrumbs';
 import Pie from '../Charts/Pie';
 import { StrategiesList } from '../StrategiesList';
@@ -121,6 +123,7 @@ function a11yProps(index: any) {
 
 interface ParamTypes {
     vaultId: string;
+    network?: string;
 }
 type SingleVaultProps = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -140,7 +143,7 @@ const getWarnings = (strategies: Strategy[]): string[] => {
 };
 
 export const SingleVault = (props: SingleVaultProps) => {
-    const { vaultId } = useParams<ParamTypes>();
+    const { vaultId, network = Network.mainnet } = useParams<ParamTypes>();
 
     const [vault, setVault] = useState<Vault | undefined>();
     const [isLoading, setIsLoading] = useState(true);
@@ -164,6 +167,9 @@ export const SingleVault = (props: SingleVaultProps) => {
             setIsLoading(true);
             setError(null);
             try {
+                if (!isNetworkSupported(network)) {
+                    throw new Error(`Network ${network} not supported`);
+                }
                 const loadedVault = await getVault(vaultId);
                 const warnings = getWarnings(loadedVault.strategies);
                 if (warnings.length > 0) {
@@ -171,10 +177,10 @@ export const SingleVault = (props: SingleVaultProps) => {
                 }
                 setVault(loadedVault);
                 setIsLoading(false);
-            } catch (error) {
-                console.log('Error:', error);
+            } catch (e: unknown) {
+                console.log('Error:', e);
                 setIsLoading(false);
-                setError(error);
+                setError(getError(e));
             }
         };
         loadVaultData();
