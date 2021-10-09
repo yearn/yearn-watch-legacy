@@ -18,6 +18,7 @@ import {
 
 import { GlobalStylesLoading } from '../../theme/globalStyles';
 import { Container } from '@material-ui/core';
+import { ExperimentalVault } from '../../common/SearchInput/ExperimentalVault';
 
 const BATCH_NUMBER = 30;
 
@@ -97,6 +98,7 @@ export const Home = () => {
                     <VaultsList items={vaults} totalItems={total} />
                 )}
             </div>
+            <ExperimentalVault></ExperimentalVault>
         </Container>
     );
 };
