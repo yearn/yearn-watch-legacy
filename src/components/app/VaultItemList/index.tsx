@@ -22,6 +22,7 @@ import { HtmlTooltip } from '../../common/HtmlTooltip';
 type VaultItemListProps = {
     vault: Vault;
     key: number;
+    network: string;
 };
 
 const StyledExpandMoreIcon = styled(ExpandMoreIcon)`
@@ -83,7 +84,7 @@ const StyledMuiAccordion = styled(MuiAccordion)<{ config: string }>`
     }
 `;
 const _VaultItemList = (props: VaultItemListProps) => {
-    const { vault } = props;
+    const { vault, network } = props;
     const config = vault.configOK;
     //hook to render list only when panel actually expanded
     const [expanded, setExpanded] = useState(false);
@@ -168,7 +169,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
                                         ''
                                     )}
                                     <a
-                                        href={`/vault/${vault.address}`}
+                                        href={`/network/${network}/vault/${vault.address}`}
                                         rel="noreferrer"
                                     >
                                         <StyledTextValue>

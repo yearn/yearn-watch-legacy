@@ -10,13 +10,14 @@ import { VaultItemList } from '../../app';
 type VaultsListProps = {
     items: Vault[];
     totalItems: number;
+    network: string;
 };
 
 const getTotalStrategies = (items: Vault[]): number =>
     sum(items.map((item) => item.strategies.length));
 
 const _VaultsList = (props: VaultsListProps) => {
-    const { totalItems, items } = props;
+    const { totalItems, items, network } = props;
     const [filteredItems, setFilteredItems] = useState(items);
     const totalStrategies = useMemo(() => getTotalStrategies(items), [items]);
     const [totalStrategiesFound, setTotalStrategiesFound] = useState(
@@ -111,7 +112,11 @@ const _VaultsList = (props: VaultsListProps) => {
             <div style={{ height: '60vh', overflow: 'scroll' }}>
                 {filteredItems.map((vault: Vault, index: number) => (
                     <div key={index}>
-                        <VaultItemList vault={vault} key={index} />
+                        <VaultItemList
+                            vault={vault}
+                            key={index}
+                            network={network}
+                        />
                     </div>
                 ))}
             </div>

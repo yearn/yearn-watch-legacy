@@ -1,17 +1,14 @@
-import {
-    Multicall,
-    ContractCallResults,
-    ContractCallContext,
-} from 'ethereum-multicall';
+import { ContractCallResults, ContractCallContext } from 'ethereum-multicall';
 import { utils } from 'ethers';
 import { omit, memoize } from 'lodash';
 
-import { getEthersDefaultProvider } from './ethers';
+import { getMulticallContract } from './multicall';
 import {
     Strategy,
     StrategyAddressQueueIndex,
     VaultApi,
     StrategyParams,
+    Network,
 } from '../types';
 import { getABI } from './abi';
 import { mapStrategyParams } from './strategyParams';
@@ -187,7 +184,10 @@ export const mapStrategiesCalls = (
     });
 };
 
-const innerGetStrategies = async (addresses: string[]): Promise<Strategy[]> => {
+const innerGetStrategies = async (
+    addresses: string[],
+    network: Network | string = Network.mainnet
+): Promise<Strategy[]> => {
     if (addresses.length === 0) {
         throw new Error('Expected a valid strategy address');
     }
@@ -198,12 +198,7 @@ const innerGetStrategies = async (addresses: string[]): Promise<Strategy[]> => {
         }
     });
 
-    const provider = getEthersDefaultProvider();
-
-    const multicall = new Multicall({
-        ethersProvider: provider,
-        tryAggregate: true,
-    });
+    const multicall = getMulticallContract(network);
 
     // do call to strategy apiVersion and vault
     const stratCalls: ContractCallContext[] = buildViewMethodsCall(addresses);

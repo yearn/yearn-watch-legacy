@@ -15,7 +15,6 @@ import SignIn from './components/common/SignIn';
 import PrivateRoute from './components/common/PrivateRoute';
 import { AuthProvider } from './contexts/AuthContext';
 import { Risk } from './components/app/Risk';
-import { Network } from './types';
 
 const App = () => {
     const [theme, themeToggler] = useDarkMode();

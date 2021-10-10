@@ -3,6 +3,7 @@ import Hidden from '@material-ui/core/Hidden';
 import MuiBreadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import { Typography } from '@material-ui/core';
+import { Network } from '../../../types';
 import { extractAddress } from '../../../utils/commonUtils';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -22,9 +23,10 @@ const useStyles = makeStyles((theme: Theme) =>
 type BreadCrumbsProps = {
     vaultId: string;
     strategyId?: string;
+    network?: string;
 };
 const BreadCrumbs = (props: BreadCrumbsProps) => {
-    const { vaultId, strategyId } = props;
+    const { vaultId, strategyId, network = 'ethereum' } = props;
     const classes = useStyles();
 
     let strategyLevel;
@@ -32,7 +34,7 @@ const BreadCrumbs = (props: BreadCrumbsProps) => {
         strategyLevel = (
             <Link
                 color="inherit"
-                href={`/vault/${vaultId.toLowerCase()}/strategy/${strategyId.toLowerCase()}`}
+                href={`/network/${network}/vault/${vaultId.toLowerCase()}/strategy/${strategyId.toLowerCase()}`}
             >
                 <Typography className={classes.text}>
                     <Hidden smUp>{`${extractAddress(
@@ -46,10 +48,13 @@ const BreadCrumbs = (props: BreadCrumbsProps) => {
 
     return (
         <MuiBreadcrumbs className={classes.crumbs}>
-            <Link color="inherit" href="/">
+            <Link color="inherit" href={`/network/${network}`}>
                 vaults
             </Link>
-            <Link color="inherit" href={`/vault/${vaultId.toLowerCase()}`}>
+            <Link
+                color="inherit"
+                href={`/network/${network}/vault/${vaultId.toLowerCase()}`}
+            >
                 <Hidden smUp>{`${extractAddress(
                     vaultId.toLowerCase()
                 )}`}</Hidden>

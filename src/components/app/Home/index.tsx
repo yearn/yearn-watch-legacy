@@ -99,7 +99,11 @@ export const Home = () => {
                     </span>
                 )}
                 {!isLoading && !error && (
-                    <VaultsList items={vaults} totalItems={total} />
+                    <VaultsList
+                        items={vaults}
+                        totalItems={total}
+                        network={network}
+                    />
                 )}
             </div>
         </Container>

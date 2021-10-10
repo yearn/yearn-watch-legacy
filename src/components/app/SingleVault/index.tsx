@@ -217,7 +217,10 @@ export const SingleVault = (props: SingleVaultProps) => {
                         <React.Fragment>
                             <StyledCard bck="true">
                                 {' '}
-                                <BreadCrumbs vaultId={vaultId} />
+                                <BreadCrumbs
+                                    vaultId={vaultId}
+                                    network={network}
+                                />
                             </StyledCard>
                             <StyledCard
                                 config={

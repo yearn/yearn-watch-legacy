@@ -119,8 +119,11 @@ export const createStrategiesHelperCallAssetStrategiesAddresses = (
 
 export const mapToStrategyAddressQueueIndex = (
     vaultAddress: string,
-    strategiesHelperCallsResults: ContractCallResults
+    strategiesHelperCallsResults?: ContractCallResults
 ): StrategyAddressQueueIndex[] => {
+    if (!strategiesHelperCallsResults) {
+        return [];
+    }
     const strategiesHelperCallsReturnContext =
         strategiesHelperCallsResults.results[STRATEGIES_HELPER_CONTRACT_ADDRESS]
             .callsReturnContext;

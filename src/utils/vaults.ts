@@ -1,16 +1,10 @@
 import { utils } from 'ethers';
 import { uniqBy, memoize } from 'lodash';
 import compareVersions from 'compare-versions';
-import { Vault, VaultApi, VaultVersion } from '../types';
+import { Vault, VaultApi, VaultVersion, VaultData } from '../types';
 import { BuildGet, VAULTS_ALL, VAULTS_ALL_EXPERIMENTAL } from './apisRequest';
 import { DEFAULT_QUERY_PARAM, QueryParam } from '../types';
 import { fillVaultData, mapVaultDataToVault } from './vaultDataMapping';
-
-interface VaultData {
-    apiVersion: string;
-    version?: string;
-    address: string;
-}
 
 // sort in desc by version
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -46,7 +40,7 @@ const hasValidVersion = (vault: VaultData): boolean => {
     return true;
 };
 
-const filterAndMapVaultsData = (
+export const filterAndMapVaultsData = (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any,
     filterList: Set<string> = new Set<string>()

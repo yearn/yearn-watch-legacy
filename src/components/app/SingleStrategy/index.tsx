@@ -111,6 +111,7 @@ export const SingleStrategy = () => {
         setValue(newValue);
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleCloseSnackBar = (event: any) => {
         setOpenSB(false);
     };
@@ -200,6 +201,7 @@ export const SingleStrategy = () => {
                                 <BreadCrumbs
                                     vaultId={vaultId}
                                     strategyId={strategyId}
+                                    network={network}
                                 />
                             </StyledCardBreadCrumbs>
                             <StyledCard
