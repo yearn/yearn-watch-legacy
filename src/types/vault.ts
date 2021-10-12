@@ -7,6 +7,12 @@ export enum VaultVersion {
     V1 = 'v1',
 }
 
+export interface VaultData {
+    apiVersion: string;
+    version?: string;
+    address: string;
+}
+
 export type Vault = {
     address: string;
     apiVersion: string;
@@ -37,6 +43,11 @@ export type Vault = {
     configErrors?: string[];
 };
 
+export interface StrategyApi {
+    name: string;
+    address: string;
+}
+
 export type VaultApi = {
     address: string;
     apiVersion: string;
@@ -49,7 +60,7 @@ export type VaultApi = {
     token: Token;
     type: VaultVersion;
     emergencyShutdown: boolean;
-    fees: {
+    fees?: {
         general: {
             managementFee: number;
             performanceFee: number;
@@ -58,10 +69,5 @@ export type VaultApi = {
     tvl: {
         totalAssets: BigNumber | number;
     };
-    strategies: [
-        {
-            name: string;
-            address: string;
-        }
-    ];
+    strategies: StrategyApi[];
 };

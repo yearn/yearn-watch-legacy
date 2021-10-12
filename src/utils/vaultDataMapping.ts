@@ -1,22 +1,19 @@
 import { BigNumber } from 'ethers';
 import { BigNumber as BigNumberJS } from 'bignumber.js';
-import { Strategy, Vault, VaultApi } from '../types';
-import {
-    ContractCallContext,
-    ContractCallResults,
-    Multicall,
-} from 'ethereum-multicall';
-import { getABI_032 } from './abi';
+import { Strategy, Vault, VaultApi, Network } from '../types';
+import { ContractCallContext, ContractCallResults } from 'ethereum-multicall';
 import { buildStrategyCalls, mapStrategiesCalls } from './strategies';
 import {
     createStrategiesHelperCallAssetStrategiesAddresses,
     mapContractCalls,
     mapToStrategyAddressQueueIndex,
 } from './commonUtils';
-import { getEthersDefaultProvider } from './ethers';
+import { getMulticallContract } from './multicall';
 import { getTotalDebtUsage } from './strategyParams';
 import { toHumanDateText } from './dateUtils';
 import { vaultChecks } from './checks';
+import { getABI_032 } from './contracts/ABI';
+import getNetworkConfig from './config';
 
 const VAULT_VIEW_METHODS = [
     'management',
@@ -48,13 +45,11 @@ export const fillVaultData = (vault: any): VaultApi => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const mapVaultDataToVault = async (payload: any): Promise<Vault[]> => {
-    const provider = getEthersDefaultProvider();
-
-    const multicall = new Multicall({
-        ethersProvider: provider,
-        tryAggregate: true,
-    });
+export const mapVaultDataToVault = async (
+    payload: VaultApi[],
+    network: Network
+): Promise<Vault[]> => {
+    const multicall = getMulticallContract(network);
 
     const vaultMap = new Map<string, VaultApi>();
     const strategyMap = new Map<string, string>();
@@ -112,29 +107,32 @@ export const mapVaultDataToVault = async (payload: any): Promise<Vault[]> => {
             return buildStrategyCalls(stratAddresses, vaultMap, strategyMap);
         }
     );
+
     const strategiesHelperCallResults: ContractCallResults = await multicall.call(
-        createStrategiesHelperCallAssetStrategiesAddresses(payload)
+        createStrategiesHelperCallAssetStrategiesAddresses(payload, network)
     );
+
     const results: ContractCallResults = await multicall.call(
         vaultCalls.concat(stratCalls)
     );
 
     return mapVaultData(
         results,
-        strategiesHelperCallResults,
         vaultMap,
-        strategyMap
+        strategyMap,
+        network,
+        strategiesHelperCallResults
     );
 };
 
 const mapVaultData = (
     contractCallsResults: ContractCallResults,
-    strategiesHelperCallsResults: ContractCallResults,
     vaultMap: Map<string, VaultApi>,
-    strategyMap: Map<string, string>
+    strategyMap: Map<string, string>,
+    network: Network,
+    strategiesHelperCallsResults?: ContractCallResults
 ): Vault[] => {
     const vaults: Vault[] = [];
-
     vaultMap.forEach((vault) => {
         const {
             address,
@@ -149,6 +147,7 @@ const mapVaultData = (
 
         const strategiesQueueIndexes = mapToStrategyAddressQueueIndex(
             address,
+            network,
             strategiesHelperCallsResults
         );
 
@@ -201,13 +200,16 @@ const mapVaultData = (
         mappedVault.lastReportText = toHumanDateText(
             mappedVaultContractCalls.lastReport
         );
-
+        const networkConfig = getNetworkConfig(network);
         vaults.push(
-            vaultChecks({
-                ...mappedVault,
-                ...mappedVaultContractCallsConverted,
-                strategies: sortedStrategies,
-            })
+            vaultChecks(
+                {
+                    ...mappedVault,
+                    ...mappedVaultContractCallsConverted,
+                    strategies: sortedStrategies,
+                },
+                networkConfig
+            )
         );
     });
 

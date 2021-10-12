@@ -1,16 +1,10 @@
 import { utils } from 'ethers';
 import { uniqBy, memoize } from 'lodash';
 import compareVersions from 'compare-versions';
-import { Vault, VaultApi, VaultVersion } from '../types';
+import { Vault, VaultApi, VaultVersion, VaultData, Network } from '../types';
 import { BuildGet, VAULTS_ALL, VAULTS_ALL_EXPERIMENTAL } from './apisRequest';
-import { DEFAULT_QUERY_PARAM, QueryParam } from './types/QueryParam';
+import { DEFAULT_QUERY_PARAM, QueryParam } from '../types';
 import { fillVaultData, mapVaultDataToVault } from './vaultDataMapping';
-
-interface VaultData {
-    apiVersion: string;
-    version?: string;
-    address: string;
-}
 
 // sort in desc by version
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -46,7 +40,7 @@ const hasValidVersion = (vault: VaultData): boolean => {
     return true;
 };
 
-const filterAndMapVaultsData = (
+export const filterAndMapVaultsData = (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any,
     filterList: Set<string> = new Set<string>()
@@ -77,13 +71,15 @@ export const getTotalVaults = async (): Promise<number> => {
     return payload.length;
 };
 
+// TODO Refactor this function. Use it in the (network) services.
 const _getEndorsedVaults = async (
     allowList: string[] = [],
     queryParams: QueryParam = DEFAULT_QUERY_PARAM
 ): Promise<Vault[]> => {
+    const network = Network.mainnet;
     // accepts non endorsed experimental vaults to access
     const filterList = new Set(allowList.map((addr) => addr.toLowerCase()));
-
+    // TODO Move to a service
     const response = await BuildGet(VAULTS_ALL);
     // DEV NOTE: we need to copy the response.data array since its memoized and we don't want to mutate the original
     const sortedVaultList = sortVaultsByVersion([...response.data]);
@@ -102,15 +98,17 @@ const _getEndorsedVaults = async (
             queryParams.pagination.offset + queryParams.pagination.limit
         )
     );
-    const vaults: Vault[] = await mapVaultDataToVault(payload);
+    const vaults: Vault[] = await mapVaultDataToVault(payload, network);
 
     return vaults;
 };
 
+// TODO Refactor this function. Use it in the (network) services.
 const _getExperimentalVaults = async (
     allowList: string[] = [],
     queryParams: QueryParam = DEFAULT_QUERY_PARAM
 ): Promise<Vault[]> => {
+    const network = Network.mainnet;
     const {
         pagination: { offset, limit },
     } = queryParams;
@@ -131,7 +129,7 @@ const _getExperimentalVaults = async (
         Math.max(0, offset),
         Math.min(payload.length, offset + limit)
     );
-    const vaults: Vault[] = await mapVaultDataToVault(payload);
+    const vaults: Vault[] = await mapVaultDataToVault(payload, network);
 
     return vaults;
 };

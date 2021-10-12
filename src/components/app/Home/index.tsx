@@ -1,27 +1,28 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+import { Container } from '@material-ui/core';
 
-import {
-    getVaultsWithPagination,
-    getTotalVaults,
-    sortVaultsByVersion,
-} from '../../../utils/vaults';
+import { getService } from '../../../services/VaultService';
+import { sortVaultsByVersion } from '../../../utils/vaults';
 
 import { ErrorAlert } from '../../common/Alerts';
 
 import { VaultsList } from '../../common/VaultsList';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
-import { Vault } from '../../../types';
 import {
+    Vault,
     DEFAULT_QUERY_PARAM,
     toQueryParam,
-} from '../../../utils/types/QueryParam';
-
+    DEFAULT_NETWORK,
+} from '../../../types';
+import { getError } from '../../../utils/error';
 import { GlobalStylesLoading } from '../../theme/globalStyles';
-import { Container } from '@material-ui/core';
+import { ParamTypes } from '../../../types/DefaultParamTypes';
 
 const BATCH_NUMBER = 30;
 
 export const Home = () => {
+    const { network = DEFAULT_NETWORK } = useParams<ParamTypes>();
     const [total, setTotal] = useState<number>(0);
     const [vaults, setVaults] = useState<Vault[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -33,9 +34,10 @@ export const Home = () => {
 
             setError(null);
             try {
-                const numVaults = await getTotalVaults();
+                const vaultService = getService(network);
+                const numVaults = await vaultService.getTotalVaults();
                 setTotal(numVaults);
-                const loadedVaults = await getVaultsWithPagination(
+                const loadedVaults = await vaultService.getVaultsWithPagination(
                     DEFAULT_QUERY_PARAM
                 );
                 if (loadedVaults.length > 0) {
@@ -51,7 +53,7 @@ export const Home = () => {
                     const batchResultsPromises: Promise<Vault[]>[] = [];
                     for (let i = 0; i <= iterations; i++) {
                         ((innerOffset: number) => {
-                            const batchedVaultsPromise = getVaultsWithPagination(
+                            const batchedVaultsPromise = vaultService.getVaultsWithPagination(
                                 toQueryParam(innerOffset, BATCH_NUMBER)
                             );
                             batchResultsPromises.push(batchedVaultsPromise);
@@ -67,10 +69,10 @@ export const Home = () => {
                     const sortedResults = sortVaultsByVersion(results);
                     setVaults((vaults) => [...vaults, ...sortedResults]);
                 }
-            } catch (error) {
-                console.log('Error:', error);
+            } catch (e: unknown) {
+                console.log('Error:', e);
                 setIsLoading(false);
-                setError(error);
+                setError(getError(e));
             }
         };
         loadVaultData();
@@ -94,7 +96,11 @@ export const Home = () => {
                     </span>
                 )}
                 {!isLoading && !error && (
-                    <VaultsList items={vaults} totalItems={total} />
+                    <VaultsList
+                        items={vaults}
+                        totalItems={total}
+                        network={network}
+                    />
                 )}
             </div>
         </Container>

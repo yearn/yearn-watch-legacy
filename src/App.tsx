@@ -30,6 +30,7 @@ const App = () => {
                     <GlobalStyles />
                     <NavBar themeToggler={themeToggler} theme={theme} />
                     <Route exact path="/" component={Home} />
+                    <Route exact path="/network/:network" component={Home} />
                     <Route exact path="/query" component={Query} />
                     <Route
                         exact
@@ -46,6 +47,18 @@ const App = () => {
                     <Route
                         exact
                         path="/vault/:vaultId/strategy/:strategyId"
+                        component={SingleStrategy}
+                    />
+                    <Route
+                        exact
+                        path="/network/:network/vault/:vaultId"
+                        render={(props) => (
+                            <SingleVault {...props} theme={theme} />
+                        )}
+                    />
+                    <Route
+                        exact
+                        path="/network/:network/vault/:vaultId/strategy/:strategyId"
                         component={SingleStrategy}
                     />
                     <AuthProvider>

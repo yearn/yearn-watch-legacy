@@ -1,11 +1,32 @@
 import { providers, BigNumber } from 'ethers';
-import { Provider } from '@ethersproject/providers';
+import { JsonRpcProvider } from '@ethersproject/providers';
 import { getEnv } from './env';
+import { Network } from '../types';
 
-export const getEthersDefaultProvider = (network = 'homestead'): Provider => {
+const getAlchemyMainnetProvider = (): JsonRpcProvider => {
     const { alchemyKey } = getEnv();
     // return new providers.InfuraProvider(network, infuraProjectId);
-    return new providers.AlchemyProvider(network, alchemyKey);
+    return new providers.AlchemyProvider('homestead', alchemyKey);
+};
+
+const getFantomProvider = (): JsonRpcProvider => {
+    const url = 'https://rpc.ftm.tools/';
+    const provider = new JsonRpcProvider(url);
+
+    return provider;
+};
+
+export const getEthersDefaultProvider = (
+    network: Network | string = Network.mainnet
+): JsonRpcProvider => {
+    switch (network) {
+        case Network.mainnet:
+            return getAlchemyMainnetProvider();
+        case Network.fantom:
+            return getFantomProvider();
+        default:
+            throw new Error(`Network - ${network} is not supported`);
+    }
 };
 
 export const formatAmount = (amount: string, decimals: number) => {

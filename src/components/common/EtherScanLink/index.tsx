@@ -8,12 +8,15 @@ import CallMadeIcon from '@material-ui/icons/CallMade';
 import Tooltip from '@material-ui/core/Tooltip';
 import { FileCopy } from '@material-ui/icons';
 import { Link, Grid } from '@material-ui/core';
+import getNetworkConfig from '../../../utils/config';
+import { Network } from '../../../types';
 
 type EtherScanLinkProps = {
     address?: string;
     transactionHash?: string;
     dark?: boolean | false;
     internalHref?: string;
+    network: Network;
 };
 const StyledFileCopy = styled(FileCopy)`
     && {
@@ -48,8 +51,9 @@ const StyledCopiedText = styled.span`
     }
 `;
 const EtherScanLink = (props: EtherScanLinkProps) => {
-    const { address, transactionHash, internalHref } = props;
+    const { address, transactionHash, internalHref, network } = props;
     const [copied, setCopied] = useState(false);
+    const networkConfig = getNetworkConfig(network);
 
     useEffect(() => {
         const timeId = setTimeout(() => {
@@ -81,8 +85,8 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
         setCopied(true);
     };
     const refLink = transactionHash
-        ? `https://etherscan.io/tx/${value}`
-        : `https://etherscan.io/address/${value}`;
+        ? networkConfig.toTxExplorerUrl(value)
+        : networkConfig.toAddressExplorerUrl(value);
     return (
         <Grid container spacing={2} alignItems="center">
             <Grid item>
@@ -110,7 +114,7 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
                         )}
                     </Button>
                 </Tooltip>
-                <Tooltip title="View on Etherscan" aria-label="Etherscan">
+                <Tooltip title="View on Explorer" aria-label="Explorer">
                     <Button href={refLink} target="_blank">
                         <StyledCallMadeIcon fontSize="inherit" />
                     </Button>
