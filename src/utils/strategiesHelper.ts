@@ -84,7 +84,7 @@ export const getStrategyTVLsPerProtocol = async (
     if (strategyAddresses.length === 0) {
         return new ProtocolTVL(protocolName, new BigNumber(0), 0, []);
     }
-    const strategiesInfo = await getStrategies(strategyAddresses);
+    const strategiesInfo = await getStrategies(strategyAddresses, network);
     const strategiesPromises = strategiesInfo.map(
         async (strategy: Strategy): Promise<StrategyTVL> => {
             return {

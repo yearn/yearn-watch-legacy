@@ -9,7 +9,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Tooltip from '@material-ui/core/Tooltip';
-import { Vault } from '../../../types';
+import { Network, Vault } from '../../../types';
 import { StrategiesList } from '../StrategiesList';
 import EtherScanLink from '../../common/EtherScanLink';
 
@@ -22,7 +22,7 @@ import { HtmlTooltip } from '../../common/HtmlTooltip';
 type VaultItemListProps = {
     vault: Vault;
     key: number;
-    network: string;
+    network: Network;
 };
 
 const StyledExpandMoreIcon = styled(ExpandMoreIcon)`
@@ -107,10 +107,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
             >
                 <Grid container spacing={1} justify="flex-start">
                     <Grid item md={12} xs={12}>
-                        <BlueOnGreenTooltip
-                            title="Incorrect performance fee"
-                            placement="top"
-                        >
+                        <BlueOnGreenTooltip title="" placement="top">
                             <Grid
                                 container
                                 spacing={1}
@@ -189,6 +186,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
                                         <EtherScanLink
                                             address={vault.address}
                                             dark={true}
+                                            network={network}
                                         />
                                     </Grid>
                                 </Hidden>
@@ -201,13 +199,23 @@ const _VaultItemList = (props: VaultItemListProps) => {
                 <Grid container spacing={2}>
                     <Grid item md={1} xs={1}></Grid>
                     <Grid item md={8} xs={11}>
-                        <EtherScanLink address={vault.address} dark={true} />
+                        <EtherScanLink
+                            address={vault.address}
+                            dark={true}
+                            network={network}
+                        />
                     </Grid>
                 </Grid>
             </Hidden>
 
             <AccordionDetails>
-                {expanded && <StrategiesList vault={vault} expand={expanded} />}
+                {expanded && (
+                    <StrategiesList
+                        vault={vault}
+                        expand={expanded}
+                        network={network}
+                    />
+                )}
             </AccordionDetails>
         </StyledMuiAccordion>
     );

@@ -3,14 +3,14 @@ import sum from 'lodash/sum';
 
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 
-import { Vault } from '../../../types';
+import { Network, Vault } from '../../../types';
 import SearchInput, { Flags } from '../SearchInput';
 import { VaultItemList } from '../../app';
 
 type VaultsListProps = {
     items: Vault[];
     totalItems: number;
-    network: string;
+    network: Network;
 };
 
 const getTotalStrategies = (items: Vault[]): number =>

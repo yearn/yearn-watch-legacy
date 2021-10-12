@@ -255,6 +255,7 @@ export const SingleVault = (props: SingleVaultProps) => {
                                                 <br />
                                                 <EtherScanLink
                                                     address={vault.address}
+                                                    network={network}
                                                 />
                                             </>
                                         ) : (
@@ -339,7 +340,10 @@ export const SingleVault = (props: SingleVaultProps) => {
                                         {vault &&
                                         vault.strategies.length > 0 ? (
                                             <div>
-                                                <StrategiesList vault={vault} />
+                                                <StrategiesList
+                                                    vault={vault}
+                                                    network={network}
+                                                />
                                             </div>
                                         ) : (
                                             ''

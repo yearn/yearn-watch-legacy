@@ -13,6 +13,7 @@ import { getTotalDebtUsage } from './strategyParams';
 import { toHumanDateText } from './dateUtils';
 import { vaultChecks } from './checks';
 import { getABI_032 } from './contracts/ABI';
+import getNetworkConfig from './config';
 
 const VAULT_VIEW_METHODS = [
     'management',
@@ -128,11 +129,10 @@ const mapVaultData = (
     contractCallsResults: ContractCallResults,
     vaultMap: Map<string, VaultApi>,
     strategyMap: Map<string, string>,
-    network: string,
+    network: Network,
     strategiesHelperCallsResults?: ContractCallResults
 ): Vault[] => {
     const vaults: Vault[] = [];
-
     vaultMap.forEach((vault) => {
         const {
             address,
@@ -200,13 +200,16 @@ const mapVaultData = (
         mappedVault.lastReportText = toHumanDateText(
             mappedVaultContractCalls.lastReport
         );
-
+        const networkConfig = getNetworkConfig(network);
         vaults.push(
-            vaultChecks({
-                ...mappedVault,
-                ...mappedVaultContractCallsConverted,
-                strategies: sortedStrategies,
-            })
+            vaultChecks(
+                {
+                    ...mappedVault,
+                    ...mappedVaultContractCallsConverted,
+                    strategies: sortedStrategies,
+                },
+                networkConfig
+            )
         );
     });
 

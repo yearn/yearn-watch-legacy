@@ -123,11 +123,14 @@ export const SingleStrategy = () => {
             try {
                 setIsReportsLoading(true);
                 // we don't want to handle error here for now
-                getReportsForStrategy(strategyId).then((reports) => {
+                getReportsForStrategy(strategyId, network).then((reports) => {
                     setStrategyReports(reports);
                     setIsReportsLoading(false);
                 });
-                const loadedStrategy = await getStrategies([strategyId]);
+                const loadedStrategy = await getStrategies(
+                    [strategyId],
+                    network
+                );
                 setStrategyData(loadedStrategy);
                 const warnings = getWarnings(loadedStrategy);
                 if (warnings.length > 0) {
@@ -218,6 +221,7 @@ export const SingleStrategy = () => {
                                             {strategy ? (
                                                 <EtherScanLink
                                                     address={strategy.address}
+                                                    network={network}
                                                 />
                                             ) : (
                                                 ''
@@ -263,6 +267,7 @@ export const SingleStrategy = () => {
                                         />
                                     ) : (
                                         <StrategyReports
+                                            network={network}
                                             reports={strategyReports}
                                             tokenDecimals={
                                                 strategy

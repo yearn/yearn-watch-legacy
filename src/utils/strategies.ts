@@ -184,7 +184,7 @@ export const mapStrategiesCalls = (
 
 const innerGetStrategies = async (
     addresses: string[],
-    network: Network | string = Network.mainnet
+    network: Network
 ): Promise<Strategy[]> => {
     if (addresses.length === 0) {
         throw new Error('Expected a valid strategy address');

@@ -25,7 +25,7 @@ const FTM_STRATEGIES_HELPER_CONTRACT_ADDRESS =
 const USDC_ADDRESSES = new Map<Network, string>();
 USDC_ADDRESSES.set(Network.mainnet, ETH_USDC_ADDRESS);
 USDC_ADDRESSES.set(Network.fantom, FTM_USDC_ADDRESS);
-export const getUSDCAddress = (network: Network = Network.mainnet): string => {
+export const getUSDCAddress = (network: Network): string => {
     checkIfAddressIsConfiguredIn(
         USDC_ADDRESSES,
         network,

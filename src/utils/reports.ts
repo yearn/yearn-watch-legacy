@@ -1,4 +1,5 @@
 import { get, omit, memoize } from 'lodash';
+import { Network } from '../types';
 import { querySubgraphData } from './apisRequest';
 
 const buildReportsQuery = (strategy: string): string => `
@@ -153,7 +154,8 @@ export type StrategyReport = {
 };
 
 const _getReportsForStrategy = async (
-    strategy: string
+    strategy: string,
+    network: Network
 ): Promise<StrategyReport[]> => {
     if (!strategy || strategy === '') {
         throw new Error(
@@ -161,7 +163,8 @@ const _getReportsForStrategy = async (
         );
     }
     const reportResults: StratReportGraphResult = await querySubgraphData(
-        buildReportsQuery(strategy.toLowerCase())
+        buildReportsQuery(strategy.toLowerCase()),
+        network
     );
 
     const reports: StratReportGraphType[] = get(

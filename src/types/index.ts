@@ -6,3 +6,5 @@ export * from './strategy-queue-index';
 export * from './multicall';
 export * from './network';
 export * from './query-param';
+export * from './network-config';
+export * from './address-config';

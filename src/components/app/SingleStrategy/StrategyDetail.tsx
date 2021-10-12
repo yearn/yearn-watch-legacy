@@ -128,14 +128,18 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
                   strategy.token.decimals
               )
             : 'N/A';
-    const keeper = strategy ? <EtherScanLink address={strategy.keeper} /> : '';
+    const keeper = strategy ? (
+        <EtherScanLink address={strategy.keeper} network={network} />
+    ) : (
+        ''
+    );
     const rewards = strategy ? (
-        <EtherScanLink address={strategy.rewards} />
+        <EtherScanLink address={strategy.rewards} network={network} />
     ) : (
         ''
     );
     const strategist = strategy ? (
-        <EtherScanLink address={strategy.strategist} />
+        <EtherScanLink address={strategy.strategist} network={network} />
     ) : (
         ''
     );
@@ -143,6 +147,7 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
         <EtherScanLink
             internalHref={`/vault/${strategy.vault.toLowerCase()}`}
             address={strategy.vault}
+            network={network}
         />
     ) : (
         ''
