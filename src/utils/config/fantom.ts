@@ -18,7 +18,7 @@ const TREASURY_ENS = 'treasury';
 const TREASURY = '0x89716ad7edc3be3b35695789c475f3e7a3deb12a';
 
 const MANAGEMENT_FEE = 200;
-const PERF_FEE = 2000;
+const PERF_FEE = 1000;
 
 export const fantom: NetworkConfig = {
     ...toNetworkConfig(
