@@ -11,21 +11,18 @@ import { VaultsList } from '../../common/VaultsList';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 import {
     Vault,
-    Network,
     DEFAULT_QUERY_PARAM,
     toQueryParam,
+    DEFAULT_NETWORK,
 } from '../../../types';
 import { getError } from '../../../utils/error';
 import { GlobalStylesLoading } from '../../theme/globalStyles';
+import { ParamTypes } from '../../../types/DefaultParamTypes';
 
 const BATCH_NUMBER = 30;
 
-interface ParamTypes {
-    network?: string;
-}
-
 export const Home = () => {
-    const { network = Network.mainnet } = useParams<ParamTypes>();
+    const { network = DEFAULT_NETWORK } = useParams<ParamTypes>();
     const [total, setTotal] = useState<number>(0);
     const [vaults, setVaults] = useState<Vault[]>([]);
     const [isLoading, setIsLoading] = useState(false);

@@ -22,6 +22,9 @@ import { GenericList, GenericListItem } from '../GenericList';
 import { ScoreRowCollapse } from '../../common/ScoreRowCollapse';
 import { scoreHeadCells } from '../../common/headers/scoresHeaderDefinition';
 import { CircularProgress } from '@material-ui/core';
+import { useParams } from 'react-router';
+import { ParamTypes } from '../../../types/DefaultParamTypes';
+import { DEFAULT_NETWORK, Network } from '../../../types';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -34,6 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const Risk = () => {
+    const { network = DEFAULT_NETWORK } = useParams<ParamTypes>();
     const [groups, setGroups] = useState<Grouping[]>([]);
     const [totalStrategies, setTotalStrategies] = useState<number>(0);
     const [totalTVL, setTotalTVL] = useState<number>(0);
@@ -60,6 +64,7 @@ export const Risk = () => {
             const protocol = await getStrategyTVLsPerProtocol(
                 item.id,
                 item.criteria.nameLike,
+                network as Network,
                 item.criteria.strategies,
                 item.criteria.exclude
             );

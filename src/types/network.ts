@@ -6,6 +6,8 @@ export enum Network {
     fantom = 'fantom',
 }
 
+export const DEFAULT_NETWORK = Network.mainnet;
+
 export enum NetworkId {
     mainnet = 1,
     fantom = 250,

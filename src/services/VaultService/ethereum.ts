@@ -4,6 +4,7 @@ import {
     VaultService,
     Vault,
     QueryParam,
+    DEFAULT_NETWORK,
 } from '../../types';
 import {
     getTotalVaults,
@@ -15,7 +16,7 @@ import {
 // TODO: refactor to use SDK instead of utils and move utils common mappings to service
 export default class EthereumService implements VaultService {
     public getNetwork = (): Network => {
-        return Network.mainnet;
+        return DEFAULT_NETWORK;
     };
 
     public getNetworkId = (): NetworkId => {

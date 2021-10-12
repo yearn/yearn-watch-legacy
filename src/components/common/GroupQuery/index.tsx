@@ -4,11 +4,13 @@ import { Typography } from '@material-ui/core';
 import { ProtocolsList } from '../ProtocolsList';
 import { groupStrategyTVLsPerProtocols } from '../../../utils/strategiesHelper';
 import { ProtocolTVL } from '../../../types/protocol-tvl';
+import { Network } from '../../../types';
 
 export interface ProtocolQueryProps {
     groups: string[];
     exclude: string[];
     include: string[];
+    network: Network;
     onRemoveProtocol: (protocolName: string) => void;
 }
 
@@ -25,6 +27,7 @@ export const GroupQuery = (props: ProtocolQueryProps) => {
         }
         groupStrategyTVLsPerProtocols(
             groupNames,
+            props.network,
             props.include,
             props.exclude
         ).then((groupedTVLsPerProtocols) => {

@@ -2,7 +2,6 @@ import { BigNumber } from 'ethers';
 import { BigNumber as BigNumberJS } from 'bignumber.js';
 import { Strategy, Vault, VaultApi, Network } from '../types';
 import { ContractCallContext, ContractCallResults } from 'ethereum-multicall';
-import { getABI_032 } from './abi';
 import { buildStrategyCalls, mapStrategiesCalls } from './strategies';
 import {
     createStrategiesHelperCallAssetStrategiesAddresses,
@@ -13,6 +12,7 @@ import { getMulticallContract } from './multicall';
 import { getTotalDebtUsage } from './strategyParams';
 import { toHumanDateText } from './dateUtils';
 import { vaultChecks } from './checks';
+import { getABI_032 } from './contracts/ABI';
 
 const VAULT_VIEW_METHODS = [
     'management',
@@ -46,7 +46,7 @@ export const fillVaultData = (vault: any): VaultApi => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mapVaultDataToVault = async (
     payload: VaultApi[],
-    network: Network | string = Network.mainnet
+    network: Network
 ): Promise<Vault[]> => {
     const multicall = getMulticallContract(network);
 
@@ -107,14 +107,9 @@ export const mapVaultDataToVault = async (
         }
     );
 
-    let strategiesHelperCallResults: ContractCallResults | undefined;
-
-    // TODO: implement this for multi-chain
-    if (network === Network.mainnet) {
-        strategiesHelperCallResults = await multicall.call(
-            createStrategiesHelperCallAssetStrategiesAddresses(payload)
-        );
-    }
+    const strategiesHelperCallResults: ContractCallResults = await multicall.call(
+        createStrategiesHelperCallAssetStrategiesAddresses(payload, network)
+    );
 
     const results: ContractCallResults = await multicall.call(
         vaultCalls.concat(stratCalls)
@@ -124,6 +119,7 @@ export const mapVaultDataToVault = async (
         results,
         vaultMap,
         strategyMap,
+        network,
         strategiesHelperCallResults
     );
 };
@@ -132,6 +128,7 @@ const mapVaultData = (
     contractCallsResults: ContractCallResults,
     vaultMap: Map<string, VaultApi>,
     strategyMap: Map<string, string>,
+    network: string,
     strategiesHelperCallsResults?: ContractCallResults
 ): Vault[] => {
     const vaults: Vault[] = [];
@@ -150,6 +147,7 @@ const mapVaultData = (
 
         const strategiesQueueIndexes = mapToStrategyAddressQueueIndex(
             address,
+            network,
             strategiesHelperCallsResults
         );
 

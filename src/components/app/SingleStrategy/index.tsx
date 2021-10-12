@@ -15,7 +15,7 @@ import Tab from '@material-ui/core/Tab';
 import StrategyDetail from './StrategyDetail';
 
 import { ErrorAlert } from '../../common/Alerts';
-import { Strategy, Vault, Network } from '../../../types';
+import { Strategy, Vault, Network, DEFAULT_NETWORK } from '../../../types';
 
 import BreadCrumbs from './BreadCrumbs';
 import EtherScanLink from '../../common/EtherScanLink';
@@ -71,7 +71,7 @@ const StyledSpan = styled.span`
 interface ParamTypes {
     strategyId: string;
     vaultId: string;
-    network?: string;
+    network?: Network;
 }
 
 // TODO: refactor this into util func
@@ -90,7 +90,7 @@ export const SingleStrategy = () => {
     const {
         strategyId,
         vaultId,
-        network = Network.mainnet,
+        network = DEFAULT_NETWORK,
     } = useParams<ParamTypes>();
 
     const [strategyData, setStrategyData] = useState<Strategy[]>([]);
@@ -257,7 +257,10 @@ export const SingleStrategy = () => {
                                     }}
                                 >
                                     {value === 0 ? (
-                                        <StrategyDetail strategy={strategy} />
+                                        <StrategyDetail
+                                            strategy={strategy}
+                                            network={network}
+                                        />
                                     ) : (
                                         <StrategyReports
                                             reports={strategyReports}

@@ -3,14 +3,15 @@ import Chip from '@material-ui/core/Chip';
 import EtherScanLink from '../../common/EtherScanLink';
 import { formatBPS, displayAmount } from '../../../utils/commonUtils';
 import CardContent from './CardContent';
-import { Strategy } from '../../../types';
+import { Network, Strategy } from '../../../types';
 import TokenPrice from '../../common/TokenPrice';
 
 type StrategyDetailProps = {
     strategy: Strategy;
+    network: Network;
 };
 export const StrategyDetail = (props: StrategyDetailProps) => {
-    const { strategy } = props;
+    const { strategy, network } = props;
 
     const apiVersion = strategy ? strategy.apiVersion : '';
     const activationDate = strategy ? strategy.params.activation : '';
@@ -152,6 +153,7 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
                 label="Total Estimated Assets (USD):"
                 token={strategy.token}
                 amount={strategy.estimatedTotalAssets}
+                network={network}
             />
         </>
     ) : undefined;

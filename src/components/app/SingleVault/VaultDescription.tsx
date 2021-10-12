@@ -12,12 +12,13 @@ import { checkLabel } from '../../../utils/checks';
 import { formatBPS, displayAmount, sub } from '../../../utils/commonUtils';
 import Table from '../../common/Table';
 import ProgressBars from '../../common/ProgressBar';
-import { Vault } from '../../../types';
+import { Network, Vault } from '../../../types';
 import { LabelTypography, SubTitle } from '../../common/Labels';
 
 interface VaultDescriptionProps {
     vault: Vault | undefined;
     isLoading: boolean;
+    network: Network;
 }
 const StyledTableRow = styled(TableRow)`
     && {
@@ -41,7 +42,7 @@ const renderErrors = (vault: Vault) =>
         );
     });
 export const VaultDescription = (props: VaultDescriptionProps) => {
-    const { vault } = props;
+    const { vault, network } = props;
 
     const api_version = vault ? vault.apiVersion : '';
     const emergency_shut_down =
@@ -238,6 +239,7 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                             label="Total Assets (USD):"
                             token={vault.token}
                             amount={vault.totalAssets}
+                            network={network}
                         />
                     ) : (
                         ''

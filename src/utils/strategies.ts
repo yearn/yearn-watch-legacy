@@ -1,7 +1,6 @@
 import { ContractCallResults, ContractCallContext } from 'ethereum-multicall';
 import { utils } from 'ethers';
 import { omit, memoize } from 'lodash';
-
 import { getMulticallContract } from './multicall';
 import {
     Strategy,
@@ -10,13 +9,12 @@ import {
     StrategyParams,
     Network,
 } from '../types';
-import { getABI } from './abi';
 import { mapStrategyParams } from './strategyParams';
 import { mapContractCalls } from './commonUtils';
-
-import StratABI from './ABI/Strategy.json';
-import TokenABI from './ABI/Token.json';
+import StratABI from './contracts/ABI/Strategy.json';
+import TokenABI from './contracts/ABI/Token.json';
 import { getEndorsedVaults } from './vaults';
+import { getABI } from './contracts/ABI';
 
 interface VaultVersionInfo {
     apiVersion: string;

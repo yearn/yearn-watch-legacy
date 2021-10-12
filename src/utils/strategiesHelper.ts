@@ -1,5 +1,4 @@
-import { Strategy } from '../types';
-import { getStrategiesHelperInstance } from './abi';
+import { Network, Strategy } from '../types';
 import { getTokenPrice } from './oracle';
 import BigNumber from 'bignumber.js';
 import { ProtocolTVL } from '../types/protocol-tvl';
@@ -8,15 +7,17 @@ import { getAllStrategies, getStrategies } from './strategies';
 import { flattenArrays } from './commonUtils';
 import { isAddress } from 'ethers/lib/utils';
 import _ from 'lodash';
+import { getStrategiesHelperInstance } from './contracts/instances';
 
 export const getAssetsStrategiesAddressesByFilterNames = async (
-    names: string[]
+    names: string[],
+    network: Network
 ): Promise<string[]> => {
     if (names.map((name) => name.toLowerCase()).includes('all')) {
         const allStrategies = await getAllStrategies();
         return allStrategies.map((strategy) => strategy.address);
     }
-    const helper = getStrategiesHelperInstance();
+    const helper = getStrategiesHelperInstance(network);
     const callPromises = names.map((name) =>
         helper['assetsStrategiesAddressesByFilter(string[][])']([
             ['KEY', 'name', 'STRING'],
@@ -29,7 +30,10 @@ export const getAssetsStrategiesAddressesByFilterNames = async (
     return Array.from(new Set(flattenResults));
 };
 
-export const getStrategyAddresses = async (namesOrAddresses: string[]) => {
+export const getStrategyAddresses = async (
+    namesOrAddresses: string[],
+    network: Network
+) => {
     const addresses = new Array<string>();
     for (const nameOrAddress of namesOrAddresses) {
         if (isAddress(nameOrAddress)) {
@@ -38,7 +42,8 @@ export const getStrategyAddresses = async (namesOrAddresses: string[]) => {
             }
         } else {
             const nameAddresses = await getAssetsStrategiesAddressesByFilterNames(
-                [nameOrAddress]
+                [nameOrAddress],
+                network
             );
             addresses.push(...nameAddresses);
         }
@@ -49,6 +54,7 @@ export const getStrategyAddresses = async (namesOrAddresses: string[]) => {
 export const getStrategyTVLsPerProtocol = async (
     protocolName: string,
     aliases: string[],
+    network: Network,
     includeStrategies: string[] = [],
     excludeStrategies: string[] = []
 ): Promise<ProtocolTVL> => {
@@ -56,14 +62,17 @@ export const getStrategyTVLsPerProtocol = async (
         excludeStrategyAddresses,
         includeStrategyAddresses,
     ] = await Promise.all([
-        getStrategyAddresses(excludeStrategies),
-        getStrategyAddresses(includeStrategies),
+        getStrategyAddresses(excludeStrategies, network),
+        getStrategyAddresses(includeStrategies, network),
     ]);
     const isStrategyAddressExcluded = (strategy: string) =>
         excludeStrategyAddresses
             .map((address) => address.toLowerCase())
             .includes(strategy.toLowerCase());
-    const result = await getAssetsStrategiesAddressesByFilterNames(aliases);
+    const result = await getAssetsStrategiesAddressesByFilterNames(
+        aliases,
+        network
+    );
     const filteredStrategyAddresses = result.filter(
         (address: string) =>
             address !== undefined && !isStrategyAddressExcluded(address)
@@ -83,7 +92,8 @@ export const getStrategyTVLsPerProtocol = async (
                 estimatedTotalAssetsUsdc: await getTokenPrice(
                     strategy.token,
                     // TODO: fix this to not fetch token price if estimatedTotalAssets failed
-                    strategy.estimatedTotalAssets || '0'
+                    strategy.estimatedTotalAssets || '0',
+                    network
                 ),
             };
         }
@@ -113,6 +123,7 @@ export const getStrategyTVLsPerProtocol = async (
 
 export const groupStrategyTVLsPerProtocols = async (
     protocolsToGroup: string[],
+    network: Network,
     includeStrategies: string[] = [],
     excludeStrategies: string[] = [],
     alias?: string
@@ -121,6 +132,7 @@ export const groupStrategyTVLsPerProtocols = async (
     return await getStrategyTVLsPerProtocol(
         protocolName,
         protocolsToGroup,
+        network,
         includeStrategies,
         excludeStrategies
     );

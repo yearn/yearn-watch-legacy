@@ -13,7 +13,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-import { Vault, Strategy, Network } from '../../../types';
+import { Vault, Strategy, Network, DEFAULT_NETWORK } from '../../../types';
 import { getService } from '../../../services/VaultService';
 import { getError } from '../../../utils/error';
 import BreadCrumbs from '../SingleStrategy/BreadCrumbs';
@@ -122,7 +122,7 @@ function a11yProps(index: any) {
 
 interface ParamTypes {
     vaultId: string;
-    network?: string;
+    network?: Network;
 }
 type SingleVaultProps = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -142,7 +142,7 @@ const getWarnings = (strategies: Strategy[]): string[] => {
 };
 
 export const SingleVault = (props: SingleVaultProps) => {
-    const { vaultId, network = Network.mainnet } = useParams<ParamTypes>();
+    const { vaultId, network = DEFAULT_NETWORK } = useParams<ParamTypes>();
 
     const [vault, setVault] = useState<Vault | undefined>();
     const [isLoading, setIsLoading] = useState(true);
@@ -297,6 +297,7 @@ export const SingleVault = (props: SingleVaultProps) => {
                                                 <VaultDescription
                                                     vault={vault}
                                                     isLoading={isLoading}
+                                                    network={network}
                                                 />
                                             </div>
                                         </Grid>

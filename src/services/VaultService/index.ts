@@ -4,7 +4,7 @@ import FantomService from './fantom';
 
 import { checkNetworkSupported } from '../../utils/network';
 
-export const getService = (network: string | Network): VaultService => {
+export const getService = (network: Network): VaultService => {
     checkNetworkSupported(network);
 
     switch (network) {
