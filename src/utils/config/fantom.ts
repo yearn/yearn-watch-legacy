@@ -8,8 +8,9 @@ import {
 const GOVERNANCE_ENS = 'governance';
 const GOVERNANCE = '0xC0E2830724C946a6748dDFE09753613cd38f6767';
 
-const GUARDIAN_ENS = 'dev';
-const GUARDIAN = '';
+// NOTE: same as management at the moment
+const GUARDIAN_ENS = 'guardian';
+const GUARDIAN = '0x72a34AbafAB09b15E7191822A679f28E067C4a16';
 
 const MANAGEMENT_ENS = 'brain';
 const MANAGEMENT = '0x72a34AbafAB09b15E7191822A679f28E067C4a16';
