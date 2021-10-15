@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { memoize } from 'lodash';
 
-import { checkNetworkSupported } from './network';
+import getNetworkConfig from './config';
 import { Network } from '../types';
 
 export const { get, all, post, put, spread } = axios;
@@ -14,11 +14,6 @@ type ApiDataResponse = {
 export const VAULTS_ALL_EXPERIMENTAL = '/vaults/experimental';
 export const VAULTS_ALL = '/vaults/all';
 const API_URL = 'https://api.yearn.finance/v1/chains/1';
-
-const SUBGRAPH_URL =
-    'https://api.thegraph.com/subgraphs/name/salazarguille/yearn-vaults-v2-subgraph-mainnet';
-const FANTOM_SUBGRAPH_URL =
-    'https://api.thegraph.com/subgraphs/name/yearn/yearn-vaults-v2-fantom';
 
 // const filterToExperimentals = (res: any): ApiDataResponse => {
 //     const response = { data: [] };
@@ -61,10 +56,6 @@ type SubgraphResponse = {
     data: any;
 };
 
-const mapSubgraph2Network = new Map<Network, string>();
-mapSubgraph2Network.set(Network.mainnet, SUBGRAPH_URL);
-mapSubgraph2Network.set(Network.fantom, FANTOM_SUBGRAPH_URL);
-
 /*
 config: {url: "https://api.thegraph.com/subgraphs/name/salazarguille/yearn-vaults-v2-subgraph-mainnet", method: "post", data: "{"query":"\n{\n\tvaults {\n    id\n    tags\n    t…it\n        debtAdded\n      }\n    }\n  }\n}\n"}", headers: {…}, transformRequest: Array(1), …}
 data: {data: {…}}
@@ -77,8 +68,7 @@ const querySubgraph = async (
     query: string,
     network: Network = Network.mainnet
 ): Promise<SubgraphResponse> => {
-    checkNetworkSupported(network);
-    const subgraphUrl = mapSubgraph2Network.get(network);
+    const { subgraphUrl } = getNetworkConfig(network);
     try {
         const response: SubgraphAPIResponse = await axios.post(
             `${subgraphUrl}`,

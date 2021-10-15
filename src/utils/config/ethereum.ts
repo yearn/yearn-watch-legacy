@@ -5,6 +5,9 @@ import {
     toNetworkConfig,
 } from '../../types';
 
+const SUBGRAPH_URL =
+    'https://api.thegraph.com/subgraphs/name/salazarguille/yearn-vaults-v2-subgraph-mainnet';
+
 const GOVERNANCE_ENS = 'ychad.eth';
 const GOVERNANCE = '0xfeb4acf3df3cdea7399794d0869ef76a6efaff52';
 
@@ -19,6 +22,11 @@ const TREASURY = '0x93a62da5a14c80f265dabc077fcee437b1a0efde';
 
 const MANAGEMENT_FEE = 200;
 const PERF_FEE = 1000;
+const ETH_USDC_ADDRESS = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48';
+const ETH_ORACLE_CONTRACT_ADDRESS =
+    '0x83d95e0d5f402511db06817aff3f9ea88224b030';
+const ETH_STRATEGIES_HELPER_CONTRACT_ADDRESS =
+    '0x2114d9a16da30fa5b59795e4f8c9ead19e40f0a0';
 
 export const mainnet: NetworkConfig = {
     ...toNetworkConfig(
@@ -35,4 +43,8 @@ export const mainnet: NetworkConfig = {
     toAddressExplorerUrl: (token: string): string =>
         `https://etherscan.io/address/${token}`,
     toTxExplorerUrl: (tx: string): string => `https://etherscan.io/tx/${tx}`,
+    subgraphUrl: SUBGRAPH_URL,
+    usdcAddress: ETH_USDC_ADDRESS,
+    oracleAddress: ETH_ORACLE_CONTRACT_ADDRESS,
+    strategiesHelperAddress: ETH_STRATEGIES_HELPER_CONTRACT_ADDRESS,
 };
