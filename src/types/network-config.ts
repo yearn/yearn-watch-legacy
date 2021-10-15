@@ -8,6 +8,10 @@ export type NetworkConfig = {
     treasury: AddressConfig;
     managementFee: number;
     performanceFee: number;
+    subgraphUrl: string;
+    usdcAddress: string;
+    oracleAddress: string;
+    strategiesHelperAddress: string;
     isManagementFee: (fee: number) => boolean;
     isPerformanceFee: (fee: number) => boolean;
     toTokenExplorerUrl: (token: string) => string;
