@@ -57,9 +57,11 @@ const TokenPrice = (props: TokenPriceProps) => {
             setTokenUnitPrice(new BigNumber(1));
             setTokenPrice(toUnits(props.amount.toString(), USDC_DECIMALS));
         } else {
-            getTokenUnitPrice(props.token).then((unitPrice: BigNumber) => {
-                setTokenUnitPrice(unitPrice);
-            });
+            getTokenUnitPrice(props.token, props.network).then(
+                (unitPrice: BigNumber) => {
+                    setTokenUnitPrice(unitPrice);
+                }
+            );
             getTokenPrice(
                 props.token,
                 props.amount.toString(),
