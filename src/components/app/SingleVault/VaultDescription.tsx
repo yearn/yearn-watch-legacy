@@ -412,7 +412,6 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                                     <LabelTypography>
                                         {render_error}
                                     </LabelTypography>{' '}
-                                    {render_error}
                                 </StyledTableCell>
                             </MediaQuery>
                         </StyledTableRow>
