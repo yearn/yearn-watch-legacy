@@ -6,15 +6,21 @@ import {
 import { get } from 'lodash';
 import { BigNumber, BigNumberish, constants } from 'ethers';
 import { BigNumber as BN } from 'bignumber.js';
-import { StrategyAddressQueueIndex, VaultApi, CallContext } from '../types';
-import { getABIStrategiesHelper } from './abi';
+import {
+    StrategyAddressQueueIndex,
+    VaultApi,
+    CallContext,
+    Network,
+} from '../types';
 import { values } from 'lodash';
+import {
+    getStrategiesHelperAddress,
+    getUSDCAddress,
+} from './contracts/addresses';
+import { getABIStrategiesHelper } from './contracts/ABI';
 
-export const USDC_DECIMALS = 6;
-export const USDC_ADDRESS = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48';
-
-export const isUSDC = (token: string): boolean => {
-    return token.toLowerCase() === USDC_ADDRESS;
+export const isUSDC = (token: string, network: Network): boolean => {
+    return token.toLowerCase() === getUSDCAddress(network);
 };
 
 export const toUnits = (amount: BigNumberish, decimals: number): BN => {
@@ -93,25 +99,21 @@ export const mapContractCalls = (result: ContractCallReturnContext) => {
     return mappedObj;
 };
 
-export const ORACLE_CONTRACT_ADDRESS =
-    '0x83d95e0D5f402511dB06817Aff3f9eA88224B030';
-
-export const STRATEGIES_HELPER_CONTRACT_ADDRESS =
-    '0x2114d9a16da30fA5B59795e4f8C9eAd19E40f0a0';
-
 export const createStrategiesHelperCallAssetStrategiesAddresses = (
-    vaults: VaultApi[]
+    vaults: VaultApi[],
+    network: Network
 ): ContractCallContext => {
+    const strategiesHelperAddress = getStrategiesHelperAddress(network);
     const strategiesHelperCalls: CallContext[] = vaults.map((vault) => {
         return {
             methodName: 'assetStrategiesAddresses',
             methodParameters: [vault.address],
-            reference: STRATEGIES_HELPER_CONTRACT_ADDRESS,
+            reference: strategiesHelperAddress,
         };
     });
     return {
-        reference: STRATEGIES_HELPER_CONTRACT_ADDRESS,
-        contractAddress: STRATEGIES_HELPER_CONTRACT_ADDRESS,
+        reference: strategiesHelperAddress,
+        contractAddress: strategiesHelperAddress,
         abi: getABIStrategiesHelper(),
         calls: strategiesHelperCalls,
     };
@@ -119,10 +121,15 @@ export const createStrategiesHelperCallAssetStrategiesAddresses = (
 
 export const mapToStrategyAddressQueueIndex = (
     vaultAddress: string,
-    strategiesHelperCallsResults: ContractCallResults
+    network: Network,
+    strategiesHelperCallsResults?: ContractCallResults
 ): StrategyAddressQueueIndex[] => {
+    if (!strategiesHelperCallsResults) {
+        return [];
+    }
+    const strategiesHelperAddress = getStrategiesHelperAddress(network);
     const strategiesHelperCallsReturnContext =
-        strategiesHelperCallsResults.results[STRATEGIES_HELPER_CONTRACT_ADDRESS]
+        strategiesHelperCallsResults.results[strategiesHelperAddress]
             .callsReturnContext;
 
     const strategiesHelperCallsReturnContextList = values(

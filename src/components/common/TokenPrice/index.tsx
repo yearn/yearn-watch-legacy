@@ -8,16 +8,12 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { getTokenPrice, getTokenUnitPrice } from '../../../utils/oracle';
 import BigNumber from 'bignumber.js';
-import { Token } from '../../../types';
+import { Network, Token } from '../../../types';
 import { BigNumberish } from 'ethers';
-import {
-    displayAmount,
-    isUSDC,
-    toUnits,
-    USDC_DECIMALS,
-} from '../../../utils/commonUtils';
+import { displayAmount, isUSDC, toUnits } from '../../../utils/commonUtils';
 import { Typography, CircularProgress } from '@material-ui/core';
 import { LabelTypography, SubTitle } from '../Labels';
+import { USDC_DECIMALS } from '../../../utils/contracts/addresses';
 
 const useStyles = makeStyles({
     helpIcon: {
@@ -43,6 +39,7 @@ type TokenPriceProps = {
     loadingLabel?: string;
     amount: BigNumberish;
     bckDark?: string | undefined;
+    network: Network;
 };
 
 const TokenPrice = (props: TokenPriceProps) => {
@@ -56,18 +53,22 @@ const TokenPrice = (props: TokenPriceProps) => {
     const classes = useStyles();
 
     useEffect(() => {
-        if (isUSDC(props.token.address)) {
+        if (isUSDC(props.token.address, props.network)) {
             setTokenUnitPrice(new BigNumber(1));
             setTokenPrice(toUnits(props.amount.toString(), USDC_DECIMALS));
         } else {
-            getTokenUnitPrice(props.token).then((unitPrice: BigNumber) => {
-                setTokenUnitPrice(unitPrice);
-            });
-            getTokenPrice(props.token, props.amount.toString()).then(
-                (usdcAmount: BigNumber) => {
-                    setTokenPrice(usdcAmount);
+            getTokenUnitPrice(props.token, props.network).then(
+                (unitPrice: BigNumber) => {
+                    setTokenUnitPrice(unitPrice);
                 }
             );
+            getTokenPrice(
+                props.token,
+                props.amount.toString(),
+                props.network
+            ).then((usdcAmount: BigNumber) => {
+                setTokenPrice(usdcAmount);
+            });
         }
     }, []);
 

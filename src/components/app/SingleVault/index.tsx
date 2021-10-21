@@ -13,8 +13,9 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-import { Vault, Strategy } from '../../../types';
-import { getVault } from '../../../utils/vaults';
+import { Vault, Strategy, Network, DEFAULT_NETWORK } from '../../../types';
+import { getService } from '../../../services/VaultService';
+import { getError } from '../../../utils/error';
 import BreadCrumbs from '../SingleStrategy/BreadCrumbs';
 import Pie from '../Charts/Pie';
 import { StrategiesList } from '../StrategiesList';
@@ -121,6 +122,7 @@ function a11yProps(index: any) {
 
 interface ParamTypes {
     vaultId: string;
+    network?: Network;
 }
 type SingleVaultProps = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -140,7 +142,7 @@ const getWarnings = (strategies: Strategy[]): string[] => {
 };
 
 export const SingleVault = (props: SingleVaultProps) => {
-    const { vaultId } = useParams<ParamTypes>();
+    const { vaultId, network = DEFAULT_NETWORK } = useParams<ParamTypes>();
 
     const [vault, setVault] = useState<Vault | undefined>();
     const [isLoading, setIsLoading] = useState(true);
@@ -164,17 +166,18 @@ export const SingleVault = (props: SingleVaultProps) => {
             setIsLoading(true);
             setError(null);
             try {
-                const loadedVault = await getVault(vaultId);
+                const vaultService = getService(network);
+                const loadedVault = await vaultService.getVault(vaultId);
                 const warnings = getWarnings(loadedVault.strategies);
                 if (warnings.length > 0) {
                     setWarningFields(warnings);
                 }
                 setVault(loadedVault);
                 setIsLoading(false);
-            } catch (error) {
-                console.log('Error:', error);
+            } catch (e: unknown) {
+                console.log('Error:', e);
                 setIsLoading(false);
-                setError(error);
+                setError(getError(e));
             }
         };
         loadVaultData();
@@ -214,7 +217,10 @@ export const SingleVault = (props: SingleVaultProps) => {
                         <React.Fragment>
                             <StyledCard bck="true">
                                 {' '}
-                                <BreadCrumbs vaultId={vaultId} />
+                                <BreadCrumbs
+                                    vaultId={vaultId}
+                                    network={network}
+                                />
                             </StyledCard>
                             <StyledCard
                                 config={
@@ -249,6 +255,7 @@ export const SingleVault = (props: SingleVaultProps) => {
                                                 <br />
                                                 <EtherScanLink
                                                     address={vault.address}
+                                                    network={network}
                                                 />
                                             </>
                                         ) : (
@@ -291,6 +298,7 @@ export const SingleVault = (props: SingleVaultProps) => {
                                                 <VaultDescription
                                                     vault={vault}
                                                     isLoading={isLoading}
+                                                    network={network}
                                                 />
                                             </div>
                                         </Grid>
@@ -332,7 +340,10 @@ export const SingleVault = (props: SingleVaultProps) => {
                                         {vault &&
                                         vault.strategies.length > 0 ? (
                                             <div>
-                                                <StrategiesList vault={vault} />
+                                                <StrategiesList
+                                                    vault={vault}
+                                                    network={network}
+                                                />
                                             </div>
                                         ) : (
                                             ''

@@ -8,16 +8,17 @@ import TableRow from '@material-ui/core/TableRow';
 import Chip from '@material-ui/core/Chip';
 
 import TokenPrice from '../../common/TokenPrice';
-import { checkLabel } from '../../../utils/checks';
 import { formatBPS, displayAmount, sub } from '../../../utils/commonUtils';
 import Table from '../../common/Table';
 import ProgressBars from '../../common/ProgressBar';
-import { Vault } from '../../../types';
+import { Network, Vault } from '../../../types';
 import { LabelTypography, SubTitle } from '../../common/Labels';
+import getNetworkConfig from '../../../utils/config';
 
 interface VaultDescriptionProps {
     vault: Vault | undefined;
     isLoading: boolean;
+    network: Network;
 }
 const StyledTableRow = styled(TableRow)`
     && {
@@ -41,7 +42,8 @@ const renderErrors = (vault: Vault) =>
         );
     });
 export const VaultDescription = (props: VaultDescriptionProps) => {
-    const { vault } = props;
+    const { vault, network } = props;
+    const networkConfig = getNetworkConfig(network);
 
     const api_version = vault ? vault.apiVersion : '';
     const emergency_shut_down =
@@ -64,10 +66,18 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                 }}
             />
         );
-    const rewards = vault ? checkLabel(vault.rewards) : '';
-    const governance = vault ? checkLabel(vault.governance) : '';
-    const management = vault ? checkLabel(vault.management) : '';
-    const guardian = vault ? checkLabel(vault.guardian) : '';
+    const rewards = vault
+        ? networkConfig.treasury.getEnsOrAddress(vault.rewards)
+        : '';
+    const governance = vault
+        ? networkConfig.governance.getEnsOrAddress(vault.governance)
+        : '';
+    const management = vault
+        ? networkConfig.management.getEnsOrAddress(vault.management)
+        : '';
+    const guardian = vault
+        ? networkConfig.guardian.getEnsOrAddress(vault.guardian)
+        : '';
     const total_asset =
         vault &&
         displayAmount(vault.totalAssets, vault.token.decimals) +
@@ -238,6 +248,7 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                             label="Total Assets (USD):"
                             token={vault.token}
                             amount={vault.totalAssets}
+                            network={network}
                         />
                     ) : (
                         ''
@@ -401,7 +412,6 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                                     <LabelTypography>
                                         {render_error}
                                     </LabelTypography>{' '}
-                                    {render_error}
                                 </StyledTableCell>
                             </MediaQuery>
                         </StyledTableRow>

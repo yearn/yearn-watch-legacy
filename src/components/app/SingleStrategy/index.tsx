@@ -15,15 +15,16 @@ import Tab from '@material-ui/core/Tab';
 import StrategyDetail from './StrategyDetail';
 
 import { ErrorAlert } from '../../common/Alerts';
-import { Strategy, Vault } from '../../../types';
+import { Strategy, Vault, Network, DEFAULT_NETWORK } from '../../../types';
 
 import BreadCrumbs from './BreadCrumbs';
 import EtherScanLink from '../../common/EtherScanLink';
 import ReactHelmet from '../../common/ReactHelmet';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 
+import { getService as getVaultService } from '../../../services/VaultService';
 import { getStrategies } from '../../../utils/strategies';
-import { getVault } from '../../../utils/vaults';
+import { getError } from '../../../utils/error';
 import { getReportsForStrategy, StrategyReport } from '../../../utils/reports';
 
 import StrategyReports from './StrategyReports';
@@ -70,6 +71,7 @@ const StyledSpan = styled.span`
 interface ParamTypes {
     strategyId: string;
     vaultId: string;
+    network?: Network;
 }
 
 // TODO: refactor this into util func
@@ -85,7 +87,11 @@ const getWarnings = (strategies: Strategy[]): string[] => {
 };
 
 export const SingleStrategy = () => {
-    const { strategyId, vaultId } = useParams<ParamTypes>();
+    const {
+        strategyId,
+        vaultId,
+        network = DEFAULT_NETWORK,
+    } = useParams<ParamTypes>();
 
     const [strategyData, setStrategyData] = useState<Strategy[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -105,6 +111,7 @@ export const SingleStrategy = () => {
         setValue(newValue);
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleCloseSnackBar = (event: any) => {
         setOpenSB(false);
     };
@@ -112,35 +119,44 @@ export const SingleStrategy = () => {
     useEffect(() => {
         const loadStrategyData = async () => {
             setIsLoading(true);
-            setIsVaultLoading(true);
-            setIsReportsLoading(true);
             setError(null);
-            // we don't want to handle error here for now
-            getReportsForStrategy(strategyId).then((reports) => {
-                setStrategyReports(reports);
-                setIsReportsLoading(false);
-            });
             try {
-                const loadedStrategy = await getStrategies([strategyId]);
+                setIsReportsLoading(true);
+                // we don't want to handle error here for now
+                getReportsForStrategy(strategyId, network).then((reports) => {
+                    setStrategyReports(reports);
+                    setIsReportsLoading(false);
+                });
+                const loadedStrategy = await getStrategies(
+                    [strategyId],
+                    network
+                );
                 setStrategyData(loadedStrategy);
                 const warnings = getWarnings(loadedStrategy);
                 if (warnings.length > 0) {
                     setWarningFields(warnings);
                 }
                 setIsLoading(false);
-            } catch (error) {
-                console.log('Error:', error);
+            } catch (e: unknown) {
+                console.log('Error:', e);
                 setIsLoading(false);
-                setError(error);
+                setIsVaultLoading(false);
+                setIsReportsLoading(false);
+                setError(getError(e));
             }
+            // TODO: refactor this second try catch into above one
             try {
-                const loadedVault = await getVault(vaultId);
+                setIsVaultLoading(true);
+                const vaultService = getVaultService(network);
+                const loadedVault = await vaultService.getVault(vaultId);
                 setVault(loadedVault);
                 setIsVaultLoading(false);
-            } catch (error) {
-                console.log('Error:', error);
+            } catch (e: unknown) {
+                console.log('Error:', e);
+                setIsLoading(false);
                 setIsVaultLoading(false);
-                setError(error);
+                setIsReportsLoading(false);
+                setError(getError(e));
             }
         };
         loadStrategyData();
@@ -188,6 +204,7 @@ export const SingleStrategy = () => {
                                 <BreadCrumbs
                                     vaultId={vaultId}
                                     strategyId={strategyId}
+                                    network={network}
                                 />
                             </StyledCardBreadCrumbs>
                             <StyledCard
@@ -204,6 +221,7 @@ export const SingleStrategy = () => {
                                             {strategy ? (
                                                 <EtherScanLink
                                                     address={strategy.address}
+                                                    network={network}
                                                 />
                                             ) : (
                                                 ''
@@ -243,9 +261,13 @@ export const SingleStrategy = () => {
                                     }}
                                 >
                                     {value === 0 ? (
-                                        <StrategyDetail strategy={strategy} />
+                                        <StrategyDetail
+                                            strategy={strategy}
+                                            network={network}
+                                        />
                                     ) : (
                                         <StrategyReports
+                                            network={network}
                                             reports={strategyReports}
                                             tokenDecimals={
                                                 strategy

@@ -15,12 +15,13 @@ import {
     formatBPS,
 } from '../../../utils/commonUtils';
 import { isStrategyActiveWithZeroDebt } from '../../../utils/alerts';
-import { Strategy, Vault } from '../../../types';
+import { Network, Strategy, Vault } from '../../../types';
 import DebTooltip from '../../common/DebToolTip';
 
 type StrategiesListProps = {
     vault: Vault;
     expand?: boolean;
+    network: Network;
 };
 
 const shouldHighlightStrategy = (strat: Strategy) => {
@@ -116,7 +117,7 @@ const StyledLink = styled.a`
     }
 `;
 const _StrategiesList = (props: StrategiesListProps) => {
-    const { vault, expand = true } = props;
+    const { vault, network, expand = true } = props;
     const config = vault.configOK;
 
     return (
@@ -150,7 +151,7 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                         <Grid item md={4} xs={12}>
                                             <StyledTitle>
                                                 <StyledLink
-                                                    href={`/vault/${strategy.vault}/strategy/${strategy.address}`}
+                                                    href={`/network/${network}/vault/${strategy.vault}/strategy/${strategy.address}`}
                                                     rel="noreferrer"
                                                 >
                                                     <Hidden smUp>
@@ -173,6 +174,7 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                             <Grid item md={6} xs={9}>
                                                 <EtherScanLink
                                                     address={strategy.address}
+                                                    network={network}
                                                 />
                                             </Grid>
                                         </Hidden>
@@ -187,7 +189,10 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                 style={{ marginLeft: 10 }}
                             >
                                 <Grid item md={8} xs={12}>
-                                    <EtherScanLink address={strategy.address} />
+                                    <EtherScanLink
+                                        address={strategy.address}
+                                        network={network}
+                                    />
                                 </Grid>
                             </Grid>
                         </Hidden>

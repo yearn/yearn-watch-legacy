@@ -9,7 +9,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Tooltip from '@material-ui/core/Tooltip';
-import { Vault } from '../../../types';
+import { Network, Vault } from '../../../types';
 import { StrategiesList } from '../StrategiesList';
 import EtherScanLink from '../../common/EtherScanLink';
 
@@ -22,6 +22,7 @@ import { HtmlTooltip } from '../../common/HtmlTooltip';
 type VaultItemListProps = {
     vault: Vault;
     key: number;
+    network: Network;
 };
 
 const StyledExpandMoreIcon = styled(ExpandMoreIcon)`
@@ -83,7 +84,7 @@ const StyledMuiAccordion = styled(MuiAccordion)<{ config: string }>`
     }
 `;
 const _VaultItemList = (props: VaultItemListProps) => {
-    const { vault } = props;
+    const { vault, network } = props;
     const config = vault.configOK;
     //hook to render list only when panel actually expanded
     const [expanded, setExpanded] = useState(false);
@@ -106,10 +107,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
             >
                 <Grid container spacing={1} justify="flex-start">
                     <Grid item md={12} xs={12}>
-                        <BlueOnGreenTooltip
-                            title="Incorrect performance fee"
-                            placement="top"
-                        >
+                        <BlueOnGreenTooltip title="" placement="top">
                             <Grid
                                 container
                                 spacing={1}
@@ -168,7 +166,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
                                         ''
                                     )}
                                     <a
-                                        href={`/vault/${vault.address}`}
+                                        href={`/network/${network}/vault/${vault.address}`}
                                         rel="noreferrer"
                                     >
                                         <StyledTextValue>
@@ -188,6 +186,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
                                         <EtherScanLink
                                             address={vault.address}
                                             dark={true}
+                                            network={network}
                                         />
                                     </Grid>
                                 </Hidden>
@@ -200,13 +199,23 @@ const _VaultItemList = (props: VaultItemListProps) => {
                 <Grid container spacing={2}>
                     <Grid item md={1} xs={1}></Grid>
                     <Grid item md={8} xs={11}>
-                        <EtherScanLink address={vault.address} dark={true} />
+                        <EtherScanLink
+                            address={vault.address}
+                            dark={true}
+                            network={network}
+                        />
                     </Grid>
                 </Grid>
             </Hidden>
 
             <AccordionDetails>
-                {expanded && <StrategiesList vault={vault} expand={expanded} />}
+                {expanded && (
+                    <StrategiesList
+                        vault={vault}
+                        expand={expanded}
+                        network={network}
+                    />
+                )}
             </AccordionDetails>
         </StyledMuiAccordion>
     );

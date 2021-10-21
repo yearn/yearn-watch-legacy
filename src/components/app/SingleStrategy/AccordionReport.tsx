@@ -14,6 +14,7 @@ import { unixMsToIsoString } from '../../../utils/dateUtils';
 import { StrategyReport } from '../../../utils/reports';
 import { median } from '../../../utils/math';
 import ItemDescription from '../../common/ItemDescription';
+import { Network } from '../../../types';
 
 const StyledTypography = styled(Typography)`
     && {
@@ -48,10 +49,10 @@ const StyledExpandMoreIcon = styled(ExpandMoreIcon)`
 type AccordionReportProps = {
     data: StrategyReport[];
     tokenDecimals: number;
+    network: Network;
 };
 const AccordionReport = (props: AccordionReportProps) => {
-    const { data, tokenDecimals } = props;
-
+    const { data, tokenDecimals, network } = props;
     const aprList = compact(data.map((item) => item.results?.apr));
     const averageApr = aprList.length === 0 ? 0 : mean(aprList);
     const medianApr = aprList.length === 0 ? 0 : median(aprList);
@@ -87,6 +88,7 @@ const AccordionReport = (props: AccordionReportProps) => {
                             >
                                 <EtherScanLink
                                     transactionHash={res.transactionHash}
+                                    network={network}
                                 />
 
                                 <StyledSubTypography>

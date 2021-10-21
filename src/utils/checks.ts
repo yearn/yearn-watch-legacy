@@ -1,34 +1,8 @@
-import { Vault } from '../types';
+import { NetworkConfig, Vault } from '../types';
 
 export type VaultCheck = {
     checkOK: boolean;
     errors?: string[];
-};
-
-// ychad.eth
-const GOVERNANCE = '0xfeb4acf3df3cdea7399794d0869ef76a6efaff52';
-// dev.ychad.eth
-const GUARDIAN = '0x846e211e8ba920b353fb717631c015cf04061cc9';
-// brain.ychad.eth
-const MANAGEMENT = '0x16388463d60FFE0661Cf7F1f31a7D658aC790ff7';
-// treasury.ychad.eth
-const TREASURY = '0x93a62da5a14c80f265dabc077fcee437b1a0efde';
-
-const MANAGEMENT_FEE = 200;
-
-const PERF_FEE = 1000;
-
-const addressMap = new Map<string, string>();
-addressMap.set(GOVERNANCE.toLowerCase(), 'ychad.eth');
-addressMap.set(GUARDIAN.toLowerCase(), 'dev.ychad.eth');
-addressMap.set(MANAGEMENT.toLowerCase(), 'brain.ychad.eth');
-addressMap.set(TREASURY.toLowerCase(), 'treasury.ychad.eth');
-
-export const checkLabel = (address: string) => {
-    if (addressMap.has(address.toLowerCase())) {
-        return addressMap.get(address.toLowerCase());
-    }
-    return address;
 };
 
 const INCOMPATIBLE_VERSIONS_API = new Set(['0.3.0', '0.3.1']);
@@ -42,53 +16,55 @@ type ValueLike = string | number;
 const checks = [
     {
         field: 'governance',
-        validate: (value: ValueLike): boolean =>
+        validate: (value: ValueLike, networkConfig: NetworkConfig): boolean =>
             typeof value === 'string' &&
-            value.toLowerCase() === GOVERNANCE.toLowerCase(),
+            networkConfig.governance.isAddress(value),
         error: 'value incorrect for governance',
     },
     {
         field: 'guardian',
-        validate: (value: ValueLike): boolean =>
+        validate: (value: ValueLike, networkConfig: NetworkConfig): boolean =>
             typeof value === 'string' &&
-            value.toLowerCase() === GUARDIAN.toLowerCase(),
+            networkConfig.guardian.isAddress(value),
         error: 'value incorrect for guardian',
     },
     {
         field: 'management',
-        validate: (value: ValueLike): boolean =>
+        validate: (value: ValueLike, networkConfig: NetworkConfig): boolean =>
             typeof value === 'string' &&
-            value.toLowerCase() === MANAGEMENT.toLowerCase(),
+            networkConfig.management.isAddress(value),
         error: 'value incorrect for management',
     },
     {
         field: 'managementFee',
-        validate: (value: ValueLike): boolean =>
-            typeof value === 'number' && value === MANAGEMENT_FEE,
+        validate: (value: ValueLike, networkConfig: NetworkConfig): boolean =>
+            typeof value === 'number' && networkConfig.isManagementFee(value),
         error: 'value incorrect for management fee',
     },
     {
         field: 'performanceFee',
-        validate: (value: ValueLike): boolean =>
-            typeof value === 'number' && value === PERF_FEE,
+        validate: (value: ValueLike, networkConfig: NetworkConfig): boolean =>
+            typeof value === 'number' && networkConfig.isPerformanceFee(value),
         error: 'value incorrect for performance fee',
     },
     {
         field: 'rewards',
-        validate: (value: ValueLike): boolean =>
+        validate: (value: ValueLike, networkConfig: NetworkConfig): boolean =>
             typeof value === 'string' &&
-            value.toLowerCase() === TREASURY.toLowerCase(),
+            networkConfig.treasury.isAddress(value),
         error: 'value incorrect for rewards',
     },
 ];
 
-export const vaultChecks = (vault: Vault): Vault => {
+export const vaultChecks = (
+    vault: Vault,
+    networkConfig: NetworkConfig
+): Vault => {
     const result: VaultCheck = { checkOK: true };
-
     checks.forEach((check) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        if (!check.validate(vault[check.field])) {
+        if (!check.validate(vault[check.field], networkConfig)) {
             result.checkOK = false;
             result.errors = result.errors
                 ? [...result.errors, check.error]

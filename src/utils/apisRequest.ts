@@ -2,6 +2,9 @@
 import axios from 'axios';
 import { memoize } from 'lodash';
 
+import getNetworkConfig from './config';
+import { Network } from '../types';
+
 export const { get, all, post, put, spread } = axios;
 
 type ApiDataResponse = {
@@ -11,8 +14,6 @@ type ApiDataResponse = {
 export const VAULTS_ALL_EXPERIMENTAL = '/vaults/experimental';
 export const VAULTS_ALL = '/vaults/all';
 const API_URL = 'https://api.yearn.finance/v1/chains/1';
-const SUBGRAPH_URL =
-    'https://api.thegraph.com/subgraphs/name/salazarguille/yearn-vaults-v2-subgraph-mainnet';
 
 // const filterToExperimentals = (res: any): ApiDataResponse => {
 //     const response = { data: [] };
@@ -63,10 +64,14 @@ request: XMLHttpRequest {readyState: 4, timeout: 0, withCredentials: false, uplo
 status: 200
 statusText: ""
 */
-const querySubgraph = async (query: string): Promise<SubgraphResponse> => {
+const querySubgraph = async (
+    query: string,
+    network: Network = Network.mainnet
+): Promise<SubgraphResponse> => {
+    const { subgraphUrl } = getNetworkConfig(network);
     try {
         const response: SubgraphAPIResponse = await axios.post(
-            `${SUBGRAPH_URL}`,
+            `${subgraphUrl}`,
             {
                 query,
             }
