@@ -1,15 +1,9 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import {
-    Container,
-    TextField,
-    Button,
-    Grid,
-    FormControlLabel,
-} from '@material-ui/core';
+import { Container, TextField, Button, Grid } from '@material-ui/core';
 import styled from 'styled-components';
 
-const StyledForm = styled.form`
+const StyledForm = styled.div`
     && {
         width: 100%;
         align-items: center;
@@ -21,7 +15,6 @@ const StyledContainer = styled(Container)`
         align-items: center;
         align-content: center;
         background-color: ${({ theme }) => theme.container} !important;
-
         border-radius: 8px;
     }
 `;
@@ -45,11 +38,10 @@ const StyledTextField = styled(TextField)`
         }
     }
 `;
-const StyledFormControlLabel = styled(FormControlLabel)`
+const StyledHeader = styled.div`
     && {
-        color: ${({ theme }) => theme.text} !important;
-        margin: 8px;
-        opacity: 1;
+        color: #363537;
+        margin-left: 1em;
     }
 `;
 
@@ -66,34 +58,33 @@ export const ExperimentalVault = () => {
     };
     return (
         <div>
-            <h3>View Experimental Vaults</h3>
-            <p>
-                Find contract addresses on&nbsp;
-                <a href="https://ape.tax/">ape.tax</a>&nbsp;
-            </p>
+            <StyledHeader>
+                <h3>View Experimental Vaults</h3>
+                <p>
+                    Find contract addresses on&nbsp;
+                    <a href="https://ape.tax/">ape.tax</a>&nbsp;
+                </p>
+            </StyledHeader>
             <StyledForm>
-                <Grid container direction="row" alignItems="center">
-                    <Grid item xs={8} sm={6}>
-                        <form
-                            noValidate
-                            autoComplete="off"
-                            onChange={handleChange}
+                <Grid container direction="row" alignItems="center" spacing={3}>
+                    <Grid item xs={6}>
+                        <StyledContainer maxWidth="lg">
+                            <StyledTextField
+                                onChange={handleChange}
+                                id="filled-basic"
+                                variant="outlined"
+                                placeholder="Vault Contract 0x...123"
+                            />
+                        </StyledContainer>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleClick}
                         >
-                            <StyledContainer maxWidth="lg">
-                                <StyledTextField
-                                    id="filled-basic"
-                                    variant="outlined"
-                                    placeholder="Vault Contract 0x...123"
-                                />
-                            </StyledContainer>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={handleClick}
-                            >
-                                View Vault
-                            </Button>
-                        </form>
+                            View Vault
+                        </Button>
                     </Grid>
                 </Grid>
             </StyledForm>
