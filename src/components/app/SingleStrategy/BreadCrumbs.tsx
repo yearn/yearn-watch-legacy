@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
 type BreadCrumbsProps = {
     vaultId: string;
     strategyId?: string;
-    network?: string;
+    network?: Network;
 };
 const BreadCrumbs = (props: BreadCrumbsProps) => {
     const { vaultId, strategyId, network = 'ethereum' } = props;

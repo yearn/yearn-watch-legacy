@@ -111,8 +111,7 @@ export const SingleStrategy = () => {
         setValue(newValue);
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const handleCloseSnackBar = (event: any) => {
+    const handleCloseSnackBar = () => {
         setOpenSB(false);
     };
 
