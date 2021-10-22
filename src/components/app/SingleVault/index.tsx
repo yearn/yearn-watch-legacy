@@ -157,7 +157,7 @@ export const SingleVault = (props: SingleVaultProps) => {
         setValue(newValue);
     };
 
-    const handleCloseSnackBar = (event: any) => {
+    const handleCloseSnackBar = () => {
         setOpenSB(false);
     };
 
