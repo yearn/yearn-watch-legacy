@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Network } from '../../../types';
 import { Container, TextField, Button, Grid } from '@material-ui/core';
 import styled from 'styled-components';
 
@@ -45,16 +46,22 @@ const StyledHeader = styled.div`
     }
 `;
 
-export const ExperimentalVault = () => {
-    const [contract, setContract] = useState<string>('');
+type VaultsListProps = {
+    network: Network;
+};
+
+export const ExperimentalVault = (props: VaultsListProps) => {
+    const [vaultAddress, setVaultAddress] = useState<string>('');
+    const { network } = props;
+    const vaultUri = `/network/${network}/vault/${vaultAddress}`;
     const history = useHistory();
 
-    const handleClick = (event: React.ChangeEvent<any>) => {
-        history.push(`/vault/${contract}`);
+    const handleClick = () => {
+        history.push(vaultUri);
     };
 
-    const handleChange = (event: React.ChangeEvent<any>) => {
-        setContract(event?.target.value);
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setVaultAddress(event?.target.value);
     };
     return (
         <div>

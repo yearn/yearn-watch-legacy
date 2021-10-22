@@ -17,10 +17,8 @@ import {
 } from '../../../types';
 import { getError } from '../../../utils/error';
 import { GlobalStylesLoading } from '../../theme/globalStyles';
-import { Container } from '@material-ui/core';
 import { ExperimentalVault } from '../../common/SearchInput/ExperimentalVault';
 import { ParamTypes } from '../../../types/DefaultParamTypes';
-
 
 const BATCH_NUMBER = 30;
 
@@ -106,7 +104,7 @@ export const Home = () => {
                     />
                 )}
             </div>
-            <ExperimentalVault></ExperimentalVault>
+            <ExperimentalVault network={network}></ExperimentalVault>
         </Container>
     );
 };
