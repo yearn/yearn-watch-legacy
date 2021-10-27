@@ -21,6 +21,7 @@ import {
     buildStrategyCalls,
     StrategyHealthCheck,
     getHealthCheckForStrategy,
+    getHealthCheckForAllStrategies,
 } from './strategies';
 import { getTotalDebtUsage } from './strategyParams';
 
@@ -136,6 +137,18 @@ const mapVaultData = async (
     strategyMap: Map<string, string>
 ): Promise<Vault[]> => {
     const vaults: Vault[] = [];
+    const allStratAddresses: string[] = [];
+
+    for (const vault of Array.from(vaultMap.values())) {
+        const { strategies } = vault;
+        strategies.map(({ address }) =>
+            allStratAddresses.push(address.toLowerCase())
+        );
+    }
+
+    const allHealthCheckInfos: StrategyHealthCheck[] = await getHealthCheckForAllStrategies(
+        allStratAddresses
+    );
 
     for (const vault of Array.from(vaultMap.values())) {
         const {
@@ -177,12 +190,20 @@ const mapVaultData = async (
 
         const strategyHealthCheckMap = new Map<string, StrategyHealthCheck>();
         const stratAddresses = strategies.map(({ address }) => address);
-        const healthCheckPromisesResult = stratAddresses.map((address) => {
-            return getHealthCheckForStrategy(address);
-        });
-        const healthCheckResult = await Promise.all(healthCheckPromisesResult);
-        healthCheckResult.forEach((healthCheckInfo) => {
-            strategyHealthCheckMap.set(healthCheckInfo.id, healthCheckInfo);
+        stratAddresses.map((address) => {
+            const healthCheckInfo = allHealthCheckInfos.find(
+                (healthInfo) => healthInfo.id === address
+            );
+            strategyHealthCheckMap.set(
+                address,
+                healthCheckInfo
+                    ? healthCheckInfo
+                    : {
+                          doHealthCheck: false,
+                          healthCheck: null,
+                          id: address,
+                      }
+            );
         });
         const mappedStrategies: Strategy[] = mapStrategiesCalls(
             stratAddresses,
