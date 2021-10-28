@@ -270,21 +270,17 @@ export const getHealthCheckForAllStrategies = async (
         bigIndex <= allStratAddresses.length / 100;
         bigIndex++
     ) {
-        let addressArrayFormatted = '[';
-        for (
-            let index = 100 * bigIndex;
-            index < allStratAddresses.length && index < (bigIndex + 1) * 100;
-            index++
-        ) {
-            addressArrayFormatted += '"' + allStratAddresses[index] + '"';
-            if (
-                index < allStratAddresses.length - 1 &&
-                index < (bigIndex + 1) * 100
-            ) {
-                addressArrayFormatted += ',';
-            }
-        }
-        addressArrayFormatted += ']';
+        const addressArrayFormatted =
+            '["' +
+            allStratAddresses
+                .slice(
+                    100 * bigIndex,
+                    allStratAddresses.length < (bigIndex + 1) * 100
+                        ? allStratAddresses.length - 1
+                        : (bigIndex + 1) * 100 - 1
+                )
+                .join('", "') +
+            '"]';
         const healthCheckResults: StrategyHealthCheckGraphResult = await querySubgraphData(
             buildAllHealthCheckQuery(addressArrayFormatted)
         );
@@ -294,7 +290,7 @@ export const getHealthCheckForAllStrategies = async (
             healthCheckResults.data.strategies.length > 0;
 
         if (hasData) {
-            healthCheckResults.data.strategies.map((strategy) => {
+            healthCheckResults.data.strategies.forEach((strategy) => {
                 healthCheckInfos.push({
                     doHealthCheck: strategy.doHealthCheck,
                     healthCheck: strategy.healthCheck,

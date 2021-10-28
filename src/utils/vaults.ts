@@ -192,7 +192,8 @@ const mapVaultData = async (
         const stratAddresses = strategies.map(({ address }) => address);
         stratAddresses.map((address) => {
             const healthCheckInfo = allHealthCheckInfos.find(
-                (healthInfo) => healthInfo.id === address
+                (healthInfo) =>
+                    healthInfo.id.toLowerCase() === address.toLowerCase()
             );
             strategyHealthCheckMap.set(
                 address,
