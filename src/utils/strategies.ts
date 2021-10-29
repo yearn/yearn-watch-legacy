@@ -33,6 +33,20 @@ const buildHealthCheckQuery = (strategy: string): string => `
   }
 `;
 
+const buildAllHealthCheckQuery = (
+    strategiesAddressFormatted: string
+): string => `
+{
+    strategies(where: {
+      id_in: ${strategiesAddressFormatted}
+    }) {
+        id
+        healthCheck
+        doHealthCheck
+      }
+  }
+`;
+
 interface VaultVersionInfo {
     apiVersion: string;
     want: string;
@@ -240,6 +254,53 @@ export const getHealthCheckForStrategy = async (
         healthCheckInfo.healthCheck = strategyInfo.healthCheck;
     }
     return healthCheckInfo;
+};
+
+export const getHealthCheckForAllStrategies = async (
+    allStratAddresses: string[]
+): Promise<StrategyHealthCheck[]> => {
+    if (!allStratAddresses || allStratAddresses.length === 0) {
+        throw new Error(
+            'Error: getHealthCheckForAllStrategies expected valid strategy addresses array'
+        );
+    }
+    const healthCheckInfos: StrategyHealthCheck[] = [];
+    for (
+        let bigIndex = 0;
+        bigIndex <= allStratAddresses.length / 100;
+        bigIndex++
+    ) {
+        const addressArrayFormatted =
+            '["' +
+            allStratAddresses
+                .slice(
+                    100 * bigIndex,
+                    allStratAddresses.length < (bigIndex + 1) * 100
+                        ? allStratAddresses.length - 1
+                        : (bigIndex + 1) * 100 - 1
+                )
+                .join('", "') +
+            '"]';
+        const healthCheckResults: StrategyHealthCheckGraphResult = await querySubgraphData(
+            buildAllHealthCheckQuery(addressArrayFormatted)
+        );
+        const hasData =
+            healthCheckResults.data &&
+            healthCheckResults.data.strategies &&
+            healthCheckResults.data.strategies.length > 0;
+
+        if (hasData) {
+            healthCheckResults.data.strategies.forEach((strategy) => {
+                healthCheckInfos.push({
+                    doHealthCheck: strategy.doHealthCheck,
+                    healthCheck: strategy.healthCheck,
+                    id: strategy.id,
+                });
+            });
+        }
+    }
+
+    return healthCheckInfos;
 };
 
 const innerGetStrategies = async (addresses: string[]): Promise<Strategy[]> => {
