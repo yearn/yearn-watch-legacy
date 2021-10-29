@@ -87,15 +87,22 @@ export const getStrategyTVLsPerProtocol = async (
     const strategiesInfo = await getStrategies(strategyAddresses, network);
     const strategiesPromises = strategiesInfo.map(
         async (strategy: Strategy): Promise<StrategyTVL> => {
-            return {
-                ...strategy,
-                estimatedTotalAssetsUsdc: await getTokenPrice(
-                    strategy.token,
-                    // TODO: fix this to not fetch token price if estimatedTotalAssets failed
-                    strategy.estimatedTotalAssets || '0',
-                    network
-                ),
-            };
+            if (strategy.estimatedTotalAssets) {
+                return {
+                    ...strategy,
+                    estimatedTotalAssetsUsdc: await getTokenPrice(
+                        strategy.token,
+                        strategy.estimatedTotalAssets,
+                        network
+                    ),
+                };
+            } else {
+                // estimatedTotalAssets failed, do not request USDC value
+                return {
+                    ...strategy,
+                    estimatedTotalAssetsUsdc: new BigNumber(0),
+                };
+            }
         }
     );
     const strategies = (await Promise.all(strategiesPromises)).sort(
