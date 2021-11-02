@@ -1,10 +1,5 @@
 import { useMemo } from 'react';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Redirect,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyles } from './components/theme/globalStyles';
 import { useDarkMode } from './components/theme/useDarkMode';
@@ -75,8 +70,6 @@ const App = () => {
                             component={Risk}
                         />
                     </AuthProvider>
-
-                    <Redirect from="*" to="/" />
                 </ThemeProvider>
             </Switch>
         </Router>
