@@ -64,7 +64,11 @@ const App = () => {
                     <AuthProvider>
                         <Route exact path="/signin" component={SignIn} />
                         <Route exact path="/signout" component={SignIn} />
-                        <PrivateRoute exact path="/risk" component={Risk} />
+                        <PrivateRoute
+                            exact
+                            path="/network/:network/risk"
+                            component={Risk}
+                        />
                     </AuthProvider>
                 </ThemeProvider>
             </Switch>
