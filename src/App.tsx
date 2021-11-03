@@ -31,10 +31,14 @@ const App = () => {
                     <NavBar themeToggler={themeToggler} theme={theme} />
                     <Route exact path="/" component={Home} />
                     <Route exact path="/network/:network" component={Home} />
-                    <Route exact path="/query" component={Query} />
                     <Route
                         exact
-                        path="/query/:groupingId/group/:groups"
+                        path="/network/:network/query"
+                        component={Query}
+                    />
+                    <Route
+                        exact
+                        path="/network/:network/query/:groupingId/group/:groups"
                         component={Query}
                     />
                     <Route

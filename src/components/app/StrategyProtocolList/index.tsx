@@ -1,7 +1,11 @@
 /* eslint-disable react/display-name */
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router';
+
 import { ProtocolTVL } from '../../../types/protocol-tvl';
+import { ParamTypes } from '../../../types/DefaultParamTypes';
+import { DEFAULT_NETWORK } from '../../../types';
 import { amountToMMs, extractAddress } from '../../../utils/commonUtils';
 import { getTvlImpact } from '../../../utils/risk';
 import { GenericList, GenericListItem } from '../GenericList';
@@ -17,7 +21,7 @@ const headCells: HeadCell[] = [
             return (
                 <Link
                     color="inherit"
-                    to={`/vault/${item.vault}/strategy/${item.strategy}`}
+                    to={`/network/${item.network}/vault/${item.vault}/strategy/${item.strategy}`}
                     target="_blank"
                 >
                     {`${item.name} (${extractAddress(
@@ -90,11 +94,14 @@ type StrategyProtocolListProps = {
 };
 
 export const StrategyProtocolList = (props: StrategyProtocolListProps) => {
+    const { network = DEFAULT_NETWORK } = useParams<ParamTypes>();
+
     const classes = useStyles();
     const strategies = props.item.strategies.map((strategyTVL) => {
         const amountInMMs = amountToMMs(strategyTVL.estimatedTotalAssetsUsdc);
         return {
             vault: strategyTVL.vault,
+            network,
             strategy: strategyTVL.address,
             name: strategyTVL.name,
             activation: Date.parse(strategyTVL.params.activation),
