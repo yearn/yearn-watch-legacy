@@ -23,7 +23,7 @@ export const scoreHeadCells: HeadCell[] = [
                     <Link
                         color="inherit"
                         target="_blank"
-                        to={`/query/${item.groupingId}/group/${item.groups}/${item.urlParam}`}
+                        to={`/network/${item.network}/query/${item.groupingId}/group/${item.groups}/${item.urlParam}`}
                     >
                         <MonetizationOnRoundedIcon
                             fontSize="small"
