@@ -10,6 +10,7 @@ export type Grouping = {
         strategies: string[]; // addresses
         exclude: string[]; // don't include this addresses
     };
+    network: string;
     codeReviewScore: number;
     testingScore: number;
     auditScore: number;

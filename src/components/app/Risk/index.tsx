@@ -52,7 +52,9 @@ export const Risk = () => {
     );
 
     if (groups.length === 0 && groupData) {
-        setGroups(groupData.data.groups);
+        setGroups(
+            groupData.data.groups.filter((group) => group.network === network)
+        );
     }
     const classes = useStyles();
     useEffect(() => {
