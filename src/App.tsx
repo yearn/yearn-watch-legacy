@@ -1,5 +1,10 @@
 import { useMemo } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Redirect,
+} from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyles } from './components/theme/globalStyles';
 import { useDarkMode } from './components/theme/useDarkMode';
@@ -31,10 +36,14 @@ const App = () => {
                     <NavBar themeToggler={themeToggler} theme={theme} />
                     <Route exact path="/" component={Home} />
                     <Route exact path="/network/:network" component={Home} />
-                    <Route exact path="/query" component={Query} />
                     <Route
                         exact
-                        path="/query/:groupingId/group/:groups"
+                        path="/network/:network/query"
+                        component={Query}
+                    />
+                    <Route
+                        exact
+                        path="/network/:network/query/:groupingId/group/:groups"
                         component={Query}
                     />
                     <Route
@@ -64,7 +73,14 @@ const App = () => {
                     <AuthProvider>
                         <Route exact path="/signin" component={SignIn} />
                         <Route exact path="/signout" component={SignIn} />
-                        <PrivateRoute exact path="/risk" component={Risk} />
+                        <PrivateRoute
+                            exact
+                            path="/network/:network/risk"
+                            component={Risk}
+                        />
+                        <Route path="/risk">
+                            <Redirect to="/network/ethereum/risk" />
+                        </Route>
                     </AuthProvider>
                 </ThemeProvider>
             </Switch>
