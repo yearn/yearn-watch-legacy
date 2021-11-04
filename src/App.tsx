@@ -1,5 +1,10 @@
 import { useMemo } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Redirect,
+} from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyles } from './components/theme/globalStyles';
 import { useDarkMode } from './components/theme/useDarkMode';
@@ -73,6 +78,9 @@ const App = () => {
                             path="/network/:network/risk"
                             component={Risk}
                         />
+                        <Route path="/risk">
+                            <Redirect to="/network/ethereum/risk" />
+                        </Route>
                     </AuthProvider>
                 </ThemeProvider>
             </Switch>
