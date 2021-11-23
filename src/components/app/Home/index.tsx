@@ -76,7 +76,7 @@ export const Home = () => {
             }
         };
         loadVaultData();
-    }, []);
+    }, [network]);
 
     return (
         <Container maxWidth="lg">
