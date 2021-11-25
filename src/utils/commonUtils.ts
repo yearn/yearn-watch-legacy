@@ -31,6 +31,8 @@ export const toDecimals = (amount: BigNumberish, decimals: number): BN => {
     return new BN(amount.toString()).times(new BN(10).pow(decimals));
 };
 
+export const EMPTY_ADDRESS = '0x0000000000000000000000000000000000000000';
+
 export const extractAddress = (address: string) => {
     return (
         address.substring(0, 6) +

@@ -10,7 +10,7 @@ import {
     Network,
 } from '../types';
 import { mapStrategyParams } from './strategyParams';
-import { mapContractCalls } from './commonUtils';
+import { EMPTY_ADDRESS, mapContractCalls } from './commonUtils';
 import StratABI from './contracts/ABI/Strategy.json';
 import TokenABI from './contracts/ABI/Token.json';
 import { getEndorsedVaults } from './vaults';
@@ -33,6 +33,8 @@ const STRAT_VIEW_METHODS = [
     'estimatedTotalAssets',
     'delegatedAssets',
     'want',
+    'doHealthCheck',
+    'healthCheck',
 ];
 
 const STRAT_PARAM_METHODS: string[] = [
@@ -172,6 +174,12 @@ export const mapStrategiesCalls = (
             strategyWithdrawalQueueIndex === undefined
                 ? -1
                 : strategyWithdrawalQueueIndex.queueIndex;
+        if (!mappedStrat.healthCheck) {
+            mappedStrat.healthCheck = EMPTY_ADDRESS;
+        }
+        if (!mappedStrat.doHealthCheck) {
+            mappedStrat.doHealthCheck = false;
+        }
         return {
             ...mappedVaultStratInfo,
             ...mappedStrat,
