@@ -168,11 +168,9 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                         {strategy.name}
                                                     </Hidden>
 
-                                                    <Hidden xsDown>
-                                                        <HealthCheckIcon
-                                                            strategy={strategy}
-                                                        />
-                                                    </Hidden>
+                                                    <HealthCheckIcon
+                                                        strategy={strategy}
+                                                    />
                                                 </StyledLink>
                                             </StyledTitle>
                                         </Grid>
