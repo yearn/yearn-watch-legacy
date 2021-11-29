@@ -13,6 +13,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 import StrategyDetail from './StrategyDetail';
+import StrategyHealthCheck from './StrategyHealthCheck';
 
 import { ErrorAlert } from '../../common/Alerts';
 import { Strategy, Vault, Network, DEFAULT_NETWORK } from '../../../types';
@@ -252,6 +253,7 @@ export const SingleStrategy = () => {
                                 >
                                     <Tab label="Detail" />
                                     <Tab label="Reports" />
+                                    <Tab label="Health Check" />
                                 </Tabs>
                                 <div
                                     style={{
@@ -264,7 +266,7 @@ export const SingleStrategy = () => {
                                             strategy={strategy}
                                             network={network}
                                         />
-                                    ) : (
+                                    ) : value === 1 ? (
                                         <StrategyReports
                                             network={network}
                                             reports={strategyReports}
@@ -273,6 +275,11 @@ export const SingleStrategy = () => {
                                                     ? strategy.token.decimals
                                                     : 18
                                             }
+                                        />
+                                    ) : (
+                                        <StrategyHealthCheck
+                                            strategy={strategy}
+                                            network={network}
                                         />
                                     )}
                                 </div>
