@@ -10,7 +10,7 @@ import {
     Network,
 } from '../types';
 import { mapStrategyParams } from './strategyParams';
-import { EMPTY_ADDRESS, mapContractCalls } from './commonUtils';
+import { mapContractCalls } from './commonUtils';
 import StratABI from './contracts/ABI/Strategy.json';
 import TokenABI from './contracts/ABI/Token.json';
 import { getEndorsedVaults } from './vaults';
@@ -175,7 +175,7 @@ export const mapStrategiesCalls = (
                 ? -1
                 : strategyWithdrawalQueueIndex.queueIndex;
         if (!mappedStrat.healthCheck) {
-            mappedStrat.healthCheck = EMPTY_ADDRESS;
+            mappedStrat.healthCheck = null;
         }
         if (!mappedStrat.doHealthCheck) {
             mappedStrat.doHealthCheck = false;
