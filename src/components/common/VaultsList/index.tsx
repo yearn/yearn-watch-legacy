@@ -6,6 +6,7 @@ import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerB
 import { Network, Vault } from '../../../types';
 import SearchInput, { Flags } from '../SearchInput';
 import { VaultItemList } from '../../app';
+import { EMPTY_ADDRESS } from '../../../utils/commonUtils';
 
 type VaultsListProps = {
     items: Vault[];
@@ -42,11 +43,39 @@ const _VaultsList = (props: VaultsListProps) => {
         []
     );
 
+    const filterStrategiesHealthCheck = useMemo(
+        () => (vault: Vault, health: string) => {
+            const strategies = vault.strategies.filter((strategy) => {
+                switch (health) {
+                    case 'Enabled':
+                        return (
+                            strategy.healthCheck !== null &&
+                            strategy.doHealthCheck === true
+                        );
+                    case 'Disabled':
+                        return (
+                            (strategy.healthCheck !== null &&
+                                strategy.doHealthCheck === false) ||
+                            (strategy.doHealthCheck === true &&
+                                strategy.healthCheck?.toLowerCase() ===
+                                    EMPTY_ADDRESS)
+                        );
+                    case 'None':
+                        return strategy.healthCheck === null;
+                    default:
+                        return true;
+                }
+            });
+            return strategies;
+        },
+        []
+    );
+
     const onFilter = useCallback(
-        (newText: string, flags: Flags) => {
+        (newText: string, flags: Flags, health: string) => {
             console.time('timer');
             const hasFlags = flags.onlyWithWarnings;
-            if (!hasFlags && newText.trim() === '') {
+            if (!hasFlags && newText.trim() === '' && health.trim() === '') {
                 console.log('click clear');
                 console.time('clear');
                 setFilteredItems(items);
@@ -66,7 +95,6 @@ const _VaultsList = (props: VaultsListProps) => {
                             item,
                             newText
                         );
-                        totalStrategiesFound += filteredStrategies.length;
                         const hasVaultStrategies =
                             filteredStrategies.length > 0;
 
@@ -78,6 +106,14 @@ const _VaultsList = (props: VaultsListProps) => {
                             item.token.symbol.toLowerCase().includes(newText) ||
                             hasVaultStrategies;
                         return applyFilter;
+                    })
+                    .filter((item: Vault) => {
+                        const healthFilteredStrategies = filterStrategiesHealthCheck(
+                            item,
+                            health
+                        );
+                        totalStrategiesFound += healthFilteredStrategies.length;
+                        return healthFilteredStrategies.length > 0;
                     });
                 setFilteredItems(filteredItems);
                 setTotalStrategiesFound(totalStrategiesFound);

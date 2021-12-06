@@ -38,7 +38,10 @@ const HealthCheckIcon = (props: HealthCheckIconProps) => {
     if (healthCheck === null) {
         icon = <CancelRoundedIcon className={classes.redIcon} />;
     } else {
-        if (healthCheck?.toLowerCase() === EMPTY_ADDRESS) {
+        if (
+            healthCheck?.toLowerCase() === EMPTY_ADDRESS ||
+            doHealthCheck === false
+        ) {
             icon = <CheckCircleRoundedIcon className={classes.yellowIcon} />;
         } else {
             icon = <CheckCircleRoundedIcon className={classes.greenIcon} />;
