@@ -11,11 +11,14 @@ import {
     Switch,
     TextField,
     Grid,
+    Select,
+    MenuItem,
 } from '@material-ui/core';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 
 import { Delete, Search } from '@material-ui/icons';
 import ResultsLabel from '../ResultsLabel';
+import WarningLabel from '../WarningLabel';
 
 const StyledForm = styled.form`
     && {
@@ -69,6 +72,15 @@ const StyledFormControlLabel = styled(FormControlLabel)`
         opacity: 1;
     }
 `;
+const StyledSelect = styled(Select)`
+    && {
+        margin-left: 44px;
+        margin-top: 2px;
+        margin-bottom: 2px;
+        text-align: right;
+        min-width: 88px;
+    }
+`;
 export type Flags = {
     onlyWithWarnings: boolean;
 };
@@ -79,7 +91,7 @@ type SearchInputProps = {
     foundItems: number;
     totalSubItems: number;
     foundSubItems: number;
-    onFilter: (text: string, flags: Flags) => void;
+    onFilter: (text: string, flags: Flags, health: string) => void;
 };
 
 const getCurrentFlags = (onlyWithWarnings: boolean) => ({
@@ -100,11 +112,12 @@ const SearchInput = (props: SearchInputProps) => {
     const [filterVaultsWithWarnings, setFilterVaultsWithWarnings] = useState(
         false
     );
+    const [healthCheckFilter, setHealthCheckFilter] = useState('');
 
     const debounceFilter = useCallback(
         debounce((newSearchText, flags) => {
             const newSearchTextLowerCase = newSearchText.toLowerCase();
-            onFilter(newSearchTextLowerCase, flags);
+            onFilter(newSearchTextLowerCase, flags, healthCheckFilter);
             setIsSearching(false);
         }, debounceWait),
         [debounceWait, isSearching]
@@ -118,7 +131,7 @@ const SearchInput = (props: SearchInputProps) => {
             setSearchText(value);
             debounceFilter(value, getCurrentFlags(filterVaultsWithWarnings));
         },
-        [filterVaultsWithWarnings, searchText, isSearching]
+        [filterVaultsWithWarnings, searchText, isSearching, healthCheckFilter]
     );
 
     const onFilterVaultsWithWarnings = useCallback(
@@ -126,16 +139,34 @@ const SearchInput = (props: SearchInputProps) => {
             setFilterVaultsWithWarnings(e.target.checked);
             setIsSearching(true);
             const newSearchTextLowerCase = searchText.toLowerCase();
-            onFilter(newSearchTextLowerCase, getCurrentFlags(e.target.checked));
+            onFilter(
+                newSearchTextLowerCase,
+                getCurrentFlags(e.target.checked),
+                healthCheckFilter
+            );
             setIsSearching(false);
         },
-        [searchText, isSearching]
+        [searchText, isSearching, healthCheckFilter]
     );
     const handleClickClearSearch = useCallback(() => {
         setSearchText('');
         setFilterVaultsWithWarnings(false);
-        onFilter('', getCurrentFlags(false));
+        onFilter('', getCurrentFlags(false), '');
     }, [onFilter]);
+    const healthCheckFilterChange = useCallback(
+        (e: ChangeEvent<{ name?: string; value: unknown }>) => {
+            setHealthCheckFilter((e.target as HTMLInputElement).value);
+            setIsSearching(true);
+            const newSearchTextLowerCase = searchText.toLowerCase();
+            onFilter(
+                newSearchTextLowerCase,
+                getCurrentFlags(filterVaultsWithWarnings),
+                (e.target as HTMLInputElement).value
+            );
+            setIsSearching(false);
+        },
+        [searchText, healthCheckFilter, isSearching]
+    );
 
     const renderSearchingLabel = useCallback(() => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -149,6 +180,11 @@ const SearchInput = (props: SearchInputProps) => {
         } else {
             render = (
                 <>
+                    {healthCheckFilter !== '' && (
+                        <WarningLabel
+                            warningText={'HealthCheck Filter is ON!'}
+                        />
+                    )}
                     <ResultsLabel
                         title="Vaults"
                         totalItems={totalItems}
@@ -174,7 +210,7 @@ const SearchInput = (props: SearchInputProps) => {
         <div>
             <StyledForm>
                 <Grid container direction="row" alignItems="center" spacing={3}>
-                    <Grid item xs={12} sm={8}>
+                    <Grid item xs={12} sm={6}>
                         <StyledContainer maxWidth="lg">
                             <StyledTextField
                                 variant="outlined"
@@ -209,7 +245,7 @@ const SearchInput = (props: SearchInputProps) => {
                             />
                         </StyledContainer>
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={3}>
                         <StyledContainer maxWidth="lg">
                             <StyledFormControlLabel
                                 control={
@@ -220,7 +256,37 @@ const SearchInput = (props: SearchInputProps) => {
                                     />
                                 }
                                 labelPlacement="start"
-                                label="Only show Vaults with warnings"
+                                label="Vaults with warnings"
+                            />
+                        </StyledContainer>
+                    </Grid>
+                    <Grid item xs={12} sm={3}>
+                        <StyledContainer maxWidth="lg">
+                            <StyledFormControlLabel
+                                control={
+                                    <StyledSelect
+                                        displayEmpty
+                                        variant="standard"
+                                        defaultValue=""
+                                        value={healthCheckFilter}
+                                        onChange={healthCheckFilterChange}
+                                    >
+                                        <MenuItem value="" alignItems="center">
+                                            All
+                                        </MenuItem>
+                                        <MenuItem value="Enabled">
+                                            Enabled
+                                        </MenuItem>
+                                        <MenuItem value="Disabled">
+                                            Disabled
+                                        </MenuItem>
+                                        <MenuItem value="None">
+                                            Not Set
+                                        </MenuItem>
+                                    </StyledSelect>
+                                }
+                                labelPlacement="start"
+                                label="HealthCheck"
                             />
                         </StyledContainer>
                     </Grid>
