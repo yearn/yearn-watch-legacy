@@ -18,6 +18,7 @@ import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerB
 
 import { Delete, Search } from '@material-ui/icons';
 import ResultsLabel from '../ResultsLabel';
+import WarningLabel from '../WarningLabel';
 
 const StyledForm = styled.form`
     && {
@@ -179,6 +180,11 @@ const SearchInput = (props: SearchInputProps) => {
         } else {
             render = (
                 <>
+                    {healthCheckFilter !== '' && (
+                        <WarningLabel
+                            warningText={'HealthCheck Filter is ON!'}
+                        />
+                    )}
                     <ResultsLabel
                         title="Vaults"
                         totalItems={totalItems}
