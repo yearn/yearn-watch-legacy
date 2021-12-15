@@ -1,10 +1,14 @@
 import { utils } from 'ethers';
 import { uniqBy, memoize } from 'lodash';
+import BigNumber from 'bignumber.js';
 import compareVersions from 'compare-versions';
 import { Vault, VaultApi, VaultVersion, VaultData, Network } from '../types';
+import { getTokenPrice } from './oracle';
 import { BuildGet, VAULTS_ALL, VAULTS_ALL_EXPERIMENTAL } from './apisRequest';
 import { DEFAULT_QUERY_PARAM, QueryParam } from '../types';
 import { fillVaultData, mapVaultDataToVault } from './vaultDataMapping';
+import { amountToMMs, EMPTY_ADDRESS } from './commonUtils';
+import { getTvlImpact } from './risk';
 
 // sort in desc by version
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -169,3 +173,68 @@ const _getEndorsedOrExperimentalVault = async (
  * @dev If vault is not found, it throws an error.
  */
 export const getVault = memoize(_getEndorsedOrExperimentalVault);
+
+export const filterStrategiesByHealthCheck = async (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: any,
+    network: Network
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any[]> => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const filteredStrategies: any = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const vaultData: any[] = data;
+    vaultData.forEach((vault) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        vault.strategies.forEach((strategy: any) => {
+            if (
+                strategy.healthCheck === null ||
+                strategy.healthCheck.toLowerCase() == EMPTY_ADDRESS ||
+                strategy.doHealthCheck === false
+            ) {
+                filteredStrategies.push({
+                    vault: strategy.vault,
+                    network,
+                    name: strategy.name,
+                    address: strategy.address,
+                    token: vault.token,
+                    activation: Date.parse(strategy.params.activation),
+                    activationStr: strategy.params.activation,
+                    estimatedTotalAssets: strategy.estimatedTotalAssets,
+                });
+            }
+        });
+    });
+    const resultStrategiesPromises = filteredStrategies.map(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        async (strategy: any): Promise<any> => {
+            if (strategy.estimatedTotalAssets) {
+                const estimatedTotalAssetsUsdc = await getTokenPrice(
+                    strategy.token,
+                    strategy.estimatedTotalAssets,
+                    network
+                );
+                const amountInMMs = amountToMMs(estimatedTotalAssetsUsdc);
+                return {
+                    ...strategy,
+                    estimatedTotalAssetsUsdc,
+                    estimatedTotalAssetsUsdcNumber: amountInMMs,
+                    tvlImpact: getTvlImpact(amountInMMs),
+                };
+            } else {
+                const estimatedTotalAssetsUsdc = new BigNumber(0);
+                const amountInMMs = amountToMMs(estimatedTotalAssetsUsdc);
+                return {
+                    ...strategy,
+                    estimatedTotalAssetsUsdc,
+                    estimatedTotalAssetsUsdcNumber: amountInMMs,
+                    tvlImpact: getTvlImpact(amountInMMs),
+                };
+            }
+        }
+    );
+
+    const resultStrategies = await Promise.all(resultStrategiesPromises);
+
+    return resultStrategies;
+};
