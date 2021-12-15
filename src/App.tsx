@@ -15,6 +15,7 @@ import {
     NavBar,
     Query,
     SingleStrategy,
+    HealthCheckReport,
 } from './components/app';
 import SignIn from './components/common/SignIn';
 import PrivateRoute from './components/common/PrivateRoute';
@@ -69,6 +70,11 @@ const App = () => {
                         exact
                         path="/network/:network/vault/:vaultId/strategy/:strategyId"
                         component={SingleStrategy}
+                    />
+                    <Route
+                        exact
+                        path="/network/:network/report"
+                        component={HealthCheckReport}
                     />
                     <AuthProvider>
                         <Route exact path="/signin" component={SignIn} />
