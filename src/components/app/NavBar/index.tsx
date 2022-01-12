@@ -1,42 +1,21 @@
 import React, { useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import { useLocation } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
+import Container from '@material-ui/core/Container';
 import styled from 'styled-components';
 import Brightness2Icon from '@material-ui/icons/Brightness2';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import logoYearnLight from '../../../images/logo_yearn_watch_light.svg';
 import logoYearnDark from '../../../images/logo_yearn_watch_dark.svg';
 import Link from '@material-ui/core/Link';
-
 import NetworkSelect from '../../common/NetworkSelect';
 import { Network } from '../../../types';
 
-const StyledRoot = styled.div`
-    flex-grow: 1;
-`;
-const StyledMainImage = styled.div`
-    flex-grow: 1;
-    text-align: center;
-`;
-
 const StyledAppBar = styled(AppBar)`
     background-color: transparent !important;
-`;
-
-const StyledToolbar = styled(Toolbar)`
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-auto-flow: column;
-`;
-
-const StyledSettings = styled.div`
-    display: grid;
-    grid-auto-flow: column;
-    gap: 1rem;
-    align-items: center;
-    justify-content: flex-end;
 `;
 
 const StyleNetworkSelect = styled.div`
@@ -48,7 +27,10 @@ const StyleNetworkSelect = styled.div`
 `;
 
 const StyledImg = styled.img`
-    height: 64px;
+    height: 68px;
+    @media (max-width: 768px) {
+        height: 40px;
+    }
 `;
 const StyledBrightness2Icon = styled(Brightness2Icon)`
     color: ${({ theme }) => theme.iconTheme};
@@ -60,7 +42,20 @@ interface NavBarProps {
 
     theme: string | boolean | (() => void);
 }
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
 
+    img: {
+        flexGrow: 1,
+        textAlign: 'center',
+
+        [theme.breakpoints.up('md')]: {
+            marginLeft: '15%',
+        },
+    },
+}));
 export const NavBar: React.FC<NavBarProps> = ({ themeToggler, theme }) => {
     const [currentNetwork, setCurrentNetwork] = React.useState<Network>(
         Network.mainnet
@@ -73,12 +68,12 @@ export const NavBar: React.FC<NavBarProps> = ({ themeToggler, theme }) => {
         });
     }, [pathname]);
 
+    const classes = useStyles();
     return (
-        <StyledRoot>
+        <Container className={classes.root}>
             <StyledAppBar position="static" elevation={0}>
-                <StyledToolbar>
-                    <div />
-                    <StyledMainImage>
+                <Toolbar>
+                    <div className={classes.img}>
                         <Link href="/">
                             <StyledImg
                                 alt="yearn watch"
@@ -89,31 +84,27 @@ export const NavBar: React.FC<NavBarProps> = ({ themeToggler, theme }) => {
                                 }
                             />
                         </Link>
-                    </StyledMainImage>
-
-                    <StyledSettings>
-                        <StyleNetworkSelect>
-                            <NetworkSelect
-                                theme={theme}
-                                currentNetwork={currentNetwork}
-                            />
-                        </StyleNetworkSelect>
-
-                        <IconButton
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={themeToggler}
-                            color="inherit"
-                        >
-                            {theme === 'light' ? (
-                                <StyledBrightness2Icon />
-                            ) : (
-                                <Brightness4Icon />
-                            )}
-                        </IconButton>
-                    </StyledSettings>
-                </StyledToolbar>
+                    </div>
+                    <StyleNetworkSelect>
+                        <NetworkSelect
+                            theme={theme}
+                            currentNetwork={currentNetwork}
+                        />
+                    </StyleNetworkSelect>
+                    <IconButton
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        onClick={themeToggler}
+                        color="inherit"
+                    >
+                        {theme === 'light' ? (
+                            <StyledBrightness2Icon />
+                        ) : (
+                            <Brightness4Icon />
+                        )}
+                    </IconButton>
+                </Toolbar>
             </StyledAppBar>
-        </StyledRoot>
+        </Container>
     );
 };
