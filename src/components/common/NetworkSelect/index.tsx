@@ -122,6 +122,7 @@ const NetworkIcon = ({ network, isLightTheme }: NetworkIconProps) => {
         {
             ['ethereum']: isLightTheme ? ethLogoLight : ethLogoDark,
             ['fantom']: isLightTheme ? ftmLogoLight : ftmLogoDark,
+            ['arbitrum']: isLightTheme ? ftmLogoLight : ftmLogoDark,
         }[network] || undefined;
 
     return <StyledIcon alt={network} src={icon} />;

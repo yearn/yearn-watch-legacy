@@ -20,7 +20,7 @@
         "@types/react-responsive": "^8.0.2",
         "@types/react-router-dom": "^5.1.7",
         "@typesaurus/react": "^4.0.1",
-        "@yfi/sdk": "1.0.0-23",
+        "@yfi/sdk": "1.0.20",
         "axios": "^0.21.1",
         "bignumber.js": "^9.0.1",
         "compare-versions": "^3.6.0",
