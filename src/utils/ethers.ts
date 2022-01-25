@@ -18,7 +18,10 @@ const getFantomProvider = (): JsonRpcProvider => {
 
 const getArbitrumProvider = (): JsonRpcProvider => {
     const { alchemyKey } = getEnv();
-    const url = `https://arb-mainnet.g.alchemy.com/v2/${alchemyKey}`;
+    let url = 'https://arb1.arbitrum.io/rpc';
+    if (alchemyKey !== undefined) {
+        url = `https://arb-mainnet.g.alchemy.com/v2/${alchemyKey}`;
+    }
     const provider = new JsonRpcProvider(url);
     return provider;
 };
