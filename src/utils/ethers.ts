@@ -17,10 +17,9 @@ const getFantomProvider = (): JsonRpcProvider => {
 };
 
 const getArbitrumProvider = (): JsonRpcProvider => {
-    console.log('Getting Arbitrum provider.');
-    const url = 'https://arb-mainnet.g.alchemy.com/v2/';
+    const { alchemyKey } = getEnv();
+    const url = `https://arb-mainnet.g.alchemy.com/v2/${alchemyKey}`;
     const provider = new JsonRpcProvider(url);
-
     return provider;
 };
 
