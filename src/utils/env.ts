@@ -11,6 +11,7 @@ export const getEnv = memoize(
         infuraProjectId: process.env.INFURA_PROJECT_ID,
         alchemyKey:
             process.env.ALCHEMY_KEY || process.env.REACT_APP_ALCHEMY_KEY,
+        fantomNode: process.env.FANTOM_NODE,
         fbApiKey: process.env.REACT_APP_FB_API_KEY,
         fbAuthDomain: process.env.REACT_APP_FB_AUTH_DOMAIN,
         fbProjectId: process.env.REACT_APP_FB_PROJECT_ID,

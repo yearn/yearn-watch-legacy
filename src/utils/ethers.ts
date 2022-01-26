@@ -10,8 +10,14 @@ const getAlchemyMainnetProvider = (): JsonRpcProvider => {
 };
 
 const getFantomProvider = (): JsonRpcProvider => {
-    const url = 'https://rpc.ftm.tools/';
-    const provider = new JsonRpcProvider(url);
+    const { fantomNode } = getEnv();
+    let rpcUrl: string;
+    if (fantomNode === undefined) {
+        rpcUrl = 'https://rpc.ftm.tools/';
+    } else {
+        rpcUrl = fantomNode;
+    }
+    const provider = new JsonRpcProvider(rpcUrl);
 
     return provider;
 };
