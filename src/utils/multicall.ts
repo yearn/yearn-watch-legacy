@@ -3,6 +3,7 @@ import { getEthersDefaultProvider } from './ethers';
 import { Network } from '../types';
 
 const FTM_MULTICALL = '0x6cAfA5f64476769aAEc7c0Ae8D8E14c2a77272a2';
+const ARB_MULTICALL = '0x5B5CFE992AdAC0C9D48E05854B2d91C73a003858';
 
 export const getMulticallContract = (
     network: Network | string = Network.mainnet
@@ -19,6 +20,13 @@ export const getMulticallContract = (
         case Network.fantom:
             multicall = new Multicall({
                 multicallCustomContractAddress: FTM_MULTICALL,
+                ethersProvider: provider,
+                tryAggregate: true,
+            });
+            return multicall;
+        case Network.arbitrum:
+            multicall = new Multicall({
+                multicallCustomContractAddress: ARB_MULTICALL,
                 ethersProvider: provider,
                 tryAggregate: true,
             });
