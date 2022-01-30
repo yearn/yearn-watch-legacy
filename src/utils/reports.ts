@@ -217,7 +217,7 @@ export const _getReportsForStrategies = async (
     const cachedStrategies = strategies.filter(
         (s) => s.toLowerCase() in strategyReports
     );
-    console.log(strategies, cachedStrategies, strategyReports);
+
     // Only query for uncached strategies
     const strategiesToQuery = difference(strategies, cachedStrategies);
     if (strategiesToQuery.length > 0) {
