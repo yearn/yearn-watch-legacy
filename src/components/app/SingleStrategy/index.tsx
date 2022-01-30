@@ -26,10 +26,11 @@ import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerB
 import { getService as getVaultService } from '../../../services/VaultService';
 import { getStrategies } from '../../../utils/strategies';
 import { getError } from '../../../utils/error';
-import { getReportsForStrategy, StrategyReport } from '../../../utils/reports';
+import { getReportsForStrategies } from '../../../utils/reports';
 
 import StrategyReports from './StrategyReports';
 import { GlobalStylesLoading } from '../../theme/globalStyles';
+import { useStrategyReportContext } from '../../../contexts/StrategyReportContext';
 
 const StyledCard = styled(Card)<{ emergencyExit?: string }>`
     && {
@@ -95,17 +96,15 @@ export const SingleStrategy = () => {
     } = useParams<ParamTypes>();
 
     const [strategyData, setStrategyData] = useState<Strategy[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [vault, setVault] = useState<Vault | undefined>();
     const [isVaultLoading, setIsVaultLoading] = useState(true);
-    const [strategyReports, setStrategyReports] = useState<StrategyReport[]>(
-        []
-    );
     const [isReportsLoading, setIsReportsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
     const [warningFields, setWarningFields] = useState<string[] | null>(null);
-    const [openSnackBar, setOpenSB] = React.useState(true);
+    const [openSnackBar, setOpenSB] = useState(true);
+    const strategyReportContext = useStrategyReportContext();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
@@ -118,13 +117,14 @@ export const SingleStrategy = () => {
 
     useEffect(() => {
         const loadStrategyData = async () => {
-            setIsLoading(true);
-            setError(null);
             try {
                 setIsReportsLoading(true);
                 // we don't want to handle error here for now
-                getReportsForStrategy(strategyId, network).then((reports) => {
-                    setStrategyReports(reports);
+                getReportsForStrategies(
+                    [strategyId],
+                    network,
+                    strategyReportContext
+                ).then(() => {
                     setIsReportsLoading(false);
                 });
                 const loadedStrategy = await getStrategies(
@@ -137,15 +137,8 @@ export const SingleStrategy = () => {
                     setWarningFields(warnings);
                 }
                 setIsLoading(false);
-            } catch (e: unknown) {
-                console.log('Error:', e);
-                setIsLoading(false);
-                setIsVaultLoading(false);
-                setIsReportsLoading(false);
-                setError(getError(e));
-            }
-            // TODO: refactor this second try catch into above one
-            try {
+
+                // Load vault name
                 setIsVaultLoading(true);
                 const vaultService = getVaultService(network);
                 const loadedVault = await vaultService.getVault(vaultId);
@@ -269,7 +262,12 @@ export const SingleStrategy = () => {
                                     ) : value === 1 ? (
                                         <StrategyReports
                                             network={network}
-                                            reports={strategyReports}
+                                            reports={
+                                                strategyReportContext
+                                                    .strategyReports[
+                                                    strategyId.toLowerCase()
+                                                ]
+                                            }
                                             tokenDecimals={
                                                 strategy
                                                     ? strategy.token.decimals
