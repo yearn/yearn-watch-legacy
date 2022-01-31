@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo, memo } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import sum from 'lodash/sum';
@@ -176,7 +177,10 @@ const _VaultsList = (props: VaultsListProps) => {
                 ))}
             </div>
             <StyledContainer>
-                <Button color="inherit" href={`/network/${network}/report`}>
+                <Button
+                    component={RouterLink}
+                    to={`/network/${network}/report`}
+                >
                     <Typography className={classes.text}>Report</Typography>
                 </Button>
             </StyledContainer>

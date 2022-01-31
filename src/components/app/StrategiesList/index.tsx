@@ -1,10 +1,15 @@
-import { memo } from 'react';
+import { forwardRef, memo } from 'react';
+import {
+    Link as RouterLink,
+    LinkProps as RouterLinkProps,
+} from 'react-router-dom';
 
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import MuiAccordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
+import Link, { LinkBaseProps } from '@material-ui/core/Link';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Hidden from '@material-ui/core/Hidden';
 import EtherScanLink from '../../common/EtherScanLink';
@@ -105,8 +110,7 @@ const StyledTitleQueIndex = styled(Typography)<{ error: boolean }>`
             error ? theme.error : theme.title} !important;
     }
 `;
-
-const StyledLink = styled.a`
+const StyledLink = styled(Link)`
     && {
         font-family: Roboto;
         font-style: normal;
@@ -117,6 +121,12 @@ const StyledLink = styled.a`
         color: ${({ theme }) => theme.subtitle} !important;
     }
 `;
+
+const CustomLink = forwardRef<HTMLSpanElement, LinkBaseProps & RouterLinkProps>(
+    (props, ref) => <StyledLink component={RouterLink} ref={ref} {...props} />
+);
+CustomLink.displayName = 'CustomLink';
+
 const _StrategiesList = (props: StrategiesListProps) => {
     const { vault, network, expand = true } = props;
     const config = vault.configOK;
@@ -151,9 +161,8 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                         <Grid item md={1}></Grid>
                                         <Grid item md={4} xs={12}>
                                             <StyledTitle>
-                                                <StyledLink
-                                                    href={`/network/${network}/vault/${strategy.vault}/strategy/${strategy.address}`}
-                                                    rel="noreferrer"
+                                                <CustomLink
+                                                    to={`/network/${network}/vault/${strategy.vault}/strategy/${strategy.address}`}
                                                 >
                                                     <Hidden smUp>
                                                         {strategy.name.length >
@@ -171,7 +180,7 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                     <HealthCheckIcon
                                                         strategy={strategy}
                                                     />
-                                                </StyledLink>
+                                                </CustomLink>
                                             </StyledTitle>
                                         </Grid>
                                         <Hidden xsDown>
