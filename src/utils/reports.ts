@@ -1,11 +1,15 @@
-import { get, omit, memoize } from 'lodash';
+import { difference, get, omit, memoize } from 'lodash';
 import { Network } from '../types';
 import { querySubgraphData } from './apisRequest';
 
-const buildReportsQuery = (strategy: string): string => `
+import { StrategyReportContextValue } from '../contexts/StrategyReportContext';
+
+const OMIT_FIELDS = ['results', 'transaction', 'id'];
+
+const buildReportsQuery = (strategies: string[]): string => `
 {
     strategies(where: {
-      id: "${strategy}"
+      id_in: ["${strategies.join('","')}"]
     }) {
         id
         reports(first: 10, orderBy: timestamp, orderDirection: desc)  {
@@ -101,12 +105,19 @@ type StratReportGraphType = {
 };
 
 type StratReportGraphResult = {
-    data: [
-        {
-            id: string;
-            reports: StratReportGraphType[];
-        }
-    ];
+    data: {
+        strategies: [
+            {
+                id: string;
+                reports: StratReportGraphType[];
+            }
+        ];
+    };
+};
+
+type Strategy = {
+    id: string;
+    reports: StratReportGraphType[];
 };
 
 export type StrategyReport = {
@@ -153,28 +164,14 @@ export type StrategyReport = {
     };
 };
 
-const _getReportsForStrategy = async (
-    strategy: string,
-    network: Network
-): Promise<StrategyReport[]> => {
-    if (!strategy || strategy === '') {
-        throw new Error(
-            'Error: getReportsForStrategy expected valid strategy address'
-        );
-    }
-    const reportResults: StratReportGraphResult = await querySubgraphData(
-        buildReportsQuery(strategy.toLowerCase()),
-        network
-    );
+export type AllStrategyReports = {
+    [id: string]: StrategyReport[];
+};
 
-    const reports: StratReportGraphType[] = get(
-        reportResults,
-        'data.strategies[0].reports',
-        []
-    );
-
-    const OMIT_FIELDS = ['results', 'transaction', 'id'];
-    const values = reports.map((report) => {
+const _parseReportValues = (
+    reports: StratReportGraphType[]
+): StrategyReport[] => {
+    return reports.map((report) => {
         let results;
         if (report.results.length > 0) {
             const result = report.results[0];
@@ -204,7 +201,43 @@ const _getReportsForStrategy = async (
             results,
         };
     });
-    return values;
 };
 
-export const getReportsForStrategy = memoize(_getReportsForStrategy);
+export const _getReportsForStrategies = async (
+    strategies: string[],
+    network: Network,
+    strategyReportContext: StrategyReportContextValue
+): Promise<void> => {
+    if (strategies.length === 0) {
+        throw new Error(
+            'Error: getReportsForStrategies expected valid strategy address'
+        );
+    }
+    const { strategyReports, updateStrategyReports } = strategyReportContext;
+    const cachedStrategies = strategies.filter(
+        (s) => s.toLowerCase() in strategyReports
+    );
+
+    // Only query for uncached strategies
+    const strategiesToQuery = difference(strategies, cachedStrategies);
+    if (strategiesToQuery.length > 0) {
+        const reportResults: StratReportGraphResult = await querySubgraphData(
+            buildReportsQuery(strategiesToQuery.map((s) => s.toLowerCase())),
+            network
+        );
+
+        const strategyResults: Strategy[] = get(
+            reportResults,
+            'data.strategies',
+            []
+        );
+        strategyResults.forEach((results) => {
+            strategyReports[results.id.toLowerCase()] = _parseReportValues(
+                results.reports
+            );
+        });
+        updateStrategyReports(strategyReports);
+    }
+};
+
+export const getReportsForStrategies = memoize(_getReportsForStrategies);

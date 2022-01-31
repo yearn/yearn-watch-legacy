@@ -1,8 +1,9 @@
-import { forwardRef, memo } from 'react';
+import { forwardRef, memo, useEffect, useState } from 'react';
 import {
     Link as RouterLink,
     LinkProps as RouterLinkProps,
 } from 'react-router-dom';
+import { compact, mean } from 'lodash';
 
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
@@ -23,6 +24,8 @@ import {
 import { isStrategyActiveWithZeroDebt } from '../../../utils/alerts';
 import { Network, Strategy, Vault } from '../../../types';
 import DebTooltip from '../../common/DebToolTip';
+import { useStrategyReportContext } from '../../../contexts/StrategyReportContext';
+import { getReportsForStrategies } from '../../../utils/reports';
 
 type StrategiesListProps = {
     vault: Vault;
@@ -130,6 +133,39 @@ CustomLink.displayName = 'CustomLink';
 const _StrategiesList = (props: StrategiesListProps) => {
     const { vault, network, expand = true } = props;
     const config = vault.configOK;
+
+    const [isReportsLoading, setIsReportsLoading] = useState(true);
+    const strategyReportContext = useStrategyReportContext();
+
+    useEffect(() => {
+        const loadStrategyReports = async () => {
+            try {
+                setIsReportsLoading(true);
+                const strategies = vault.strategies
+                    ? vault.strategies.map((s) => s.address)
+                    : [];
+                getReportsForStrategies(
+                    strategies,
+                    network,
+                    strategyReportContext
+                ).then(() => {
+                    setIsReportsLoading(false);
+                });
+            } catch (e: unknown) {
+                console.log('Error:', e);
+                setIsReportsLoading(false);
+            }
+        };
+        loadStrategyReports();
+    }, [vault.strategies]);
+
+    const displayAverageApr = (strategyId: string): string => {
+        const reports =
+            strategyReportContext.strategyReports[strategyId.toLowerCase()];
+        const aprList = compact(reports.map((item) => item.results?.apr));
+        const averageApr = aprList.length === 0 ? 0 : mean(aprList);
+        return `${averageApr.toFixed(2)}%`;
+    };
 
     return (
         <StyledDivRoot>
@@ -294,6 +330,23 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                             <StyledSubtitle>
                                                                 {' '}
                                                                 Debt ratio
+                                                            </StyledSubtitle>
+                                                        </Grid>
+                                                        <StyleDiv />
+                                                        <Grid
+                                                            item
+                                                            xs={12}
+                                                            md={2}
+                                                        >
+                                                            <StyledTitle>
+                                                                {isReportsLoading
+                                                                    ? '--'
+                                                                    : displayAverageApr(
+                                                                          strategy.address
+                                                                      )}
+                                                            </StyledTitle>
+                                                            <StyledSubtitle>
+                                                                Average APR
                                                             </StyledSubtitle>
                                                         </Grid>
                                                         <StyleDiv />
