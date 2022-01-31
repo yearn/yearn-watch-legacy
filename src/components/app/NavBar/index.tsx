@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { useLocation } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
@@ -74,7 +75,7 @@ export const NavBar: React.FC<NavBarProps> = ({ themeToggler, theme }) => {
             <StyledAppBar position="static" elevation={0}>
                 <Toolbar>
                     <div className={classes.img}>
-                        <Link href="/">
+                        <Link component={RouterLink} to="/">
                             <StyledImg
                                 alt="yearn watch"
                                 src={

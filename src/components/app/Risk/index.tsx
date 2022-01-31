@@ -71,8 +71,8 @@ export const Risk = () => {
                 item.criteria.exclude
             );
             const urlParam = getExcludeIncludeUrlParams({
-                exclude: (item.criteria.exclude as unknown) as string,
-                include: (item.criteria.strategies as unknown) as string,
+                exclude: item.criteria.exclude as unknown as string,
+                include: item.criteria.strategies as unknown as string,
             });
             const tvlImpact = getTvlImpact(amountToMMs(protocol.tvl));
             const longevityScore = getLongevityScore(

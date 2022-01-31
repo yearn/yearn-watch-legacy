@@ -108,9 +108,10 @@ export const mapVaultDataToVault = async (
         }
     );
 
-    const strategiesHelperCallResults: ContractCallResults = await multicall.call(
-        createStrategiesHelperCallAssetStrategiesAddresses(payload, network)
-    );
+    const strategiesHelperCallResults: ContractCallResults =
+        await multicall.call(
+            createStrategiesHelperCallAssetStrategiesAddresses(payload, network)
+        );
 
     const results: ContractCallResults = await multicall.call(
         vaultCalls.concat(stratCalls)

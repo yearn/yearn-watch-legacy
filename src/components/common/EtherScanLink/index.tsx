@@ -1,5 +1,5 @@
-import React from 'react';
-import { MouseEvent, useEffect, useState } from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { extractAddress } from '../../../utils/commonUtils';
@@ -92,7 +92,11 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
             <Grid item>
                 <StyledAddress>
                     {internalHref ? (
-                        <Link color="inherit" href={internalHref}>
+                        <Link
+                            component={RouterLink}
+                            color="inherit"
+                            to={internalHref}
+                        >
                             <Hidden smUp>{maskedValue}</Hidden>
                             <Hidden xsDown>{value}</Hidden>
                         </Link>

@@ -10,9 +10,25 @@ const getAlchemyMainnetProvider = (): JsonRpcProvider => {
 };
 
 const getFantomProvider = (): JsonRpcProvider => {
-    const url = 'https://rpc.ftm.tools/';
-    const provider = new JsonRpcProvider(url);
+    const { fantomNode } = getEnv();
+    let rpcUrl: string;
+    if (fantomNode === undefined) {
+        rpcUrl = 'https://rpc.ftm.tools/';
+    } else {
+        rpcUrl = fantomNode;
+    }
+    const provider = new JsonRpcProvider(rpcUrl);
 
+    return provider;
+};
+
+const getArbitrumProvider = (): JsonRpcProvider => {
+    const { alchemyKey } = getEnv();
+    let url = 'https://arb1.arbitrum.io/rpc';
+    if (alchemyKey !== undefined) {
+        url = `https://arb-mainnet.g.alchemy.com/v2/${alchemyKey}`;
+    }
+    const provider = new JsonRpcProvider(url);
     return provider;
 };
 
@@ -24,6 +40,8 @@ export const getEthersDefaultProvider = (
             return getAlchemyMainnetProvider();
         case Network.fantom:
             return getFantomProvider();
+        case Network.arbitrum:
+            return getArbitrumProvider();
         default:
             throw new Error(`Network - ${network} is not supported`);
     }

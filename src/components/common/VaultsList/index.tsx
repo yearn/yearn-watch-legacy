@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo, memo } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import sum from 'lodash/sum';
@@ -43,9 +44,8 @@ const _VaultsList = (props: VaultsListProps) => {
     const classes = useStyles();
     const [filteredItems, setFilteredItems] = useState(items);
     const totalStrategies = useMemo(() => getTotalStrategies(items), [items]);
-    const [totalStrategiesFound, setTotalStrategiesFound] = useState(
-        totalStrategies
-    );
+    const [totalStrategiesFound, setTotalStrategiesFound] =
+        useState(totalStrategies);
 
     if (items.length === 0) {
         return <>Vaults not found.</>;
@@ -130,10 +130,8 @@ const _VaultsList = (props: VaultsListProps) => {
                         return applyFilter;
                     })
                     .filter((item: Vault) => {
-                        const healthFilteredStrategies = filterStrategiesHealthCheck(
-                            item,
-                            health
-                        );
+                        const healthFilteredStrategies =
+                            filterStrategiesHealthCheck(item, health);
                         totalStrategiesFound += healthFilteredStrategies.length;
                         return healthFilteredStrategies.length > 0;
                     });
@@ -179,7 +177,10 @@ const _VaultsList = (props: VaultsListProps) => {
                 ))}
             </div>
             <StyledContainer>
-                <Button color="inherit" href={`/network/${network}/report`}>
+                <Button
+                    component={RouterLink}
+                    to={`/network/${network}/report`}
+                >
                     <Typography className={classes.text}>Report</Typography>
                 </Button>
             </StyledContainer>

@@ -1,4 +1,5 @@
 import { Fragment, useState, memo } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -165,16 +166,15 @@ const _VaultItemList = (props: VaultItemListProps) => {
                                     ) : (
                                         ''
                                     )}
-                                    <a
-                                        href={`/network/${network}/vault/${vault.address}`}
-                                        rel="noreferrer"
+                                    <RouterLink
+                                        to={`/network/${network}/vault/${vault.address}`}
                                     >
                                         <StyledTextValue>
                                             {' '}
                                             {vault.name}
                                             {` v${vault.apiVersion}`}
                                         </StyledTextValue>
-                                    </a>
+                                    </RouterLink>
                                     <br />
                                     <StyledStrats>
                                         {` ${vault.strategies.length}  strats`}
