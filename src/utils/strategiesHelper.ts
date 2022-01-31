@@ -41,10 +41,11 @@ export const getStrategyAddresses = async (
                 addresses.push(nameOrAddress.toLowerCase());
             }
         } else {
-            const nameAddresses = await getAssetsStrategiesAddressesByFilterNames(
-                [nameOrAddress],
-                network
-            );
+            const nameAddresses =
+                await getAssetsStrategiesAddressesByFilterNames(
+                    [nameOrAddress],
+                    network
+                );
             addresses.push(...nameAddresses);
         }
     }
@@ -58,13 +59,11 @@ export const getStrategyTVLsPerProtocol = async (
     includeStrategies: string[] = [],
     excludeStrategies: string[] = []
 ): Promise<ProtocolTVL> => {
-    const [
-        excludeStrategyAddresses,
-        includeStrategyAddresses,
-    ] = await Promise.all([
-        getStrategyAddresses(excludeStrategies, network),
-        getStrategyAddresses(includeStrategies, network),
-    ]);
+    const [excludeStrategyAddresses, includeStrategyAddresses] =
+        await Promise.all([
+            getStrategyAddresses(excludeStrategies, network),
+            getStrategyAddresses(includeStrategies, network),
+        ]);
     const isStrategyAddressExcluded = (strategy: string) =>
         excludeStrategyAddresses
             .map((address) => address.toLowerCase())

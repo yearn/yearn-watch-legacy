@@ -43,9 +43,8 @@ const _VaultsList = (props: VaultsListProps) => {
     const classes = useStyles();
     const [filteredItems, setFilteredItems] = useState(items);
     const totalStrategies = useMemo(() => getTotalStrategies(items), [items]);
-    const [totalStrategiesFound, setTotalStrategiesFound] = useState(
-        totalStrategies
-    );
+    const [totalStrategiesFound, setTotalStrategiesFound] =
+        useState(totalStrategies);
 
     if (items.length === 0) {
         return <>Vaults not found.</>;

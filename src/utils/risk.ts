@@ -48,8 +48,8 @@ export const getLongevityScore = (days: number): number => {
 };
 
 export const getExcludeIncludeUrlParams = (item: GenericListItem) => {
-    const include = item.include ? ((item.include as unknown) as string[]) : [];
-    const exclude = item.exclude ? ((item.exclude as unknown) as string[]) : [];
+    const include = item.include ? (item.include as unknown as string[]) : [];
+    const exclude = item.exclude ? (item.exclude as unknown as string[]) : [];
     const params = qs.stringify({ exclude, include });
     const urlParam = params.length > 0 ? `?${params}` : '';
     return urlParam;
