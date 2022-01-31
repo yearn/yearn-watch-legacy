@@ -129,10 +129,8 @@ const _VaultsList = (props: VaultsListProps) => {
                         return applyFilter;
                     })
                     .filter((item: Vault) => {
-                        const healthFilteredStrategies = filterStrategiesHealthCheck(
-                            item,
-                            health
-                        );
+                        const healthFilteredStrategies =
+                            filterStrategiesHealthCheck(item, health);
                         totalStrategiesFound += healthFilteredStrategies.length;
                         return healthFilteredStrategies.length > 0;
                     });
