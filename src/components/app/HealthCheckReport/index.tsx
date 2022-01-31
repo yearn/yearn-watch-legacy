@@ -133,9 +133,10 @@ export const HealthCheckReport = () => {
                     const batchResultsPromises: Promise<Vault[]>[] = [];
                     for (let i = 0; i <= iterations; i++) {
                         ((innerOffset: number) => {
-                            const batchedVaultsPromise = vaultService.getVaultsWithPagination(
-                                toQueryParam(innerOffset, BATCH_NUMBER)
-                            );
+                            const batchedVaultsPromise =
+                                vaultService.getVaultsWithPagination(
+                                    toQueryParam(innerOffset, BATCH_NUMBER)
+                                );
                             batchResultsPromises.push(batchedVaultsPromise);
                         })(offset);
 

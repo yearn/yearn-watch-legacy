@@ -109,9 +109,8 @@ const SearchInput = (props: SearchInputProps) => {
     } = props;
     const [searchText, setSearchText] = useState('');
     const [isSearching, setIsSearching] = useState(false);
-    const [filterVaultsWithWarnings, setFilterVaultsWithWarnings] = useState(
-        false
-    );
+    const [filterVaultsWithWarnings, setFilterVaultsWithWarnings] =
+        useState(false);
     const [healthCheckFilter, setHealthCheckFilter] = useState('');
 
     const debounceFilter = useCallback(

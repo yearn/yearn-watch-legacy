@@ -31,11 +31,11 @@ export const EnhancedTableHead = (props: EnhancedTableProps) => {
         onRequestSort,
         shouldCollapse = false,
     } = props;
-    const createSortHandler = (property: keyof GenericListItem) => (
-        event: React.MouseEvent<unknown>
-    ) => {
-        onRequestSort(event, property);
-    };
+    const createSortHandler =
+        (property: keyof GenericListItem) =>
+        (event: React.MouseEvent<unknown>) => {
+            onRequestSort(event, property);
+        };
 
     const collapseCell = shouldCollapse ? (
         <TableCell key="collapse" align="center" padding="default">

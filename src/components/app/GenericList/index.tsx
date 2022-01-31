@@ -45,9 +45,8 @@ export const GenericList = <T extends GenericListItem>(
     } = props;
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>(defaultOrder);
-    const [orderBy, setOrderBy] = React.useState<keyof GenericListItem>(
-        defaultOrderBy
-    );
+    const [orderBy, setOrderBy] =
+        React.useState<keyof GenericListItem>(defaultOrderBy);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(defaultRowsPerPage);
     const { items, title, headCells, displayPagination = true } = props;
@@ -133,7 +132,7 @@ export const GenericList = <T extends GenericListItem>(
                         count={items.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
-                        onChangePage={handleChangePage}
+                        onPageChange={handleChangePage}
                         onChangeRowsPerPage={handleChangeRowsPerPage}
                     />
                 ) : (

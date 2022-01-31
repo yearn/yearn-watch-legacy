@@ -60,7 +60,7 @@ export const scoreHeadCells: HeadCell[] = [
                     {parseFloat(value.toString()).toFixed(0)}
                     <TVLImpactTooltip value={parseFloat(value.toString())} />
                     {` (USD ${amountToMMs(
-                        (item.tvl as unknown) as BigNumber
+                        item.tvl as unknown as BigNumber
                     ).toFixed(2)} MM)`}
                 </div>
             );

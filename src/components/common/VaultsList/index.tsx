@@ -43,9 +43,8 @@ const _VaultsList = (props: VaultsListProps) => {
     const classes = useStyles();
     const [filteredItems, setFilteredItems] = useState(items);
     const totalStrategies = useMemo(() => getTotalStrategies(items), [items]);
-    const [totalStrategiesFound, setTotalStrategiesFound] = useState(
-        totalStrategies
-    );
+    const [totalStrategiesFound, setTotalStrategiesFound] =
+        useState(totalStrategies);
 
     if (items.length === 0) {
         return <>Vaults not found.</>;
@@ -130,10 +129,8 @@ const _VaultsList = (props: VaultsListProps) => {
                         return applyFilter;
                     })
                     .filter((item: Vault) => {
-                        const healthFilteredStrategies = filterStrategiesHealthCheck(
-                            item,
-                            health
-                        );
+                        const healthFilteredStrategies =
+                            filterStrategiesHealthCheck(item, health);
                         totalStrategiesFound += healthFilteredStrategies.length;
                         return healthFilteredStrategies.length > 0;
                     });

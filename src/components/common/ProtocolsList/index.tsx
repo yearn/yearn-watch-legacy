@@ -71,7 +71,9 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         heading: {
             fontSize: theme.typography.pxToRem(15),
-            fontWeight: theme.typography.fontWeightRegular,
+            fontWeight: 'lighter',
+            // TODO: DEv Note: commenting type error, research why
+            // fontWeight: theme.typography.fontWeightRegular,
         },
         deleteIcon: {
             color: '#ffffff',
