@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 import { Tooltip } from '@material-ui/core';
-import { GenericListItem } from '../../app/GenericList';
+import { GenericListItem } from '../../app';
 import { Link } from 'react-router-dom';
 import MonetizationOnRoundedIcon from '@material-ui/icons/MonetizationOnRounded';
 import { HeadCell } from '../../app/GenericList/HeadCell';
@@ -9,7 +9,7 @@ import { TVLImpactTooltip } from '../TVLImpactTooltip';
 import { amountToMMs } from '../../../utils/commonUtils';
 import BigNumber from 'bignumber.js';
 
-export const scoreHeadCells: HeadCell[] = [
+export const scoreHeadCells: HeadCell<GenericListItem>[] = [
     {
         numeric: false,
         disablePadding: false,

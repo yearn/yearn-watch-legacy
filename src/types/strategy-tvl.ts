@@ -3,4 +3,6 @@ import { Strategy } from '.';
 
 export type StrategyTVL = Strategy & {
     estimatedTotalAssetsUsdc: BigNumber;
+    debtOutstandingUsdc: BigNumber;
+    dustUsdc: BigNumber;
 };

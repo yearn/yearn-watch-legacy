@@ -12,7 +12,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 export interface ItemRowProps<ItemType extends GenericListItem> {
-    headCells: HeadCell[];
+    headCells: HeadCell<ItemType>[];
     item: ItemType;
     index: number;
     collapse?: (index: number, item: ItemType) => React.ReactNode;

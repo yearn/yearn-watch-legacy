@@ -27,7 +27,7 @@ import { filterStrategiesByHealthCheck } from '../../../utils/vaults';
 
 const BATCH_NUMBER = 30;
 
-const headCells: HeadCell[] = [
+const headCells: HeadCell<GenericListItem>[] = [
     {
         numeric: false,
         disablePadding: false,

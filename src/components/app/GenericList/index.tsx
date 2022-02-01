@@ -23,7 +23,7 @@ export type GenericListItem = {
 type GenericListProps<ItemType extends GenericListItem> = {
     items: Array<ItemType>;
     collapse?: (index: number, item: ItemType) => React.ReactNode;
-    headCells: HeadCell[];
+    headCells: HeadCell<ItemType>[];
     title: string;
     defaultRowsPerPage?: number;
     displayPagination?: boolean;
@@ -133,7 +133,7 @@ export const GenericList = <T extends GenericListItem>(
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
-                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                 ) : (
                     ''

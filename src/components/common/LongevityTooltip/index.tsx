@@ -4,7 +4,7 @@ import { HelpOutlined } from '@material-ui/icons';
 import { GenericList, GenericListItem } from '../../app';
 import { HeadCell } from '../../app/GenericList/HeadCell';
 
-export const headCells: HeadCell[] = [
+export const headCells: HeadCell<GenericListItem>[] = [
     {
         id: 'description',
         numeric: false,

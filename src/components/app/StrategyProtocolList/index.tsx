@@ -11,7 +11,7 @@ import { getTvlImpact } from '../../../utils/risk';
 import { GenericList, GenericListItem } from '../GenericList';
 import { HeadCell } from '../GenericList/HeadCell';
 
-const headCells: HeadCell[] = [
+const headCells: HeadCell<StrategyTVLListItem>[] = [
     {
         numeric: false,
         disablePadding: false,
@@ -55,6 +55,23 @@ const headCells: HeadCell[] = [
         label: 'TVL %',
     },
     {
+        id: 'debtOutstandingUsdcNumber',
+        numeric: true,
+        disablePadding: false,
+        align: 'center',
+        label: 'Debt Outstanding (MM)',
+        getStyle: (item: StrategyTVLListItem) => {
+            const hasHighDebtToAssetsRatio =
+                item.debtOutstandingUsdcNumber >
+                1.5 * item.estimatedTotalAssetsUsdcNumber;
+            return hasHighDebtToAssetsRatio
+                ? {
+                      backgroundColor: '#f5f514',
+                  }
+                : {};
+        },
+    },
+    {
         id: 'tvlImpact',
         numeric: true,
         disablePadding: false,
@@ -93,29 +110,73 @@ type StrategyProtocolListProps = {
     item: ProtocolTVL;
 };
 
+type StrategyTVLListItem = {
+    vault: string;
+    network: string;
+    strategy: string;
+    name: string;
+    activation: number;
+    activationStr: string;
+    estimatedTotalAssetsUsdcNumber: number;
+    totalTvlPercentage: number;
+    debtOutstandingUsdcNumber: number;
+    dustUsdcNumber: number;
+    tvlImpact: number;
+};
+
 export const StrategyProtocolList = (props: StrategyProtocolListProps) => {
     const { network = DEFAULT_NETWORK } = useParams<ParamTypes>();
 
     const classes = useStyles();
-    const strategies = props.item.strategies.map((strategyTVL) => {
-        const amountInMMs = amountToMMs(strategyTVL.estimatedTotalAssetsUsdc);
-        return {
-            vault: strategyTVL.vault,
-            network,
-            strategy: strategyTVL.address,
-            name: strategyTVL.name,
-            activation: Date.parse(strategyTVL.params.activation),
-            activationStr: strategyTVL.params.activation,
-            estimatedTotalAssetsUsdcNumber: amountInMMs,
-            totalTvlPercentage: strategyTVL.estimatedTotalAssetsUsdc.isZero()
-                ? strategyTVL.estimatedTotalAssetsUsdc.toNumber()
-                : strategyTVL.estimatedTotalAssetsUsdc
-                      .times(100)
-                      .div(props.item.tvl)
-                      .toNumber(),
-            tvlImpact: getTvlImpact(amountInMMs),
-        };
-    });
+    const strategies: StrategyTVLListItem[] = props.item.strategies.map(
+        (strategyTVL) => {
+            const assetsInMMs = amountToMMs(
+                strategyTVL.estimatedTotalAssetsUsdc
+            );
+            const debtInMMs = amountToMMs(strategyTVL.debtOutstandingUsdc);
+            return {
+                vault: strategyTVL.vault,
+                network,
+                strategy: strategyTVL.address,
+                name: strategyTVL.name,
+                activation: Date.parse(strategyTVL.params.activation),
+                activationStr: strategyTVL.params.activation,
+                estimatedTotalAssetsUsdcNumber: assetsInMMs,
+                totalTvlPercentage:
+                    strategyTVL.estimatedTotalAssetsUsdc.isZero()
+                        ? strategyTVL.estimatedTotalAssetsUsdc.toNumber()
+                        : strategyTVL.estimatedTotalAssetsUsdc
+                              .times(100)
+                              .div(props.item.tvl)
+                              .toNumber(),
+                debtOutstandingUsdcNumber: debtInMMs,
+                dustUsdcNumber: strategyTVL.dustUsdc.toNumber(),
+                tvlImpact: getTvlImpact(assetsInMMs),
+            };
+        }
+    );
+
+    /**
+     * Returns true based on the following formula
+     * totalAssets > 2 * totalDebt && totalAssets > Dust
+     * @param item
+     */
+    const hasHealthyAssetsToDebtRatio = async (item: StrategyTVLListItem) => {
+        return (
+            item.estimatedTotalAssetsUsdcNumber >
+                item.debtOutstandingUsdcNumber * 2 &&
+            item.estimatedTotalAssetsUsdcNumber > item.dustUsdcNumber
+        );
+    };
+
+    const getRowStyle = (_index: number, item: StrategyTVLListItem) => {
+        if (!hasHealthyAssetsToDebtRatio(item)) {
+            return {
+                borderColor: 'red',
+                borderStyle: 'groove',
+            };
+        }
+    };
 
     return (
         <div className={classes.root}>
@@ -128,6 +189,7 @@ export const StrategyProtocolList = (props: StrategyProtocolListProps) => {
                 defaultOrder="desc"
                 defaultOrderBy="estimatedTotalAssetsUsdcNumber"
                 defaultRowsPerPage={20}
+                getRowStyle={getRowStyle}
             />
         </div>
     );
