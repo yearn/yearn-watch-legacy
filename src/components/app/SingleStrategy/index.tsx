@@ -12,25 +12,24 @@ import { Alert } from '@material-ui/lab';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
-import StrategyDetail from './StrategyDetail';
-import StrategyHealthCheck from './StrategyHealthCheck';
-
 import { ErrorAlert } from '../../common/Alerts';
 import { Strategy, Vault, Network, DEFAULT_NETWORK } from '../../../types';
-
-import BreadCrumbs from './BreadCrumbs';
 import EtherScanLink from '../../common/EtherScanLink';
 import ReactHelmet from '../../common/ReactHelmet';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
+import { useStrategyReportContext } from '../../../contexts/StrategyReportContext';
+import { GlobalStylesLoading } from '../../theme/globalStyles';
 
 import { getService as getVaultService } from '../../../services/VaultService';
 import { getStrategies } from '../../../utils/strategies';
 import { getError } from '../../../utils/error';
 import { getReportsForStrategies } from '../../../utils/reports';
 
+import BreadCrumbs from './BreadCrumbs';
+import GenLender from './GenLender';
+import StrategyDetail from './StrategyDetail';
+import StrategyHealthCheck from './StrategyHealthCheck';
 import StrategyReports from './StrategyReports';
-import { GlobalStylesLoading } from '../../theme/globalStyles';
-import { useStrategyReportContext } from '../../../contexts/StrategyReportContext';
 
 const StyledCard = styled(Card)<{ emergencyExit?: string }>`
     && {
@@ -86,6 +85,36 @@ const getWarnings = (strategies: Strategy[]): string[] => {
     });
 
     return warnings;
+};
+
+enum AdditionalInfoLabels {
+    GenLender = 'Gen Lender',
+}
+
+const getAdditionalInfoComponent = (
+    label: AdditionalInfoLabels,
+    strategy: Strategy,
+    network: Network
+): JSX.Element => {
+    switch (label) {
+        case AdditionalInfoLabels.GenLender: {
+            return <GenLender strategy={strategy} network={network} />;
+        }
+        default: {
+            throw Error('Could not find additional info component');
+        }
+    }
+};
+
+const getAdditionalInfo = (
+    strategy: Strategy
+): AdditionalInfoLabels | undefined => {
+    // Check if strategy has additional info to be displayed
+    // eg. gen lender strategies
+    if (strategy?.name === 'StrategyLenderYieldOptimiser') {
+        return AdditionalInfoLabels.GenLender;
+    }
+    return undefined;
 };
 
 export const SingleStrategy = () => {
@@ -156,6 +185,46 @@ export const SingleStrategy = () => {
     }, [strategyId, vaultId]);
 
     const strategy = strategyData && strategyData[0];
+    const additionalInfo = getAdditionalInfo(strategy);
+
+    const renderTab = (value: number): JSX.Element => {
+        switch (value) {
+            case 0: {
+                return <StrategyDetail strategy={strategy} network={network} />;
+            }
+            case 1: {
+                return (
+                    <StrategyReports
+                        network={network}
+                        reports={
+                            strategyReportContext.strategyReports[
+                                strategyId.toLowerCase()
+                            ]
+                        }
+                        tokenDecimals={strategy ? strategy.token.decimals : 18}
+                    />
+                );
+            }
+            case 2: {
+                return (
+                    <StrategyHealthCheck
+                        strategy={strategy}
+                        network={network}
+                    />
+                );
+            }
+            default: {
+                if (!additionalInfo) {
+                    throw Error('Should not render tab for additional info');
+                }
+                return getAdditionalInfoComponent(
+                    additionalInfo,
+                    strategy,
+                    network
+                );
+            }
+        }
+    };
 
     return (
         <React.Fragment>
@@ -247,6 +316,9 @@ export const SingleStrategy = () => {
                                     <Tab label="Detail" />
                                     <Tab label="Reports" />
                                     <Tab label="Health Check" />
+                                    {additionalInfo && (
+                                        <Tab label={additionalInfo} />
+                                    )}
                                 </Tabs>
                                 <div
                                     style={{
@@ -254,32 +326,7 @@ export const SingleStrategy = () => {
                                         overflow: 'scroll',
                                     }}
                                 >
-                                    {value === 0 ? (
-                                        <StrategyDetail
-                                            strategy={strategy}
-                                            network={network}
-                                        />
-                                    ) : value === 1 ? (
-                                        <StrategyReports
-                                            network={network}
-                                            reports={
-                                                strategyReportContext
-                                                    .strategyReports[
-                                                    strategyId.toLowerCase()
-                                                ]
-                                            }
-                                            tokenDecimals={
-                                                strategy
-                                                    ? strategy.token.decimals
-                                                    : 18
-                                            }
-                                        />
-                                    ) : (
-                                        <StrategyHealthCheck
-                                            strategy={strategy}
-                                            network={network}
-                                        />
-                                    )}
+                                    {renderTab(value)}
                                 </div>
                             </StyledCard>
                         </React.Fragment>

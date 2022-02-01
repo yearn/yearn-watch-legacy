@@ -64,6 +64,11 @@ export const displayAmount = (
     return display.toString();
 };
 
+export const displayAprAmount = (amount: string, decimals: number): string => {
+    const newAmount = new BN(amount).times(100);
+    return displayAmount(newAmount.toString(), decimals, 2);
+};
+
 export const msToHours = (ms: number): number => {
     return Number((ms / (1000 * 60 * 60)).toFixed(2));
 };

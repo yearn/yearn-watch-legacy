@@ -43,3 +43,18 @@ export type Strategy = {
     params: StrategyParams;
     errors: string[];
 };
+
+export type LendStatus = {
+    name: string;
+    assets: BigNumber;
+    rate: BigNumber;
+    add: string;
+};
+
+export type GenLenderStrategy = {
+    address: string;
+    lendStatuses: LendStatus[];
+    lentTotalAssets: BigNumber;
+    estimatedAPR: BigNumber;
+    estimateAdjustPosition: BigNumber;
+};

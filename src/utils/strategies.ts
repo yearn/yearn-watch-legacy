@@ -3,6 +3,7 @@ import { utils } from 'ethers';
 import { omit, memoize } from 'lodash';
 import { getMulticallContract } from './multicall';
 import {
+    GenLenderStrategy,
     Strategy,
     StrategyAddressQueueIndex,
     VaultApi,
@@ -37,6 +38,13 @@ const STRAT_VIEW_METHODS = [
     'healthCheck',
 ];
 
+const STRAT_GEN_LENDER_VIEW_METHODS = [
+    'lendStatuses',
+    'lentTotalAssets',
+    'estimatedAPR',
+    'estimateAdjustPosition',
+];
+
 const STRAT_PARAM_METHODS: string[] = [
     'debtOutstanding',
     'creditAvailable',
@@ -45,20 +53,13 @@ const STRAT_PARAM_METHODS: string[] = [
 ];
 
 const TOKEN_VIEW_METHODS: string[] = ['decimals', 'symbol', 'name'];
-// DEV NOTE: this filter was used in this strategy since it was failing to load the estimatedTotalAsset value
-// const filterList = ['0x2923a58c1831205c854dbea001809b194fdb3fa5'];
-const filterList: string[] = [];
-const buildViewMethodsCall = (strategies: string[]): ContractCallContext[] => {
+
+const buildViewMethodsCall = (
+    strategies: string[],
+    viewMethods: string[] = STRAT_VIEW_METHODS
+): ContractCallContext[] => {
     return strategies.map((stratAddres) => {
-        // TODO: this is a hack since a strategy is failing on this specific call
-        // remove after on chain fix
-        const filterCalls = STRAT_VIEW_METHODS.filter((viewMethod) => {
-            return !(
-                filterList.includes(stratAddres.toLowerCase()) &&
-                viewMethod === 'estimatedTotalAssets'
-            );
-        });
-        const calls = filterCalls.map((method) => ({
+        const calls = viewMethods.map((method) => ({
             reference: method,
             methodName: method,
             methodParameters: [] as string[],
@@ -261,9 +262,37 @@ const innerGetStrategies = async (
 
 export const getStrategies = memoize(innerGetStrategies);
 
-export const _getAllStrategies = async (): Promise<Strategy[]> => {
+const _getAllStrategies = async (): Promise<Strategy[]> => {
     const allVaults = await getEndorsedVaults();
     return allVaults.flatMap((vault) => vault.strategies);
 };
 
 export const getAllStrategies = memoize(_getAllStrategies);
+
+const _getGenLenderStrategy = async (
+    address: string,
+    network: Network
+): Promise<GenLenderStrategy> => {
+    if (!utils.isAddress(address)) {
+        throw new Error('Expected a valid strategy address');
+    }
+
+    const multicall = getMulticallContract(network);
+    const stratCalls: ContractCallContext[] = buildViewMethodsCall(
+        [address],
+        STRAT_GEN_LENDER_VIEW_METHODS
+    );
+
+    const resultsViewMethods: ContractCallResults = await multicall.call(
+        stratCalls
+    );
+    const stratData = resultsViewMethods.results[address];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const mappedStrat: any = mapContractCalls(stratData);
+    return {
+        ...mappedStrat,
+        address,
+    };
+};
+
+export const getGenLenderStrategy = memoize(_getGenLenderStrategy);
