@@ -64,9 +64,9 @@ export const GenLender = (props: GenLenderProps) => {
             : '';
 
         const data = [
-            { key: 'Estimate Adjust Position:', value: estimateAdjustPosition },
-            { key: 'Estimated APR', value: `${estimatedAPR}%` },
             { key: 'Total Assets Lent:', value: lentTotalAssets },
+            { key: 'Estimated APR', value: `${estimatedAPR}%` },
+            { key: 'Estimate Adjust Position:', value: estimateAdjustPosition },
         ];
         return <CardContent data={data} key={strategy.address} />;
     };
