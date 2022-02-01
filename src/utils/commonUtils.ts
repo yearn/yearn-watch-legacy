@@ -32,6 +32,7 @@ export const toDecimals = (amount: BigNumberish, decimals: number): BN => {
 };
 
 export const EMPTY_ADDRESS = '0x0000000000000000000000000000000000000000';
+export const STRATEGY_APR_DECIMALS = 18;
 
 export const extractAddress = (address: string) => {
     return (
@@ -64,7 +65,10 @@ export const displayAmount = (
     return display.toString();
 };
 
-export const displayAprAmount = (amount: string, decimals: number): string => {
+export const displayAprAmount = (
+    amount: string,
+    decimals = STRATEGY_APR_DECIMALS
+): string => {
     const newAmount = new BN(amount).times(100);
     return displayAmount(newAmount.toString(), decimals, 2);
 };

@@ -36,7 +36,6 @@ export const GenLender = (props: GenLenderProps) => {
                     strategy.address,
                     network
                 );
-                console.log(loadedGenLenderData);
                 setGenLenderData(loadedGenLenderData);
                 setIsLoading(false);
             } catch (e: unknown) {
@@ -54,10 +53,7 @@ export const GenLender = (props: GenLenderProps) => {
             : '';
 
         const estimatedAPR = genLenderData
-            ? displayAprAmount(
-                  genLenderData.estimatedAPR.toString(),
-                  strategy.token.decimals
-              )
+            ? displayAprAmount(genLenderData.estimatedAPR.toString())
             : '';
 
         const lentTotalAssets = genLenderData
