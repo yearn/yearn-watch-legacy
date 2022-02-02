@@ -21,7 +21,6 @@ export default function useStrategyMetaData(
                     vaultAddress,
                     strategyAddress
                 );
-                console.log(metaData);
                 setData(metaData);
             } catch (e) {
                 setError(getError(e));

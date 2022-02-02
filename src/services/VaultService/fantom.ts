@@ -182,7 +182,6 @@ export default class FantomService implements VaultService {
         const result = await this.sdk.strategies.vaultsStrategiesMetadata([
             vaultAddress,
         ]);
-        console.log(result);
         const res = result[0];
         const metaData = res.strategiesMetadata.find((strategy) => {
             strategy.address == strategyAddress;
