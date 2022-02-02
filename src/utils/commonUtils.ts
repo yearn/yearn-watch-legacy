@@ -95,6 +95,10 @@ const _handleSingleValue = (value: unknown): unknown => {
 const _handleContractValues = (value: unknown): unknown => {
     if (Array.isArray(value)) {
         if (value.length === 1) {
+            if (Array.isArray(value[0])) {
+                // Preserve array nesting
+                return [_handleContractValues(value[0])];
+            }
             return _handleSingleValue(value[0]);
         }
         return value.map((v) => _handleContractValues(v));
