@@ -21,9 +21,12 @@ import { useStrategyReportContext } from '../../../contexts/StrategyReportContex
 import { GlobalStylesLoading } from '../../theme/globalStyles';
 
 import { getService as getVaultService } from '../../../services/VaultService';
-import { getStrategies } from '../../../utils/strategies';
-import { getError } from '../../../utils/error';
-import { getReportsForStrategies } from '../../../utils/reports';
+import {
+    getError,
+    getReportsForStrategies,
+    getStrategies,
+    getWarnings,
+} from '../../../utils';
 
 import BreadCrumbs from './BreadCrumbs';
 import GenLender from './GenLender';
@@ -74,18 +77,6 @@ interface ParamTypes {
     vaultId: string;
     network?: Network;
 }
-
-// TODO: refactor this into util func
-const getWarnings = (strategies: Strategy[]): string[] => {
-    let warnings: string[] = [];
-    strategies.forEach((strat) => {
-        if (strat.errors.length > 0) {
-            warnings = warnings.concat(strat.errors);
-        }
-    });
-
-    return warnings;
-};
 
 enum AdditionalInfoLabels {
     GenLender = 'Gen Lender',

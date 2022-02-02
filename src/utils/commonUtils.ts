@@ -49,19 +49,19 @@ export const extractText = (text: string) => {
 export const displayAmount = (
     amount: string,
     decimals: number,
-    precision: number | undefined = 5
+    precision = 5,
+    stripTrailingZeros = true
 ): string => {
     if (amount === constants.MaxUint256.toString()) return ' ∞';
     const tokenBits = BigNumber.from(10).pow(decimals);
-
-    const trailingZeros = '.' + '0'.repeat(precision);
-
     const display = new BN(amount)
         .div(tokenBits.toString())
-        .toFormat(precision)
-        // strip trailing zeros for display
-        .replace(trailingZeros, '');
+        .toFormat(precision);
 
+    if (stripTrailingZeros) {
+        const trailingZeros = '.' + '0'.repeat(precision);
+        return display.replace(trailingZeros, '').toString();
+    }
     return display.toString();
 };
 
@@ -70,7 +70,7 @@ export const displayAprAmount = (
     decimals = STRATEGY_APR_DECIMALS
 ): string => {
     const newAmount = new BN(amount).times(100);
-    return displayAmount(newAmount.toString(), decimals, 2);
+    return `${displayAmount(newAmount.toString(), decimals, 2, false)}%`;
 };
 
 export const msToHours = (ms: number): number => {

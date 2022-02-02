@@ -122,16 +122,16 @@ export const GenLender = (props: GenLenderProps) => {
         const data = [
             { key: 'Lender Statuses:', value: lenderStatuses },
             { key: 'Total Assets Lent:', value: lentTotalAssets },
-            { key: 'Estimated APR', value: `${estimatedAPR}%` },
+            { key: 'Estimated APR', value: estimatedAPR },
             { key: 'Lowest Lender:', value: estimateAdjustPositionLowest },
             { key: 'Highest Lender:', value: estimateAdjustPositionHighest },
             {
                 key: 'Lowest APR:',
-                value: `${estimateAdjustPositionLowestAPR}%`,
+                value: estimateAdjustPositionLowestAPR,
             },
             {
                 key: 'Potential:',
-                value: `${estimateAdjustPositionPotential}%`,
+                value: estimateAdjustPositionPotential,
             },
         ];
         return <CardContent data={data} key={strategy.address} />;

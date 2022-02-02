@@ -91,6 +91,7 @@
         "eslint-plugin-prettier": "^3.4.0",
         "eslint-plugin-react": "^7.23.2",
         "eslint-plugin-react-hooks": "^4.2.0",
+        "factory.ts": "^0.5.2",
         "prettier": "^2.2.1"
     }
 }
