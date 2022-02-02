@@ -24,9 +24,12 @@ import ReactHelmet from '../../common/ReactHelmet';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 
 import { getService as getVaultService } from '../../../services/VaultService';
-import { getStrategies } from '../../../utils/strategies';
-import { getError } from '../../../utils/error';
-import { getReportsForStrategies } from '../../../utils/reports';
+import {
+    getError,
+    getReportsForStrategies,
+    getStrategies,
+    getWarnings,
+} from '../../../utils';
 
 import StrategyReports from './StrategyReports';
 import { GlobalStylesLoading } from '../../theme/globalStyles';
@@ -75,18 +78,6 @@ interface ParamTypes {
     vaultId: string;
     network?: Network;
 }
-
-// TODO: refactor this into util func
-const getWarnings = (strategies: Strategy[]): string[] => {
-    let warnings: string[] = [];
-    strategies.forEach((strat) => {
-        if (strat.errors.length > 0) {
-            warnings = warnings.concat(strat.errors);
-        }
-    });
-
-    return warnings;
-};
 
 export const SingleStrategy = () => {
     const {
