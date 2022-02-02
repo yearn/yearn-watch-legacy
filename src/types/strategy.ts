@@ -43,3 +43,7 @@ export type Strategy = {
     params: StrategyParams;
     errors: string[];
 };
+
+export type StrategyMetaData = {
+    description?: string;
+};

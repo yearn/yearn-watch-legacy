@@ -16,21 +16,23 @@ import StrategyDetail from './StrategyDetail';
 import StrategyHealthCheck from './StrategyHealthCheck';
 
 import { ErrorAlert } from '../../common/Alerts';
-import { Strategy, Vault, Network, DEFAULT_NETWORK } from '../../../types';
+import { Network, DEFAULT_NETWORK } from '../../../types';
 
 import BreadCrumbs from './BreadCrumbs';
 import EtherScanLink from '../../common/EtherScanLink';
 import ReactHelmet from '../../common/ReactHelmet';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 
-import { getService as getVaultService } from '../../../services/VaultService';
-import { getStrategies } from '../../../utils/strategies';
 import { getError } from '../../../utils/error';
+import { getWarnings } from '../../../utils/warnings';
 import { getReportsForStrategies } from '../../../utils/reports';
 
 import StrategyReports from './StrategyReports';
 import { GlobalStylesLoading } from '../../theme/globalStyles';
 import { useStrategyReportContext } from '../../../contexts/StrategyReportContext';
+import useVault from '../../../hooks/use-vault';
+import useStrategy from '../../../hooks/use-strategy';
+import useStrategyMetaData from '../../../hooks/use-strategy-metadata';
 
 const StyledCard = styled(Card)<{ emergencyExit?: string }>`
     && {
@@ -76,35 +78,33 @@ interface ParamTypes {
     network?: Network;
 }
 
-// TODO: refactor this into util func
-const getWarnings = (strategies: Strategy[]): string[] => {
-    let warnings: string[] = [];
-    strategies.forEach((strat) => {
-        if (strat.errors.length > 0) {
-            warnings = warnings.concat(strat.errors);
-        }
-    });
-
-    return warnings;
-};
-
 export const SingleStrategy = () => {
     const {
         strategyId,
         vaultId,
         network = DEFAULT_NETWORK,
     } = useParams<ParamTypes>();
-
-    const [strategyData, setStrategyData] = useState<Strategy[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [vault, setVault] = useState<Vault | undefined>();
-    const [isVaultLoading, setIsVaultLoading] = useState(true);
     const [isReportsLoading, setIsReportsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [value, setValue] = useState(0);
     const [warningFields, setWarningFields] = useState<string[] | null>(null);
     const [openSnackBar, setOpenSB] = useState(true);
     const strategyReportContext = useStrategyReportContext();
+    const {
+        data: vault,
+        error: fetchVaultError,
+        loading: fetchVaultLoading,
+    } = useVault(network, vaultId);
+    const {
+        data: strategy,
+        error: fetchStrategyError,
+        loading: fetchStrategyLoading,
+    } = useStrategy(network, vaultId, strategyId);
+    const {
+        data: strategyMetaData,
+        error: fetchstrategyMetaData,
+        loading: fetchstrategyMetaDataLoading,
+    } = useStrategyMetaData(network, vaultId, strategyId);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
@@ -114,6 +114,15 @@ export const SingleStrategy = () => {
     const handleCloseSnackBar = () => {
         setOpenSB(false);
     };
+
+    useEffect(() => {
+        if (strategy) {
+            const warnings = getWarnings([strategy]);
+            if (warnings.length > 0) {
+                setWarningFields(warnings);
+            }
+        }
+    }, [strategy]);
 
     useEffect(() => {
         const loadStrategyData = async () => {
@@ -127,35 +136,14 @@ export const SingleStrategy = () => {
                 ).then(() => {
                     setIsReportsLoading(false);
                 });
-                const loadedStrategy = await getStrategies(
-                    [strategyId],
-                    network
-                );
-                setStrategyData(loadedStrategy);
-                const warnings = getWarnings(loadedStrategy);
-                if (warnings.length > 0) {
-                    setWarningFields(warnings);
-                }
-                setIsLoading(false);
-
-                // Load vault name
-                setIsVaultLoading(true);
-                const vaultService = getVaultService(network);
-                const loadedVault = await vaultService.getVault(vaultId);
-                setVault(loadedVault);
-                setIsVaultLoading(false);
             } catch (e: unknown) {
                 console.log('Error:', e);
-                setIsLoading(false);
-                setIsVaultLoading(false);
                 setIsReportsLoading(false);
                 setError(getError(e));
             }
         };
         loadStrategyData();
     }, [strategyId, vaultId]);
-
-    const strategy = strategyData && strategyData[0];
 
     return (
         <React.Fragment>
@@ -180,7 +168,7 @@ export const SingleStrategy = () => {
                         </Alert>
                     </Snackbar>
                 )}
-                {isLoading || isReportsLoading ? (
+                {fetchStrategyLoading || isReportsLoading ? (
                     <div
                         style={{
                             textAlign: 'center',
@@ -222,7 +210,7 @@ export const SingleStrategy = () => {
 
                                             <StyledSpan>
                                                 (Vault:{' '}
-                                                {isVaultLoading
+                                                {fetchVaultLoading
                                                     ? '... loading vault name'
                                                     : vault && vault.name}
                                                 )
@@ -255,10 +243,13 @@ export const SingleStrategy = () => {
                                     }}
                                 >
                                     {value === 0 ? (
-                                        <StrategyDetail
-                                            strategy={strategy}
-                                            network={network}
-                                        />
+                                        strategy && (
+                                            <StrategyDetail
+                                                strategy={strategy}
+                                                network={network}
+                                                metadata={strategyMetaData}
+                                            />
+                                        )
                                     ) : value === 1 ? (
                                         <StrategyReports
                                             network={network}
@@ -275,10 +266,12 @@ export const SingleStrategy = () => {
                                             }
                                         />
                                     ) : (
-                                        <StrategyHealthCheck
-                                            strategy={strategy}
-                                            network={network}
-                                        />
+                                        strategy && (
+                                            <StrategyHealthCheck
+                                                strategy={strategy}
+                                                network={network}
+                                            />
+                                        )
                                     )}
                                 </div>
                             </StyledCard>

@@ -3,15 +3,16 @@ import Chip from '@material-ui/core/Chip';
 import EtherScanLink from '../../common/EtherScanLink';
 import { formatBPS, displayAmount } from '../../../utils/commonUtils';
 import CardContent from './CardContent';
-import { Network, Strategy } from '../../../types';
+import { Network, Strategy, StrategyMetaData } from '../../../types';
 import TokenPrice from '../../common/TokenPrice';
 
 type StrategyDetailProps = {
     strategy: Strategy;
     network: Network;
+    metadata?: StrategyMetaData;
 };
 export const StrategyDetail = (props: StrategyDetailProps) => {
-    const { strategy, network } = props;
+    const { strategy, network, metadata } = props;
 
     const apiVersion = strategy ? strategy.apiVersion : '';
     const activationDate = strategy ? strategy.params.activation : '';
@@ -164,6 +165,7 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
     ) : undefined;
     const data = [
         { key: 'API Version:', value: apiVersion },
+        { key: ' Description:', value: metadata?.description || 'Empty' },
         { key: ' Activation Date', value: activationDate },
         { key: ' Time Since Last Harvest:', value: lastReportText },
         { key: ' Emergency exit:', value: emergencyExit },
