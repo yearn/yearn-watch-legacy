@@ -8,6 +8,8 @@ import { GenLenderStrategy, Network, Strategy } from '../../../types';
 import { displayAmount, displayAprAmount } from '../../../utils/commonUtils';
 import { getError } from '../../../utils/error';
 import { getGenLenderStrategy } from '../../../utils/strategies';
+import { Box } from '@material-ui/core';
+import EtherScanLink from '../../common/EtherScanLink';
 
 const StyledTypography = styled(Typography)`
     && {
@@ -48,13 +50,43 @@ export const GenLender = (props: GenLenderProps) => {
     }, [strategy.address, network]);
 
     const renderData = () => {
-        const estimateAdjustPosition = genLenderData
-            ? genLenderData.estimateAdjustPosition.toString()
-            : '';
-
-        const estimatedAPR = genLenderData
-            ? displayAprAmount(genLenderData.estimatedAPR.toString())
-            : '';
+        const lenderStatuses =
+            genLenderData && genLenderData.lendStatuses ? (
+                <>
+                    {genLenderData.lendStatuses.map((value, index) => (
+                        <Box
+                            key={`lender_${value[0]}`}
+                            sx={{
+                                marginBottom:
+                                    index ===
+                                    genLenderData.lendStatuses.length - 1
+                                        ? '0'
+                                        : '20px',
+                            }}
+                        >
+                            <div>
+                                <div>{value[0]}</div>
+                                <EtherScanLink
+                                    address={value[3]}
+                                    network={network}
+                                />
+                            </div>
+                            <div>
+                                {'  '}Deposits:{' '}
+                                {displayAmount(
+                                    value[1].toString(),
+                                    strategy.token.decimals
+                                )}
+                            </div>
+                            <div>
+                                APR: {displayAprAmount(value[2].toString())}%
+                            </div>
+                        </Box>
+                    ))}
+                </>
+            ) : (
+                ''
+            );
 
         const lentTotalAssets = genLenderData
             ? displayAmount(
@@ -63,10 +95,44 @@ export const GenLender = (props: GenLenderProps) => {
               )
             : '';
 
+        const estimatedAPR = genLenderData
+            ? displayAprAmount(genLenderData.estimatedAPR.toString())
+            : '';
+
+        const estimateAdjustPositionLowest = genLenderData
+            ? genLenderData.estimateAdjustPosition[0].toString()
+            : '';
+
+        const estimateAdjustPositionHighest = genLenderData
+            ? genLenderData.estimateAdjustPosition[2].toString()
+            : '';
+
+        const estimateAdjustPositionLowestAPR = genLenderData
+            ? displayAprAmount(
+                  genLenderData.estimateAdjustPosition[1].toString()
+              )
+            : '';
+
+        const estimateAdjustPositionPotential = genLenderData
+            ? displayAprAmount(
+                  genLenderData.estimateAdjustPosition[3].toString()
+              )
+            : '';
+
         const data = [
+            { key: 'Lender Statuses:', value: lenderStatuses },
             { key: 'Total Assets Lent:', value: lentTotalAssets },
             { key: 'Estimated APR', value: `${estimatedAPR}%` },
-            { key: 'Estimate Adjust Position:', value: estimateAdjustPosition },
+            { key: 'Lowest Lender:', value: estimateAdjustPositionLowest },
+            { key: 'Highest Lender:', value: estimateAdjustPositionHighest },
+            {
+                key: 'Lowest APR:',
+                value: `${estimateAdjustPositionLowestAPR}%`,
+            },
+            {
+                key: 'Potential:',
+                value: `${estimateAdjustPositionPotential}%`,
+            },
         ];
         return <CardContent data={data} key={strategy.address} />;
     };

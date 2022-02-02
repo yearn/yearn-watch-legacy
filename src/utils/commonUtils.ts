@@ -85,23 +85,30 @@ export const formatBPS = (val: string): string => {
     return (parseInt(val, 10) / 100).toString();
 };
 
+const _handleSingleValue = (value: unknown): unknown => {
+    if (get(value, 'type') === 'BigNumber') {
+        return BigNumber.from(value).toString();
+    }
+    return value;
+};
+
+const _handleContractValues = (value: unknown): unknown => {
+    if (Array.isArray(value)) {
+        if (value.length === 1) {
+            return _handleSingleValue(value[0]);
+        }
+        return value.map((v) => _handleContractValues(v));
+    }
+    return _handleSingleValue(value);
+};
+
 export const mapContractCalls = (result: ContractCallReturnContext) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const mappedObj: any = { errors: [] };
     result.callsReturnContext.forEach(
         ({ methodName, returnValues, success }) => {
             if (success && returnValues && returnValues.length > 0) {
-                if (
-                    typeof returnValues[0] === 'string' ||
-                    typeof returnValues[0] === 'boolean' ||
-                    typeof returnValues[0] === 'number'
-                ) {
-                    mappedObj[methodName] = returnValues[0];
-                } else if (get(returnValues[0], 'type') === 'BigNumber') {
-                    mappedObj[methodName] = BigNumber.from(
-                        returnValues[0]
-                    ).toString();
-                }
+                mappedObj[methodName] = _handleContractValues(returnValues);
             } else {
                 mappedObj.errors.push(methodName);
             }
