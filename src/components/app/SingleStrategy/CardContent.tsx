@@ -23,6 +23,7 @@ const StyledTableRow = styled(TableRow)`
 `;
 const StyledTableCell = styled(TableCell)`
     && {
+        vertical-align: top;
         border-bottom: 1px solid ${({ theme }) => theme.border} !important;
     }
 `;
