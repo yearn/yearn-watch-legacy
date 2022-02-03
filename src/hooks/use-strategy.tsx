@@ -3,7 +3,7 @@ import { Network, Strategy } from '../types';
 import { getError } from '../utils/error';
 import { getStrategies } from '../utils/strategies';
 
-export default function useStrategy(
+export function useStrategy(
     network: Network,
     vaultAddress: string,
     strategyAddress: string

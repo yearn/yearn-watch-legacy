@@ -23,16 +23,12 @@ import EtherScanLink from '../../common/EtherScanLink';
 import ReactHelmet from '../../common/ReactHelmet';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 
-import { getError } from '../../../utils/error';
-import { getWarnings } from '../../../utils/warnings';
-import { getReportsForStrategies } from '../../../utils/reports';
+import { getError, getWarnings, getReportsForStrategies } from '../../../utils';
+import { useStrategy, useVault, useStrategyMetaData } from '../../../hooks'
 
 import StrategyReports from './StrategyReports';
 import { GlobalStylesLoading } from '../../theme/globalStyles';
 import { useStrategyReportContext } from '../../../contexts/StrategyReportContext';
-import useVault from '../../../hooks/use-vault';
-import useStrategy from '../../../hooks/use-strategy';
-import useStrategyMetaData from '../../../hooks/use-strategy-metadata';
 
 const StyledCard = styled(Card)<{ emergencyExit?: string }>`
     && {

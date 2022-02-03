@@ -3,7 +3,7 @@ import { getService as getVaultService } from '../services/VaultService';
 import { Network, Vault } from '../types';
 import { getError } from '../utils/error';
 
-export default function useVault(network: Network, address: string) {
+export function useVault(network: Network, address: string) {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [data, setData] = useState<Vault | undefined>();

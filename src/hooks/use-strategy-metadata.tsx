@@ -3,7 +3,7 @@ import { Network, StrategyMetaData } from '../types';
 import { getService as getVaultService } from '../services/VaultService';
 import { getError } from '../utils/error';
 
-export default function useStrategyMetaData(
+export function useStrategyMetaData(
     network: Network,
     vaultAddress: string,
     strategyAddress: string
