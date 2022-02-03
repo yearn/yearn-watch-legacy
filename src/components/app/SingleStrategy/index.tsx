@@ -24,7 +24,7 @@ import ReactHelmet from '../../common/ReactHelmet';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 
 import { getError, getWarnings, getReportsForStrategies } from '../../../utils';
-import { useStrategy, useVault, useStrategyMetaData } from '../../../hooks'
+import { useStrategy, useVault, useStrategyMetaData } from '../../../hooks';
 
 import StrategyReports from './StrategyReports';
 import { GlobalStylesLoading } from '../../theme/globalStyles';
