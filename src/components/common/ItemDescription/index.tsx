@@ -64,14 +64,8 @@ const ItemDescription = (props: ItemDescriptionProps) => {
 
     return (
         <Grid item xs={xs} md={props.md} style={{ marginBottom: 50 }}>
-            <StyledTitle>
-                {' '}
-                {props.value}
-                <br />
-            </StyledTitle>
-
+            <StyledTitle>{props.value}</StyledTitle>
             <StyledSubtitle>
-                {' '}
                 {props.label}: {helpTooltip}
             </StyledSubtitle>
         </Grid>

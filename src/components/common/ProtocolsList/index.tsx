@@ -133,7 +133,7 @@ export const ProtocolsList = (props: ProtocolsListProps) => {
                                             container
                                             spacing={1}
                                             direction="row"
-                                            justify="center"
+                                            justifyContent="center"
                                             alignItems="center"
                                         >
                                             {`#${

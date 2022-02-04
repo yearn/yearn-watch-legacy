@@ -43,7 +43,6 @@ export default function BarChart(props: BarChartProps) {
                                 <SubTitle>{val.name}</SubTitle>
                             </Grid>
                             <Grid item xs={6}>
-                                {' '}
                                 <ValuePercentage>{val.y} %</ValuePercentage>
                             </Grid>
                         </Grid>

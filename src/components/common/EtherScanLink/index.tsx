@@ -3,13 +3,13 @@ import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { toChecksumAddress } from 'ethereum-checksum-address';
 
-import Button from '@material-ui/core/Button';
-import { extractAddress } from '../../../utils/commonUtils';
 import Hidden from '@material-ui/core/Hidden';
 import CallMadeIcon from '@material-ui/icons/CallMade';
 import Tooltip from '@material-ui/core/Tooltip';
 import { FileCopy } from '@material-ui/icons';
 import { Link, Grid } from '@material-ui/core';
+
+import { extractAddress } from '../../../utils/commonUtils';
 import getNetworkConfig from '../../../utils/config';
 import { Network } from '../../../types';
 
@@ -20,38 +20,48 @@ type EtherScanLinkProps = {
     internalHref?: string;
     network: Network;
 };
+
 const StyledFileCopy = styled(FileCopy)`
     && {
         color: ${({ theme }) => theme.text} !important;
-
-        border-radius: 3;
-        padding: 2;
     }
 `;
+
 const StyledCallMadeIcon = styled(CallMadeIcon)`
     && {
         color: ${({ theme }) => theme.text} !important;
-        border-radius: 3;
-        padding: 2;
     }
 `;
+
+const StyledLink = styled.a`
+    && {
+        padding: 0;
+        padding-left: 16px;
+        cursor: pointer;
+
+        :hover {
+            filter: brightness(80%);
+        }
+    }
+`;
+
 const StyledAddress = styled.span`
     && {
         color: ${({ theme }) => theme.subtitle} !important;
 
         text-decoration: none;
         font-weight: 400;
-
-        line-height: 14px;
         font-size: 16px;
         font-style: normal;
     }
 `;
+
 const StyledCopiedText = styled.span`
     && {
         color: ${({ theme }) => theme.subtitle} !important;
     }
 `;
+
 const EtherScanLink = (props: EtherScanLinkProps) => {
     const { address, transactionHash, internalHref, network } = props;
     const [copied, setCopied] = useState(false);
@@ -111,19 +121,17 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
                 </StyledAddress>
 
                 <Tooltip title="Copy to clipboard" aria-label="Clipboard">
-                    <Button onClick={(e) => onCopyToClipboard(e)}>
-                        <StyledFileCopy fontSize="inherit" />
-                        {copied ? (
-                            <StyledCopiedText> Copied</StyledCopiedText>
-                        ) : (
-                            ''
-                        )}
-                    </Button>
+                    <StyledLink onClick={(e) => onCopyToClipboard(e)}>
+                        <StyledCopiedText>
+                            <StyledFileCopy fontSize="inherit" />
+                            {copied ? ' Copied' : ''}
+                        </StyledCopiedText>
+                    </StyledLink>
                 </Tooltip>
                 <Tooltip title="View on Explorer" aria-label="Explorer">
-                    <Button href={refLink} target="_blank">
+                    <StyledLink href={refLink} target="_blank">
                         <StyledCallMadeIcon fontSize="inherit" />
-                    </Button>
+                    </StyledLink>
                 </Tooltip>
             </Grid>
         </Grid>

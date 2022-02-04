@@ -43,7 +43,9 @@ const StyledDivRoot = styled.div`
         border-radius: 5px;
     }
 `;
-const StyledMuiAccordion = styled(MuiAccordion)<{ config: string }>`
+const StyledMuiAccordion = styled(MuiAccordion).withConfig({
+    shouldForwardProp: (props) => !(props.toString() in ['config']),
+})<{ config: string }>`
     && {
         width: 100%;
         align-items: center;
@@ -89,7 +91,9 @@ const StyledTitle = styled(Typography)`
         color: ${({ theme }) => theme.title} !important;
     }
 `;
-const StyledSubtitleQueIndex = styled(Typography)<{ error: boolean }>`
+const StyledSubtitleQueIndex = styled(Typography).withConfig({
+    shouldForwardProp: (props) => !(props.toString() in ['error']),
+})<{ error: boolean }>`
     && {
         font-family: Roboto;
         font-style: normal;
@@ -101,7 +105,9 @@ const StyledSubtitleQueIndex = styled(Typography)<{ error: boolean }>`
             error ? theme.error : theme.subtitle} !important;
     }
 `;
-const StyledTitleQueIndex = styled(Typography)<{ error: boolean }>`
+const StyledTitleQueIndex = styled(Typography).withConfig({
+    shouldForwardProp: (props) => !(props.toString() in ['error']),
+})<{ error: boolean }>`
     && {
         font-family: Roboto;
         font-style: normal;
@@ -220,7 +226,6 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                             </StyledTitle>
                                         </Grid>
                                         <Hidden xsDown>
-                                            {' '}
                                             <Grid item md={6} xs={9}>
                                                 <EtherScanLink
                                                     address={strategy.address}
@@ -253,7 +258,7 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                         container
                                         spacing={1}
                                         direction="row"
-                                        justify="flex-start"
+                                        justifyContent="flex-start"
                                         alignItems="center"
                                     >
                                         <Grid item md={1}></Grid>
@@ -264,7 +269,7 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                         container
                                                         spacing={1}
                                                         direction="row"
-                                                        justify="flex-start"
+                                                        justifyContent="flex-start"
                                                         alignItems="center"
                                                     >
                                                         <Grid
@@ -309,7 +314,6 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                             </StyledTitle>
 
                                                             <StyledSubtitle>
-                                                                {' '}
                                                                 Total debt
                                                             </StyledSubtitle>
                                                         </Grid>
@@ -328,7 +332,6 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                             </StyledTitle>
 
                                                             <StyledSubtitle>
-                                                                {' '}
                                                                 Debt ratio
                                                             </StyledSubtitle>
                                                         </Grid>
@@ -356,7 +359,6 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                             md={2}
                                                         >
                                                             <StyledTitle>
-                                                                {' '}
                                                                 <DebTooltip
                                                                     label={
                                                                         vault &&
@@ -371,7 +373,6 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                             </StyledTitle>
 
                                                             <StyledSubtitle>
-                                                                {' '}
                                                                 Credit available
                                                             </StyledSubtitle>
                                                         </Grid>
@@ -399,7 +400,6 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                                 />
                                                             </StyledTitle>
                                                             <StyledSubtitle>
-                                                                {' '}
                                                                 Total Estimated
                                                                 Assets
                                                             </StyledSubtitle>

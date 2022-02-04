@@ -26,7 +26,9 @@ import ReactHelmet from '../../common/ReactHelmet';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 import { GlobalStylesLoading } from '../../theme/globalStyles';
 
-const StyledCard = styled(Card)<{
+const StyledCard = styled(Card).withConfig({
+    shouldForwardProp: (props) => !(props.toString() in ['config', 'bck']),
+})<{
     config?: string | undefined;
     bck?: string | undefined;
 }>`
@@ -47,11 +49,13 @@ const StyledCard = styled(Card)<{
         }
     }
 `;
+
 const StyledSpan = styled.span`
     && {
         color: ${({ theme }) => theme.subtitle};
     }
 `;
+
 const MuiTabs = styled(Tabs)`
     && {
         color: ${({ theme }) => theme.subtitle}!important;
@@ -67,22 +71,19 @@ const MuiTabs = styled(Tabs)`
 const StyledPaper = styled(Paper)`
     && {
         background-color: ${({ theme }) => theme.body};
+        margin-top: 16px;
     }
 `;
-const TitleDetails = styled.span`
-    && {
-        color: ${({ theme }) => theme.title};
-        font-weight: bolder;
-        font-size: 20px;
-    }
-`;
+
 const StyledTitle = styled.span`
     && {
         color: ${({ theme }) => theme.title};
-        font-weight: bold;
-        font-size: 18px;
+        font-weight: 600;
+        font-size: 20px;
+        margin: 16px 0;
     }
 `;
+
 interface TabPanelProps {
     children?: React.ReactNode;
 
@@ -288,55 +289,35 @@ export const SingleVault = (props: SingleVaultProps) => {
                                 <TabPanel value={value} index={0}>
                                     <Grid container spacing={3}>
                                         <Grid item xs={12} md={6}>
-                                            <TitleDetails> About</TitleDetails>
-                                            <div
-                                                style={{
-                                                    height: '60vh',
-                                                    overflow: 'scroll',
-                                                }}
-                                            >
-                                                <VaultDescription
-                                                    vault={vault}
-                                                    isLoading={isLoading}
-                                                    network={network}
-                                                />
-                                            </div>
+                                            <StyledTitle> About</StyledTitle>
+                                            <VaultDescription
+                                                vault={vault}
+                                                isLoading={isLoading}
+                                                network={network}
+                                            />
                                         </Grid>
                                         <Grid item xs={12} md={6}>
-                                            <TitleDetails>
+                                            <StyledTitle>
                                                 {' '}
                                                 Strategy Allocation
-                                            </TitleDetails>
-                                            <div
-                                                style={{
-                                                    height: '60vh',
-                                                    overflow: 'scroll',
-                                                }}
-                                            >
-                                                <StyledPaper>
-                                                    {vault &&
-                                                    vault.strategies.length >
-                                                        0 ? (
-                                                        <Pie
-                                                            vault={vault}
-                                                            theme={props.theme}
-                                                        />
-                                                    ) : (
-                                                        ''
-                                                    )}
-                                                </StyledPaper>
-                                            </div>
+                                            </StyledTitle>
+                                            <StyledPaper>
+                                                {vault &&
+                                                vault.strategies.length > 0 ? (
+                                                    <Pie
+                                                        vault={vault}
+                                                        theme={props.theme}
+                                                    />
+                                                ) : (
+                                                    ''
+                                                )}
+                                            </StyledPaper>
                                         </Grid>
                                     </Grid>
                                 </TabPanel>
 
                                 <TabPanel value={value} index={1}>
-                                    <div
-                                        style={{
-                                            height: '60vh',
-                                            overflow: 'scroll',
-                                        }}
-                                    >
+                                    <div>
                                         {vault &&
                                         vault.strategies.length > 0 ? (
                                             <div>

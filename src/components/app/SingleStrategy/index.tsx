@@ -34,7 +34,11 @@ import StrategyDetail from './StrategyDetail';
 import StrategyHealthCheck from './StrategyHealthCheck';
 import StrategyReports from './StrategyReports';
 
-const StyledCard = styled(Card)<{ emergencyExit?: string }>`
+const StyledCard = styled(Card).withConfig({
+    shouldForwardProp: (props) => props.toString() !== 'emergencyExit',
+})<{
+    emergencyExit?: string;
+}>`
     && {
         background-color: ${({ theme }) => theme.container};
         color: ${({ theme }) => theme.title};
@@ -50,6 +54,7 @@ const StyledCard = styled(Card)<{ emergencyExit?: string }>`
         }
     }
 `;
+
 const StyledCardBreadCrumbs = styled(Card)`
     && {
         background-color: transparent;
@@ -66,6 +71,7 @@ const StyledCardBreadCrumbs = styled(Card)`
         }
     }
 `;
+
 const StyledSpan = styled.span`
     && {
         color: ${({ theme }) => theme.subtitle};
@@ -266,7 +272,6 @@ export const SingleStrategy = () => {
                                     strategy.emergencyExit.toString()
                                 }
                             >
-                                {' '}
                                 <CardHeader
                                     title={strategy ? strategy.name : ''}
                                     subheader={
@@ -314,7 +319,7 @@ export const SingleStrategy = () => {
                                 <div
                                     style={{
                                         height: '60vh',
-                                        overflow: 'scroll',
+                                        overflow: 'auto',
                                     }}
                                 >
                                     {renderTab(value)}

@@ -134,7 +134,6 @@ const Pie = (props: PieProps) => {
                 <Tab label="Pie chart" />
             </MuiTabs>
             <TabPanel value={value} index={0}>
-                {' '}
                 <BarChart data={DATA_CHART} />
             </TabPanel>
             <TabPanel value={value} index={1}>
