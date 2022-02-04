@@ -12,23 +12,22 @@ import { Alert } from '@material-ui/lab';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
-import StrategyDetail from './StrategyDetail';
-import StrategyHealthCheck from './StrategyHealthCheck';
-
 import { ErrorAlert } from '../../common/Alerts';
-import { Network, DEFAULT_NETWORK } from '../../../types';
-
-import BreadCrumbs from './BreadCrumbs';
+import { Strategy, Network, DEFAULT_NETWORK } from '../../../types';
 import EtherScanLink from '../../common/EtherScanLink';
 import ReactHelmet from '../../common/ReactHelmet';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
+import { useStrategyReportContext } from '../../../contexts/StrategyReportContext';
+import { GlobalStylesLoading } from '../../theme/globalStyles';
 
 import { getError, getWarnings, getReportsForStrategies } from '../../../utils';
 import { useStrategy, useVault, useStrategyMetaData } from '../../../hooks';
 
+import BreadCrumbs from './BreadCrumbs';
+import GenLender from './GenLender';
+import StrategyDetail from './StrategyDetail';
+import StrategyHealthCheck from './StrategyHealthCheck';
 import StrategyReports from './StrategyReports';
-import { GlobalStylesLoading } from '../../theme/globalStyles';
-import { useStrategyReportContext } from '../../../contexts/StrategyReportContext';
 
 const StyledCard = styled(Card)<{ emergencyExit?: string }>`
     && {
@@ -74,6 +73,38 @@ interface ParamTypes {
     network?: Network;
 }
 
+enum AdditionalInfoLabels {
+    GenLender = 'Gen Lender',
+}
+
+const getAdditionalInfoComponent = (
+    label: AdditionalInfoLabels,
+    network: Network,
+    strategy?: Strategy
+): JSX.Element | undefined => {
+    switch (label) {
+        case AdditionalInfoLabels.GenLender: {
+            return (
+                strategy && <GenLender strategy={strategy} network={network} />
+            );
+        }
+        default: {
+            throw Error('Could not find additional info component');
+        }
+    }
+};
+
+const getAdditionalInfo = (
+    strategy?: Strategy
+): AdditionalInfoLabels | undefined => {
+    // Check if strategy has additional info to be displayed
+    // eg. gen lender strategies
+    if (strategy?.name === 'StrategyLenderYieldOptimiser') {
+        return AdditionalInfoLabels.GenLender;
+    }
+    return undefined;
+};
+
 export const SingleStrategy = () => {
     const {
         strategyId,
@@ -86,21 +117,20 @@ export const SingleStrategy = () => {
     const [warningFields, setWarningFields] = useState<string[] | null>(null);
     const [openSnackBar, setOpenSB] = useState(true);
     const strategyReportContext = useStrategyReportContext();
-    const {
-        data: vault,
-        error: fetchVaultError,
-        loading: fetchVaultLoading,
-    } = useVault(network, vaultId);
-    const {
-        data: strategy,
-        error: fetchStrategyError,
-        loading: fetchStrategyLoading,
-    } = useStrategy(network, vaultId, strategyId);
-    const {
-        data: strategyMetaData,
-        error: fetchstrategyMetaData,
-        loading: fetchstrategyMetaDataLoading,
-    } = useStrategyMetaData(network, vaultId, strategyId);
+    const { data: vault, loading: fetchVaultLoading } = useVault(
+        network,
+        vaultId
+    );
+    const { data: strategy, loading: fetchStrategyLoading } = useStrategy(
+        network,
+        vaultId,
+        strategyId
+    );
+    const { data: strategyMetaData } = useStrategyMetaData(
+        network,
+        vaultId,
+        strategyId
+    );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
@@ -140,6 +170,57 @@ export const SingleStrategy = () => {
         };
         loadStrategyData();
     }, [strategyId, vaultId]);
+
+    const additionalInfo = getAdditionalInfo(strategy);
+
+    const renderTab = (value: number): JSX.Element | undefined => {
+        switch (value) {
+            case 0: {
+                return (
+                    strategy && (
+                        <StrategyDetail
+                            strategy={strategy}
+                            network={network}
+                            metadata={strategyMetaData}
+                        />
+                    )
+                );
+            }
+            case 1: {
+                return (
+                    <StrategyReports
+                        network={network}
+                        reports={
+                            strategyReportContext.strategyReports[
+                                strategyId.toLowerCase()
+                            ]
+                        }
+                        tokenDecimals={strategy ? strategy.token.decimals : 18}
+                    />
+                );
+            }
+            case 2: {
+                return (
+                    strategy && (
+                        <StrategyHealthCheck
+                            strategy={strategy}
+                            network={network}
+                        />
+                    )
+                );
+            }
+            default: {
+                if (!additionalInfo) {
+                    throw Error('Should not render tab for additional info');
+                }
+                return getAdditionalInfoComponent(
+                    additionalInfo,
+                    network,
+                    strategy
+                );
+            }
+        }
+    };
 
     return (
         <React.Fragment>
@@ -231,6 +312,9 @@ export const SingleStrategy = () => {
                                     <Tab label="Detail" />
                                     <Tab label="Reports" />
                                     <Tab label="Health Check" />
+                                    {additionalInfo && (
+                                        <Tab label={additionalInfo} />
+                                    )}
                                 </Tabs>
                                 <div
                                     style={{
@@ -238,37 +322,7 @@ export const SingleStrategy = () => {
                                         overflow: 'scroll',
                                     }}
                                 >
-                                    {value === 0 ? (
-                                        strategy && (
-                                            <StrategyDetail
-                                                strategy={strategy}
-                                                network={network}
-                                                metadata={strategyMetaData}
-                                            />
-                                        )
-                                    ) : value === 1 ? (
-                                        <StrategyReports
-                                            network={network}
-                                            reports={
-                                                strategyReportContext
-                                                    .strategyReports[
-                                                    strategyId.toLowerCase()
-                                                ]
-                                            }
-                                            tokenDecimals={
-                                                strategy
-                                                    ? strategy.token.decimals
-                                                    : 18
-                                            }
-                                        />
-                                    ) : (
-                                        strategy && (
-                                            <StrategyHealthCheck
-                                                strategy={strategy}
-                                                network={network}
-                                            />
-                                        )
-                                    )}
+                                    {renderTab(value)}
                                 </div>
                             </StyledCard>
                         </React.Fragment>

@@ -1,6 +1,8 @@
 import React, { MouseEvent, useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { toChecksumAddress } from 'ethereum-checksum-address';
+
 import Button from '@material-ui/core/Button';
 import { extractAddress } from '../../../utils/commonUtils';
 import Hidden from '@material-ui/core/Hidden';
@@ -66,7 +68,7 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
     let value = '';
     let extractedValue = '';
     if (address) {
-        value = address;
+        value = toChecksumAddress(address);
         extractedValue = extractAddress(address);
     }
     if (transactionHash) {
@@ -103,7 +105,7 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
                     ) : (
                         <>
                             <Hidden smUp>{maskedValue}</Hidden>
-                            <Hidden xsDown>{value.toUpperCase()}</Hidden>
+                            <Hidden xsDown>{value}</Hidden>
                         </>
                     )}
                 </StyledAddress>

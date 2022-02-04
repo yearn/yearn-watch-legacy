@@ -32,6 +32,7 @@ export const toDecimals = (amount: BigNumberish, decimals: number): BN => {
 };
 
 export const EMPTY_ADDRESS = '0x0000000000000000000000000000000000000000';
+export const STRATEGY_APR_DECIMALS = 18;
 
 export const extractAddress = (address: string) => {
     return (
@@ -48,20 +49,28 @@ export const extractText = (text: string) => {
 export const displayAmount = (
     amount: string,
     decimals: number,
-    precision: number | undefined = 5
+    precision = 5,
+    stripTrailingZeros = true
 ): string => {
     if (amount === constants.MaxUint256.toString()) return ' ∞';
     const tokenBits = BigNumber.from(10).pow(decimals);
-
-    const trailingZeros = '.' + '0'.repeat(precision);
-
     const display = new BN(amount)
         .div(tokenBits.toString())
-        .toFormat(precision)
-        // strip trailing zeros for display
-        .replace(trailingZeros, '');
+        .toFormat(precision);
 
+    if (stripTrailingZeros) {
+        const trailingZeros = '.' + '0'.repeat(precision);
+        return display.replace(trailingZeros, '').toString();
+    }
     return display.toString();
+};
+
+export const displayAprAmount = (
+    amount: string,
+    decimals = STRATEGY_APR_DECIMALS
+): string => {
+    const newAmount = new BN(amount).times(100);
+    return `${displayAmount(newAmount.toString(), decimals, 2, false)}%`;
 };
 
 export const msToHours = (ms: number): number => {
@@ -76,23 +85,34 @@ export const formatBPS = (val: string): string => {
     return (parseInt(val, 10) / 100).toString();
 };
 
+const _handleSingleValue = (value: unknown): unknown => {
+    if (get(value, 'type') === 'BigNumber') {
+        return BigNumber.from(value).toString();
+    }
+    return value;
+};
+
+const _handleContractValues = (value: unknown): unknown => {
+    if (Array.isArray(value)) {
+        if (value.length === 1) {
+            if (Array.isArray(value[0])) {
+                // Preserve array nesting
+                return [_handleContractValues(value[0])];
+            }
+            return _handleSingleValue(value[0]);
+        }
+        return value.map((v) => _handleContractValues(v));
+    }
+    return _handleSingleValue(value);
+};
+
 export const mapContractCalls = (result: ContractCallReturnContext) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const mappedObj: any = { errors: [] };
     result.callsReturnContext.forEach(
         ({ methodName, returnValues, success }) => {
             if (success && returnValues && returnValues.length > 0) {
-                if (
-                    typeof returnValues[0] === 'string' ||
-                    typeof returnValues[0] === 'boolean' ||
-                    typeof returnValues[0] === 'number'
-                ) {
-                    mappedObj[methodName] = returnValues[0];
-                } else if (get(returnValues[0], 'type') === 'BigNumber') {
-                    mappedObj[methodName] = BigNumber.from(
-                        returnValues[0]
-                    ).toString();
-                }
+                mappedObj[methodName] = _handleContractValues(returnValues);
             } else {
                 mappedObj.errors.push(methodName);
             }
