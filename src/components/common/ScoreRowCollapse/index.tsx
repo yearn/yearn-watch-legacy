@@ -63,12 +63,10 @@ export const ScoreRowCollapse = (props: ScoreRowCollapseProps) => {
                     <TableCell>
                         {'Longevity Score:'}
                         <MediaQuery query="(max-device-width: 1224px)">
-                            <br />
                             {longevityValue}
-                        </MediaQuery>{' '}
+                        </MediaQuery>
                     </TableCell>
                     <MediaQuery query="(min-device-width: 1224px)">
-                        {' '}
                         <TableCell>{longevityValue}</TableCell>
                     </MediaQuery>
                 </TableRow>
@@ -88,7 +86,7 @@ export const ScoreRowCollapse = (props: ScoreRowCollapseProps) => {
     return (
         <Grid container className={classes.root} spacing={1}>
             <Grid item xs={12}>
-                <Grid container justify="center" spacing={1}>
+                <Grid container justifyContent="center" spacing={1}>
                     <Grid key={`${index}-1`} item xs={8}>
                         <Paper className={classes.paper}>
                             <CardContent data={data} />

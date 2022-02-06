@@ -20,15 +20,23 @@ interface VaultDescriptionProps {
     isLoading: boolean;
     network: Network;
 }
+
 const StyledTableRow = styled(TableRow)`
     && {
         background-color: ${({ theme }) => theme.body} !important;
     }
 `;
+
 const StyledTableCell = styled(TableCell)`
     && {
         /* color: ${({ theme }) => theme.title} !important; */
         border-bottom: 1px solid ${({ theme }) => theme.border} !important;
+    }
+`;
+
+const VaultContainer = styled.div`
+    && {
+        margin-top: 16px;
     }
 `;
 const renderErrors = (vault: Vault) =>
@@ -97,7 +105,7 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
             '  ' +
             vault.token.symbol;
     const vault_list = vault
-        ? `Deposit limit :
+        ? `Deposit limit:
             ${
                 displayAmount(vault.depositLimit, vault.token.decimals) +
                 '  ' +
@@ -111,16 +119,15 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
     const last_report_text = vault ? vault.lastReportText : '';
     const render_error = vault ? renderErrors(vault) : '';
     return (
-        <React.Fragment>
+        <VaultContainer>
             <Table>
                 <TableHead>
                     <StyledTableRow>
                         <StyledTableCell>
                             <SubTitle> API Version:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                <br />
                                 <LabelTypography>{api_version}</LabelTypography>
-                            </MediaQuery>{' '}
+                            </MediaQuery>
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
                             <StyledTableCell>
@@ -132,14 +139,12 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                         <StyledTableCell>
                             <SubTitle> Emergency shut down:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                <br />{' '}
                                 <LabelTypography>
                                     {emergency_shut_down}
                                 </LabelTypography>
-                            </MediaQuery>{' '}
+                            </MediaQuery>
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
-                            {' '}
                             <StyledTableCell>
                                 <LabelTypography>
                                     {emergency_shut_down}
@@ -151,13 +156,10 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                         <StyledTableCell>
                             <SubTitle>Governance:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                {' '}
-                                <br />
                                 <LabelTypography>{governance}</LabelTypography>
-                            </MediaQuery>{' '}
+                            </MediaQuery>
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
-                            {' '}
                             <StyledTableCell>
                                 <LabelTypography>{governance}</LabelTypography>
                             </StyledTableCell>
@@ -167,14 +169,11 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                         <StyledTableCell>
                             <SubTitle>Management:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                {' '}
-                                <br />
                                 <LabelTypography>{management}</LabelTypography>
-                            </MediaQuery>{' '}
+                            </MediaQuery>
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
                             <StyledTableCell>
-                                {' '}
                                 <LabelTypography>{management}</LabelTypography>
                             </StyledTableCell>
                         </MediaQuery>
@@ -184,17 +183,12 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                         <StyledTableCell>
                             <SubTitle>Guardian:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                <br />
                                 <LabelTypography>{guardian}</LabelTypography>
-                            </MediaQuery>{' '}
+                            </MediaQuery>
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
-                            {' '}
                             <StyledTableCell>
-                                {' '}
-                                <LabelTypography>
-                                    {guardian}
-                                </LabelTypography>{' '}
+                                <LabelTypography>{guardian}</LabelTypography>
                             </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
@@ -202,17 +196,12 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                         <StyledTableCell>
                             <SubTitle>Rewards:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                <br />
                                 <LabelTypography>{rewards}</LabelTypography>
-                            </MediaQuery>{' '}
+                            </MediaQuery>
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
-                            {' '}
                             <StyledTableCell>
-                                {' '}
-                                <LabelTypography>
-                                    {rewards}
-                                </LabelTypography>{' '}
+                                <LabelTypography>{rewards}</LabelTypography>
                             </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
@@ -220,11 +209,8 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                         <StyledTableCell>
                             <SubTitle>Assets:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                {' '}
-                                <br />
                                 <LabelTypography>
-                                    Total asset:
-                                    {total_asset}
+                                    Total assets: {total_asset}
                                 </LabelTypography>
                                 <ProgressBars vault={vault} />
                                 <LabelTypography>{vault_list}</LabelTypography>
@@ -233,9 +219,7 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                         <MediaQuery query="(min-device-width: 1224px)">
                             <StyledTableCell>
                                 <LabelTypography>
-                                    {' '}
-                                    Total asset:
-                                    {total_asset}
+                                    Total assets: {total_asset}
                                 </LabelTypography>
                                 <ProgressBars vault={vault} />
                                 <LabelTypography>{vault_list}</LabelTypography>
@@ -257,20 +241,16 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                         <StyledTableCell>
                             <SubTitle>Management fee:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                <br />
                                 <LabelTypography>
-                                    {' '}
                                     {management_fee} %
                                 </LabelTypography>
-                            </MediaQuery>{' '}
+                            </MediaQuery>
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
-                            {' '}
                             <StyledTableCell>
-                                {' '}
                                 <LabelTypography>
                                     {management_fee}%
-                                </LabelTypography>{' '}
+                                </LabelTypography>
                             </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
@@ -278,14 +258,12 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                         <StyledTableCell>
                             <SubTitle>Performance fee:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                <br />
                                 <LabelTypography>
                                     {performance_fee}%
                                 </LabelTypography>
-                            </MediaQuery>{' '}
+                            </MediaQuery>
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
-                            {' '}
                             <StyledTableCell>
                                 <LabelTypography>
                                     {performance_fee}%
@@ -297,14 +275,12 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                         <StyledTableCell>
                             <SubTitle> Time Since Last Report:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                <br />
                                 <LabelTypography>
                                     {last_report_text}
                                 </LabelTypography>
-                            </MediaQuery>{' '}
+                            </MediaQuery>
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
-                            {' '}
                             <StyledTableCell>
                                 <LabelTypography>
                                     {last_report_text}
@@ -317,12 +293,10 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                         <StyledTableCell>
                             <SubTitle>Total Debt:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                <br />{' '}
                                 <LabelTypography>{total_debt}</LabelTypography>
-                            </MediaQuery>{' '}
+                            </MediaQuery>
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
-                            {' '}
                             <StyledTableCell>
                                 <LabelTypography>{total_debt}</LabelTypography>
                             </StyledTableCell>
@@ -333,20 +307,12 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                         <StyledTableCell>
                             <SubTitle>{`(Total Asset - Total Debt):`}</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                <br />{' '}
-                                <LabelTypography>
-                                    {' '}
-                                    {unallocated}
-                                </LabelTypography>
-                            </MediaQuery>{' '}
+                                <LabelTypography>{unallocated}</LabelTypography>
+                            </MediaQuery>
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
-                            {' '}
                             <StyledTableCell>
-                                <LabelTypography>
-                                    {' '}
-                                    {unallocated}
-                                </LabelTypography>
+                                <LabelTypography>{unallocated}</LabelTypography>
                             </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
@@ -355,17 +321,12 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                         <StyledTableCell>
                             <SubTitle>Total Debt Ratio:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                <br />{' '}
                                 <LabelTypography>{debt_ratio}%</LabelTypography>
-                            </MediaQuery>{' '}
+                            </MediaQuery>
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
-                            {' '}
                             <StyledTableCell>
-                                {' '}
-                                <LabelTypography>
-                                    {debt_ratio}%
-                                </LabelTypography>{' '}
+                                <LabelTypography>{debt_ratio}%</LabelTypography>
                             </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
@@ -374,18 +335,12 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                         <StyledTableCell>
                             <SubTitle>Debt Usage:</SubTitle>
                             <MediaQuery query="(max-device-width: 1224px)">
-                                <br />{' '}
                                 <LabelTypography>{debt_usage}%</LabelTypography>
-                            </MediaQuery>{' '}
+                            </MediaQuery>
                         </StyledTableCell>
                         <MediaQuery query="(min-device-width: 1224px)">
-                            {' '}
                             <StyledTableCell>
-                                {' '}
-                                <LabelTypography>
-                                    {' '}
-                                    {debt_usage}%{' '}
-                                </LabelTypography>
+                                <LabelTypography>{debt_usage}%</LabelTypography>
                             </StyledTableCell>
                         </MediaQuery>
                     </StyledTableRow>
@@ -399,25 +354,22 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                             <StyledTableCell>
                                 <SubTitle>Config Warnings:</SubTitle>
                                 <MediaQuery query="(max-device-width: 1224px)">
-                                    {' '}
-                                    <br />{' '}
                                     <LabelTypography>
                                         {render_error}
                                     </LabelTypography>
-                                </MediaQuery>{' '}
+                                </MediaQuery>
                             </StyledTableCell>
                             <MediaQuery query="(min-device-width: 1224px)">
-                                {' '}
                                 <StyledTableCell>
                                     <LabelTypography>
                                         {render_error}
-                                    </LabelTypography>{' '}
+                                    </LabelTypography>
                                 </StyledTableCell>
                             </MediaQuery>
                         </StyledTableRow>
                     ) : null}
                 </TableHead>
             </Table>
-        </React.Fragment>
+        </VaultContainer>
     );
 };

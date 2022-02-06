@@ -66,7 +66,9 @@ const StyledReportProblem = styled(ReportProblem)`
     }
 `;
 
-const StyledMuiAccordion = styled(MuiAccordion)<{ config: string }>`
+const StyledMuiAccordion = styled(MuiAccordion).withConfig({
+    shouldForwardProp: (props) => !(props.toString() in ['config']),
+})<{ config: string }>`
     && {
         width: 100%;
         margin-top: 15px;
@@ -106,14 +108,14 @@ const _VaultItemList = (props: VaultItemListProps) => {
                 id="panel1a-header"
                 onClick={() => setExpanded(!expanded)}
             >
-                <Grid container spacing={1} justify="flex-start">
+                <Grid container spacing={1} justifyContent="flex-start">
                     <Grid item md={12} xs={12}>
                         <BlueOnGreenTooltip title="" placement="top">
                             <Grid
                                 container
                                 spacing={1}
                                 direction="row"
-                                justify="flex-start"
+                                justifyContent="flex-start"
                                 alignItems="center"
                             >
                                 <Grid item md={1} xs={3}>
@@ -170,7 +172,6 @@ const _VaultItemList = (props: VaultItemListProps) => {
                                         to={`/network/${network}/vault/${vault.address}`}
                                     >
                                         <StyledTextValue>
-                                            {' '}
                                             {vault.name}
                                             {` v${vault.apiVersion}`}
                                         </StyledTextValue>
@@ -181,7 +182,6 @@ const _VaultItemList = (props: VaultItemListProps) => {
                                     </StyledStrats>
                                 </Grid>
                                 <Hidden xsDown>
-                                    {' '}
                                     <Grid item md={6} xs={9}>
                                         <EtherScanLink
                                             address={vault.address}

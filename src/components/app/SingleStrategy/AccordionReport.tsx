@@ -92,7 +92,6 @@ const AccordionReport = (props: AccordionReportProps) => {
                                 />
 
                                 <StyledSubTypography>
-                                    {' '}
                                     Timestamp:
                                     <br />
                                     {unixMsToIsoString(res.timestamp)}

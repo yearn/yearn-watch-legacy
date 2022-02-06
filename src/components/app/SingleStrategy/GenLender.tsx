@@ -79,7 +79,7 @@ export const GenLender = (props: GenLenderProps) => {
                                 )}
                             </div>
                             <div>
-                                APR: {displayAprAmount(value[2].toString())}%
+                                APR: {displayAprAmount(value[2].toString())}
                             </div>
                         </Box>
                     ))}

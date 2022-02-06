@@ -21,7 +21,9 @@ const useStyles = makeStyles({
     },
 });
 
-const StyledTableRow = styled(TableRow)<{ bckDark?: string }>`
+const StyledTableRow = styled(TableRow).withConfig({
+    shouldForwardProp: (props) => !(props.toString() in ['bckDark']),
+})<{ bckDark?: string }>`
     && {
         background-color: ${({ theme, bckDark }) =>
             bckDark == 'true' ? theme.body : theme.container} !important;
@@ -109,27 +111,25 @@ const TokenPrice = (props: TokenPriceProps) => {
     );
 
     return (
-        <StyledTableRow bckDark={props.bckDark === 'true' ? 'true' : 'false'}>
+        <StyledTableRow bckDark={props.bckDark ? 'true' : 'false'}>
             <StyledTableCell>
                 <SubTitle> {label}</SubTitle>
                 <MediaQuery query="(max-device-width: 1224px)">
-                    {' '}
                     <br />
                     <LabelTypography>
                         {tokenPrice
                             ? displayAmount(tokenPrice?.toFixed(2), 0)
-                            : '-'}{' '}
+                            : '-'}
                         USD
                     </LabelTypography>
-                </MediaQuery>{' '}
+                </MediaQuery>
             </StyledTableCell>
             <MediaQuery query="(min-device-width: 1224px)">
                 <StyledTableCell>
                     <LabelTypography>
-                        {' '}
                         {tokenPrice
                             ? `${displayAmount(tokenPrice?.toFixed(2), 0)} USD`
-                            : '-'}{' '}
+                            : '-'}
                     </LabelTypography>
                     {tooltip}
                 </StyledTableCell>

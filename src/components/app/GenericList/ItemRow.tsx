@@ -43,7 +43,7 @@ export const ItemRow = <T extends GenericListItem>(props: ItemRowProps<T>) => {
                 component="th"
                 id={labelId}
                 scope="row"
-                padding="default"
+                padding="normal"
                 key={itemRowKey}
                 align={headCell.align}
                 style={cellStyle}
@@ -59,7 +59,7 @@ export const ItemRow = <T extends GenericListItem>(props: ItemRowProps<T>) => {
             component="th"
             id={`collapse-${index}`}
             scope="row"
-            padding="default"
+            padding="normal"
             key={`collapse-${index}`}
             align="center"
         >

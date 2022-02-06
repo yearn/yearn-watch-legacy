@@ -52,7 +52,6 @@ const HealthCheckIcon = (props: HealthCheckIconProps) => {
             title={
                 <React.Fragment>
                     <Typography color="inherit">
-                        {' '}
                         {'Health Check'}:{' '}
                         {healthCheck ? healthCheck : 'Not set'}
                         <br />

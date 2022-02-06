@@ -133,7 +133,7 @@ export const GenericList = <T extends GenericListItem>(
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
-                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                 ) : (
                     ''

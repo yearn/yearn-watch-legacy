@@ -1,10 +1,8 @@
 import { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import sum from 'lodash/sum';
 import Button from '@material-ui/core/Button';
-import { Typography } from '@material-ui/core';
 
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 
@@ -13,23 +11,24 @@ import SearchInput, { Flags } from '../SearchInput';
 import { VaultItemList } from '../../app';
 import { EMPTY_ADDRESS } from '../../../utils/commonUtils';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        text: {
-            color: '#eb0009',
-            fontWeight: 'bolder',
-            letterSpacing: '0.1em',
-        },
-    })
-);
-const StyledContainer = styled.div`
+const StyledReportContainer = styled.div`
     && {
         display: flex;
         justify-content: center;
-        margin-top: 8px;
+        margin: 16px auto;
+        background: ${({ theme }) => theme.container};
+        border: 1px solid ${({ theme }) => theme.secondary};
+        max-width: fit-content;
+        border-radius: 8px;
     }
 `;
+
+const StyledReportTitle = styled.div`
+    && {
+        color: ${({ theme }) => theme.title};
+    }
+`;
+
 type VaultsListProps = {
     items: Vault[];
     totalItems: number;
@@ -41,7 +40,6 @@ const getTotalStrategies = (items: Vault[]): number =>
 
 const _VaultsList = (props: VaultsListProps) => {
     const { totalItems, items, network } = props;
-    const classes = useStyles();
     const [filteredItems, setFilteredItems] = useState(items);
     const totalStrategies = useMemo(() => getTotalStrategies(items), [items]);
     const [totalStrategiesFound, setTotalStrategiesFound] =
@@ -163,9 +161,9 @@ const _VaultsList = (props: VaultsListProps) => {
             />
 
             {stillLoading && (
-                <ProgressSpinnerBar label={`total Vaults ${totalItems}...`} />
+                <ProgressSpinnerBar label={`Total Vaults ${totalItems}...`} />
             )}
-            <div style={{ height: '60vh', overflow: 'scroll' }}>
+            <div style={{ height: '60vh', overflow: 'auto' }}>
                 {filteredItems.map((vault: Vault, index: number) => (
                     <div key={index}>
                         <VaultItemList
@@ -176,14 +174,14 @@ const _VaultsList = (props: VaultsListProps) => {
                     </div>
                 ))}
             </div>
-            <StyledContainer>
+            <StyledReportContainer>
                 <Button
                     component={RouterLink}
                     to={`/network/${network}/report`}
                 >
-                    <Typography className={classes.text}>Report</Typography>
+                    <StyledReportTitle>HealthCheck Report</StyledReportTitle>
                 </Button>
-            </StyledContainer>
+            </StyledReportContainer>
         </>
     );
 };

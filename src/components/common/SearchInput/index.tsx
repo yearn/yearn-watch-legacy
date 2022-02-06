@@ -74,6 +74,7 @@ const StyledFormControlLabel = styled(FormControlLabel)`
 `;
 const StyledSelect = styled(Select)`
     && {
+        color: ${({ theme }) => theme.text} !important;
         margin-left: 44px;
         margin-top: 2px;
         margin-bottom: 2px;

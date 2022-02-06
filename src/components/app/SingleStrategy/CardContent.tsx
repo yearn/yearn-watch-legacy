@@ -43,20 +43,17 @@ const CardContent = (props: CardContentProps) => {
                             <StyledTableRow key={index}>
                                 <StyledTableCell>
                                     <SubTitle>
-                                        {' '}
                                         {res.key}
                                         <MediaQuery query="(max-device-width: 1224px)">
                                             <br />
                                             {res.value}
-                                        </MediaQuery>{' '}
+                                        </MediaQuery>
                                     </SubTitle>
                                 </StyledTableCell>
 
                                 <MediaQuery query="(min-device-width: 1224px)">
-                                    {' '}
                                     <StyledTableCell>
                                         <LabelTypography>
-                                            {' '}
                                             {res.value}
                                         </LabelTypography>
                                     </StyledTableCell>

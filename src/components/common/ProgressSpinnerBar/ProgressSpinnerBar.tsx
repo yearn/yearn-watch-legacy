@@ -10,10 +10,12 @@ const StyledTypography = styled(Typography)`
     font-weight: 200;
     color: white;
 `;
+
 const StyledRootDiv = styled.div`
     width: 100%;
-    margin-top: 2;
+    margin: 16px auto;
 `;
+
 const StyledLinearProgress = styled(LinearProgress)`
     && {
         .MuiLinearProgress-bar {
