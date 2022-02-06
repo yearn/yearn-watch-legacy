@@ -13,20 +13,15 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 import { ErrorAlert } from '../../common/Alerts';
-import { Strategy, Vault, Network, DEFAULT_NETWORK } from '../../../types';
+import { Strategy, Network, DEFAULT_NETWORK } from '../../../types';
 import EtherScanLink from '../../common/EtherScanLink';
 import ReactHelmet from '../../common/ReactHelmet';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 import { useStrategyReportContext } from '../../../contexts/StrategyReportContext';
 import { GlobalStylesLoading } from '../../theme/globalStyles';
 
-import { getService as getVaultService } from '../../../services/VaultService';
-import {
-    getError,
-    getReportsForStrategies,
-    getStrategies,
-    getWarnings,
-} from '../../../utils';
+import { getError, getWarnings, getReportsForStrategies } from '../../../utils';
+import { useStrategy, useVault, useStrategyMetaData } from '../../../hooks';
 
 import BreadCrumbs from './BreadCrumbs';
 import GenLender from './GenLender';
@@ -84,12 +79,14 @@ enum AdditionalInfoLabels {
 
 const getAdditionalInfoComponent = (
     label: AdditionalInfoLabels,
-    strategy: Strategy,
-    network: Network
-): JSX.Element => {
+    network: Network,
+    strategy?: Strategy
+): JSX.Element | undefined => {
     switch (label) {
         case AdditionalInfoLabels.GenLender: {
-            return <GenLender strategy={strategy} network={network} />;
+            return (
+                strategy && <GenLender strategy={strategy} network={network} />
+            );
         }
         default: {
             throw Error('Could not find additional info component');
@@ -98,7 +95,7 @@ const getAdditionalInfoComponent = (
 };
 
 const getAdditionalInfo = (
-    strategy: Strategy
+    strategy?: Strategy
 ): AdditionalInfoLabels | undefined => {
     // Check if strategy has additional info to be displayed
     // eg. gen lender strategies
@@ -114,17 +111,26 @@ export const SingleStrategy = () => {
         vaultId,
         network = DEFAULT_NETWORK,
     } = useParams<ParamTypes>();
-
-    const [strategyData, setStrategyData] = useState<Strategy[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [vault, setVault] = useState<Vault | undefined>();
-    const [isVaultLoading, setIsVaultLoading] = useState(true);
     const [isReportsLoading, setIsReportsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [value, setValue] = useState(0);
     const [warningFields, setWarningFields] = useState<string[] | null>(null);
     const [openSnackBar, setOpenSB] = useState(true);
     const strategyReportContext = useStrategyReportContext();
+    const { data: vault, loading: fetchVaultLoading } = useVault(
+        network,
+        vaultId
+    );
+    const { data: strategy, loading: fetchStrategyLoading } = useStrategy(
+        network,
+        vaultId,
+        strategyId
+    );
+    const { data: strategyMetaData } = useStrategyMetaData(
+        network,
+        vaultId,
+        strategyId
+    );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
@@ -134,6 +140,15 @@ export const SingleStrategy = () => {
     const handleCloseSnackBar = () => {
         setOpenSB(false);
     };
+
+    useEffect(() => {
+        if (strategy) {
+            const warnings = getWarnings([strategy]);
+            if (warnings.length > 0) {
+                setWarningFields(warnings);
+            }
+        }
+    }, [strategy]);
 
     useEffect(() => {
         const loadStrategyData = async () => {
@@ -147,27 +162,8 @@ export const SingleStrategy = () => {
                 ).then(() => {
                     setIsReportsLoading(false);
                 });
-                const loadedStrategy = await getStrategies(
-                    [strategyId],
-                    network
-                );
-                setStrategyData(loadedStrategy);
-                const warnings = getWarnings(loadedStrategy);
-                if (warnings.length > 0) {
-                    setWarningFields(warnings);
-                }
-                setIsLoading(false);
-
-                // Load vault name
-                setIsVaultLoading(true);
-                const vaultService = getVaultService(network);
-                const loadedVault = await vaultService.getVault(vaultId);
-                setVault(loadedVault);
-                setIsVaultLoading(false);
             } catch (e: unknown) {
                 console.log('Error:', e);
-                setIsLoading(false);
-                setIsVaultLoading(false);
                 setIsReportsLoading(false);
                 setError(getError(e));
             }
@@ -175,13 +171,20 @@ export const SingleStrategy = () => {
         loadStrategyData();
     }, [strategyId, vaultId]);
 
-    const strategy = strategyData && strategyData[0];
     const additionalInfo = getAdditionalInfo(strategy);
 
-    const renderTab = (value: number): JSX.Element => {
+    const renderTab = (value: number): JSX.Element | undefined => {
         switch (value) {
             case 0: {
-                return <StrategyDetail strategy={strategy} network={network} />;
+                return (
+                    strategy && (
+                        <StrategyDetail
+                            strategy={strategy}
+                            network={network}
+                            metadata={strategyMetaData}
+                        />
+                    )
+                );
             }
             case 1: {
                 return (
@@ -198,10 +201,12 @@ export const SingleStrategy = () => {
             }
             case 2: {
                 return (
-                    <StrategyHealthCheck
-                        strategy={strategy}
-                        network={network}
-                    />
+                    strategy && (
+                        <StrategyHealthCheck
+                            strategy={strategy}
+                            network={network}
+                        />
+                    )
                 );
             }
             default: {
@@ -210,8 +215,8 @@ export const SingleStrategy = () => {
                 }
                 return getAdditionalInfoComponent(
                     additionalInfo,
-                    strategy,
-                    network
+                    network,
+                    strategy
                 );
             }
         }
@@ -240,7 +245,7 @@ export const SingleStrategy = () => {
                         </Alert>
                     </Snackbar>
                 )}
-                {isLoading || isReportsLoading ? (
+                {fetchStrategyLoading || isReportsLoading ? (
                     <div
                         style={{
                             textAlign: 'center',
@@ -282,7 +287,7 @@ export const SingleStrategy = () => {
 
                                             <StyledSpan>
                                                 (Vault:{' '}
-                                                {isVaultLoading
+                                                {fetchVaultLoading
                                                     ? '... loading vault name'
                                                     : vault && vault.name}
                                                 )

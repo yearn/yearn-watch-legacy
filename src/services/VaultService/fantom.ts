@@ -16,6 +16,7 @@ import {
     StrategyApi,
     QueryParam,
     DEFAULT_QUERY_PARAM,
+    StrategyMetaData,
 } from '../../types';
 
 type StrategyBasicData = {
@@ -173,4 +174,20 @@ export default class FantomService implements VaultService {
 
     // TODO: implement this
     // private _getExperimentalVaults = memoize(this._getInnerVaults);
+
+    public getStrategyMetaData = async (
+        vaultAddress: string,
+        strategyAddress: string
+    ): Promise<StrategyMetaData> => {
+        const result = await this.sdk.strategies.vaultsStrategiesMetadata([
+            vaultAddress,
+        ]);
+        const res = result[0];
+        const metaData = res.strategiesMetadata.find((strategy) => {
+            strategy.address == strategyAddress;
+        });
+        return {
+            description: metaData?.description,
+        };
+    };
 }

@@ -44,6 +44,10 @@ export type Strategy = {
     errors: string[];
 };
 
+export type StrategyMetaData = {
+    description?: string;
+};
+
 export type LendStatus = [
     name: string,
     assets: BigNumber,
