@@ -136,7 +136,7 @@ export const GenLender = (props: GenLenderProps) => {
                 value: estimateAdjustPositionLowestAPR,
             },
             {
-                key: 'Potential:',
+                key: 'Potential APR:',
                 value: estimateAdjustPositionPotential,
             },
         ];
