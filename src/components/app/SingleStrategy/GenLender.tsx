@@ -57,7 +57,11 @@ export const GenLender = (props: GenLenderProps) => {
     };
 
     const renderData = () => {
-        const lenderStatuses = data ? (
+        if (!data) {
+            return <></>;
+        }
+
+        const lenderStatuses = (
             <>
                 {data.lendStatuses.map((value, index) => (
                     <Box
@@ -87,43 +91,32 @@ export const GenLender = (props: GenLenderProps) => {
                     </Box>
                 ))}
             </>
-        ) : (
-            ''
         );
 
-        const lentTotalAssets = data
-            ? displayAmount(
-                  data.lentTotalAssets.toString(),
-                  strategy.token.decimals
-              )
-            : '';
+        const lentTotalAssets = displayAmount(
+            data.lentTotalAssets.toString(),
+            strategy.token.decimals
+        );
 
-        const estimatedAPR = data
-            ? displayAprAmount(data.estimatedAPR.toString())
-            : '';
+        const estimatedAPR = displayAprAmount(data.estimatedAPR.toString());
+        const estimateAdjustPositionLowest = getLenderName(
+            data.lendStatuses,
+            data.estimateAdjustPosition[0]
+        );
+        const estimateAdjustPositionHighest = getLenderName(
+            data.lendStatuses,
+            data.estimateAdjustPosition[2]
+        );
 
-        const estimateAdjustPositionLowest = data
-            ? getLenderName(data.lendStatuses, data.estimateAdjustPosition[0])
-            : '';
-
-        const estimateAdjustPositionHighest = data
-            ? getLenderName(data.lendStatuses, data.estimateAdjustPosition[2])
-            : '';
-
-        const lowestApr = data
-            ? getLowestApr(
-                  data.lendStatuses,
-                  data.estimateAdjustPosition[1],
-                  data.estimateAdjustPosition[0]
-              ).toString()
-            : '0';
-        const estimateAdjustPositionLowestAPR = data
-            ? displayAprAmount(lowestApr)
-            : '';
-
-        const estimateAdjustPositionPotential = data
-            ? displayAprAmount(data.estimateAdjustPosition[3].toString())
-            : '';
+        const lowestApr = getLowestApr(
+            data.lendStatuses,
+            data.estimateAdjustPosition[1],
+            data.estimateAdjustPosition[0]
+        ).toString();
+        const estimateAdjustPositionLowestAPR = displayAprAmount(lowestApr);
+        const estimateAdjustPositionPotential = displayAprAmount(
+            data.estimateAdjustPosition[3].toString()
+        );
 
         const cardData = [
             { key: 'Lender Statuses:', value: lenderStatuses },
@@ -143,17 +136,13 @@ export const GenLender = (props: GenLenderProps) => {
         return <CardContent data={cardData} key={strategy.address} />;
     };
 
-    return (
-        <>
-            {loading ? (
-                <StyledTypography>Loading...</StyledTypography>
-            ) : error ? (
-                <ErrorAlert message={error} />
-            ) : (
-                renderData()
-            )}
-        </>
-    );
+    if (loading) {
+        return <StyledTypography>Loading...</StyledTypography>;
+    }
+    if (error) {
+        return <ErrorAlert message={error} />;
+    }
+    return renderData();
 };
 
 export default GenLender;
