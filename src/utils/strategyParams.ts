@@ -57,10 +57,7 @@ export const getStrategyAllocation = (vault: Vault): BarChartData[] => {
         });
     }
 
-    const sortedAllocs = sortBy(strategiesAllocations, ['y']) as BarChartData[];
-    sortedAllocs[sortedAllocs.length - 1].sliced = true;
-    sortedAllocs[sortedAllocs.length - 1].selected = true;
-    return sortedAllocs;
+    return sortBy(strategiesAllocations, ['y']) as BarChartData[];
 };
 
 export const getProtocolAllocation = (
@@ -109,10 +106,7 @@ export const getProtocolAllocation = (
         });
     });
 
-    const sortedAllocs = sortBy(protocolAllocations, ['y']) as BarChartData[];
-    sortedAllocs[sortedAllocs.length - 1].sliced = true;
-    sortedAllocs[sortedAllocs.length - 1].selected = true;
-    return sortedAllocs;
+    return sortBy(protocolAllocations, ['y']) as BarChartData[];
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

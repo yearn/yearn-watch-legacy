@@ -7,8 +7,6 @@ import { SubTitle, ValuePercentage } from '../../../common/Labels';
 export type BarChartData = {
     name: string;
     y: number;
-    sliced?: boolean;
-    selected?: boolean;
 };
 
 const BorderLinearProgress = styled(LinearProgress)`
