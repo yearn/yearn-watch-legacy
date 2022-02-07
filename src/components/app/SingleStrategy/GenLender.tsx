@@ -58,7 +58,7 @@ export const GenLender = (props: GenLenderProps) => {
 
     const renderData = () => {
         if (!data) {
-            return <></>;
+            return <Box>No data available</Box>;
         }
 
         const lenderStatuses = (
@@ -136,7 +136,7 @@ export const GenLender = (props: GenLenderProps) => {
         return <CardContent data={cardData} key={strategy.address} />;
     };
 
-    if (loading) {
+    if (loading && !data) {
         return <StyledTypography>Loading...</StyledTypography>;
     }
     if (error) {
