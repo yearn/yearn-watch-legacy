@@ -1,6 +1,9 @@
+import { StrategyMetadata } from '@yfi/sdk';
 import { ContractCallReturnContext } from 'ethereum-multicall';
 import { BigNumber } from 'ethers';
-import { sortBy } from 'lodash';
+import { get, sortBy } from 'lodash';
+
+import { BarChartData } from '../components/app/Charts/BarChart';
 import { StrategyParams, Strategy, Vault } from '../types';
 import { isValidTimestamp, toIsoString, toHumanDateText } from './dateUtils';
 
@@ -36,14 +39,7 @@ mapVersions.set('0.3.2', STRAT_PARAMS_V032);
 mapVersions.set('0.3.3', STRAT_PARAMS_V032);
 mapVersions.set('0.3.3.Edited', STRAT_PARAMS_V030);
 
-export type ChartSeriesData = {
-    name: string;
-    y: number;
-    sliced?: boolean;
-    selected?: boolean;
-};
-
-export const getChartData = (vault: Vault): ChartSeriesData[] => {
+export const getStrategyAllocation = (vault: Vault): BarChartData[] => {
     const strategiesAllocations = vault.strategies.map(({ name, params }) => {
         return {
             name,
@@ -54,7 +50,6 @@ export const getChartData = (vault: Vault): ChartSeriesData[] => {
     });
 
     const debtUsage = parseInt(vault.debtUsage) / 100;
-
     if (debtUsage < 100) {
         strategiesAllocations.push({
             name: 'Not Allocated',
@@ -62,13 +57,61 @@ export const getChartData = (vault: Vault): ChartSeriesData[] => {
         });
     }
 
-    const sortedAllocs = sortBy(strategiesAllocations, [
-        'y',
-    ]) as ChartSeriesData[];
-
+    const sortedAllocs = sortBy(strategiesAllocations, ['y']) as BarChartData[];
     sortedAllocs[sortedAllocs.length - 1].sliced = true;
     sortedAllocs[sortedAllocs.length - 1].selected = true;
+    return sortedAllocs;
+};
 
+export const getProtocolAllocation = (
+    vault: Vault,
+    metadata: StrategyMetadata[]
+): BarChartData[] => {
+    // Strategies may allocate to multiple protocol but for simplicity,
+    // this calculation assumes that allocations are split equally
+    const strategyToProtocols: { [key: string]: string[] } = {};
+    metadata.forEach(({ address, protocols }) => {
+        strategyToProtocols[address] = protocols;
+    });
+
+    const protocolDebtRatios: { [key: string]: number } = {};
+    let totalDebtRatio = 0;
+    vault.strategies.forEach(({ address, params }) => {
+        const protocols = get(strategyToProtocols, address, []);
+        protocols.forEach((protocol) => {
+            const cur = get(protocolDebtRatios, protocol, 0);
+            const debtRatio = Number(parseInt(params.debtRatio.toString(), 10));
+            protocolDebtRatios[protocol] = cur + debtRatio;
+            totalDebtRatio += debtRatio;
+        });
+    });
+
+    const protocolAllocations: BarChartData[] = [];
+    const debtUsage = parseInt(vault.debtUsage) / 100;
+    if (debtUsage < 100) {
+        protocolAllocations.push({
+            name: 'Not Allocated',
+            y: Number((100 - debtUsage).toFixed(2)),
+        });
+    }
+
+    // Normalize protocol debt ratios to debtUsage
+    const protocols = Object.keys(protocolDebtRatios);
+    protocols.forEach((protocol) => {
+        protocolAllocations.push({
+            name: protocol,
+            y: Number(
+                (
+                    (protocolDebtRatios[protocol] / totalDebtRatio) *
+                    debtUsage
+                ).toFixed(2)
+            ),
+        });
+    });
+
+    const sortedAllocs = sortBy(protocolAllocations, ['y']) as BarChartData[];
+    sortedAllocs[sortedAllocs.length - 1].sliced = true;
+    sortedAllocs[sortedAllocs.length - 1].selected = true;
     return sortedAllocs;
 };
 

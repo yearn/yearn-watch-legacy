@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Grid, Paper } from '@material-ui/core';
+import React, { useState } from 'react';
+import { CircularProgress, Container, Grid, Paper } from '@material-ui/core';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
@@ -13,11 +13,9 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-import { Vault, Strategy, Network, DEFAULT_NETWORK } from '../../../types';
-import { getService } from '../../../services/VaultService';
-import { getError } from '../../../utils/error';
+import { Network, DEFAULT_NETWORK } from '../../../types';
 import BreadCrumbs from '../SingleStrategy/BreadCrumbs';
-import Pie from '../Charts/Pie';
+import BarChart from '../Charts/BarChart';
 import { StrategiesList } from '../StrategiesList';
 import { VaultDescription } from './VaultDescription';
 import EtherScanLink from '../../common/EtherScanLink';
@@ -25,6 +23,11 @@ import { ErrorAlert } from '../../common/Alerts';
 import ReactHelmet from '../../common/ReactHelmet';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 import { GlobalStylesLoading } from '../../theme/globalStyles';
+import { useVault, useVaultStrategyMetadata } from '../../../hooks';
+import {
+    getStrategyAllocation,
+    getProtocolAllocation,
+} from '../../../utils/strategyParams';
 
 const StyledCard = styled(Card).withConfig({
     shouldForwardProp: (props) => !(props.toString() in ['config', 'bck']),
@@ -113,8 +116,7 @@ function TabPanel(props: TabPanelProps) {
     );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function a11yProps(index: any) {
+function a11yProps(index: number) {
     return {
         id: `scrollable-auto-tab-${index}`,
         'aria-controls': `scrollable-auto-tabpanel-${index}`,
@@ -125,64 +127,30 @@ interface ParamTypes {
     vaultId: string;
     network?: Network;
 }
-type SingleVaultProps = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    theme?: any;
-};
 
-// TODO: refactor this into util func
-const getWarnings = (strategies: Strategy[]): string[] => {
-    let warnings: string[] = [];
-    strategies.forEach((strat) => {
-        if (strat.errors.length > 0) {
-            warnings = warnings.concat(strat.errors);
-        }
-    });
-
-    return warnings;
-};
-
-export const SingleVault = (props: SingleVaultProps) => {
+export const SingleVault = () => {
     const { vaultId, network = DEFAULT_NETWORK } = useParams<ParamTypes>();
+    const [tab, setTab] = useState(0);
+    const [openSnackBar, setOpenSnackBar] = React.useState(true);
 
-    const [vault, setVault] = useState<Vault | undefined>();
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [warningFields, setWarningFields] = useState<string[] | null>(null);
-    const [value, setValue] = useState(0);
-    const [openSnackBar, setOpenSB] = React.useState(true);
-    const config = vault?.configOK;
+    const {
+        data: vault,
+        loading: loadingVault,
+        error,
+        warnings,
+    } = useVault(network, vaultId);
+    const { data: strategyMetadata, loading: loadingStrategyMetadata } =
+        useVaultStrategyMetadata(network, vaultId);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleChange = (event: any, newValue: number) => {
-        setValue(newValue);
+    const handleChange = (_: React.ChangeEvent<unknown>, newValue: number) => {
+        setTab(newValue);
     };
 
     const handleCloseSnackBar = () => {
-        setOpenSB(false);
+        setOpenSnackBar(false);
     };
 
-    useEffect(() => {
-        const loadVaultData = async () => {
-            setIsLoading(true);
-            setError(null);
-            try {
-                const vaultService = getService(network);
-                const loadedVault = await vaultService.getVault(vaultId);
-                const warnings = getWarnings(loadedVault.strategies);
-                if (warnings.length > 0) {
-                    setWarningFields(warnings);
-                }
-                setVault(loadedVault);
-                setIsLoading(false);
-            } catch (e: unknown) {
-                console.log('Error:', e);
-                setIsLoading(false);
-                setError(getError(e));
-            }
-        };
-        loadVaultData();
-    }, [vaultId]);
+    const config = vault?.configOK;
 
     return (
         <React.Fragment>
@@ -195,7 +163,7 @@ export const SingleVault = (props: SingleVaultProps) => {
                         details={error}
                     />
                 )}
-                {warningFields && warningFields.length !== 0 && (
+                {warnings && warnings.length !== 0 && (
                     <Snackbar
                         open={openSnackBar}
                         onClose={handleCloseSnackBar}
@@ -203,12 +171,12 @@ export const SingleVault = (props: SingleVaultProps) => {
                     >
                         <Alert onClose={handleCloseSnackBar} severity="warning">
                             {`Issue loading the following fields for some strategies: ${JSON.stringify(
-                                warningFields
+                                warnings
                             )}`}
                         </Alert>
                     </Snackbar>
                 )}
-                {isLoading ? (
+                {loadingVault ? (
                     <span>
                         <ProgressSpinnerBar />
                         <GlobalStylesLoading />
@@ -275,7 +243,7 @@ export const SingleVault = (props: SingleVaultProps) => {
                             >
                                 <MuiTabs
                                     variant="fullWidth"
-                                    value={value}
+                                    value={tab}
                                     onChange={handleChange}
                                     scrollButtons="auto"
                                     indicatorColor="primary"
@@ -286,17 +254,36 @@ export const SingleVault = (props: SingleVaultProps) => {
                                     <Tab label="Strategies" {...a11yProps(1)} />
                                 </MuiTabs>
 
-                                <TabPanel value={value} index={0}>
+                                <TabPanel value={tab} index={0}>
                                     <Grid container spacing={3}>
                                         <Grid item xs={12} md={6}>
                                             <StyledTitle> About</StyledTitle>
                                             <VaultDescription
                                                 vault={vault}
-                                                isLoading={isLoading}
+                                                isLoading={loadingVault}
                                                 network={network}
                                             />
                                         </Grid>
                                         <Grid item xs={12} md={6}>
+                                            <StyledTitle>
+                                                {' '}
+                                                Protocol Allocation
+                                            </StyledTitle>
+                                            {loadingStrategyMetadata ? (
+                                                <CircularProgress />
+                                            ) : vault && strategyMetadata ? (
+                                                <StyledPaper>
+                                                    <BarChart
+                                                        data={getProtocolAllocation(
+                                                            vault,
+                                                            strategyMetadata
+                                                        )}
+                                                    />
+                                                </StyledPaper>
+                                            ) : (
+                                                ''
+                                            )}
+                                            <br />
                                             <StyledTitle>
                                                 {' '}
                                                 Strategy Allocation
@@ -304,9 +291,10 @@ export const SingleVault = (props: SingleVaultProps) => {
                                             <StyledPaper>
                                                 {vault &&
                                                 vault.strategies.length > 0 ? (
-                                                    <Pie
-                                                        vault={vault}
-                                                        theme={props.theme}
+                                                    <BarChart
+                                                        data={getStrategyAllocation(
+                                                            vault
+                                                        )}
                                                     />
                                                 ) : (
                                                     ''
@@ -315,8 +303,7 @@ export const SingleVault = (props: SingleVaultProps) => {
                                         </Grid>
                                     </Grid>
                                 </TabPanel>
-
-                                <TabPanel value={value} index={1}>
+                                <TabPanel value={tab} index={1}>
                                     <div>
                                         {vault &&
                                         vault.strategies.length > 0 ? (

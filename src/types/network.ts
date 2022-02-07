@@ -1,6 +1,6 @@
 import { Vault } from './vault';
 import { QueryParam } from './query-param';
-import { StrategyMetaData } from './strategy';
+import { StrategyMetadata } from '@yfi/sdk';
 
 export enum Network {
     mainnet = 'ethereum',
@@ -26,8 +26,7 @@ export interface VaultService {
         allowList?: string[],
         queryParams?: QueryParam
     ) => Promise<Vault[]>;
-    getStrategyMetaData: (
-        vaultAddress: string,
-        strategyAddress: string
-    ) => Promise<StrategyMetaData>;
+    getVaultStrategyMetadata: (
+        vaultAddress: string
+    ) => Promise<StrategyMetadata[]>;
 }

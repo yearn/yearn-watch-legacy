@@ -2,7 +2,16 @@ import { utils } from 'ethers';
 import { uniqBy, memoize } from 'lodash';
 import BigNumber from 'bignumber.js';
 import compareVersions from 'compare-versions';
-import { Vault, VaultApi, VaultVersion, VaultData, Network } from '../types';
+import { Yearn } from '@yfi/sdk';
+
+import {
+    Vault,
+    VaultApi,
+    VaultVersion,
+    VaultData,
+    Network,
+    NetworkId,
+} from '../types';
 import { getTokenPrice } from './oracle';
 import { BuildGet, VAULTS_ALL, VAULTS_ALL_EXPERIMENTAL } from './apisRequest';
 import { DEFAULT_QUERY_PARAM, QueryParam } from '../types';
@@ -238,3 +247,14 @@ export const filterStrategiesByHealthCheck = async (
 
     return resultStrategies;
 };
+
+const _getVaultStrategyMetadata = async (
+    sdk: Yearn<NetworkId>,
+    address: string
+) => {
+    const result = await sdk.strategies.vaultsStrategiesMetadata([address]);
+    const metadata = result[0].strategiesMetadata;
+    return metadata;
+};
+
+export const getVaultStrategyMetadata = memoize(_getVaultStrategyMetadata);

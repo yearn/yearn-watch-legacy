@@ -56,9 +56,7 @@ const App = () => {
                         <Route
                             exact
                             path="/vault/:vaultId"
-                            render={(props) => (
-                                <SingleVault {...props} theme={theme} />
-                            )}
+                            component={SingleVault}
                         />
                         <Route
                             exact
@@ -68,9 +66,7 @@ const App = () => {
                         <Route
                             exact
                             path="/network/:network/vault/:vaultId"
-                            render={(props) => (
-                                <SingleVault {...props} theme={theme} />
-                            )}
+                            component={SingleVault}
                         />
                         <Route
                             exact
