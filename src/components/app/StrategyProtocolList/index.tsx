@@ -11,6 +11,9 @@ import { getTvlImpact } from '../../../utils/risk';
 import { GenericList, GenericListItem } from '../GenericList';
 import { HeadCell } from '../GenericList/HeadCell';
 
+const HIGH_DEBT_TO_ASSETS_RATIO = 1.5;
+const HEALTHY_DEBT_MULTIPLIER = 2;
+
 const headCells: HeadCell<StrategyTVLListItem>[] = [
     {
         numeric: false,
@@ -63,7 +66,7 @@ const headCells: HeadCell<StrategyTVLListItem>[] = [
         getStyle: (item: StrategyTVLListItem) => {
             const hasHighDebtToAssetsRatio =
                 item.debtOutstandingUsdcNumber >
-                1.5 * item.estimatedTotalAssetsUsdcNumber;
+                HIGH_DEBT_TO_ASSETS_RATIO * item.estimatedTotalAssetsUsdcNumber;
             return hasHighDebtToAssetsRatio
                 ? {
                       backgroundColor: '#f5f514',
@@ -164,7 +167,7 @@ export const StrategyProtocolList = (props: StrategyProtocolListProps) => {
     const hasHealthyAssetsToDebtRatio = async (item: StrategyTVLListItem) => {
         return (
             item.estimatedTotalAssetsUsdcNumber >
-                item.debtOutstandingUsdcNumber * 2 &&
+                HEALTHY_DEBT_MULTIPLIER * item.debtOutstandingUsdcNumber &&
             item.estimatedTotalAssetsUsdcNumber > item.dustUsdcNumber
         );
     };
