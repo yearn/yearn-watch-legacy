@@ -14,7 +14,6 @@ export type Grouping = {
     codeReviewScore: number;
     testingScore: number;
     auditScore: number;
-    longevityScore: number;
     protocolSafetyScore: number;
     complexityScore: number;
     teamKnowledgeScore: number;

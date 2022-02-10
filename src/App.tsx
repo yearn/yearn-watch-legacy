@@ -17,9 +17,6 @@ import {
     SingleStrategy,
     HealthCheckReport,
 } from './components/app';
-import SignIn from './components/common/SignIn';
-import PrivateRoute from './components/common/PrivateRoute';
-import { AuthProvider } from './contexts/AuthContext';
 import { StrategyReportProvider } from './contexts/StrategyReportContext';
 import { Risk } from './components/app/Risk';
 
@@ -82,18 +79,14 @@ const App = () => {
                             path="/network/:network/report"
                             component={HealthCheckReport}
                         />
-                        <AuthProvider>
-                            <Route exact path="/signin" component={SignIn} />
-                            <Route exact path="/signout" component={SignIn} />
-                            <PrivateRoute
-                                exact
-                                path="/network/:network/risk"
-                                component={Risk}
-                            />
-                            <Route path="/risk">
-                                <Redirect to="/network/ethereum/risk" />
-                            </Route>
-                        </AuthProvider>
+                        <Route
+                            exact
+                            path="/network/:network/risk"
+                            component={Risk}
+                        />
+                        <Route path="/risk">
+                            <Redirect to="/network/ethereum/risk" />
+                        </Route>
                     </StrategyReportProvider>
                 </ThemeProvider>
             </Switch>

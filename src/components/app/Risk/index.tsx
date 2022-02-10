@@ -1,8 +1,6 @@
 /* eslint-disable react/display-name */
 import { useEffect, useState } from 'react';
 import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
-import { useOnGet } from '@typesaurus/react';
-import { init as initFB } from '../../../utils/firebase';
 import { Grouping } from '../../../types/grouping';
 import _ from 'lodash';
 import {
@@ -25,6 +23,7 @@ import { CircularProgress } from '@material-ui/core';
 import { useParams } from 'react-router';
 import { ParamTypes } from '../../../types/DefaultParamTypes';
 import { DEFAULT_NETWORK, Network } from '../../../types';
+import { initRiskFrameworkScores } from '../../../utils/risk-framework';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -44,16 +43,11 @@ export const Risk = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [items, setItems] = useState<any[]>([]);
     const [isLoadingItems, setIsLoadingItems] = useState<boolean>(true);
-    const { groupings } = initFB();
+    const groupData = initRiskFrameworkScores();
     const groupingId = 'default';
-    const [groupData, { loading: isLoadingGroupData, error }] = useOnGet(
-        groupings,
-        groupingId
-    );
-
     if (groups.length === 0 && groupData) {
         setGroups(
-            groupData.data.groups.filter((group) => group.network === network)
+            groupData.groups.filter((group) => group.network === network)
         );
     }
     const classes = useStyles();
@@ -118,11 +112,8 @@ export const Risk = () => {
             setIsLoadingItems(false);
         });
     }, [groups]);
-    if (error) {
-        return <div>Failed to load the scores!</div>;
-    }
 
-    if (isLoadingItems || isLoadingGroupData) {
+    if (isLoadingItems) {
         return (
             <div className={classes.root}>
                 <CircularProgress />
