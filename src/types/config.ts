@@ -7,4 +7,5 @@ export interface Env {
     fbApiKey: string | undefined;
     fbAuthDomain: string | undefined;
     fbProjectId: string | undefined;
+    ethplorerKey: string | undefined;
 }
