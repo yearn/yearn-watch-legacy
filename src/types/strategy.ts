@@ -56,10 +56,10 @@ export type LendStatus = [
 ];
 
 export type EstimateAdjustPosition = [
-    lowest: string,
+    lowest: BigNumber,
     lowestApr: BigNumber,
     highest: BigNumber,
-    potential: string
+    potential: BigNumber
 ];
 
 export type GenLenderStrategy = {

@@ -1,15 +1,14 @@
 import styled from 'styled-components';
+import { BigNumber } from 'ethers';
+import { Box } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import { useEffect, useState } from 'react';
 
 import CardContent from './CardContent';
 import { ErrorAlert } from '../../common/Alerts';
-import { GenLenderStrategy, Network, Strategy } from '../../../types';
+import { LendStatus, Network, Strategy } from '../../../types';
 import { displayAmount, displayAprAmount } from '../../../utils/commonUtils';
-import { getError } from '../../../utils/error';
-import { getGenLenderStrategy } from '../../../utils/strategies';
-import { Box } from '@material-ui/core';
 import EtherScanLink from '../../common/EtherScanLink';
+import { useStrategyGenLender } from '../../../hooks';
 
 const StyledTypography = styled(Typography)`
     && {
@@ -27,99 +26,99 @@ type GenLenderProps = {
 
 export const GenLender = (props: GenLenderProps) => {
     const { strategy, network } = props;
-    const [isLoading, setIsLoading] = useState(true);
-    const [genLenderData, setGenLenderData] = useState<GenLenderStrategy>();
-    const [error, setError] = useState('');
+    const { data, loading, error } = useStrategyGenLender(
+        network,
+        strategy.address
+    );
 
-    useEffect(() => {
-        const loadGenLenderData = async () => {
-            try {
-                const loadedGenLenderData = await getGenLenderStrategy(
-                    strategy.address,
-                    network
-                );
-                setGenLenderData(loadedGenLenderData);
-                setIsLoading(false);
-            } catch (e: unknown) {
-                console.log('Error:', e);
-                setIsLoading(false);
-                setError(getError(e));
-            }
-        };
-        loadGenLenderData();
-    }, [strategy.address, network]);
+    const getLowestApr = (
+        lendStatuses: LendStatus[],
+        lowestApr: BigNumber,
+        lowestIdx: BigNumber
+    ): BigNumber => {
+        // If there are no assets lent, the lowestApr returned may be
+        // unreasonably high and we should use the actual lender value
+        const lenderLowest = lendStatuses[Number(lowestIdx)][2];
+        if (Number(lowestApr) > Number(lenderLowest)) {
+            return lenderLowest;
+        }
+        return lowestApr;
+    };
+
+    const getLenderName = (
+        lendStatuses: LendStatus[],
+        index: BigNumber
+    ): string => {
+        if (Number(index) >= lendStatuses.length) {
+            return '';
+        }
+        const name = lendStatuses[Number(index)][0];
+        return `${name} (${index.toString()})`;
+    };
 
     const renderData = () => {
-        const lenderStatuses =
-            genLenderData && genLenderData.lendStatuses ? (
-                <>
-                    {genLenderData.lendStatuses.map((value, index) => (
-                        <Box
-                            key={`lender_${value[0]}`}
-                            sx={{
-                                marginBottom:
-                                    index ===
-                                    genLenderData.lendStatuses.length - 1
-                                        ? '0'
-                                        : '20px',
-                            }}
-                        >
-                            <div>
-                                <div>{value[0]}</div>
-                                <EtherScanLink
-                                    address={value[3]}
-                                    network={network}
-                                />
-                            </div>
-                            <div>
-                                {'  '}Deposits:{' '}
-                                {displayAmount(
-                                    value[1].toString(),
-                                    strategy.token.decimals
-                                )}
-                            </div>
-                            <div>
-                                APR: {displayAprAmount(value[2].toString())}
-                            </div>
-                        </Box>
-                    ))}
-                </>
-            ) : (
-                ''
-            );
+        if (!data) {
+            return <Box>No data available</Box>;
+        }
 
-        const lentTotalAssets = genLenderData
-            ? displayAmount(
-                  genLenderData.lentTotalAssets.toString(),
-                  strategy.token.decimals
-              )
-            : '';
+        const lenderStatuses = (
+            <>
+                {data.lendStatuses.map((value, index) => (
+                    <Box
+                        key={`lender_${value[0]}`}
+                        sx={{
+                            marginBottom:
+                                index === data.lendStatuses.length - 1
+                                    ? '0'
+                                    : '20px',
+                        }}
+                    >
+                        <div>
+                            <div>{value[0]}</div>
+                            <EtherScanLink
+                                address={value[3]}
+                                network={network}
+                            />
+                        </div>
+                        <div>
+                            {'  '}Deposits:{' '}
+                            {displayAmount(
+                                value[1].toString(),
+                                strategy.token.decimals
+                            )}
+                        </div>
+                        <div>APR: {displayAprAmount(value[2].toString())}</div>
+                    </Box>
+                ))}
+            </>
+        );
 
-        const estimatedAPR = genLenderData
-            ? displayAprAmount(genLenderData.estimatedAPR.toString())
-            : '';
+        const lentTotalAssets = displayAmount(
+            data.lentTotalAssets.toString(),
+            strategy.token.decimals
+        );
 
-        const estimateAdjustPositionLowest = genLenderData
-            ? genLenderData.estimateAdjustPosition[0].toString()
-            : '';
+        const estimatedAPR = displayAprAmount(data.estimatedAPR.toString());
+        const estimateAdjustPositionLowest = getLenderName(
+            data.lendStatuses,
+            data.estimateAdjustPosition[0]
+        );
+        const estimateAdjustPositionHighest = getLenderName(
+            data.lendStatuses,
+            data.estimateAdjustPosition[2]
+        );
 
-        const estimateAdjustPositionHighest = genLenderData
-            ? genLenderData.estimateAdjustPosition[2].toString()
-            : '';
+        const lowestApr = getLowestApr(
+            data.lendStatuses,
+            data.estimateAdjustPosition[1],
+            data.estimateAdjustPosition[0]
+        ).toString();
+        const estimateAdjustPositionLowestAPR = displayAprAmount(lowestApr);
+        const estimateAdjustPositionPotential = displayAprAmount(
+            data.estimateAdjustPosition[3].toString()
+        );
 
-        const estimateAdjustPositionLowestAPR = genLenderData
-            ? displayAprAmount(
-                  genLenderData.estimateAdjustPosition[1].toString()
-              )
-            : '';
-
-        const estimateAdjustPositionPotential = genLenderData
-            ? displayAprAmount(
-                  genLenderData.estimateAdjustPosition[3].toString()
-              )
-            : '';
-
-        const data = [
+        const cardData = [
             { key: 'Lender Statuses:', value: lenderStatuses },
             { key: 'Total Assets Lent:', value: lentTotalAssets },
             { key: 'Estimated APR', value: estimatedAPR },
@@ -130,24 +129,20 @@ export const GenLender = (props: GenLenderProps) => {
                 value: estimateAdjustPositionLowestAPR,
             },
             {
-                key: 'Potential:',
+                key: 'Potential APR:',
                 value: estimateAdjustPositionPotential,
             },
         ];
-        return <CardContent data={data} key={strategy.address} />;
+        return <CardContent data={cardData} key={strategy.address} />;
     };
 
-    return (
-        <>
-            {isLoading ? (
-                <StyledTypography>Loading...</StyledTypography>
-            ) : error ? (
-                <ErrorAlert message={error} />
-            ) : (
-                renderData()
-            )}
-        </>
-    );
+    if (loading && !data) {
+        return <StyledTypography>Loading...</StyledTypography>;
+    }
+    if (error) {
+        return <ErrorAlert message={error} />;
+    }
+    return renderData();
 };
 
 export default GenLender;
