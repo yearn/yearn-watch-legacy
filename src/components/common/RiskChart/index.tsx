@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/display-name */
-import { GenericList, GenericListItem } from '../../app/GenericList';
+import { GenericList, GenericListItem } from '../../app';
 import { CellPosition, HeadCell } from '../../app/GenericList/HeadCell';
 import { colors, getSemaphoreInfo } from '../Semaphore';
 
@@ -28,7 +28,7 @@ const GroupQueryLink = (props: GroupQueryLinkProps) => {
     return <li key={keyValue}>{groupLabel}</li>;
 };
 
-export const headCells: HeadCell[] = [
+export const headCells: HeadCell<GenericListItem>[] = [
     {
         id: 'label',
         numeric: true,

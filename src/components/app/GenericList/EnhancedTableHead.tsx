@@ -11,7 +11,7 @@ import { HeadCell } from './HeadCell';
 import { GenericListItem } from '.'; // Data,
 import { HelpOutlineRounded } from '@material-ui/icons';
 
-interface EnhancedTableProps {
+interface EnhancedTableProps<ItemType extends GenericListItem> {
     classes: ReturnType<typeof useStyles>;
     onRequestSort: (
         event: React.MouseEvent<unknown>,
@@ -19,11 +19,13 @@ interface EnhancedTableProps {
     ) => void;
     order: Order;
     orderBy: string;
-    headCells: HeadCell[];
+    headCells: HeadCell<ItemType>[];
     shouldCollapse?: boolean;
 }
 
-export const EnhancedTableHead = (props: EnhancedTableProps) => {
+export const EnhancedTableHead = <T extends GenericListItem>(
+    props: EnhancedTableProps<T>
+) => {
     const {
         classes,
         order,

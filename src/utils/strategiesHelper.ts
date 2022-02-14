@@ -8,6 +8,9 @@ import { flattenArrays } from './commonUtils';
 import { isAddress } from 'ethers/lib/utils';
 import _ from 'lodash';
 import { getStrategiesHelperInstance } from './contracts/instances';
+import { getEthersDefaultProvider } from './ethers';
+import { Contract } from 'ethers';
+import TokenABI from './contracts/ABI/Token.json';
 
 export const getAssetsStrategiesAddressesByFilterNames = async (
     names: string[],
@@ -52,6 +55,12 @@ export const getStrategyAddresses = async (
     return Array.from(new Set<string>(addresses));
 };
 
+export const getDust = async (strategy: Strategy, network: Network) => {
+    const provider = getEthersDefaultProvider(network);
+    const token = new Contract(strategy.token.address, TokenABI.abi, provider);
+    return await token.balanceOf(strategy.address);
+};
+
 export const getStrategyTVLsPerProtocol = async (
     protocolName: string,
     aliases: string[],
@@ -87,19 +96,37 @@ export const getStrategyTVLsPerProtocol = async (
     const strategiesPromises = strategiesInfo.map(
         async (strategy: Strategy): Promise<StrategyTVL> => {
             if (strategy.estimatedTotalAssets) {
-                return {
-                    ...strategy,
-                    estimatedTotalAssetsUsdc: await getTokenPrice(
+                const dust = await getDust(strategy, network);
+                const [
+                    estimatedTotalAssetsUsdc,
+                    debtOutstandingUsdc,
+                    dustUsdc,
+                ] = await Promise.all([
+                    getTokenPrice(
                         strategy.token,
                         strategy.estimatedTotalAssets,
                         network
                     ),
+                    getTokenPrice(
+                        strategy.token,
+                        strategy.debtOutstanding,
+                        network
+                    ),
+                    getTokenPrice(strategy.token, dust, network),
+                ]);
+                return {
+                    ...strategy,
+                    estimatedTotalAssetsUsdc,
+                    debtOutstandingUsdc,
+                    dustUsdc,
                 };
             } else {
                 // estimatedTotalAssets failed, do not request USDC value
                 return {
                     ...strategy,
                     estimatedTotalAssetsUsdc: new BigNumber(0),
+                    debtOutstandingUsdc: new BigNumber(0),
+                    dustUsdc: new BigNumber(0),
                 };
             }
         }
