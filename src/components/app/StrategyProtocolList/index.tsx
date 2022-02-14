@@ -137,6 +137,7 @@ export const StrategyProtocolList = (props: StrategyProtocolListProps) => {
                 strategyTVL.estimatedTotalAssetsUsdc
             );
             const debtInMMs = amountToMMs(strategyTVL.debtOutstandingUsdc);
+            const dustInMMs = amountToMMs(strategyTVL.dustUsdc);
             return {
                 vault: strategyTVL.vault,
                 network,
@@ -153,7 +154,7 @@ export const StrategyProtocolList = (props: StrategyProtocolListProps) => {
                               .div(props.item.tvl)
                               .toNumber(),
                 debtOutstandingUsdcNumber: debtInMMs,
-                dustUsdcNumber: strategyTVL.dustUsdc.toNumber(),
+                dustUsdcNumber: dustInMMs,
                 tvlImpact: getTvlImpact(assetsInMMs),
             };
         }
