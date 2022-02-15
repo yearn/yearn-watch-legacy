@@ -267,6 +267,23 @@ export const SingleVault = () => {
                                         <Grid item xs={12} md={6}>
                                             <StyledTitle>
                                                 {' '}
+                                                Strategy Allocation
+                                            </StyledTitle>
+                                            <StyledPaper>
+                                                {vault &&
+                                                vault.strategies.length > 0 ? (
+                                                    <BarChart
+                                                        data={getStrategyAllocation(
+                                                            vault
+                                                        )}
+                                                    />
+                                                ) : (
+                                                    ''
+                                                )}
+                                            </StyledPaper>
+                                            <br />
+                                            <StyledTitle>
+                                                {' '}
                                                 Protocol Allocation
                                             </StyledTitle>
                                             {loadingStrategyMetadata ? (
@@ -283,23 +300,6 @@ export const SingleVault = () => {
                                             ) : (
                                                 ''
                                             )}
-                                            <br />
-                                            <StyledTitle>
-                                                {' '}
-                                                Strategy Allocation
-                                            </StyledTitle>
-                                            <StyledPaper>
-                                                {vault &&
-                                                vault.strategies.length > 0 ? (
-                                                    <BarChart
-                                                        data={getStrategyAllocation(
-                                                            vault
-                                                        )}
-                                                    />
-                                                ) : (
-                                                    ''
-                                                )}
-                                            </StyledPaper>
                                         </Grid>
                                     </Grid>
                                 </TabPanel>
