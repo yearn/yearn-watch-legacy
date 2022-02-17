@@ -521,7 +521,7 @@
             "auditScore": 5,
             "protocolSafetyScore": 3,
             "complexityScore": 1,
-            "teamKnowledgeScore": 3,
+            "teamKnowledgeScore": 5,
             "criteria": {
                 "nameLike": ["inverse"],
                 "strategies": [],
