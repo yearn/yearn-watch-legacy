@@ -13,6 +13,7 @@ import {
     Grid,
     Select,
     MenuItem,
+    SelectChangeEvent,
 } from '@mui/material';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 
@@ -154,7 +155,7 @@ const SearchInput = (props: SearchInputProps) => {
         onFilter('', getCurrentFlags(false), '');
     }, [onFilter]);
     const healthCheckFilterChange = useCallback(
-        (e: ChangeEvent<{ name?: string; value: unknown }>) => {
+        (e: SelectChangeEvent<unknown>) => {
             setHealthCheckFilter((e.target as HTMLInputElement).value);
             setIsSearching(true);
             const newSearchTextLowerCase = searchText.toLowerCase();
@@ -270,11 +271,9 @@ const SearchInput = (props: SearchInputProps) => {
                                         variant="standard"
                                         defaultValue=""
                                         value={healthCheckFilter}
-                                        // onChange={healthCheckFilterChange}
+                                        onChange={healthCheckFilterChange}
                                     >
-                                        {/* <MenuItem value="" alignItems="center">
-                                            All
-                                        </MenuItem>
+                                        <MenuItem value="">All</MenuItem>
                                         <MenuItem value="Enabled">
                                             Enabled
                                         </MenuItem>
@@ -283,7 +282,7 @@ const SearchInput = (props: SearchInputProps) => {
                                         </MenuItem>
                                         <MenuItem value="None">
                                             Not Set
-                                        </MenuItem> */}
+                                        </MenuItem>
                                     </StyledSelect>
                                 }
                                 labelPlacement="start"
