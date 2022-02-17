@@ -1,12 +1,12 @@
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import {
     Container,
     IconButton,
     InputAdornment,
     TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from '@mui/icons-material/Search';
 
 const useStyles = makeStyles({
     root: {
@@ -89,6 +89,7 @@ const SearchProtocolInput = (props: SearchProtocolInputProps) => {
                                     aria-label="search"
                                     disabled={isSearchDisabled}
                                     onClick={handleClickSearchIcon}
+                                    size="large"
                                 >
                                     <SearchIcon />
                                 </IconButton>

@@ -13,10 +13,10 @@ import {
     Grid,
     Select,
     MenuItem,
-} from '@material-ui/core';
+} from '@mui/material';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 
-import { Delete, Search } from '@material-ui/icons';
+import { Delete, Search } from '@mui/icons-material';
 import ResultsLabel from '../ResultsLabel';
 import WarningLabel from '../WarningLabel';
 
@@ -235,6 +235,7 @@ const SearchInput = (props: SearchInputProps) => {
                                                           onClick={
                                                               handleClickClearSearch
                                                           }
+                                                          size="large"
                                                       >
                                                           <Delete />
                                                       </IconButton>
@@ -269,9 +270,9 @@ const SearchInput = (props: SearchInputProps) => {
                                         variant="standard"
                                         defaultValue=""
                                         value={healthCheckFilter}
-                                        onChange={healthCheckFilterChange}
+                                        // onChange={healthCheckFilterChange}
                                     >
-                                        <MenuItem value="" alignItems="center">
+                                        {/* <MenuItem value="" alignItems="center">
                                             All
                                         </MenuItem>
                                         <MenuItem value="Enabled">
@@ -282,7 +283,7 @@ const SearchInput = (props: SearchInputProps) => {
                                         </MenuItem>
                                         <MenuItem value="None">
                                             Not Set
-                                        </MenuItem>
+                                        </MenuItem> */}
                                     </StyledSelect>
                                 }
                                 labelPlacement="start"

@@ -1,22 +1,18 @@
-import {
-    Button,
-    Container,
-    createStyles,
-    makeStyles,
-    Theme,
-} from '@material-ui/core';
+import { Button, Container, Theme } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import { MouseEvent } from 'react';
-import MuiAccordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import MuiAccordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { StrategyProtocolList } from '../../app/StrategyProtocolList';
-import Divider from '@material-ui/core/Divider';
-import { Grid } from '@material-ui/core';
+import Divider from '@mui/material/Divider';
+import { Grid } from '@mui/material';
 import { amountToMMs, amountToString } from '../../../utils/commonUtils';
 import { getTvlImpact } from '../../../utils/risk';
 import { ProtocolTVL } from '../../../types/protocol-tvl';
-import { Delete } from '@material-ui/icons';
+import { Delete } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

@@ -3,11 +3,11 @@ import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { toChecksumAddress } from 'ethereum-checksum-address';
 
-import Hidden from '@material-ui/core/Hidden';
-import CallMadeIcon from '@material-ui/icons/CallMade';
-import Tooltip from '@material-ui/core/Tooltip';
-import { FileCopy } from '@material-ui/icons';
-import { Link, Grid } from '@material-ui/core';
+import Hidden from '@mui/material/Hidden';
+import CallMadeIcon from '@mui/icons-material/CallMade';
+import Tooltip from '@mui/material/Tooltip';
+import { FileCopy } from '@mui/icons-material';
+import { Link, Grid } from '@mui/material';
 
 import { extractAddress } from '../../../utils/commonUtils';
 import getNetworkConfig from '../../../utils/config';
@@ -110,12 +110,12 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
                             to={internalHref}
                         >
                             <Hidden smUp>{maskedValue}</Hidden>
-                            <Hidden xsDown>{value}</Hidden>
+                            <Hidden smDown>{value}</Hidden>
                         </Link>
                     ) : (
                         <>
                             <Hidden smUp>{maskedValue}</Hidden>
-                            <Hidden xsDown>{value}</Hidden>
+                            <Hidden smDown>{value}</Hidden>
                         </>
                     )}
                 </StyledAddress>

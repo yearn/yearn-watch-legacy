@@ -1,9 +1,9 @@
-import MuiCardContent from '@material-ui/core/CardContent';
+import MuiCardContent from '@mui/material/CardContent';
 import styled from 'styled-components';
 import Table from '../../common/Table';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import MediaQuery from 'react-responsive';
 import { LabelTypography, SubTitle } from '../../common/Labels';
 

@@ -1,9 +1,11 @@
 import { Link as RouterLink } from 'react-router-dom';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Hidden from '@material-ui/core/Hidden';
-import MuiBreadcrumbs from '@material-ui/core/Breadcrumbs';
-import Link from '@material-ui/core/Link';
-import { Typography } from '@material-ui/core';
+import { Theme } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
+import createStyles from '@mui/styles/createStyles';
+import Hidden from '@mui/material/Hidden';
+import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
+import { Typography } from '@mui/material';
 import { Network } from '../../../types';
 import { extractAddress } from '../../../utils/commonUtils';
 
@@ -42,7 +44,7 @@ const BreadCrumbs = (props: BreadCrumbsProps) => {
                     <Hidden smUp>{`${extractAddress(
                         strategyId.toLowerCase()
                     )}`}</Hidden>
-                    <Hidden xsDown>{strategyId.toLowerCase()}</Hidden>
+                    <Hidden smDown>{strategyId.toLowerCase()}</Hidden>
                 </Typography>
             </Link>
         );
@@ -65,7 +67,7 @@ const BreadCrumbs = (props: BreadCrumbsProps) => {
                 <Hidden smUp>{`${extractAddress(
                     vaultId.toLowerCase()
                 )}`}</Hidden>
-                <Hidden xsDown>{vaultId.toLowerCase()}</Hidden>
+                <Hidden smDown>{vaultId.toLowerCase()}</Hidden>
             </Link>
             {strategyLevel}
         </MuiBreadcrumbs>

@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { CircularProgress, Container, Grid, Paper } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { CircularProgress, Container, Grid, Paper } from '@mui/material';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
-import Snackbar from '@material-ui/core/Snackbar';
-import { Alert } from '@material-ui/lab';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import Avatar from '@material-ui/core/Avatar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import Snackbar from '@mui/material/Snackbar';
+import { Alert } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import Avatar from '@mui/material/Avatar';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 import { Network, DEFAULT_NETWORK } from '../../../types';
 import BreadCrumbs from '../SingleStrategy/BreadCrumbs';

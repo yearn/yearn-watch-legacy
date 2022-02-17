@@ -1,17 +1,17 @@
 import { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import { HtmlTooltip } from '../HtmlTooltip';
-import { HelpOutlineRounded } from '@material-ui/icons';
+import { HelpOutlineRounded } from '@mui/icons-material';
 import MediaQuery from 'react-responsive';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
 import { getTokenPrice, getTokenUnitPrice } from '../../../utils/oracle';
 import BigNumber from 'bignumber.js';
 import { Network, Token } from '../../../types';
 import { BigNumberish } from 'ethers';
 import { displayAmount, isUSDC, toUnits } from '../../../utils/commonUtils';
-import { Typography, CircularProgress } from '@material-ui/core';
+import { Typography, CircularProgress } from '@mui/material';
 import { LabelTypography, SubTitle } from '../Labels';
 import { USDC_DECIMALS } from '../../../utils/contracts/addresses';
 

@@ -1,6 +1,8 @@
 /* eslint-disable react/display-name */
 import { useEffect, useState } from 'react';
-import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
+import { Theme, Typography } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import { Grouping } from '../../../types/grouping';
 import _ from 'lodash';
 import {
@@ -19,7 +21,7 @@ import { RiskChart } from '../../common/RiskChart';
 import { GenericList, GenericListItem } from '../GenericList';
 import { ScoreRowCollapse } from '../../common/ScoreRowCollapse';
 import { scoreHeadCells } from '../../common/headers/scoresHeaderDefinition';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@mui/material';
 import { useParams } from 'react-router';
 import { ParamTypes } from '../../../types/DefaultParamTypes';
 import { DEFAULT_NETWORK, Network } from '../../../types';

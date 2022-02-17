@@ -1,5 +1,5 @@
-import { Tooltip } from '@material-ui/core';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import { Tooltip } from '@mui/material';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import React from 'react';
 
 type SemaphoreProps = {

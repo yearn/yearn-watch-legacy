@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from '@mui/material/Tooltip';
 
 const StyledTooltip = styled(Tooltip)`
     && {

@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import { Grid } from '@material-ui/core';
-
+import { Grid, LinearProgress } from '@mui/material';
 import { SubTitle, ValuePercentage } from '../../../common/Labels';
 
 export type BarChartData = {

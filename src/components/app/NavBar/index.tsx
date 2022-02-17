@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import { useLocation } from 'react-router-dom';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Container from '@material-ui/core/Container';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Container from '@mui/material/Container';
 import styled from 'styled-components';
-import Brightness2Icon from '@material-ui/icons/Brightness2';
-import Brightness4Icon from '@material-ui/icons/Brightness4';
+import Brightness2Icon from '@mui/icons-material/Brightness2';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
 import logoYearnLight from '../../../images/logo_yearn_watch_light.svg';
 import logoYearnDark from '../../../images/logo_yearn_watch_dark.svg';
-import Link from '@material-ui/core/Link';
+import Link from '@mui/material/Link';
 import NetworkSelect from '../../common/NetworkSelect';
 import { Network } from '../../../types';
 
@@ -52,9 +52,9 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         textAlign: 'center',
 
-        [theme.breakpoints.up('md')]: {
-            marginLeft: '15%',
-        },
+        // [theme.breakpoints.up('md')]: {
+        //     marginLeft: '15%',
+        // },
     },
 }));
 export const NavBar: React.FC<NavBarProps> = ({ themeToggler, theme }) => {
@@ -97,6 +97,7 @@ export const NavBar: React.FC<NavBarProps> = ({ themeToggler, theme }) => {
                         aria-haspopup="true"
                         onClick={themeToggler}
                         color="inherit"
+                        size="large"
                     >
                         {theme === 'light' ? (
                             <StyledBrightness2Icon />
