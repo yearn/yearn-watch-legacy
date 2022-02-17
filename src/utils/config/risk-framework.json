@@ -649,7 +649,7 @@
             "complexityScore": 3,
             "teamKnowledgeScore": 3,
             "criteria": {
-                "nameLike": ["SingleSidedBeethoven", "ssbeetV2.1"],
+                "nameLike": ["SingleSidedBeethoven", "ssbeetV2", "ssbeetV2.1"],
                 "strategies": [],
                 "exclude": []
             }
@@ -714,6 +714,7 @@
                     "GenLevCompV3NoFlash",
                     "rebalancer",
                     "SingleSidedBeethoven",
+                    "ssbeetV2",
                     "ssbeetV2.1",
                     "vedao",
                     "0xdao"
