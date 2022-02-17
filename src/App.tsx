@@ -6,6 +6,7 @@ import {
     Redirect,
 } from 'react-router-dom';
 import { ThemeProvider as StyledComponentsThemeProvider } from 'styled-components';
+import { Theme } from '@mui/material/styles';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { GlobalStyles } from './components/theme/globalStyles';
 import { useDarkMode } from './components/theme/useDarkMode';
@@ -20,6 +21,11 @@ import {
 } from './components/app';
 import { StrategyReportProvider } from './contexts/StrategyReportContext';
 import { Risk } from './components/app/Risk';
+
+declare module '@mui/styles/defaultTheme' {
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface DefaultTheme extends Theme {}
+}
 
 const muiTheme = createTheme();
 

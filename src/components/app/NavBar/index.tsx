@@ -52,9 +52,9 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         textAlign: 'center',
 
-        // [theme.breakpoints.up('md')]: {
-        //     marginLeft: '15%',
-        // },
+        [theme.breakpoints.up('md')]: {
+            marginLeft: '15%',
+        },
     },
 }));
 export const NavBar: React.FC<NavBarProps> = ({ themeToggler, theme }) => {
