@@ -132,7 +132,9 @@ const StyledLink = styled(Link)`
 `;
 
 const CustomLink = forwardRef<HTMLSpanElement, LinkBaseProps & RouterLinkProps>(
-    (props, ref) => <StyledLink component={RouterLink} {...props} />
+    (props, ref) => (
+        <StyledLink component={RouterLink} ref={() => ref} {...props} />
+    )
 );
 CustomLink.displayName = 'CustomLink';
 
