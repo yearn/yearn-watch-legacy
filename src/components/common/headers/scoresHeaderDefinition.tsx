@@ -1,8 +1,8 @@
 /* eslint-disable react/display-name */
-import { Tooltip } from '@material-ui/core';
+import { Tooltip } from '@mui/material';
 import { GenericListItem } from '../../app';
 import { Link } from 'react-router-dom';
-import MonetizationOnRoundedIcon from '@material-ui/icons/MonetizationOnRounded';
+import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded';
 import { HeadCell } from '../../app/GenericList/HeadCell';
 import { Semaphore } from '../Semaphore';
 import { TVLImpactTooltip } from '../TVLImpactTooltip';

@@ -1,5 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles';
-import { Container } from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
+import { Container } from '@mui/material';
 
 const useStyles = makeStyles({
     resultText: {

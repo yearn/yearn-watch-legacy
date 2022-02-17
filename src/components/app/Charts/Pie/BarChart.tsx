@@ -1,8 +1,8 @@
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import styled from 'styled-components';
 
-import LinearProgress from '@material-ui/core/LinearProgress';
-import { Grid } from '@material-ui/core';
+import LinearProgress from '@mui/material/LinearProgress';
+import { Grid } from '@mui/material';
 import { SubTitle, ValuePercentage } from '../../../common/Labels';
 
 const BorderLinearProgress = styled(LinearProgress)`

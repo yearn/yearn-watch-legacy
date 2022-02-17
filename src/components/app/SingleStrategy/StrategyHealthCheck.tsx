@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import Chip from '@material-ui/core/Chip';
-import Typography from '@material-ui/core/Typography';
+import Chip from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
 import EtherScanLink from '../../common/EtherScanLink';
 import CardContent from './CardContent';
 import { Network, Strategy } from '../../../types';

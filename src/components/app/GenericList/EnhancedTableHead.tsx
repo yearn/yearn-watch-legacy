@@ -6,10 +6,10 @@ import {
     TableCell,
     TableSortLabel,
     Tooltip,
-} from '@material-ui/core';
+} from '@mui/material';
 import { HeadCell } from './HeadCell';
 import { GenericListItem } from '.'; // Data,
-import { HelpOutlineRounded } from '@material-ui/icons';
+import { HelpOutlineRounded } from '@mui/icons-material';
 
 interface EnhancedTableProps<ItemType extends GenericListItem> {
     classes: ReturnType<typeof useStyles>;
@@ -55,7 +55,7 @@ export const EnhancedTableHead = <T extends GenericListItem>(
                     <TableCell
                         key={`header-${index}`}
                         align={headCell.align}
-                        padding={headCell.disablePadding ? 'none' : 'default'}
+                        padding={headCell.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
                         <>

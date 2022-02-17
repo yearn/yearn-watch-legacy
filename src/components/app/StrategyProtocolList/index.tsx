@@ -1,5 +1,7 @@
 /* eslint-disable react/display-name */
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 

@@ -1,4 +1,4 @@
-import Chip from '@material-ui/core/Chip';
+import Chip from '@mui/material/Chip';
 
 import EtherScanLink from '../../common/EtherScanLink';
 import { formatBPS, displayAmount } from '../../../utils/commonUtils';
