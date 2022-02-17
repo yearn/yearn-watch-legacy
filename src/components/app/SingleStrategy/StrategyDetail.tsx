@@ -1,10 +1,11 @@
 import Chip from '@material-ui/core/Chip';
-
 import EtherScanLink from '../../common/EtherScanLink';
 import { formatBPS, displayAmount } from '../../../utils/commonUtils';
-import CardContent from './CardContent';
 import { Network, Strategy, StrategyMetaData } from '../../../types';
 import TokenPrice from '../../common/TokenPrice';
+import React from 'react';
+import StrategyDetailSection from './StrategyDetailSection';
+import { Container, Grid, Typography } from '@material-ui/core';
 
 type StrategyDetailProps = {
     strategy: Strategy;
@@ -13,7 +14,17 @@ type StrategyDetailProps = {
 };
 export const StrategyDetail = (props: StrategyDetailProps) => {
     const { strategy, network, metadata } = props;
+    return (
+        <>
+            <About {...props} />
+            <Vault {...props} />
+        </>
+    );
+};
 
+export default StrategyDetail;
+
+const About = ({ strategy, network, metadata }: StrategyDetailProps) => {
     const apiVersion = strategy ? strategy.apiVersion : '';
     const activationDate = strategy ? strategy.params.activation : '';
     const lastReportText = strategy ? strategy.params.lastReportText : '';
@@ -195,7 +206,31 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
         { key: ' Strategist:', value: strategist },
         { key: ' Vault:', value: vaults },
     ];
-    return <CardContent data={data} key={strategy.address} />;
+    return (
+        <StrategyDetailSection
+            title={'About'}
+            content={
+                <>
+                    {data.map((item: { key: string; value: any }) => (
+                        <Grid
+                            direction={{ xs: 'column', sm: 'row' }}
+                            justifyContent="space-between"
+                            key={item.key}
+                            container
+                            style={{ marginTop: '8px' }}
+                        >
+                            <Grid item>{item.key}</Grid>
+                            <Grid item>
+                                <bold>{item.value}</bold>
+                            </Grid>
+                        </Grid>
+                    ))}
+                </>
+            }
+        />
+    );
 };
 
-export default StrategyDetail;
+const Vault = ({ strategy, network, metadata }: StrategyDetailProps) => {
+    return <StrategyDetailSection title={'Vault'} content={<></>} />;
+};

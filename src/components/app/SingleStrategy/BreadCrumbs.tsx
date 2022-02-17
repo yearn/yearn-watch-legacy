@@ -3,9 +3,25 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden';
 import MuiBreadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
-import { Typography } from '@material-ui/core';
+import { Card, Typography } from '@material-ui/core';
 import { Network } from '../../../types';
 import { extractAddress } from '../../../utils/commonUtils';
+import styled from 'styled-components';
+
+const StyledCardBreadCrumbs = styled(Card)`
+    && {
+        background-color: transparent;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: none !important;
+        @media (max-width: 1400px) {
+            max-width: 85%;
+        }
+        @media (max-width: 700px) {
+            max-width: 100%;
+        }
+    }
+`;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -49,26 +65,28 @@ const BreadCrumbs = (props: BreadCrumbsProps) => {
     }
 
     return (
-        <MuiBreadcrumbs className={classes.crumbs}>
-            <Link
-                component={RouterLink}
-                color="inherit"
-                to={`/network/${network}`}
-            >
-                vaults
-            </Link>
-            <Link
-                component={RouterLink}
-                color="inherit"
-                to={`/network/${network}/vault/${vaultId.toLowerCase()}`}
-            >
-                <Hidden smUp>{`${extractAddress(
-                    vaultId.toLowerCase()
-                )}`}</Hidden>
-                <Hidden xsDown>{vaultId.toLowerCase()}</Hidden>
-            </Link>
-            {strategyLevel}
-        </MuiBreadcrumbs>
+        <StyledCardBreadCrumbs>
+            <MuiBreadcrumbs className={classes.crumbs}>
+                <Link
+                    component={RouterLink}
+                    color="inherit"
+                    to={`/network/${network}`}
+                >
+                    vaults
+                </Link>
+                <Link
+                    component={RouterLink}
+                    color="inherit"
+                    to={`/network/${network}/vault/${vaultId.toLowerCase()}`}
+                >
+                    <Hidden smUp>{`${extractAddress(
+                        vaultId.toLowerCase()
+                    )}`}</Hidden>
+                    <Hidden xsDown>{vaultId.toLowerCase()}</Hidden>
+                </Link>
+                {strategyLevel}
+            </MuiBreadcrumbs>
+        </StyledCardBreadCrumbs>
     );
 };
 

@@ -1,169 +1,138 @@
-import { Snackbar } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
-import React, { useEffect, useState } from 'react';
+import { Tab, Tabs, Container } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Network, Strategy, StrategyMetaData, Vault } from '../../../types';
+import { StrategyReport } from '../../../utils';
 import { ErrorAlert } from '../../common/Alerts';
+import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
+import { GlobalStylesLoading } from '../../theme/globalStyles';
+import BreadCrumbs from './BreadCrumbs';
+import StrategyDetail from './StrategyDetail';
+import StrategyHeader from './StrategyHeader';
+import StrategyHealthCheck from './StrategyHealthCheck';
+import StrategyReports from './StrategyReports';
+import StyledCard from './StyledCard';
+import Warnings from './Warnings';
 
 type Props = {
-    error: any
-}
-
-const errAlert = (error: any) => (
-    <ErrorAlert
-        message={'Error while loading strategy data:'}
-        details={error}
-    />
-);
-
-const showWarnings = (warnings: string[], openSnackBar: boolean, ) => (
-    warnings.length > 0 &&
-        (
-            <Snackbar
-                open={openSnackBar}
-                onClose={handleCloseSnackBar}
-                autoHideDuration={10000}
-            >
-                <Alert onClose={handleCloseSnackBar} severity="warning">
-                    {`Issue loading the following fields for some strategies: ${JSON.stringify(
-                        warnings
-                    )}`}
-                </Alert>
-            </Snackbar>
-        )
-);
-
-export const SingleStrategyScreen = ({error}: Props) => (
-    <React.Fragment>
-        {error && errAlert}
-
-    </React.Fragment>
-)
-
-const StyledCard = styled(Card).withConfig({
-    shouldForwardProp: (props) => props.toString() !== 'emergencyExit',
-})<{
-    emergencyExit?: string;
-}>`
-    && {
-        background-color: ${({ theme }) => theme.container};
-        color: ${({ theme }) => theme.title};
-        margin-left: auto;
-        margin-right: auto;
-        border: ${({ theme, emergencyExit }) =>
-            emergencyExit === 'false' ? theme.error : ''} !important;
-        @media (max-width: 1400px) {
-            max-width: 85%;
-        }
-        @media (max-width: 700px) {
-            max-width: 100%;
-        }
-    }
-`;
-
-const StyledCardBreadCrumbs = styled(Card)`
-    && {
-        background-color: transparent;
-
-        margin-left: auto;
-        margin-right: auto;
-
-        box-shadow: none !important;
-        @media (max-width: 1400px) {
-            max-width: 85%;
-        }
-        @media (max-width: 700px) {
-            max-width: 100%;
-        }
-    }
-`;
-
-const StyledSpan = styled.span`
-    && {
-        color: ${({ theme }) => theme.subtitle};
-    }
-`;
-
-
-const getAdditionalInfoComponent = (
-    label: AdditionalInfoLabels,
-    network: Network,
-    strategy?: Strategy
-): JSX.Element | undefined => {
-    switch (label) {
-        case AdditionalInfoLabels.GenLender: {
-            return (
-                strategy && <GenLender strategy={strategy} network={network} />
-            );
-        }
-        default: {
-            throw Error('Could not find additional info component');
-        }
-    }
+    vaultAddress: string;
+    strategyAddress: string;
+    error: any;
+    warnings?: string[];
+    loading: boolean;
+    vault?: Vault;
+    strategy?: Strategy;
+    strategyMetaData?: StrategyMetaData;
+    network: Network;
+    reports?: StrategyReport[];
 };
 
-const renderTab = (value: number): JSX.Element | undefined => {
-    switch (value) {
-        case 0: {
-            return (
-                strategy && (
-                    <StrategyDetail
-                        strategy={strategy}
-                        network={network}
-                        metadata={strategyMetaData}
-                    />
-                )
-            );
-        }
-        case 1: {
-            return (
-                <StrategyReports
-                    network={network}
-                    reports={
-                        strategyReportContext.strategyReports[
-                            strategyId.toLowerCase()
-                        ]
-                    }
-                    tokenDecimals={strategy ? strategy.token.decimals : 18}
-                />
-            );
-        }
-        case 2: {
-            return (
-                strategy && (
-                    <StrategyHealthCheck
-                        strategy={strategy}
-                        network={network}
-                    />
-                )
-            );
-        }
-        default: {
-            if (!additionalInfo) {
-                throw Error('Should not render tab for additional info');
+export const SingleStrategyScreen = ({
+    vaultAddress,
+    strategyAddress,
+    error,
+    warnings,
+    loading,
+    vault,
+    strategy,
+    strategyMetaData,
+    network,
+    reports,
+}: Props) => {
+    const [tabValue, setTabValue] = useState(0);
+    const handleTabChange = (
+        event: React.ChangeEvent<any>,
+        newValue: number
+    ) => {
+        setTabValue(newValue);
+    };
+    const renderTab = (value: number): JSX.Element | undefined => {
+        switch (value) {
+            case 0: {
+                return (
+                    strategy && (
+                        <StrategyDetail
+                            strategy={strategy}
+                            network={network}
+                            metadata={strategyMetaData}
+                        />
+                    )
+                );
             }
-            return getAdditionalInfoComponent(
-                additionalInfo,
-                network,
-                strategy
-            );
+            case 1: {
+                return (
+                    reports && (
+                        <StrategyReports
+                            network={network}
+                            reports={reports}
+                            tokenDecimals={
+                                strategy ? strategy.token.decimals : 18
+                            }
+                        />
+                    )
+                );
+            }
+            case 2: {
+                return (
+                    strategy && (
+                        <StrategyHealthCheck
+                            strategy={strategy}
+                            network={network}
+                        />
+                    )
+                );
+            }
         }
+    };
+    if (error) {
+        return (
+            <ErrorAlert
+                message={'Error while loading strategy data:'}
+                details={error}
+            />
+        );
     }
-};
-
-
-enum AdditionalInfoLabels {
-    GenLender = 'Gen Lender',
-}
-
-
-
-const additionalInfo = getAdditionalInfo(strategy);
-const getAdditionalInfo = (
-    strategy?: Strategy
-): AdditionalInfoLabels | undefined => {
-    // Check if strategy has additional info to be displayed
-    // eg. gen lender strategies
-    if (strategy?.name === 'StrategyLenderYieldOptimiser') {
-        return AdditionalInfoLabels.GenLender;
+    if (loading) {
+        return (
+            <div
+                style={{
+                    textAlign: 'center',
+                    marginTop: '100px',
+                }}
+            >
+                <ProgressSpinnerBar />
+                <GlobalStylesLoading />
+            </div>
+        );
     }
-    return undefined;
+    return (
+        <Container>
+            {warnings && <Warnings warnings={warnings} />}
+            <BreadCrumbs
+                vaultId={vaultAddress}
+                strategyId={strategyAddress}
+                network={network}
+            />
+            <StrategyHeader
+                vault={vault}
+                strategy={strategy}
+                network={network}
+            />
+            <StyledCard
+                style={{ marginTop: '16px' }}
+                emergencyExit={strategy && strategy.emergencyExit.toString()}
+            >
+                <Tabs
+                    value={tabValue}
+                    variant="fullWidth"
+                    indicatorColor="primary"
+                    onChange={handleTabChange}
+                >
+                    <Tab label="Detail" />
+                    <Tab label="Reports" />
+                    <Tab label="Health Check" />
+                </Tabs>
+                <div>{renderTab(tabValue)}</div>
+            </StyledCard>
+        </Container>
+    );
 };
