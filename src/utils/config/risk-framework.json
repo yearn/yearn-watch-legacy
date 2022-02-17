@@ -513,6 +513,22 @@
             }
         },
         {
+            "id": "inverse",
+            "network": "ethereum",
+            "label": "Inverse",
+            "codeReviewScore": 3,
+            "testingScore": 3,
+            "auditScore": 5,
+            "protocolSafetyScore": 3,
+            "complexityScore": 1,
+            "teamKnowledgeScore": 5,
+            "criteria": {
+                "nameLike": ["inverse"],
+                "strategies": [],
+                "exclude": []
+            }
+        },
+        {
             "id": "others",
             "network": "ethereum",
             "label": "Others",
@@ -568,7 +584,8 @@
                     "0xB1bC173c2BCC98E8EEDE8Af0443AcE29b8fA2992",
                     "0x26244f5b4A933C6e595665F08F8c76108195b755",
                     "FiatDAOStakingYFI",
-                    "StrategyLiquityStabilityPoolLUSD"
+                    "StrategyLiquityStabilityPoolLUSD",
+                    "inverse"
                 ]
             }
         },
