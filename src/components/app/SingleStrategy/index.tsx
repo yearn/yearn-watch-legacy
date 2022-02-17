@@ -21,7 +21,11 @@ import { useStrategyReportContext } from '../../../contexts/StrategyReportContex
 import { GlobalStylesLoading } from '../../theme/globalStyles';
 
 import { getError, getWarnings, getReportsForStrategies } from '../../../utils';
-import { useStrategy, useVault, useStrategyMetaData } from '../../../hooks';
+import {
+    useStrategy,
+    useVault,
+    useSingleStrategyMetadata,
+} from '../../../hooks';
 
 import BreadCrumbs from './BreadCrumbs';
 import GenLender from './GenLender';
@@ -132,7 +136,7 @@ export const SingleStrategy = () => {
         vaultId,
         strategyId
     );
-    const { data: strategyMetaData } = useStrategyMetaData(
+    const { data: strategyMetaData } = useSingleStrategyMetadata(
         network,
         vaultId,
         strategyId
