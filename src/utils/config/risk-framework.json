@@ -411,7 +411,7 @@
             "complexityScore": 3,
             "teamKnowledgeScore": 2,
             "criteria": {
-                "nameLike": ["SingleSidedBalancer"],
+                "nameLike": ["SingleSidedBalancer", "SSBv2"],
                 "strategies": [],
                 "exclude": []
             }
@@ -561,6 +561,7 @@
                     "jointprovider",
                     "rebalancer",
                     "SingleSidedBalancer",
+                    "SSBv2",
                     "StrategyBarnDAOStaking",
                     "StrategyLeagueDAOStaking",
                     "ToHegicSushiJoint",
@@ -631,7 +632,7 @@
             "complexityScore": 3,
             "teamKnowledgeScore": 3,
             "criteria": {
-                "nameLike": ["SingleSidedBeethoven"],
+                "nameLike": ["SingleSidedBeethoven", "ssbbetv2.1"],
                 "strategies": [],
                 "exclude": []
             }
@@ -696,6 +697,7 @@
                     "GenLevCompV3NoFlash",
                     "rebalancer",
                     "SingleSidedBeethoven",
+                    "ssbbetv2.1",
                     "vedao",
                     "0xdao"
                 ]
