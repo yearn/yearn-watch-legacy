@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
+<<<<<<< HEAD
 import { CircularProgress, Container, Grid, Paper } from '@mui/material';
+=======
+import { Container, Grid, Paper } from '@mui/material';
+>>>>>>> 1652261ee2b2dd7f8a7df8eff402bd6b8b49b09b
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
