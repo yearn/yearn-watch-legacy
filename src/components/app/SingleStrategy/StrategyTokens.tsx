@@ -4,7 +4,6 @@ import Typography from '@material-ui/core/Typography';
 import EtherScanLink from '../../common/EtherScanLink';
 import TokenCard from './TokenCard';
 import { Network, Strategy } from '../../../types';
-import request from '../../../utils/request';
 import { getEnv } from '../../../utils/env';
 
 const StyledTypography = styled(Typography)`
@@ -21,16 +20,26 @@ type StrategyTokensProps = {
     network: Network;
 };
 
+type Token = {
+    balance: number;
+    tokenInfo: {
+        name: string;
+        symbol: string;
+        address: string;
+    };
+};
+
 export const StrategyTokens = (props: StrategyTokensProps) => {
     const { strategy, network } = props;
-    const [tokensData, setTokensData] = useState<any>(null);
+    const [tokensData, setTokensData] = useState<Array<Token>>([]);
     const { ethplorerKey } = getEnv();
     // fetching strategy tokens
     useEffect(() => {
-        request(
-            `https://api.ethplorer.io/getAddressInfo/${strategy.token.address}?apiKey=${ethplorerKey}`,
-            undefined
-        ).then((res) => setTokensData(res.tokens));
+        fetch(
+            `https://api.ethplorer.io/getAddressInfo/${strategy.token.address}?apiKey=${ethplorerKey}`
+        )
+            .then((response) => response.json())
+            .then((res) => setTokensData(res.tokens));
     }, []);
     const data = [];
     for (const token in tokensData) {
