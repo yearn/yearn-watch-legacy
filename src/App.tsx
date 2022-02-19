@@ -63,7 +63,7 @@ const App = () => {
                             <Route
                                 exact
                                 path="/vault/:vaultId"
-                                render={SingleVault}
+                                component={SingleVault}
                             />
                             <Route
                                 exact
@@ -73,7 +73,7 @@ const App = () => {
                             <Route
                                 exact
                                 path="/network/:network/vault/:vaultId"
-                                render={SingleVault}
+                                component={SingleVault}
                             />
                             <Route
                                 exact
