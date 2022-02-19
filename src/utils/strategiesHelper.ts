@@ -17,7 +17,7 @@ export const getAssetsStrategiesAddressesByFilterNames = async (
     network: Network
 ): Promise<string[]> => {
     if (names.map((name) => name.toLowerCase()).includes('all')) {
-        const allStrategies = await getAllStrategies();
+        const allStrategies = await getAllStrategies(network);
         return allStrategies.map((strategy) => strategy.address);
     }
     const helper = getStrategiesHelperInstance(network);

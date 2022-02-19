@@ -15,22 +15,9 @@ export const VAULTS_ALL_EXPERIMENTAL = '/vaults/experimental';
 export const VAULTS_ALL = '/vaults/all';
 const API_URL = 'https://api.yearn.finance/v1/chains/1';
 
-// const filterToExperimentals = (res: any): ApiDataResponse => {
-//     const response = { data: [] };
-//     response.data =
-//         res &&
-//         res.data &&
-//         res.data.filter(
-//             (vault: any) =>
-//                 vault.endorsed === false &&
-//                 vault.type.toLowerCase() === VaultVersion.V2
-//         );
-//     return response;
-// };
-
-const getData = async (url: string): Promise<ApiDataResponse> => {
+const _getApiData = async (endpoint: string): Promise<ApiDataResponse> => {
     try {
-        const response = await axios.get(`${API_URL}${url}`);
+        const response = await axios.get(`${API_URL}${endpoint}`);
         return response as ApiDataResponse;
     } catch (error) {
         console.log('error fetching data', error);
@@ -38,7 +25,7 @@ const getData = async (url: string): Promise<ApiDataResponse> => {
     }
 };
 
-export const BuildGet = memoize(getData);
+export const getApiData = memoize(_getApiData);
 
 type SubgraphAPIResponse = {
     data: {
@@ -56,14 +43,6 @@ type SubgraphResponse = {
     data: any;
 };
 
-/*
-config: {url: "https://api.thegraph.com/subgraphs/name/salazarguille/yearn-vaults-v2-subgraph-mainnet", method: "post", data: "{"query":"\n{\n\tvaults {\n    id\n    tags\n    t…it\n        debtAdded\n      }\n    }\n  }\n}\n"}", headers: {…}, transformRequest: Array(1), …}
-data: {data: {…}}
-headers: {content-type: "application/json"}
-request: XMLHttpRequest {readyState: 4, timeout: 0, withCredentials: false, upload: XMLHttpRequestUpload, onreadystatechange: ƒ, …}
-status: 200
-statusText: ""
-*/
 const querySubgraph = async (
     query: string,
     network: Network = Network.mainnet

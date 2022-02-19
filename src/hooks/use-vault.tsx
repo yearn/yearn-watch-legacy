@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getService as getVaultService } from '../services/VaultService';
+import { getVaultService } from '../services/VaultService/utils';
 import { Network, Vault } from '../types';
 import { getWarnings } from '../utils';
 import { getError } from '../utils/error';
@@ -36,5 +36,37 @@ export function useVault(network: Network, address: string) {
         loading,
         error,
         warnings,
+    };
+}
+
+export function useAllVaults(network: Network) {
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+    const [data, setData] = useState<Vault[]>([]);
+
+    useEffect(() => {
+        const fetchVault = async () => {
+            try {
+                setLoading(true);
+                const vaultService = getVaultService(network);
+                const vaults = await vaultService.getVaults();
+                setData(vaults);
+            } catch (e) {
+                setError(getError(e));
+                setData([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchVault();
+    }, [network]);
+
+    const fetchNext = () => null;
+
+    return {
+        data,
+        loading,
+        error,
+        fetchNext,
     };
 }
