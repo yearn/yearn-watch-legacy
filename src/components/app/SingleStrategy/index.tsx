@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Params, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Container } from '@mui/material';
 
@@ -77,7 +77,7 @@ const StyledSpan = styled.span`
     }
 `;
 
-interface ParamTypes {
+interface ParamTypes extends Params {
     strategyId: string;
     vaultId: string;
     network?: Network;
@@ -120,7 +120,7 @@ export const SingleStrategy = () => {
         strategyId,
         vaultId,
         network = DEFAULT_NETWORK,
-    } = useParams<ParamTypes>();
+    } = useParams() as ParamTypes;
     const [isReportsLoading, setIsReportsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [value, setValue] = useState(0);

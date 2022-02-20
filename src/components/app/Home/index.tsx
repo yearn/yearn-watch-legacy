@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+
 import { Container } from '@mui/material';
+import { useParams } from 'react-router-dom';
 
 import { getService } from '../../../services/VaultService';
 import { sortVaultsByVersion } from '../../../utils/vaults';
@@ -22,7 +23,7 @@ import { ParamTypes } from '../../../types/DefaultParamTypes';
 const BATCH_NUMBER = 30;
 
 export const Home = () => {
-    const { network = DEFAULT_NETWORK } = useParams<ParamTypes>();
+    const { network = DEFAULT_NETWORK } = useParams() as ParamTypes;
     const [total, setTotal] = useState<number>(0);
     const [vaults, setVaults] = useState<Vault[]>([]);
     const [isLoading, setIsLoading] = useState(false);
