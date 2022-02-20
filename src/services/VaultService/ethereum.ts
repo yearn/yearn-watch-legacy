@@ -9,6 +9,7 @@ export default class EtherumService extends VaultService {
     }
 
     protected fetchExperimentalVaultData = async (): Promise<VaultApi[]> => {
+        // TODO: fetch ape.tax vaults as well
         const response = await getApiData(VAULTS_ALL_EXPERIMENTAL);
         return fillVaultApiData(response.data);
     };

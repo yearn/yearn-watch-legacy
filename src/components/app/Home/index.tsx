@@ -12,7 +12,7 @@ import { useAllVaults } from '../../../hooks';
 
 export const Home = () => {
     const { network = DEFAULT_NETWORK } = useParams<ParamTypes>();
-    const { data: vaults, loading, error } = useAllVaults(network);
+    const { vaults, loading, moreToLoad, error } = useAllVaults(network);
 
     return (
         <Container maxWidth="lg">
@@ -25,15 +25,14 @@ export const Home = () => {
                 )}
                 {loading && (
                     <span>
-                        <ProgressSpinnerBar />
-
+                        <ProgressSpinnerBar label="vaults" />
                         <GlobalStylesLoading />
                     </span>
                 )}
                 {!loading && !error && (
                     <VaultsList
                         items={vaults}
-                        totalItems={vaults.length}
+                        moreToLoad={moreToLoad}
                         network={network}
                     />
                 )}

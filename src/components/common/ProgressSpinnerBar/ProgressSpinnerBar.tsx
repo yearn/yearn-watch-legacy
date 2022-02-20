@@ -1,14 +1,14 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import LinearProgress from '@mui/material/LinearProgress';
+import { Container } from '@mui/material';
 
-import { Container, Typography } from '@mui/material';
-
-const StyledTypography = styled(Typography)`
+const StyledTypography = styled.div`
     text-align: center;
     font-weight: 200;
     color: white;
+    margin-bottom: 16px;
 `;
 
 const StyledRootDiv = styled.div`
@@ -27,20 +27,17 @@ interface LinearDeterminateProps {
     label?: string;
 }
 export default function LinearDeterminate(props: LinearDeterminateProps) {
-    const [completed, setCompleted] = React.useState(0);
+    const [completed, setCompleted] = useState(0);
 
-    React.useEffect(() => {
+    useEffect(() => {
         function progress() {
             setCompleted((oldCompleted) => {
-                if (oldCompleted === 100) {
-                    return 0;
-                }
                 const diff = Math.random() * 10;
-                return Math.min(oldCompleted + diff, 100);
+                return Math.min(oldCompleted + diff, 95);
             });
         }
 
-        const timer = setInterval(progress, 500);
+        const timer = setInterval(progress, 600);
         return () => {
             clearInterval(timer);
         };

@@ -96,6 +96,7 @@ export const HealthCheckReport = () => {
     const {
         data: strategies,
         loading,
+        moreToLoad,
         error,
     } = useHealthcheckStrategies(network);
     const classes = useStyles();
@@ -112,12 +113,14 @@ export const HealthCheckReport = () => {
                 {loading && (
                     <span>
                         <ProgressSpinnerBar />
-
                         <GlobalStylesLoading />
                     </span>
                 )}
                 {!loading && !error && (
                     <div className={classes.root}>
+                        {moreToLoad && (
+                            <ProgressSpinnerBar label="all strategies..." />
+                        )}
                         <GenericList
                             headCells={headCells}
                             items={strategies}

@@ -3,11 +3,12 @@ import { uniqBy, memoize } from 'lodash';
 import BigNumber from 'bignumber.js';
 import compareVersions from 'compare-versions';
 
-import { VaultApi, Network, NetworkId } from '../types';
+import { VaultApi, Network, NetworkId, Vault } from '../types';
 import { getTokenPrice } from './oracle';
 import { amountToMMs, EMPTY_ADDRESS } from './commonUtils';
 import { getTvlImpact } from './risk';
 import { Yearn } from '@yfi/sdk';
+import { GenericListItem } from '../components/app';
 
 export const sortVaultsByVersion = (
     vaults: VaultApi[],
@@ -15,10 +16,15 @@ export const sortVaultsByVersion = (
 ): VaultApi[] => {
     const uniqueVaults = uniqBy(vaults, 'address');
     uniqueVaults.sort((x, y) => {
-        return compareVersions(
+        const versions = compareVersions(
             x.apiVersion || '0.0.0',
             y.apiVersion || '0.0.0'
         );
+        if (versions !== 0) {
+            return versions;
+        } else {
+            return x.strategies.length - y.strategies.length;
+        }
     });
 
     if (desc) {
@@ -28,13 +34,12 @@ export const sortVaultsByVersion = (
 };
 
 export const filterStrategiesByHealthCheck = async (
-    data: any,
+    vaults: Vault[],
     network: Network
-): Promise<any[]> => {
-    const filteredStrategies: any = [];
-    const vaultData: any[] = data;
-    vaultData.forEach((vault) => {
-        vault.strategies.forEach((strategy: any) => {
+): Promise<GenericListItem[]> => {
+    const filteredStrategies: any[] = [];
+    vaults.forEach((vault) => {
+        vault.strategies.forEach((strategy) => {
             if (
                 strategy.healthCheck === null ||
                 strategy.healthCheck.toLowerCase() == EMPTY_ADDRESS ||
@@ -54,7 +59,7 @@ export const filterStrategiesByHealthCheck = async (
         });
     });
     const resultStrategiesPromises = filteredStrategies.map(
-        async (strategy: any): Promise<any> => {
+        async (strategy) => {
             if (strategy.estimatedTotalAssets) {
                 const estimatedTotalAssetsUsdc = await getTokenPrice(
                     strategy.token,

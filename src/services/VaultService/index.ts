@@ -7,9 +7,11 @@ import {
     Network,
     NetworkId,
     QueryParam,
+    StrategyApi,
     Vault,
     VaultApi,
 } from '../../types';
+import { querySubgraphData } from '../../utils/apisRequest';
 import { getEthersDefaultProvider } from '../../utils/ethers';
 import {
     filterVaultApiData,
@@ -20,6 +22,21 @@ import {
     getVaultStrategyMetadata,
     sortVaultsByVersion,
 } from '../../utils/vaults';
+
+type StrategyBasicData = {
+    [vault: string]: StrategyApi[];
+};
+
+type VaultGQLResult = {
+    id: string;
+    strategies: StrategyApi[];
+};
+
+type GQLResult = {
+    data: {
+        vaults: VaultGQLResult[];
+    };
+};
 
 export abstract class VaultService {
     public network: Network;
@@ -91,11 +108,23 @@ export abstract class VaultService {
                 queryParams.pagination.offset + queryParams.pagination.limit
             )
         );
+
+        // TODO: this is mainly slow because we need to do a multicall to get
+        // healthcheck statuses for all strategies, if this information is added
+        // to the subgraph, we can optimize this to be much faster by only
+        // performing multicalls if a user expands the vault card
         const vaults = await mapVaultApiDataToVault(
             filteredVaults,
             this.network
         );
         return vaults;
+    };
+
+    public getNumVaults = async (experimental = false): Promise<number> => {
+        const apiVaults = await memoize(() =>
+            this.getApiVaults(experimental)
+        )();
+        return apiVaults.length;
     };
 
     public getVaultStrategyMetadata = async (
@@ -113,7 +142,16 @@ export abstract class VaultService {
         } else {
             vaults = await memoize(this.fetchVaultData)();
         }
-        const sortedApiVaults = sortVaultsByVersion(vaults);
+
+        // The SDK may not return all strategies, so we need to query the subgraph
+        const strategiesByVaults = await this.getStrategiesByVaults(
+            vaults.map((vault) => vault.address)
+        );
+        const mergedVaults = vaults.map((vault) => ({
+            ...vault,
+            strategies: strategiesByVaults[vault.address.toLowerCase()],
+        }));
+        const sortedApiVaults = sortVaultsByVersion(mergedVaults);
         return sortedApiVaults;
     };
 
@@ -124,5 +162,35 @@ export abstract class VaultService {
 
     protected fetchExperimentalVaultData = async (): Promise<VaultApi[]> => {
         return [];
+    };
+
+    protected getStrategiesByVaults = async (
+        vaults: string[]
+    ): Promise<StrategyBasicData> => {
+        if (!vaults || vaults.length === 0) {
+            return {};
+        }
+
+        const vaultsLower = vaults.map((vault) => vault.toLowerCase());
+        const query = `
+            {
+                vaults(where:{
+                  id_in: ${JSON.stringify(vaultsLower)}
+                }){
+                    id
+                    strategies {
+                        name
+                        address
+                    }
+                }
+            }
+        `;
+
+        const results: GQLResult = await querySubgraphData(query, this.network);
+        const result: StrategyBasicData = {};
+        results.data.vaults.forEach(({ id, strategies }) => {
+            result[id] = strategies;
+        });
+        return result;
     };
 }
