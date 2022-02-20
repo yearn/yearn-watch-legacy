@@ -1,8 +1,5 @@
 import { forwardRef, memo, useEffect, useState } from 'react';
-import {
-    Link as RouterLink,
-    LinkProps as RouterLinkProps,
-} from 'react-router-dom';
+import { Link, LinkProps as RouterLinkProps } from 'react-router-dom';
 import { compact, mean } from 'lodash';
 
 import Typography from '@material-ui/core/Typography';
@@ -10,7 +7,6 @@ import styled from 'styled-components';
 import MuiAccordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Link, { LinkBaseProps } from '@material-ui/core/Link';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Hidden from '@material-ui/core/Hidden';
 import EtherScanLink from '../../common/EtherScanLink';
@@ -131,9 +127,9 @@ const StyledLink = styled(Link)`
     }
 `;
 
-const CustomLink = forwardRef<HTMLSpanElement, LinkBaseProps & RouterLinkProps>(
-    (props, ref) => <StyledLink component={RouterLink} ref={ref} {...props} />
-);
+const CustomLink = forwardRef<HTMLSpanElement, RouterLinkProps>((props) => (
+    <StyledLink {...props} />
+));
 CustomLink.displayName = 'CustomLink';
 
 const _StrategiesList = (props: StrategiesListProps) => {

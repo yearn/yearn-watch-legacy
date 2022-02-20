@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CircularProgress, Container, Grid, Paper } from '@material-ui/core';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { Params, useParams } from 'react-router-dom';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import { Alert } from '@material-ui/lab';
@@ -123,13 +123,13 @@ function a11yProps(index: number) {
     };
 }
 
-interface ParamTypes {
+interface ParamTypes extends Params {
     vaultId: string;
     network?: Network;
 }
 
 export const SingleVault = () => {
-    const { vaultId, network = DEFAULT_NETWORK } = useParams<ParamTypes>();
+    const { vaultId, network = DEFAULT_NETWORK } = useParams() as ParamTypes;
     const [tab, setTab] = useState(0);
     const [openSnackBar, setOpenSnackBar] = React.useState(true);
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import ftmLogoLight from '../../../images/ftm_logo_light.svg';
 import ftmLogoDark from '../../../images/ftm_logo_dark.svg';
@@ -130,10 +130,10 @@ const NetworkIcon = ({ network, isLightTheme }: NetworkIconProps) => {
 
 const NetworkSelect = ({ currentNetwork, theme }: NetworkSelectProps) => {
     const [open, setOpen] = React.useState(false);
-    const history = useHistory();
+    const history = useNavigate();
 
     function handleClick(option: string) {
-        history.push(`/network/${option}`);
+        history(`/network/${option}`);
     }
 
     return (
