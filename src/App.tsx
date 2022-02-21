@@ -42,7 +42,7 @@ const App = () => {
                         />
                         <Route
                             path="/network/:network/query/:groupingId/group/:groups"
-                            element={Query}
+                            element={<Query />}
                         />
                         <Route
                             path="/vault/:vaultId"
