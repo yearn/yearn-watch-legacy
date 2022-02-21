@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import Typography from '@material-ui/core/Typography';
+import { Typography } from '@mui/material';
 import EtherScanLink from '../../common/EtherScanLink';
 import TokenCard from './TokenCard';
 import { Network, Strategy } from '../../../types';
