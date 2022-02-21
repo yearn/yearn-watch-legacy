@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { Theme } from '@mui/material/styles';
 import createStyles from '@mui/styles/createStyles';
 import makeStyles from '@mui/styles/makeStyles';
@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const HealthCheckReport = () => {
-    const paramTypes = useParams<ParamTypes>();
+    const paramTypes = useParams() as ParamTypes;
     const { network = DEFAULT_NETWORK } = paramTypes;
     const classes = useStyles();
     const [isLoading, setIsLoading] = useState(false);

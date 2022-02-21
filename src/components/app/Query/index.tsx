@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useLocation, useParams } from 'react-router';
+import { useLocation, useParams, Params } from 'react-router-dom';
 import SearchProtocolInput from '../../common/SearchProtocolInput';
 import { GroupQuery } from '../../common/GroupQuery';
 import qs from 'query-string';
 import { DEFAULT_NETWORK, Network } from '../../../types';
 
-interface ParamTypes {
+interface ParamTypes extends Params {
     groupingId: string;
     groups: string;
     network: Network;
@@ -14,11 +14,12 @@ interface QueryParams {
     names?: string;
     include?: string;
     exclude?: string;
+    search: string;
 }
 
 export const Query = () => {
-    const paramTypes = useParams<ParamTypes>();
-    const location = useLocation<QueryParams>();
+    const paramTypes = useParams() as ParamTypes;
+    const location = useLocation() as QueryParams;
     const { network = DEFAULT_NETWORK } = paramTypes;
     const params = qs.parse(location.search, { arrayFormatSeparator: ',' });
     const nameGroups = paramTypes.groups ? paramTypes.groups.split(',') : [];

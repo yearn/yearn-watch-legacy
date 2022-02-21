@@ -22,7 +22,7 @@ import { GenericList, GenericListItem } from '../GenericList';
 import { ScoreRowCollapse } from '../../common/ScoreRowCollapse';
 import { scoreHeadCells } from '../../common/headers/scoresHeaderDefinition';
 import { CircularProgress } from '@mui/material';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { ParamTypes } from '../../../types/DefaultParamTypes';
 import { DEFAULT_NETWORK, Network } from '../../../types';
 import { initRiskFrameworkScores } from '../../../utils/risk-framework';
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const Risk = () => {
-    const { network = DEFAULT_NETWORK } = useParams<ParamTypes>();
+    const { network = DEFAULT_NETWORK } = useParams() as ParamTypes;
     const [groups, setGroups] = useState<Grouping[]>([]);
     const [totalStrategies, setTotalStrategies] = useState<number>(0);
     const [totalTVL, setTotalTVL] = useState<number>(0);
