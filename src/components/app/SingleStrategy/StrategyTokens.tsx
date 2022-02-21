@@ -5,6 +5,7 @@ import EtherScanLink from '../../common/EtherScanLink';
 import TokenCard from './TokenCard';
 import { Network, Strategy } from '../../../types';
 import { getEnv } from '../../../utils/env';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const StyledTypography = styled(Typography)`
     && {
@@ -57,8 +58,12 @@ export const StrategyTokens = (props: StrategyTokensProps) => {
     }
     return strategy.healthCheck === null ? (
         <StyledTypography>{'Not Supported'}</StyledTypography>
-    ) : (
+    ) : tokensData.length > 0 ? (
         <TokenCard data={data} key={strategy.address + '-health'} />
+    ) : (
+        <div style={{ marginLeft: '50%', marginTop: '10%' }}>
+            <CircularProgress />
+        </div>
     );
 };
 
