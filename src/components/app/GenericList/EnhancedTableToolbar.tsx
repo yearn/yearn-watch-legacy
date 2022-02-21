@@ -1,11 +1,8 @@
 import clsx from 'clsx';
-import {
-    createStyles,
-    lighten,
-    makeStyles,
-    Theme,
-} from '@material-ui/core/styles';
-import { Toolbar, Typography } from '@material-ui/core';
+import { lighten, Theme } from '@mui/material/styles';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
+import { Toolbar, Typography } from '@mui/material';
 
 const useToolbarStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -14,7 +11,7 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
             paddingRight: theme.spacing(1),
         },
         highlight:
-            theme.palette.type === 'light'
+            theme.palette.mode === 'light'
                 ? {
                       color: theme.palette.secondary.main,
                       backgroundColor: lighten(

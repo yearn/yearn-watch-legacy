@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Container } from '@material-ui/core';
+import { Container } from '@mui/material';
 
 import { getService } from '../../../services/VaultService';
 import { sortVaultsByVersion } from '../../../utils/vaults';

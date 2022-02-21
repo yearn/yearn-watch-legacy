@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import MediaQuery from 'react-responsive';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
-import Chip from '@material-ui/core/Chip';
+import Chip from '@mui/material/Chip';
 
 import TokenPrice from '../../common/TokenPrice';
 import { formatBPS, displayAmount, sub } from '../../../utils/commonUtils';

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import Grid, { GridSize } from '@material-ui/core/Grid';
-import { Typography } from '@material-ui/core';
-import { HelpOutlined } from '@material-ui/icons';
+import Grid, { GridSize } from '@mui/material/Grid';
+import { Typography } from '@mui/material';
+import { HelpOutlined } from '@mui/icons-material';
 import { HtmlTooltip } from '../HtmlTooltip';
 import { Fragment, ReactNode } from 'react';
 

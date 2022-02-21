@@ -1,23 +1,23 @@
 import { Fragment, useState, memo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 
-import MuiAccordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Avatar from '@material-ui/core/Avatar';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Tooltip from '@material-ui/core/Tooltip';
+import MuiAccordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Avatar from '@mui/material/Avatar';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Tooltip from '@mui/material/Tooltip';
 import { Network, Vault } from '../../../types';
 import { StrategiesList } from '../StrategiesList';
 import EtherScanLink from '../../common/EtherScanLink';
 
-import Grid from '@material-ui/core/Grid';
-import Hidden from '@material-ui/core/Hidden';
-import { ReportProblem } from '@material-ui/icons';
-import { Typography } from '@material-ui/core';
+import Grid from '@mui/material/Grid';
+import Hidden from '@mui/material/Hidden';
+import { ReportProblem } from '@mui/icons-material';
+import { Typography } from '@mui/material';
 import { HtmlTooltip } from '../../common/HtmlTooltip';
 
 type VaultItemListProps = {
@@ -181,7 +181,7 @@ const _VaultItemList = (props: VaultItemListProps) => {
                                         {` ${vault.strategies.length}  strats`}
                                     </StyledStrats>
                                 </Grid>
-                                <Hidden xsDown>
+                                <Hidden smDown>
                                     <Grid item md={6} xs={9}>
                                         <EtherScanLink
                                             address={vault.address}

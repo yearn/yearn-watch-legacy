@@ -7,7 +7,7 @@ import {
     TablePagination,
     TableRow,
     Paper,
-} from '@material-ui/core';
+} from '@mui/material';
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 import { useStyles } from './useStyles';
 import { Order } from './Order';
