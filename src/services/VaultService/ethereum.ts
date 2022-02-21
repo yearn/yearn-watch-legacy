@@ -1,4 +1,4 @@
-import { Yearn } from '@yfi/sdk';
+import { StrategyMetadata, Yearn } from '@yfi/sdk';
 import {
     NetworkId,
     Network,
@@ -6,7 +6,6 @@ import {
     Vault,
     QueryParam,
     DEFAULT_NETWORK,
-    StrategyMetaData,
 } from '../../types';
 import { getEthersDefaultProvider } from '../../utils/ethers';
 import {
@@ -14,6 +13,7 @@ import {
     getVaultsWithPagination,
     getVault,
     getEndorsedVaults,
+    getVaultStrategyMetadata,
 } from '../../utils/vaults';
 
 // TODO: refactor to use SDK instead of utils and move utils common mappings to service
@@ -56,19 +56,9 @@ export default class EthereumService implements VaultService {
         return getEndorsedVaults(allowList, queryParams);
     };
 
-    public getStrategyMetaData = async (
-        vaultAddress: string,
-        strategyAddress: string
-    ): Promise<StrategyMetaData> => {
-        const result = await this.sdk.strategies.vaultsStrategiesMetadata([
-            vaultAddress,
-        ]);
-        const res = result[0];
-        const metaData = res.strategiesMetadata.find(
-            (strategy) => strategy.address === strategyAddress
-        );
-        return {
-            description: metaData?.description,
-        };
+    public getVaultStrategyMetadata = async (
+        vaultAddress: string
+    ): Promise<StrategyMetadata[]> => {
+        return getVaultStrategyMetadata(this.sdk, vaultAddress);
     };
 }

@@ -1,8 +1,10 @@
 /* eslint-disable react/display-name */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
+import createStyles from '@mui/styles/createStyles';
 import CardContent from '../../app/SingleStrategy/CardContent';
-import { Paper, Grid, TableCell, TableRow } from '@material-ui/core';
+import { Paper, Grid, TableCell, TableRow } from '@mui/material';
 import { GenericListItem } from '../../app';
 import { SpiderWeb } from '../../app/Charts/SpiderWeb';
 import { LongevityTooltip } from '../LongevityTooltip';

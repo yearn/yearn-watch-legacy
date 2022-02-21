@@ -5,17 +5,17 @@ import {
 } from 'react-router-dom';
 import { compact, mean } from 'lodash';
 
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
-import MuiAccordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Link, { LinkBaseProps } from '@material-ui/core/Link';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Hidden from '@material-ui/core/Hidden';
+import MuiAccordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Link, { LinkBaseProps } from '@mui/material/Link';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Hidden from '@mui/material/Hidden';
 import EtherScanLink from '../../common/EtherScanLink';
 import HealthCheckIcon from '../../common/HealthCheckIcon';
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 import {
     extractText,
     displayAmount,
@@ -132,7 +132,9 @@ const StyledLink = styled(Link)`
 `;
 
 const CustomLink = forwardRef<HTMLSpanElement, LinkBaseProps & RouterLinkProps>(
-    (props, ref) => <StyledLink component={RouterLink} ref={ref} {...props} />
+    (props, ref) => (
+        <StyledLink component={RouterLink} ref={() => ref} {...props} />
+    )
 );
 CustomLink.displayName = 'CustomLink';
 
@@ -215,7 +217,7 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                             : strategy.name}
                                                     </Hidden>
 
-                                                    <Hidden xsDown>
+                                                    <Hidden smDown>
                                                         {strategy.name}
                                                     </Hidden>
 
@@ -225,7 +227,7 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                 </CustomLink>
                                             </StyledTitle>
                                         </Grid>
-                                        <Hidden xsDown>
+                                        <Hidden smDown>
                                             <Grid item md={6} xs={9}>
                                                 <EtherScanLink
                                                     address={strategy.address}

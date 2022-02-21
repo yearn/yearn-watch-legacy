@@ -1,9 +1,11 @@
-import { makeStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
-
-import LinearProgress from '@material-ui/core/LinearProgress';
-import { Grid } from '@material-ui/core';
+import { Grid, LinearProgress } from '@mui/material';
 import { SubTitle, ValuePercentage } from '../../../common/Labels';
+
+export type BarChartData = {
+    name: string;
+    y: number;
+};
 
 const BorderLinearProgress = styled(LinearProgress)`
     && {
@@ -16,29 +18,30 @@ const BorderLinearProgress = styled(LinearProgress)`
         }
     }
 `;
-const useStyles = makeStyles({
-    root: {
-        flexGrow: 1,
-    },
-});
+
+const StyledContainer = styled.div`
+    padding: 16px;
+    padding-top: 0;
+`;
+
 interface BarChartProps {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    data: any;
+    data: BarChartData[];
 }
-interface valProps {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    name: string;
-    y: number;
-}
+
 export default function BarChart(props: BarChartProps) {
-    const classes = useStyles();
+    const { data } = props;
     return (
-        <div className={classes.root}>
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-            {props.data
-                .map((val: valProps, index: number) => (
+        <StyledContainer>
+            {data
+                .map((val, index) => (
                     <span key={index}>
-                        <Grid container spacing={3} style={{ marginTop: 20 }}>
+                        <Grid
+                            container
+                            spacing={3}
+                            style={{
+                                marginTop: index === data.length - 1 ? 0 : 20,
+                            }}
+                        >
                             <Grid item xs={6}>
                                 <SubTitle>{val.name}</SubTitle>
                             </Grid>
@@ -54,6 +57,6 @@ export default function BarChart(props: BarChartProps) {
                     </span>
                 ))
                 .reverse()}
-        </div>
+        </StyledContainer>
     );
 }

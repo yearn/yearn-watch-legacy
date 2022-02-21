@@ -13,10 +13,11 @@ import {
     Grid,
     Select,
     MenuItem,
-} from '@material-ui/core';
+    SelectChangeEvent,
+} from '@mui/material';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 
-import { Delete, Search } from '@material-ui/icons';
+import { Delete, Search } from '@mui/icons-material';
 import ResultsLabel from '../ResultsLabel';
 import WarningLabel from '../WarningLabel';
 
@@ -154,7 +155,7 @@ const SearchInput = (props: SearchInputProps) => {
         onFilter('', getCurrentFlags(false), '');
     }, [onFilter]);
     const healthCheckFilterChange = useCallback(
-        (e: ChangeEvent<{ name?: string; value: unknown }>) => {
+        (e: SelectChangeEvent<unknown>) => {
             setHealthCheckFilter((e.target as HTMLInputElement).value);
             setIsSearching(true);
             const newSearchTextLowerCase = searchText.toLowerCase();
@@ -235,6 +236,7 @@ const SearchInput = (props: SearchInputProps) => {
                                                           onClick={
                                                               handleClickClearSearch
                                                           }
+                                                          size="large"
                                                       >
                                                           <Delete />
                                                       </IconButton>
@@ -271,9 +273,7 @@ const SearchInput = (props: SearchInputProps) => {
                                         value={healthCheckFilter}
                                         onChange={healthCheckFilterChange}
                                     >
-                                        <MenuItem value="" alignItems="center">
-                                            All
-                                        </MenuItem>
+                                        <MenuItem value="">All</MenuItem>
                                         <MenuItem value="Enabled">
                                             Enabled
                                         </MenuItem>

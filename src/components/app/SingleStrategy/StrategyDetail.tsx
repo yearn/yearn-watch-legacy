@@ -1,15 +1,16 @@
-import Chip from '@material-ui/core/Chip';
+import Chip from '@mui/material/Chip';
+import { StrategyMetadata } from '@yfi/sdk';
 
 import EtherScanLink from '../../common/EtherScanLink';
 import { formatBPS, displayAmount } from '../../../utils/commonUtils';
 import CardContent from './CardContent';
-import { Network, Strategy, StrategyMetaData } from '../../../types';
+import { Network, Strategy } from '../../../types';
 import TokenPrice from '../../common/TokenPrice';
 
 type StrategyDetailProps = {
     strategy: Strategy;
     network: Network;
-    metadata?: StrategyMetaData;
+    metadata?: StrategyMetadata;
 };
 export const StrategyDetail = (props: StrategyDetailProps) => {
     const { strategy, network, metadata } = props;

@@ -6,7 +6,7 @@ export type CellPosition = {
     rowNumber: number;
     columnNumber: number;
 };
-export interface HeadCell {
+export interface HeadCell<ItemType extends GenericListItem> {
     disablePadding: boolean;
     id?: keyof GenericListItem;
     label: string;
@@ -15,9 +15,9 @@ export interface HeadCell {
     tooltip?: string;
     // Format a value
     format?: (
-        item: GenericListItem,
+        item: ItemType,
         value: string | number | boolean,
         position: CellPosition
     ) => any;
-    getStyle?: (item: GenericListItem, position: CellPosition) => any;
+    getStyle?: (item: ItemType, position: CellPosition) => any;
 }

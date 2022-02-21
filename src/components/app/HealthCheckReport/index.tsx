@@ -1,8 +1,10 @@
 /* eslint-disable react/display-name */
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { Container } from '@material-ui/core';
+import { Theme } from '@mui/material/styles';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
+import { Container } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 import { getService } from '../../../services/VaultService';
@@ -27,7 +29,7 @@ import { filterStrategiesByHealthCheck } from '../../../utils/vaults';
 
 const BATCH_NUMBER = 30;
 
-const headCells: HeadCell[] = [
+const headCells: HeadCell<GenericListItem>[] = [
     {
         numeric: false,
         disablePadding: false,

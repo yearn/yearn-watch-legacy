@@ -1,18 +1,12 @@
-import {
-    Box,
-    Collapse,
-    IconButton,
-    TableCell,
-    TableRow,
-} from '@material-ui/core';
+import { Box, Collapse, IconButton, TableCell, TableRow } from '@mui/material';
 import { useState } from 'react';
 import { GenericListItem } from '.';
 import { HeadCell } from './HeadCell';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 export interface ItemRowProps<ItemType extends GenericListItem> {
-    headCells: HeadCell[];
+    headCells: HeadCell<ItemType>[];
     item: ItemType;
     index: number;
     collapse?: (index: number, item: ItemType) => React.ReactNode;

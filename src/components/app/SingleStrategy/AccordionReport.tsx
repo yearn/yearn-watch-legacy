@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { mean, compact } from 'lodash';
 import { Fragment } from 'react';
-import { Container, Grid } from '@material-ui/core';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { Container, Grid } from '@mui/material';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { displayAmount, msToHours } from '../../../utils/commonUtils';
 import EtherScanLink from '../../common/EtherScanLink';

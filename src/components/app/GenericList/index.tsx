@@ -7,7 +7,7 @@ import {
     TablePagination,
     TableRow,
     Paper,
-} from '@material-ui/core';
+} from '@mui/material';
 import { EnhancedTableToolbar } from './EnhancedTableToolbar';
 import { useStyles } from './useStyles';
 import { Order } from './Order';
@@ -23,7 +23,7 @@ export type GenericListItem = {
 type GenericListProps<ItemType extends GenericListItem> = {
     items: Array<ItemType>;
     collapse?: (index: number, item: ItemType) => React.ReactNode;
-    headCells: HeadCell[];
+    headCells: HeadCell<ItemType>[];
     title: string;
     defaultRowsPerPage?: number;
     displayPagination?: boolean;

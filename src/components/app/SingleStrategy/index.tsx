@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Container } from '@material-ui/core';
+import { Container } from '@mui/material';
 
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
 
-import Snackbar from '@material-ui/core/Snackbar';
-import { Alert } from '@material-ui/lab';
+import Snackbar from '@mui/material/Snackbar';
+import { Alert } from '@mui/material';
 
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
 import { ErrorAlert } from '../../common/Alerts';
 import { Strategy, Network, DEFAULT_NETWORK } from '../../../types';
@@ -21,7 +21,11 @@ import { useStrategyReportContext } from '../../../contexts/StrategyReportContex
 import { GlobalStylesLoading } from '../../theme/globalStyles';
 
 import { getError, getWarnings, getReportsForStrategies } from '../../../utils';
-import { useStrategy, useVault, useStrategyMetaData } from '../../../hooks';
+import {
+    useStrategy,
+    useVault,
+    useSingleStrategyMetadata,
+} from '../../../hooks';
 
 import BreadCrumbs from './BreadCrumbs';
 import GenLender from './GenLender';
@@ -133,7 +137,7 @@ export const SingleStrategy = () => {
         vaultId,
         strategyId
     );
-    const { data: strategyMetaData } = useStrategyMetaData(
+    const { data: strategyMetaData } = useSingleStrategyMetadata(
         network,
         vaultId,
         strategyId

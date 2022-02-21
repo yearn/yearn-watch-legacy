@@ -44,10 +44,6 @@ export type Strategy = {
     errors: string[];
 };
 
-export type StrategyMetaData = {
-    description?: string;
-};
-
 export type LendStatus = [
     name: string,
     assets: BigNumber,
@@ -56,10 +52,10 @@ export type LendStatus = [
 ];
 
 export type EstimateAdjustPosition = [
-    lowest: string,
+    lowest: BigNumber,
     lowestApr: BigNumber,
     highest: BigNumber,
-    potential: string
+    potential: BigNumber
 ];
 
 export type GenLenderStrategy = {

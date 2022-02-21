@@ -1,10 +1,10 @@
 import { HtmlTooltip } from '../HtmlTooltip';
 import { Fragment } from 'react';
-import { HelpOutlined } from '@material-ui/icons';
+import { HelpOutlined } from '@mui/icons-material';
 import { GenericList, GenericListItem } from '../../app';
 import { HeadCell } from '../../app/GenericList/HeadCell';
 
-export const headCells: HeadCell[] = [
+export const headCells: HeadCell<GenericListItem>[] = [
     {
         id: 'label',
         numeric: false,

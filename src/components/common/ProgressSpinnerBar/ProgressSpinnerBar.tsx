@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import LinearProgress from '@material-ui/core/LinearProgress';
+import LinearProgress from '@mui/material/LinearProgress';
 
-import { Container, Typography } from '@material-ui/core';
+import { Container, Typography } from '@mui/material';
 
 const StyledTypography = styled(Typography)`
     text-align: center;
