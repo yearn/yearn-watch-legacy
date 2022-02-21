@@ -6,7 +6,7 @@ import {
 } from '../../types';
 
 const SUBGRAPH_URL =
-    'https://api.thegraph.com/subgraphs/name/salazarguille/yearn-vaults-v2-subgraph-mainnet';
+    'https://api.thegraph.com/subgraphs/name/yearn/yearn-vaults-v2-subgraph-mainnet';
 
 const GOVERNANCE_ENS = 'ychad.eth';
 const GOVERNANCE = '0xfeb4acf3df3cdea7399794d0869ef76a6efaff52';
