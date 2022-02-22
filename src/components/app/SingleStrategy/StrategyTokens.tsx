@@ -54,7 +54,7 @@ export const StrategyTokens = (props: StrategyTokensProps) => {
             data.push({
                 name: tokensData[token].tokenInfo.name,
                 symbol: tokensData[token].tokenInfo.symbol,
-                balance: tokensData[token].balance,
+                balance: tokensData[token].balance / 10 ** 18,
                 link: (
                     <EtherScanLink
                         address={tokensData[token].tokenInfo.address}
