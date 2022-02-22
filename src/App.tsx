@@ -27,8 +27,6 @@ declare module '@mui/styles/defaultTheme' {
     interface DefaultTheme extends Theme {}
 }
 
-const muiTheme = createTheme();
-
 const App = () => {
     const [theme, themeToggler] = useDarkMode();
 
@@ -36,6 +34,15 @@ const App = () => {
         return theme === 'light' ? lightTheme : darkTheme;
     }, [theme]);
 
+    const muiTheme = useMemo(
+        () =>
+            createTheme({
+                palette: {
+                    mode: theme === 'light' ? 'light' : 'dark',
+                },
+            }),
+        [theme]
+    );
     return (
         <Router>
             <ThemeProvider theme={muiTheme}>
