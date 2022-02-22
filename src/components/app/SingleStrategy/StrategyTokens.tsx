@@ -35,12 +35,18 @@ export const StrategyTokens = (props: StrategyTokensProps) => {
     const [tokensData, setTokensData] = useState<Array<Token>>([]);
     const { ethplorerKey } = getEnv();
     // fetching strategy tokens
+    const [completed, setCompleted] = useState(false);
+
     useEffect(() => {
+        const timer = setTimeout(() => {
+            setCompleted(true);
+        }, 1000);
         fetch(
-            `https://api.ethplorer.io/getAddressInfo/${strategy.token.address}?apiKey=${ethplorerKey}`
+            `https://api.ethplorer.io/getAddressInfo/${strategy.address}?apiKey=${ethplorerKey}`
         )
             .then((response) => response.json())
-            .then((res) => setTokensData(res.tokens));
+            .then((res) => setTokensData(res.tokens ? res.tokens : []));
+        return () => clearTimeout(timer);
     }, []);
     const data = [];
     for (const token in tokensData) {
@@ -58,13 +64,17 @@ export const StrategyTokens = (props: StrategyTokensProps) => {
     }
     return strategy.healthCheck === null ? (
         <StyledTypography>{'Not Supported'}</StyledTypography>
-    ) : tokensData.length > 0 ? (
+    ) : completed && tokensData.length > 0 ? (
         <TokenCard data={data} key={strategy.address + '-health'} />
-    ) : (
-        <div style={{ marginLeft: '50%', marginTop: '10%' }}>
+    ) : completed === false ? (
+        <div style={{ marginLeft: '45%', marginTop: '10%' }}>
             <CircularProgress />
         </div>
-    );
+    ) : completed === true && tokensData.length === 0 ? (
+        <div style={{ marginLeft: '45%', marginTop: '10%' }}>
+            No tokens found!
+        </div>
+    ) : null;
 };
 
 export default StrategyTokens;
