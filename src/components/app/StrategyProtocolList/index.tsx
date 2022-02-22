@@ -25,7 +25,7 @@ const headCells: HeadCell<StrategyTVLListItem>[] = [
         format: (item: GenericListItem) => {
             return (
                 <Link
-                    color="inherit"
+                    style={{ color: '#ce93d8' }}
                     to={`/network/${item.network}/vault/${item.vault}/strategy/${item.strategy}`}
                     target="_blank"
                 >

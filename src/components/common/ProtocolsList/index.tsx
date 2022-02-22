@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             width: '100%',
-            margin: '5px',
             borderRadius: '5px',
         },
         link: {
@@ -40,9 +39,6 @@ const useStyles = makeStyles((theme: Theme) =>
             borderRadius: 3,
             padding: 1,
             boxShadow: '0px 0px 0px 0 rgba(0,0,0,0.2)',
-        },
-        expandIcon: {
-            color: '#fff',
         },
         list: {
             padding: 0,
@@ -111,11 +107,7 @@ export const ProtocolsList = (props: ProtocolsListProps) => {
                     <div className={classes.root}>
                         <MuiAccordion className={classes.accordion}>
                             <AccordionSummary
-                                expandIcon={
-                                    <ExpandMoreIcon
-                                        className={classes.expandIcon}
-                                    />
-                                }
+                                expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1a-content"
                                 id="panel1a-header"
                             >

@@ -38,7 +38,7 @@ const headCells: HeadCell<GenericListItem>[] = [
         format: (item: GenericListItem) => {
             return (
                 <Link
-                    color="inherit"
+                    style={{ color: '#ce93d8' }}
                     to={`/network/${item.network}/vault/${item.vault}/strategy/${item.address}`}
                     target="_blank"
                 >
