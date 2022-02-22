@@ -50,17 +50,19 @@ export const StrategyTokens = (props: StrategyTokensProps) => {
     }, []);
     const data = [];
     for (const token in tokensData) {
-        data.push({
-            name: tokensData[token].tokenInfo.name,
-            symbol: tokensData[token].tokenInfo.symbol,
-            balance: tokensData[token].balance,
-            link: (
-                <EtherScanLink
-                    address={tokensData[token].tokenInfo.address}
-                    network={network}
-                />
-            ),
-        });
+        if (tokensData[token].tokenInfo.name) {
+            data.push({
+                name: tokensData[token].tokenInfo.name,
+                symbol: tokensData[token].tokenInfo.symbol,
+                balance: tokensData[token].balance,
+                link: (
+                    <EtherScanLink
+                        address={tokensData[token].tokenInfo.address}
+                        network={network}
+                    />
+                ),
+            });
+        }
     }
     return strategy.healthCheck === null ? (
         <StyledTypography>{'Not Supported'}</StyledTypography>
