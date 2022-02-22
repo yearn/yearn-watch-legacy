@@ -3,7 +3,7 @@ import { Theme } from '@mui/material/styles';
 import createStyles from '@mui/styles/createStyles';
 import makeStyles from '@mui/styles/makeStyles';
 import { Link } from 'react-router-dom';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 
 import { ProtocolTVL } from '../../../types/protocol-tvl';
 import { ParamTypes } from '../../../types/DefaultParamTypes';
@@ -130,7 +130,7 @@ type StrategyTVLListItem = {
 };
 
 export const StrategyProtocolList = (props: StrategyProtocolListProps) => {
-    const { network = DEFAULT_NETWORK } = useParams<ParamTypes>();
+    const { network = DEFAULT_NETWORK } = useParams() as ParamTypes;
 
     const classes = useStyles();
     const strategies: StrategyTVLListItem[] = props.item.strategies.map(

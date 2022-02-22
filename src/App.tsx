@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import {
     BrowserRouter as Router,
-    Switch,
+    Routes,
     Route,
-    Redirect,
+    Navigate,
 } from 'react-router-dom';
 import { ThemeProvider as StyledComponentsThemeProvider } from 'styled-components';
 import { Theme } from '@mui/material/styles';
@@ -38,65 +38,62 @@ const App = () => {
 
     return (
         <Router>
-            <Switch>
-                <ThemeProvider theme={muiTheme}>
-                    <StyledComponentsThemeProvider theme={themeMode}>
-                        <GlobalStyles />
-                        <NavBar themeToggler={themeToggler} theme={theme} />
-                        <StrategyReportProvider>
-                            <Route exact path="/" component={Home} />
+            <ThemeProvider theme={muiTheme}>
+                <StyledComponentsThemeProvider theme={themeMode}>
+                    <GlobalStyles />
+                    <NavBar themeToggler={themeToggler} theme={theme} />
+                    <StrategyReportProvider>
+                        <Routes>
+                            <Route path="/" element={<Home />} />
                             <Route
-                                exact
                                 path="/network/:network"
-                                component={Home}
+                                element={<Home />}
                             />
                             <Route
-                                exact
                                 path="/network/:network/query"
-                                component={Query}
+                                element={<Query />}
                             />
                             <Route
-                                exact
                                 path="/network/:network/query/:groupingId/group/:groups"
-                                component={Query}
+                                element={<Query />}
                             />
                             <Route
-                                exact
                                 path="/vault/:vaultId"
-                                component={SingleVault}
+                                element={<SingleVault />}
                             />
                             <Route
-                                exact
                                 path="/vault/:vaultId/strategy/:strategyId"
-                                component={SingleStrategy}
+                                element={<SingleStrategy />}
                             />
                             <Route
-                                exact
                                 path="/network/:network/vault/:vaultId"
-                                component={SingleVault}
+                                element={<SingleVault />}
                             />
                             <Route
-                                exact
                                 path="/network/:network/vault/:vaultId/strategy/:strategyId"
-                                component={SingleStrategy}
+                                element={<SingleStrategy />}
                             />
                             <Route
-                                exact
                                 path="/network/:network/report"
-                                component={HealthCheckReport}
+                                element={<HealthCheckReport />}
                             />
                             <Route
-                                exact
                                 path="/network/:network/risk"
-                                component={Risk}
+                                element={<Risk />}
                             />
-                            <Route path="/risk">
-                                <Redirect to="/network/ethereum/risk" />
-                            </Route>
-                        </StrategyReportProvider>
-                    </StyledComponentsThemeProvider>
-                </ThemeProvider>
-            </Switch>
+                            <Route
+                                path="/risk"
+                                element={
+                                    <Navigate
+                                        to="/network/ethereum/risk"
+                                        replace={true}
+                                    />
+                                }
+                            />
+                        </Routes>
+                    </StrategyReportProvider>
+                </StyledComponentsThemeProvider>
+            </ThemeProvider>
         </Router>
     );
 };

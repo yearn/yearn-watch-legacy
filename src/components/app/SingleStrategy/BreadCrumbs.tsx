@@ -13,12 +13,12 @@ import { extractAddress } from '../../../utils/commonUtils';
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         crumbs: {
-            marginBottom: 15,
-            marginTop: 15,
-            color: '#fff',
+            marginBottom: '15px !important',
+            marginTop: '15px !important',
+            color: '#fff !important',
         },
         text: {
-            color: '#ffff',
+            color: '#ffff ',
             fontWeight: 'bolder',
         },
     })
