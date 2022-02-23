@@ -529,6 +529,22 @@
             }
         },
         {
+            "id": "strategytokemak",
+            "network": "ethereum",
+            "label": "Strategy Tokemak",
+            "codeReviewScore": 3,
+            "testingScore": 2,
+            "auditScore": 4,
+            "protocolSafetyScore": 3,
+            "complexityScore": 3,
+            "teamKnowledgeScore": 5,
+            "criteria": {
+                "nameLike": ["StrategyTokemak"],
+                "strategies": [],
+                "exclude": []
+            }
+        },
+        {
             "id": "others",
             "network": "ethereum",
             "label": "Others",
