@@ -40,6 +40,15 @@ const App = () => {
                 palette: {
                     mode: theme === 'light' ? 'light' : 'dark',
                 },
+                components: {
+                    MuiCard: {
+                        styleOverrides: {
+                            root: {
+                                backgroundColor: themeMode.container,
+                            },
+                        },
+                    },
+                },
             }),
         [theme]
     );
