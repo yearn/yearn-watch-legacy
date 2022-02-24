@@ -67,6 +67,7 @@ export const headCells: HeadCell<GenericListItem>[] = [
         },
         getStyle: (item: GenericListItem, position: CellPosition) => {
             return {
+                color: 'black',
                 backgroundColor: colors[4][5 - position.rowNumber],
             };
         },
@@ -106,6 +107,7 @@ export const headCells: HeadCell<GenericListItem>[] = [
         },
         getStyle: (item: GenericListItem, position: CellPosition) => {
             return {
+                color: 'black',
                 backgroundColor: colors[3][5 - position.rowNumber],
             };
         },
@@ -145,6 +147,7 @@ export const headCells: HeadCell<GenericListItem>[] = [
         },
         getStyle: (item: GenericListItem, position: CellPosition) => {
             return {
+                color: 'black',
                 backgroundColor: colors[2][5 - position.rowNumber],
             };
         },
@@ -180,6 +183,7 @@ export const headCells: HeadCell<GenericListItem>[] = [
         },
         getStyle: (item: GenericListItem, position: CellPosition) => {
             return {
+                color: 'black',
                 backgroundColor: colors[1][5 - position.rowNumber],
             };
         },
@@ -221,6 +225,7 @@ export const headCells: HeadCell<GenericListItem>[] = [
         },
         getStyle: (item: GenericListItem, position: CellPosition) => {
             return {
+                color: 'black',
                 backgroundColor: colors[0][5 - position.rowNumber],
             };
         },

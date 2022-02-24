@@ -184,13 +184,7 @@ export const SingleVault = () => {
                 ) : (
                     !error && (
                         <React.Fragment>
-                            <StyledCard bck="true">
-                                {' '}
-                                <BreadCrumbs
-                                    vaultId={vaultId}
-                                    network={network}
-                                />
-                            </StyledCard>
+                            <BreadCrumbs vaultId={vaultId} network={network} />
                             <StyledCard
                                 config={
                                     config === undefined

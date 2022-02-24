@@ -54,23 +54,6 @@ const StyledCard = styled(Card).withConfig({
     }
 `;
 
-const StyledCardBreadCrumbs = styled(Card)`
-    && {
-        background-color: transparent;
-
-        margin-left: auto;
-        margin-right: auto;
-
-        box-shadow: none !important;
-        @media (max-width: 1400px) {
-            max-width: 85%;
-        }
-        @media (max-width: 700px) {
-            max-width: 100%;
-        }
-    }
-`;
-
 const StyledSpan = styled.span`
     && {
         color: ${({ theme }) => theme.subtitle};
@@ -268,13 +251,11 @@ export const SingleStrategy = () => {
                 ) : (
                     !error && (
                         <React.Fragment>
-                            <StyledCardBreadCrumbs>
-                                <BreadCrumbs
-                                    vaultId={vaultId}
-                                    strategyId={strategyId}
-                                    network={network}
-                                />
-                            </StyledCardBreadCrumbs>
+                            <BreadCrumbs
+                                vaultId={vaultId}
+                                strategyId={strategyId}
+                                network={network}
+                            />
                             <StyledCard
                                 emergencyExit={
                                     strategy &&
