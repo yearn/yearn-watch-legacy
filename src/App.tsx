@@ -45,6 +45,7 @@ const App = () => {
                         styleOverrides: {
                             root: {
                                 backgroundColor: themeMode.container,
+                                boxShadow: 'none',
                             },
                         },
                     },
