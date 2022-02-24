@@ -41,7 +41,6 @@ const SingleVaultCard = ({ vault, network }: Props) => {
     return (
         <Card className={classes.card}>
             <CardHeader
-                bre
                 style={{
                     borderColor:
                         vault?.configOK == false
