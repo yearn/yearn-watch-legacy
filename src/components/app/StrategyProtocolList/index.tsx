@@ -24,7 +24,6 @@ const headCells: HeadCell<StrategyTVLListItem>[] = [
         label: 'Strategy Name',
         format: (item: GenericListItem) => {
             const theme = useTheme();
-            console.log(theme.palette.mode);
             return (
                 <Link
                     style={{

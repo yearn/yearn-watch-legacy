@@ -15,6 +15,7 @@ const useStyles = makeStyles({
     },
     searchInput: {
         width: '100%',
+        marginTop: '15px',
         alignContent: 'center',
     },
     resultText: {
