@@ -42,9 +42,6 @@ const StyledCard = styled(Card).withConfig({
         margin-right: auto;
         border: ${({ theme, config }) =>
             config === 'false' ? theme.error : ''} !important;
-        @media (max-width: 1400px) {
-            max-width: 85%;
-        }
         @media (max-width: 700px) {
             max-width: 100%;
         }
