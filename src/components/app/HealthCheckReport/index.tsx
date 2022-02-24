@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Theme } from '@mui/material/styles';
 import createStyles from '@mui/styles/createStyles';
 import makeStyles from '@mui/styles/makeStyles';
-import { Container } from '@mui/material';
+import { Container, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 import { getService } from '../../../services/VaultService';
@@ -36,9 +36,13 @@ const headCells: HeadCell<GenericListItem>[] = [
         align: 'center',
         label: 'Strategy Name',
         format: (item: GenericListItem) => {
+            const theme = useTheme();
             return (
                 <Link
-                    style={{ color: '#ce93d8' }}
+                    style={{
+                        color:
+                            theme.palette.mode === 'light' ? 'blue' : '#ce93d8',
+                    }}
                     to={`/network/${item.network}/vault/${item.vault}/strategy/${item.address}`}
                     target="_blank"
                 >

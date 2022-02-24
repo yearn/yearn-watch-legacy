@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import { Theme } from '@mui/material/styles';
+import { Theme, useTheme } from '@mui/material/styles';
 import createStyles from '@mui/styles/createStyles';
 import makeStyles from '@mui/styles/makeStyles';
 import { Link } from 'react-router-dom';
@@ -23,9 +23,14 @@ const headCells: HeadCell<StrategyTVLListItem>[] = [
         align: 'center',
         label: 'Strategy Name',
         format: (item: GenericListItem) => {
+            const theme = useTheme();
+            console.log(theme.palette.mode);
             return (
                 <Link
-                    style={{ color: '#ce93d8' }}
+                    style={{
+                        color:
+                            theme.palette.mode === 'light' ? 'blue' : '#ce93d8',
+                    }}
                     to={`/network/${item.network}/vault/${item.vault}/strategy/${item.strategy}`}
                     target="_blank"
                 >
