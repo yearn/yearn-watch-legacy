@@ -6,8 +6,6 @@ import { Params, useParams } from 'react-router-dom';
 import Snackbar from '@mui/material/Snackbar';
 import { Alert } from '@mui/material';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import Avatar from '@mui/material/Avatar';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
@@ -18,7 +16,6 @@ import BreadCrumbs from '../SingleStrategy/BreadCrumbs';
 import BarChart from '../Charts/BarChart';
 import { StrategiesList } from '../StrategiesList';
 import { VaultDescription } from './VaultDescription';
-import EtherScanLink from '../../common/EtherScanLink';
 import { ErrorAlert } from '../../common/Alerts';
 import ReactHelmet from '../../common/ReactHelmet';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
@@ -28,6 +25,7 @@ import {
     getStrategyAllocation,
     getProtocolAllocation,
 } from '../../../utils/strategyParams';
+import SingleVaultCard from './SingleVaultCard';
 
 const StyledCard = styled(Card).withConfig({
     shouldForwardProp: (props) => !(props.toString() in ['config', 'bck']),
@@ -44,18 +42,9 @@ const StyledCard = styled(Card).withConfig({
         margin-right: auto;
         border: ${({ theme, config }) =>
             config === 'false' ? theme.error : ''} !important;
-        @media (max-width: 1400px) {
-            max-width: 85%;
-        }
         @media (max-width: 700px) {
             max-width: 100%;
         }
-    }
-`;
-
-const StyledSpan = styled.span`
-    && {
-        color: ${({ theme }) => theme.subtitle};
     }
 `;
 
@@ -185,48 +174,7 @@ export const SingleVault = () => {
                     !error && (
                         <React.Fragment>
                             <BreadCrumbs vaultId={vaultId} network={network} />
-                            <StyledCard
-                                config={
-                                    config === undefined
-                                        ? 'true'
-                                        : config.toString()
-                                }
-                            >
-                                <CardHeader
-                                    avatar={
-                                        <Avatar
-                                            src={vault ? vault.icon : ''}
-                                            aria-label="recipe"
-                                        />
-                                    }
-                                    title={
-                                        <StyledTitle>
-                                            {vault ? vault.name : ''}
-                                        </StyledTitle>
-                                    }
-                                    subheader={
-                                        vault ? (
-                                            <>
-                                                <StyledSpan>
-                                                    {' '}
-                                                    {
-                                                        vault.strategies.length
-                                                    }{' '}
-                                                    strats
-                                                </StyledSpan>
-
-                                                <br />
-                                                <EtherScanLink
-                                                    address={vault.address}
-                                                    network={network}
-                                                />
-                                            </>
-                                        ) : (
-                                            ''
-                                        )
-                                    }
-                                />
-                            </StyledCard>
+                            <SingleVaultCard vault={vault} network={network} />
                             <br />
                             <StyledCard
                                 config={
