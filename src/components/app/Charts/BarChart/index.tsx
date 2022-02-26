@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Grid, LinearProgress } from '@mui/material';
-import { SubTitle, ValuePercentage } from '../../../common/Labels';
+import { Grid, LinearProgress, Typography, Box, useTheme } from '@mui/material';
+import { ValuePercentage } from '../../../common/Labels';
 
 export type BarChartData = {
     name: string;
@@ -19,31 +19,23 @@ const BorderLinearProgress = styled(LinearProgress)`
     }
 `;
 
-const StyledContainer = styled.div`
-    padding: 16px;
-    padding-top: 0;
-`;
-
-interface BarChartProps {
+type BarChartProps = {
     data: BarChartData[];
-}
+};
 
 export default function BarChart(props: BarChartProps) {
     const { data } = props;
+    const theme = useTheme();
     return (
-        <StyledContainer>
+        <Box>
             {data
                 .map((val, index) => (
-                    <span key={index}>
-                        <Grid
-                            container
-                            spacing={3}
-                            style={{
-                                marginTop: index === data.length - 1 ? 0 : 20,
-                            }}
-                        >
+                    <Box key={index} marginY={theme.spacing(2)}>
+                        <Grid container spacing={3}>
                             <Grid item xs={6}>
-                                <SubTitle>{val.name}</SubTitle>
+                                <Typography variant="body2">
+                                    {val.name}
+                                </Typography>
                             </Grid>
                             <Grid item xs={6}>
                                 <ValuePercentage>{val.y} %</ValuePercentage>
@@ -54,9 +46,9 @@ export default function BarChart(props: BarChartProps) {
                             variant="determinate"
                             value={val.y}
                         />
-                    </span>
+                    </Box>
                 ))
                 .reverse()}
-        </StyledContainer>
+        </Box>
     );
 }

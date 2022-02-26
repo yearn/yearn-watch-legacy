@@ -1,57 +1,32 @@
 import React from 'react';
-import styled from 'styled-components';
-import MediaQuery from 'react-responsive';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-
 import Chip from '@mui/material/Chip';
-
-import TokenPrice from '../../common/TokenPrice';
 import { formatBPS, displayAmount, sub } from '../../../utils/commonUtils';
-import Table from '../../common/Table';
-import ProgressBars from '../../common/ProgressBar';
 import { Network, Vault } from '../../../types';
-import { LabelTypography, SubTitle } from '../../common/Labels';
 import getNetworkConfig from '../../../utils/config';
+import { Box, Grid, Typography, useTheme } from '@mui/material';
 
-interface VaultDescriptionProps {
-    vault: Vault | undefined;
+type VaultDescriptionProps = {
+    vault?: Vault;
     isLoading: boolean;
     network: Network;
-}
+};
 
-const StyledTableRow = styled(TableRow)`
-    && {
-        background-color: ${({ theme }) => theme.body} !important;
-    }
-`;
-
-const StyledTableCell = styled(TableCell)`
-    && {
-        /* color: ${({ theme }) => theme.title} !important; */
-        border-bottom: 1px solid ${({ theme }) => theme.border} !important;
-    }
-`;
-
-const VaultContainer = styled.div`
-    && {
-        margin-top: 16px;
-    }
-`;
 const renderErrors = (vault: Vault) =>
     vault &&
     vault.configErrors &&
     vault.configErrors.map((message: string) => {
         return (
-            <div key={message} style={{ color: '#ff6c6c' }}>
+            <Box key={message} style={{ color: '#ff6c6c' }}>
                 {message}
-            </div>
+            </Box>
         );
     });
+
 export const VaultDescription = (props: VaultDescriptionProps) => {
     const { vault, network } = props;
     const networkConfig = getNetworkConfig(network);
+
+    const theme = useTheme();
 
     const api_version = vault ? vault.apiVersion : '';
     const emergency_shut_down =
@@ -59,6 +34,7 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
             <Chip
                 label="ok"
                 clickable
+                size="small"
                 style={{
                     color: '#fff',
                     backgroundColor: 'rgba(1,201,147,1)',
@@ -68,6 +44,7 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
             <Chip
                 label="Emergency"
                 clickable
+                size="small"
                 style={{
                     color: '#fff',
                     backgroundColor: '#ff6c6c',
@@ -105,7 +82,7 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
             '  ' +
             vault.token.symbol;
     const vault_list = vault
-        ? `Deposit limit:
+        ? `
             ${
                 displayAmount(vault.depositLimit, vault.token.decimals) +
                 '  ' +
@@ -118,258 +95,99 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
     const debt_ratio = vault ? formatBPS(vault.debtRatio) : '';
     const last_report_text = vault ? vault.lastReportText : '';
     const render_error = vault ? renderErrors(vault) : '';
+
+    const renderKeyValue = (
+        title: string,
+        subtitle: JSX.Element[] | JSX.Element | string | undefined
+    ) => {
+        return (
+            <Grid container marginY={theme.spacing(2)}>
+                <Grid item xs={12} md={6} margin="auto">
+                    <Typography variant="caption">{title}</Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    {subtitle}
+                </Grid>
+            </Grid>
+        );
+    };
+
     return (
-        <VaultContainer>
-            <Table>
-                <TableHead>
-                    <StyledTableRow>
-                        <StyledTableCell>
-                            <SubTitle> API Version:</SubTitle>
-                            <MediaQuery query="(max-device-width: 1224px)">
-                                <LabelTypography>{api_version}</LabelTypography>
-                            </MediaQuery>
-                        </StyledTableCell>
-                        <MediaQuery query="(min-device-width: 1224px)">
-                            <StyledTableCell>
-                                <LabelTypography>{api_version}</LabelTypography>
-                            </StyledTableCell>
-                        </MediaQuery>
-                    </StyledTableRow>
-                    <StyledTableRow>
-                        <StyledTableCell>
-                            <SubTitle> Emergency shut down:</SubTitle>
-                            <MediaQuery query="(max-device-width: 1224px)">
-                                <LabelTypography>
-                                    {emergency_shut_down}
-                                </LabelTypography>
-                            </MediaQuery>
-                        </StyledTableCell>
-                        <MediaQuery query="(min-device-width: 1224px)">
-                            <StyledTableCell>
-                                <LabelTypography>
-                                    {emergency_shut_down}
-                                </LabelTypography>
-                            </StyledTableCell>
-                        </MediaQuery>
-                    </StyledTableRow>
-                    <StyledTableRow>
-                        <StyledTableCell>
-                            <SubTitle>Governance:</SubTitle>
-                            <MediaQuery query="(max-device-width: 1224px)">
-                                <LabelTypography>{governance}</LabelTypography>
-                            </MediaQuery>
-                        </StyledTableCell>
-                        <MediaQuery query="(min-device-width: 1224px)">
-                            <StyledTableCell>
-                                <LabelTypography>{governance}</LabelTypography>
-                            </StyledTableCell>
-                        </MediaQuery>
-                    </StyledTableRow>
-                    <StyledTableRow>
-                        <StyledTableCell>
-                            <SubTitle>Management:</SubTitle>
-                            <MediaQuery query="(max-device-width: 1224px)">
-                                <LabelTypography>{management}</LabelTypography>
-                            </MediaQuery>
-                        </StyledTableCell>
-                        <MediaQuery query="(min-device-width: 1224px)">
-                            <StyledTableCell>
-                                <LabelTypography>{management}</LabelTypography>
-                            </StyledTableCell>
-                        </MediaQuery>
-                    </StyledTableRow>
-
-                    <StyledTableRow>
-                        <StyledTableCell>
-                            <SubTitle>Guardian:</SubTitle>
-                            <MediaQuery query="(max-device-width: 1224px)">
-                                <LabelTypography>{guardian}</LabelTypography>
-                            </MediaQuery>
-                        </StyledTableCell>
-                        <MediaQuery query="(min-device-width: 1224px)">
-                            <StyledTableCell>
-                                <LabelTypography>{guardian}</LabelTypography>
-                            </StyledTableCell>
-                        </MediaQuery>
-                    </StyledTableRow>
-                    <StyledTableRow>
-                        <StyledTableCell>
-                            <SubTitle>Rewards:</SubTitle>
-                            <MediaQuery query="(max-device-width: 1224px)">
-                                <LabelTypography>{rewards}</LabelTypography>
-                            </MediaQuery>
-                        </StyledTableCell>
-                        <MediaQuery query="(min-device-width: 1224px)">
-                            <StyledTableCell>
-                                <LabelTypography>{rewards}</LabelTypography>
-                            </StyledTableCell>
-                        </MediaQuery>
-                    </StyledTableRow>
-                    <StyledTableRow>
-                        <StyledTableCell>
-                            <SubTitle>Assets:</SubTitle>
-                            <MediaQuery query="(max-device-width: 1224px)">
-                                <LabelTypography>
-                                    Total assets: {total_asset}
-                                </LabelTypography>
-                                <ProgressBars vault={vault} />
-                                <LabelTypography>{vault_list}</LabelTypography>
-                            </MediaQuery>
-                        </StyledTableCell>
-                        <MediaQuery query="(min-device-width: 1224px)">
-                            <StyledTableCell>
-                                <LabelTypography>
-                                    Total assets: {total_asset}
-                                </LabelTypography>
-                                <ProgressBars vault={vault} />
-                                <LabelTypography>{vault_list}</LabelTypography>
-                            </StyledTableCell>
-                        </MediaQuery>
-                    </StyledTableRow>
-                    {vault ? (
-                        <TokenPrice
-                            bckDark="true"
-                            label="Total Assets (USD):"
-                            token={vault.token}
-                            amount={vault.totalAssets}
-                            network={network}
-                        />
-                    ) : (
-                        ''
+        <Box>
+            <Box paddingBottom={theme.spacing(1)}>
+                {renderKeyValue(
+                    'API Version',
+                    <Typography variant="body2">{api_version}</Typography>
+                )}
+                {renderKeyValue(
+                    'Emergency shut down',
+                    <Typography variant="body2">
+                        {emergency_shut_down}
+                    </Typography>
+                )}
+                {renderKeyValue(
+                    'Time Since Last Report',
+                    <Typography variant="body2">{last_report_text}</Typography>
+                )}
+                {renderKeyValue(
+                    'Management Fee',
+                    <Typography variant="body2">{management_fee}%</Typography>
+                )}
+                {renderKeyValue(
+                    'Performance Fee',
+                    <Typography variant="body2">{performance_fee}%</Typography>
+                )}
+            </Box>
+            <Box paddingBottom={theme.spacing(1)}>
+                {renderKeyValue(
+                    'Total Asset',
+                    <Typography variant="body2">{total_asset}</Typography>
+                )}
+                {renderKeyValue(
+                    'Deposit Limit',
+                    <Typography variant="body2">{vault_list}</Typography>
+                )}
+                {renderKeyValue(
+                    'Total Debt',
+                    <Typography variant="body2">{total_debt}</Typography>
+                )}
+                {renderKeyValue(
+                    'Total Asset - Total Debt',
+                    <Typography variant="body2">{unallocated}</Typography>
+                )}
+                {renderKeyValue(
+                    'Total Debt Ratio',
+                    <Typography variant="body2">{debt_ratio}%</Typography>
+                )}
+                {renderKeyValue(
+                    'Total Debt Usage',
+                    <Typography variant="body2">{debt_usage}%</Typography>
+                )}
+            </Box>
+            <Box paddingBottom={theme.spacing(1)}>
+                {renderKeyValue(
+                    'Management',
+                    <Typography variant="body2">{management}</Typography>
+                )}
+                {renderKeyValue(
+                    'Governance',
+                    <Typography variant="body2">{governance}</Typography>
+                )}
+                {renderKeyValue(
+                    'Guardian',
+                    <Typography variant="body2">{guardian}</Typography>
+                )}
+                {renderKeyValue(
+                    'Rewards',
+                    <Typography variant="body2">{rewards}</Typography>
+                )}
+                {vault &&
+                    vault.configOK === false &&
+                    renderKeyValue(
+                        'Config Warnings',
+                        <Typography variant="body2">{render_error}</Typography>
                     )}
-                    <StyledTableRow>
-                        <StyledTableCell>
-                            <SubTitle>Management fee:</SubTitle>
-                            <MediaQuery query="(max-device-width: 1224px)">
-                                <LabelTypography>
-                                    {management_fee} %
-                                </LabelTypography>
-                            </MediaQuery>
-                        </StyledTableCell>
-                        <MediaQuery query="(min-device-width: 1224px)">
-                            <StyledTableCell>
-                                <LabelTypography>
-                                    {management_fee}%
-                                </LabelTypography>
-                            </StyledTableCell>
-                        </MediaQuery>
-                    </StyledTableRow>
-                    <StyledTableRow>
-                        <StyledTableCell>
-                            <SubTitle>Performance fee:</SubTitle>
-                            <MediaQuery query="(max-device-width: 1224px)">
-                                <LabelTypography>
-                                    {performance_fee}%
-                                </LabelTypography>
-                            </MediaQuery>
-                        </StyledTableCell>
-                        <MediaQuery query="(min-device-width: 1224px)">
-                            <StyledTableCell>
-                                <LabelTypography>
-                                    {performance_fee}%
-                                </LabelTypography>
-                            </StyledTableCell>
-                        </MediaQuery>
-                    </StyledTableRow>
-                    <StyledTableRow>
-                        <StyledTableCell>
-                            <SubTitle> Time Since Last Report:</SubTitle>
-                            <MediaQuery query="(max-device-width: 1224px)">
-                                <LabelTypography>
-                                    {last_report_text}
-                                </LabelTypography>
-                            </MediaQuery>
-                        </StyledTableCell>
-                        <MediaQuery query="(min-device-width: 1224px)">
-                            <StyledTableCell>
-                                <LabelTypography>
-                                    {last_report_text}
-                                </LabelTypography>
-                            </StyledTableCell>
-                        </MediaQuery>
-                    </StyledTableRow>
-
-                    <StyledTableRow>
-                        <StyledTableCell>
-                            <SubTitle>Total Debt:</SubTitle>
-                            <MediaQuery query="(max-device-width: 1224px)">
-                                <LabelTypography>{total_debt}</LabelTypography>
-                            </MediaQuery>
-                        </StyledTableCell>
-                        <MediaQuery query="(min-device-width: 1224px)">
-                            <StyledTableCell>
-                                <LabelTypography>{total_debt}</LabelTypography>
-                            </StyledTableCell>
-                        </MediaQuery>
-                    </StyledTableRow>
-
-                    <StyledTableRow>
-                        <StyledTableCell>
-                            <SubTitle>{`(Total Asset - Total Debt):`}</SubTitle>
-                            <MediaQuery query="(max-device-width: 1224px)">
-                                <LabelTypography>{unallocated}</LabelTypography>
-                            </MediaQuery>
-                        </StyledTableCell>
-                        <MediaQuery query="(min-device-width: 1224px)">
-                            <StyledTableCell>
-                                <LabelTypography>{unallocated}</LabelTypography>
-                            </StyledTableCell>
-                        </MediaQuery>
-                    </StyledTableRow>
-
-                    <StyledTableRow>
-                        <StyledTableCell>
-                            <SubTitle>Total Debt Ratio:</SubTitle>
-                            <MediaQuery query="(max-device-width: 1224px)">
-                                <LabelTypography>{debt_ratio}%</LabelTypography>
-                            </MediaQuery>
-                        </StyledTableCell>
-                        <MediaQuery query="(min-device-width: 1224px)">
-                            <StyledTableCell>
-                                <LabelTypography>{debt_ratio}%</LabelTypography>
-                            </StyledTableCell>
-                        </MediaQuery>
-                    </StyledTableRow>
-
-                    <StyledTableRow>
-                        <StyledTableCell>
-                            <SubTitle>Debt Usage:</SubTitle>
-                            <MediaQuery query="(max-device-width: 1224px)">
-                                <LabelTypography>{debt_usage}%</LabelTypography>
-                            </MediaQuery>
-                        </StyledTableCell>
-                        <MediaQuery query="(min-device-width: 1224px)">
-                            <StyledTableCell>
-                                <LabelTypography>{debt_usage}%</LabelTypography>
-                            </StyledTableCell>
-                        </MediaQuery>
-                    </StyledTableRow>
-
-                    {vault && vault.configOK === false ? (
-                        <StyledTableRow
-                            style={{
-                                border: '2px solid #ff6c6c',
-                            }}
-                        >
-                            <StyledTableCell>
-                                <SubTitle>Config Warnings:</SubTitle>
-                                <MediaQuery query="(max-device-width: 1224px)">
-                                    <LabelTypography>
-                                        {render_error}
-                                    </LabelTypography>
-                                </MediaQuery>
-                            </StyledTableCell>
-                            <MediaQuery query="(min-device-width: 1224px)">
-                                <StyledTableCell>
-                                    <LabelTypography>
-                                        {render_error}
-                                    </LabelTypography>
-                                </StyledTableCell>
-                            </MediaQuery>
-                        </StyledTableRow>
-                    ) : null}
-                </TableHead>
-            </Table>
-        </VaultContainer>
+            </Box>
+        </Box>
     );
 };

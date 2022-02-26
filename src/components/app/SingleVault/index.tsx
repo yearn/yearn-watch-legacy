@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { CircularProgress, Container, Grid, Paper } from '@mui/material';
-import styled from 'styled-components';
+import {
+    Box,
+    CircularProgress,
+    Container,
+    Grid,
+    Card,
+    Tabs,
+    Tab,
+    Typography,
+    Alert,
+    Snackbar,
+    useTheme,
+} from '@mui/material';
 import { Params, useParams } from 'react-router-dom';
-
-import Snackbar from '@mui/material/Snackbar';
-import { Alert } from '@mui/material';
-import Card from '@mui/material/Card';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-
 import { Network, DEFAULT_NETWORK } from '../../../types';
 import BreadCrumbs from '../SingleStrategy/BreadCrumbs';
 import BarChart from '../Charts/BarChart';
@@ -26,55 +28,6 @@ import {
     getProtocolAllocation,
 } from '../../../utils/strategyParams';
 import SingleVaultCard from './SingleVaultCard';
-
-const StyledCard = styled(Card).withConfig({
-    shouldForwardProp: (props) => !(props.toString() in ['config', 'bck']),
-})<{
-    config?: string | undefined;
-    bck?: string | undefined;
-}>`
-    && {
-        background-color: ${({ theme, bck }) =>
-            bck === 'true' ? 'transparent' : theme.container};
-        box-shadow: none;
-        color: ${({ theme }) => theme.title};
-        margin-left: auto;
-        margin-right: auto;
-        border: ${({ theme, config }) =>
-            config === 'false' ? theme.error : ''} !important;
-        @media (max-width: 700px) {
-            max-width: 100%;
-        }
-    }
-`;
-
-const MuiTabs = styled(Tabs)`
-    && {
-        color: ${({ theme }) => theme.subtitle}!important;
-        .MuiTabs-indicator {
-            background-color: ${({ theme }) => theme.bodyBlue}!important;
-        }
-        .Mui-selected {
-            color: ${({ theme }) => theme.bodyBlue}!important;
-        }
-    }
-`;
-
-const StyledPaper = styled(Paper)`
-    && {
-        background-color: ${({ theme }) => theme.body};
-        margin-top: 16px;
-    }
-`;
-
-const StyledTitle = styled.span`
-    && {
-        color: ${({ theme }) => theme.title};
-        font-weight: 600;
-        font-size: 20px;
-        margin: 16px 0;
-    }
-`;
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -139,131 +92,122 @@ export const SingleVault = () => {
         setOpenSnackBar(false);
     };
 
-    const config = vault?.configOK;
+    const theme = useTheme();
+
+    const errorAlert = error && (
+        <React.Fragment>
+            <Container>
+                <ErrorAlert
+                    message={`Error while loading vault ${vaultId}:`}
+                    details={error}
+                />
+            </Container>
+        </React.Fragment>
+    );
+
+    const loadingIndicator = (
+        <React.Fragment>
+            <Container>
+                <span>
+                    <ProgressSpinnerBar />
+                    <GlobalStylesLoading />
+                </span>
+            </Container>
+        </React.Fragment>
+    );
+
+    const warningsSnackbar = (
+        <Snackbar
+            open={openSnackBar}
+            onClose={handleCloseSnackBar}
+            autoHideDuration={10000}
+        >
+            <Alert onClose={handleCloseSnackBar} severity="warning">
+                {`Issue loading the following fields for some strategies: ${JSON.stringify(
+                    warnings
+                )}`}
+            </Alert>
+        </Snackbar>
+    );
+
+    const about = (
+        <Grid container spacing={theme.spacing(2)}>
+            <Grid item xs={12} md={6}>
+                <Typography variant="h6">About</Typography>
+                <VaultDescription
+                    vault={vault}
+                    isLoading={loadingVault}
+                    network={network}
+                />
+            </Grid>
+            <Grid item xs={12} md={6}>
+                <Typography variant="h6">Strategy Allocation</Typography>
+                <Box>
+                    {vault && vault.strategies.length > 0 && (
+                        <BarChart data={getStrategyAllocation(vault)} />
+                    )}
+                </Box>
+                <Typography variant="h6">Protocol Allocation</Typography>
+                <Box marginY={theme.spacing(2)}>
+                    {loadingStrategyMetadata ? (
+                        <CircularProgress />
+                    ) : (
+                        vault &&
+                        strategyMetadata && (
+                            <BarChart
+                                data={getProtocolAllocation(
+                                    vault,
+                                    strategyMetadata
+                                )}
+                            />
+                        )
+                    )}
+                </Box>
+            </Grid>
+        </Grid>
+    );
+
+    const strategyList = (
+        <div>
+            {vault && vault.strategies.length > 0 && (
+                <Box>
+                    <StrategiesList vault={vault} network={network} />
+                </Box>
+            )}
+        </div>
+    );
+
+    const page = (
+        <React.Fragment>
+            {warnings && warnings.length !== 0 && warningsSnackbar}
+            <BreadCrumbs vaultId={vaultId} network={network} />
+            <SingleVaultCard vault={vault} network={network} />
+            <br />
+            <Card>
+                <Tabs
+                    variant="fullWidth"
+                    value={tab}
+                    onChange={handleChange}
+                    indicatorColor="primary"
+                >
+                    <Tab label="Details" {...a11yProps(0)} />
+                    <Tab label="Strategies" {...a11yProps(1)} />
+                </Tabs>
+                <TabPanel value={tab} index={0}>
+                    {about}
+                </TabPanel>
+                <TabPanel value={tab} index={1}>
+                    {strategyList}
+                </TabPanel>
+            </Card>
+        </React.Fragment>
+    );
 
     return (
         <React.Fragment>
             <ReactHelmet title={vault ? vault.name : ''} />
-
             <Container>
-                {error && (
-                    <ErrorAlert
-                        message={`Error while loading vault ${vaultId}:`}
-                        details={error}
-                    />
-                )}
-                {warnings && warnings.length !== 0 && (
-                    <Snackbar
-                        open={openSnackBar}
-                        onClose={handleCloseSnackBar}
-                        autoHideDuration={10000}
-                    >
-                        <Alert onClose={handleCloseSnackBar} severity="warning">
-                            {`Issue loading the following fields for some strategies: ${JSON.stringify(
-                                warnings
-                            )}`}
-                        </Alert>
-                    </Snackbar>
-                )}
-                {loadingVault ? (
-                    <span>
-                        <ProgressSpinnerBar />
-                        <GlobalStylesLoading />
-                    </span>
-                ) : (
-                    !error && (
-                        <React.Fragment>
-                            <BreadCrumbs vaultId={vaultId} network={network} />
-                            <SingleVaultCard vault={vault} network={network} />
-                            <br />
-                            <StyledCard
-                                config={
-                                    config === undefined
-                                        ? 'true'
-                                        : config.toString()
-                                }
-                            >
-                                <MuiTabs
-                                    variant="fullWidth"
-                                    value={tab}
-                                    onChange={handleChange}
-                                    scrollButtons="auto"
-                                    indicatorColor="primary"
-                                    aria-label="scrollable auto tabs example"
-                                >
-                                    <Tab label="Details" {...a11yProps(0)} />
-
-                                    <Tab label="Strategies" {...a11yProps(1)} />
-                                </MuiTabs>
-
-                                <TabPanel value={tab} index={0}>
-                                    <Grid container spacing={3}>
-                                        <Grid item xs={12} md={6}>
-                                            <StyledTitle> About</StyledTitle>
-                                            <VaultDescription
-                                                vault={vault}
-                                                isLoading={loadingVault}
-                                                network={network}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} md={6}>
-                                            <StyledTitle>
-                                                {' '}
-                                                Strategy Allocation
-                                            </StyledTitle>
-                                            <StyledPaper>
-                                                {vault &&
-                                                vault.strategies.length > 0 ? (
-                                                    <BarChart
-                                                        data={getStrategyAllocation(
-                                                            vault
-                                                        )}
-                                                    />
-                                                ) : (
-                                                    ''
-                                                )}
-                                            </StyledPaper>
-                                            <br />
-                                            <StyledTitle>
-                                                {' '}
-                                                Protocol Allocation
-                                            </StyledTitle>
-                                            {loadingStrategyMetadata ? (
-                                                <CircularProgress />
-                                            ) : vault && strategyMetadata ? (
-                                                <StyledPaper>
-                                                    <BarChart
-                                                        data={getProtocolAllocation(
-                                                            vault,
-                                                            strategyMetadata
-                                                        )}
-                                                    />
-                                                </StyledPaper>
-                                            ) : (
-                                                ''
-                                            )}
-                                        </Grid>
-                                    </Grid>
-                                </TabPanel>
-                                <TabPanel value={tab} index={1}>
-                                    <div>
-                                        {vault &&
-                                        vault.strategies.length > 0 ? (
-                                            <div>
-                                                <StrategiesList
-                                                    vault={vault}
-                                                    network={network}
-                                                />
-                                            </div>
-                                        ) : (
-                                            ''
-                                        )}
-                                    </div>
-                                </TabPanel>
-                            </StyledCard>
-                        </React.Fragment>
-                    )
-                )}
+                {error ? errorAlert : loadingVault ? loadingIndicator : page}
             </Container>
         </React.Fragment>
     );
