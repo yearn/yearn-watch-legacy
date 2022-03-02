@@ -601,7 +601,8 @@
                     "0x26244f5b4A933C6e595665F08F8c76108195b755",
                     "FiatDAOStakingYFI",
                     "StrategyLiquityStabilityPoolLUSD",
-                    "inverse"
+                    "inverse",
+                    "StrategyNotionalLending"
                 ]
             }
         },
