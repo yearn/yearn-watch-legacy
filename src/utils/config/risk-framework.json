@@ -517,9 +517,9 @@
             "network": "ethereum",
             "label": "Inverse",
             "codeReviewScore": 3,
-            "testingScore": 3,
+            "testingScore": 4,
             "auditScore": 5,
-            "protocolSafetyScore": 3,
+            "protocolSafetyScore": 4,
             "complexityScore": 1,
             "teamKnowledgeScore": 5,
             "criteria": {
