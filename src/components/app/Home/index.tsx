@@ -11,7 +11,7 @@ import { ParamTypes } from '../../../types/DefaultParamTypes';
 import { useAllVaults } from '../../../hooks';
 
 export const Home = () => {
-    const { network = DEFAULT_NETWORK } = useParams<ParamTypes>();
+    const { network = DEFAULT_NETWORK } = useParams() as ParamTypes;
     const { vaults, loading, moreToLoad, error } = useAllVaults(network);
 
     return (
