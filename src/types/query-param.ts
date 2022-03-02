@@ -1,4 +1,4 @@
-export const DEFAULT_BATCH_SIZE = 30;
+export const DEFAULT_BATCH_SIZE = 25;
 
 export type QueryParam = {
     includeExperimental: boolean;
