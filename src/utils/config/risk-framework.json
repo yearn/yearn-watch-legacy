@@ -545,6 +545,22 @@
             }
         },
         {
+            "id": "solidexjoint",
+            "network": "ethereum",
+            "label": "Solidex Joint",
+            "codeReviewScore": 3,
+            "testingScore": 4,
+            "auditScore": 5,
+            "protocolSafetyScore": 5,
+            "complexityScore": 3,
+            "teamKnowledgeScore": 1,
+            "criteria": {
+                "nameLike": ["solidexjoint"],
+                "strategies": [],
+                "exclude": []
+            }
+        },
+        {
             "id": "others",
             "network": "ethereum",
             "label": "Others",
@@ -602,7 +618,8 @@
                     "FiatDAOStakingYFI",
                     "StrategyLiquityStabilityPoolLUSD",
                     "inverse",
-                    "StrategyNotionalLending"
+                    "StrategyNotionalLending",
+                    "solidexjoint"
                 ]
             }
         },
@@ -720,6 +737,22 @@
             }
         },
         {
+            "id": "solidexjoint",
+            "network": "fantom",
+            "label": "Solidex Joint",
+            "codeReviewScore": 3,
+            "testingScore": 4,
+            "auditScore": 5,
+            "protocolSafetyScore": 5,
+            "complexityScore": 3,
+            "teamKnowledgeScore": 1,
+            "criteria": {
+                "nameLike": ["solidexjoint"],
+                "strategies": [],
+                "exclude": []
+            }
+        },
+        {
             "id": "others",
             "network": "fantom",
             "label": "Others",
@@ -734,7 +767,8 @@
                     "ssbeetV2",
                     "ssbeetV2.1",
                     "vedao",
-                    "0xdao"
+                    "0xdao",
+                    "solidexjoint"
                 ]
             },
             "codeReviewScore": 5,
