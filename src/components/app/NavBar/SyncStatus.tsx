@@ -1,13 +1,8 @@
 import { useSyncStatus } from '../../../hooks';
 import { Network } from '../../../types';
 import { Box } from '@mui/material';
-import Icon from '@mui/material/Icon';
-import ErrorIcon from '@mui/icons-material/Error';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
-import styled from 'styled-components';
-import React, { useEffect, useState } from 'react';
-import { BigNumber } from 'ethers';
 
 type SyncStatusProps = {
     network: Network;
