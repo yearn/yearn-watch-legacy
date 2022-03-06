@@ -2,6 +2,7 @@ import { difference, get, omit, memoize, values } from 'lodash';
 import { Network } from '../types';
 
 import { StrategyReportContextValue } from '../contexts/StrategyReportContext';
+import { querySubgraphData } from './apisRequest';
 
 const OMIT_FIELDS = ['results', 'transaction', 'id'];
 

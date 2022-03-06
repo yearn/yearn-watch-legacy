@@ -20,8 +20,6 @@ export function useSyncStatus(network: Network) {
         useState<boolean>(false);
     const [rpcRequestError, setRpcRequestError] = useState<boolean>(false);
 
-    //const [error, setError] = useState<string | null>(null);
-
     type SubgraphGQLResult = {
         data: {
             _meta: {
@@ -34,6 +32,10 @@ export function useSyncStatus(network: Network) {
     };
 
     useEffect(() => {
+        // reset loading state
+        setSubgraphLoading(true);
+        setRpcLoading(true);
+
         const fetchSubgraphStatus = async () => {
             try {
                 const query = `
