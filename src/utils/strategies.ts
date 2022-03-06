@@ -1,6 +1,6 @@
 import { ContractCallResults, ContractCallContext } from 'ethereum-multicall';
 import { utils } from 'ethers';
-import { omit, memoize } from 'lodash';
+import { omit, memoize, values } from 'lodash';
 import { getMulticallContract } from './multicall';
 import {
     GenLenderStrategy,
@@ -260,7 +260,10 @@ const innerGetStrategies = async (
     return mappedStrategies;
 };
 
-export const getStrategies = memoize(innerGetStrategies);
+// Functions with more than 2 parameters need a custom key defined for memoization to work correctly.
+export const getStrategies = memoize(innerGetStrategies, (...args) =>
+    values(args).join('_')
+);
 
 const _getAllStrategies = async (network: Network): Promise<Strategy[]> => {
     const vaultService = getVaultService(network);
@@ -296,4 +299,7 @@ const _getGenLenderStrategy = async (
     };
 };
 
-export const getGenLenderStrategy = memoize(_getGenLenderStrategy);
+// Functions with more than 2 parameters need a custom key defined for memoization to work correctly.
+export const getGenLenderStrategy = memoize(_getGenLenderStrategy, (...args) =>
+    values(args).join('_')
+);

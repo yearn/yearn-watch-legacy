@@ -1,6 +1,5 @@
-import { difference, get, omit, memoize } from 'lodash';
+import { difference, get, omit, memoize, values } from 'lodash';
 import { Network } from '../types';
-import { querySubgraphData } from './apisRequest';
 
 import { StrategyReportContextValue } from '../contexts/StrategyReportContext';
 
@@ -240,4 +239,8 @@ export const _getReportsForStrategies = async (
     }
 };
 
-export const getReportsForStrategies = memoize(_getReportsForStrategies);
+// Functions with more than 2 parameters need a custom key defined for memoization to work correctly.
+export const getReportsForStrategies = memoize(
+    _getReportsForStrategies,
+    (...args) => values(args).join('_')
+);

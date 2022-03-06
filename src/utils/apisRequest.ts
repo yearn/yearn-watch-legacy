@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
-import { memoize } from 'lodash';
+import { memoize, values } from 'lodash';
 
 import getNetworkConfig from './config';
 import { Network } from '../types';
@@ -70,4 +70,7 @@ const querySubgraph = async (
     }
 };
 
-export const querySubgraphData = memoize(querySubgraph);
+// Functions with more than 2 parameters need a custom key defined for memoization to work correctly.
+export const querySubgraphData = memoize(querySubgraph, (...args) =>
+    values(args).join('_')
+);
