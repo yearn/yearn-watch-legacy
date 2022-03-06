@@ -67,7 +67,7 @@ export function useSyncStatus(network: Network) {
         const fetchRpcStatus = async () => {
             try {
                 const provider = getEthersDefaultProvider(network);
-                let blockNumber = await provider.getBlockNumber();
+                const blockNumber = await provider.getBlockNumber();
 
                 const rpcSyncStatus = {
                     syncError: false,
