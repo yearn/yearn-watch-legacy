@@ -777,6 +777,28 @@
             "protocolSafetyScore": 5,
             "complexityScore": 5,
             "teamKnowledgeScore": 5
+        },
+        {
+            "id": "curve",
+            "network": "arbitrum",
+            "label": "Curve",
+            "codeReviewScore": 4,
+            "testingScore": 3,
+            "auditScore": 2,
+            "protocolSafetyScore": 1,
+            "complexityScore": 2,
+            "teamKnowledgeScore": 1,
+            "criteria": {
+                "nameLike": [
+                    "crv",
+                    "curve"
+                ],
+                "strategies": [],
+                "exclude": [
+                    "singlesided",
+                    "convex"
+                ]
+            }
         }
     ]
 }
