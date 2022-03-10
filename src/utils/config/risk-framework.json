@@ -754,6 +754,7 @@
         },
         {
             "id": "singleassetsolidexLP",
+            "network": "fantom",
             "label": "Single Asset Solidex LP",
             "codeReviewScore": 3,
             "testingScore": 3,
