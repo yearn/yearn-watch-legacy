@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, memo } from 'react';
+import { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
 import sum from 'lodash/sum';
@@ -31,17 +31,17 @@ const StyledReportTitle = styled.div`
 
 type VaultsListProps = {
     items: Vault[];
-    totalItems: number;
+    moreToLoad: boolean;
     network: Network;
 };
 
 const getTotalStrategies = (items: Vault[]): number =>
     sum(items.map((item) => item.strategies.length));
 
-const _VaultsList = (props: VaultsListProps) => {
-    const { totalItems, items, network } = props;
+export const VaultsList = (props: VaultsListProps) => {
+    const { moreToLoad, items, network } = props;
     const [filteredItems, setFilteredItems] = useState(items);
-    const totalStrategies = useMemo(() => getTotalStrategies(items), [items]);
+    const totalStrategies = getTotalStrategies(items);
     const [totalStrategiesFound, setTotalStrategiesFound] =
         useState(totalStrategies);
 
@@ -49,105 +49,85 @@ const _VaultsList = (props: VaultsListProps) => {
         return <>Vaults not found.</>;
     }
 
-    const filterStrategies = useMemo(
-        () => (vault: Vault, newText: string) => {
-            const strategies = vault.strategies.filter((strategy) => {
-                return (
-                    strategy.address.toLowerCase().includes(newText) ||
-                    strategy.name.toLowerCase().includes(newText) ||
-                    strategy.strategist.toLowerCase().includes(newText)
-                );
-            });
-            return strategies;
-        },
-        []
-    );
+    const filterStrategies = (vault: Vault, newText: string) => {
+        const strategies = vault.strategies.filter((strategy) => {
+            return (
+                strategy.address.toLowerCase().includes(newText) ||
+                strategy.name.toLowerCase().includes(newText) ||
+                strategy.strategist.toLowerCase().includes(newText)
+            );
+        });
+        return strategies;
+    };
 
-    const filterStrategiesHealthCheck = useMemo(
-        () => (vault: Vault, health: string) => {
-            const strategies = vault.strategies.filter((strategy) => {
-                switch (health) {
-                    case 'Enabled':
-                        return (
-                            strategy.healthCheck !== null &&
-                            strategy.doHealthCheck === true
-                        );
-                    case 'Disabled':
-                        return (
-                            (strategy.healthCheck !== null &&
-                                strategy.doHealthCheck === false) ||
-                            (strategy.doHealthCheck === true &&
-                                strategy.healthCheck?.toLowerCase() ===
-                                    EMPTY_ADDRESS)
-                        );
-                    case 'None':
-                        return strategy.healthCheck === null;
-                    default:
-                        return true;
-                }
-            });
-            return strategies;
-        },
-        []
-    );
-
-    const onFilter = useCallback(
-        (newText: string, flags: Flags, health: string) => {
-            console.time('timer');
-            const hasFlags = flags.onlyWithWarnings;
-            if (!hasFlags && newText.trim() === '' && health.trim() === '') {
-                console.log('click clear');
-                console.time('clear');
-                setFilteredItems(items);
-                setTotalStrategiesFound(getTotalStrategies(items));
-                console.timeEnd('clear');
-            } else {
-                let totalStrategiesFound = 0;
-                const filteredItems = items
-                    .filter((item: Vault) => {
-                        const applyFlags =
-                            !flags.onlyWithWarnings ||
-                            (flags.onlyWithWarnings && !item.configOK);
-                        return applyFlags;
-                    })
-                    .filter((item: Vault) => {
-                        const filteredStrategies = filterStrategies(
-                            item,
-                            newText
-                        );
-                        const hasVaultStrategies =
-                            filteredStrategies.length > 0;
-
-                        const applyFilter =
-                            item.address.toLowerCase().includes(newText) ||
-                            item.apiVersion.includes(newText) ||
-                            item.name.toLowerCase().includes(newText) ||
-                            item.symbol.toLowerCase().includes(newText) ||
-                            item.token.symbol.toLowerCase().includes(newText) ||
-                            hasVaultStrategies;
-                        return applyFilter;
-                    })
-                    .filter((item: Vault) => {
-                        const healthFilteredStrategies =
-                            filterStrategiesHealthCheck(item, health);
-                        totalStrategiesFound += healthFilteredStrategies.length;
-                        return healthFilteredStrategies.length > 0;
-                    });
-                setFilteredItems(filteredItems);
-                setTotalStrategiesFound(totalStrategiesFound);
+    const filterStrategiesHealthCheck = (vault: Vault, health: string) => {
+        const strategies = vault.strategies.filter((strategy) => {
+            switch (health) {
+                case 'Enabled':
+                    return (
+                        strategy.healthCheck !== null &&
+                        strategy.doHealthCheck === true
+                    );
+                case 'Disabled':
+                    return (
+                        (strategy.healthCheck !== null &&
+                            strategy.doHealthCheck === false) ||
+                        (strategy.doHealthCheck === true &&
+                            strategy.healthCheck?.toLowerCase() ===
+                                EMPTY_ADDRESS)
+                    );
+                case 'None':
+                    return strategy.healthCheck === null;
+                default:
+                    return true;
             }
-            console.timeEnd('timer');
-        },
-        [items]
-    );
+        });
+        return strategies;
+    };
+
+    const onFilter = (newText: string, flags: Flags, health: string) => {
+        const hasFlags = flags.onlyWithWarnings;
+        if (!hasFlags && newText.trim() === '' && health.trim() === '') {
+            setFilteredItems(items);
+            setTotalStrategiesFound(getTotalStrategies(items));
+        } else {
+            let totalStrategiesFound = 0;
+            const filteredItems = items
+                .filter((item: Vault) => {
+                    const applyFlags =
+                        !flags.onlyWithWarnings ||
+                        (flags.onlyWithWarnings && !item.configOK);
+                    return applyFlags;
+                })
+                .filter((item: Vault) => {
+                    const filteredStrategies = filterStrategies(item, newText);
+                    const hasVaultStrategies = filteredStrategies.length > 0;
+
+                    const applyFilter =
+                        item.address.toLowerCase().includes(newText) ||
+                        item.apiVersion.includes(newText) ||
+                        item.name.toLowerCase().includes(newText) ||
+                        item.symbol.toLowerCase().includes(newText) ||
+                        item.token.symbol.toLowerCase().includes(newText) ||
+                        hasVaultStrategies;
+                    return applyFilter;
+                })
+                .filter((item: Vault) => {
+                    const healthFilteredStrategies =
+                        filterStrategiesHealthCheck(item, health);
+                    totalStrategiesFound += healthFilteredStrategies.length;
+                    return healthFilteredStrategies.length > 0;
+                });
+            setFilteredItems(filteredItems);
+            setTotalStrategiesFound(totalStrategiesFound);
+        }
+    };
 
     useEffect(() => {
         setFilteredItems(items);
         const totalStrategies = getTotalStrategies(items);
         setTotalStrategiesFound(totalStrategies);
     }, [items, totalStrategies]);
-
-    const stillLoading = totalItems !== items.length;
 
     return (
         <>
@@ -160,9 +140,7 @@ const _VaultsList = (props: VaultsListProps) => {
                 foundSubItems={totalStrategiesFound}
             />
 
-            {stillLoading && (
-                <ProgressSpinnerBar label={`Total Vaults ${totalItems}...`} />
-            )}
+            {moreToLoad && <ProgressSpinnerBar label={`all vaults...`} />}
             <div style={{ height: '60vh', overflow: 'auto' }}>
                 {filteredItems.map((vault: Vault, index: number) => (
                     <div key={index}>
@@ -186,4 +164,4 @@ const _VaultsList = (props: VaultsListProps) => {
     );
 };
 
-export const VaultsList = memo(_VaultsList);
+export default VaultsList;

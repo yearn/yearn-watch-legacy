@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Network } from '../types';
-import { getService as getVaultService } from '../services/VaultService';
 import { getError } from '../utils/error';
 import { StrategyMetadata } from '@yfi/sdk';
+import { getVaultService } from '../services/VaultService/utils';
 
 export function useVaultStrategyMetadata(
     network: Network,
@@ -56,7 +56,7 @@ export function useSingleStrategyMetadata(
                     vaultAddress
                 );
                 const strategyMetadata = metadata.find(
-                    (s) => s.address === strategyAddress
+                    (s: { address: string }) => s.address === strategyAddress
                 );
                 setData(strategyMetadata);
             } catch (e) {

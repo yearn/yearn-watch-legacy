@@ -1,5 +1,4 @@
 /* eslint-disable react/display-name */
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Theme } from '@mui/material/styles';
 import createStyles from '@mui/styles/createStyles';
@@ -7,27 +6,16 @@ import makeStyles from '@mui/styles/makeStyles';
 import { Container, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-import { getService } from '../../../services/VaultService';
-
 import { ErrorAlert } from '../../common/Alerts';
 import ProgressSpinnerBar from '../../common/ProgressSpinnerBar/ProgressSpinnerBar';
 import { GlobalStylesLoading } from '../../theme/globalStyles';
 
-import {
-    Vault,
-    DEFAULT_QUERY_PARAM,
-    toQueryParam,
-    DEFAULT_NETWORK,
-} from '../../../types';
+import { DEFAULT_NETWORK } from '../../../types';
 import { ParamTypes } from '../../../types/DefaultParamTypes';
 import { extractAddress } from '../../../utils/commonUtils';
 import { GenericList, GenericListItem } from '../GenericList';
 import { HeadCell } from '../GenericList/HeadCell';
-
-import { getError } from '../../../utils/error';
-import { filterStrategiesByHealthCheck } from '../../../utils/vaults';
-
-const BATCH_NUMBER = 30;
+import { useHealthcheckStrategies } from '../../../hooks';
 
 const headCells: HeadCell<GenericListItem>[] = [
     {
@@ -105,71 +93,13 @@ const useStyles = makeStyles((theme: Theme) =>
 export const HealthCheckReport = () => {
     const paramTypes = useParams() as ParamTypes;
     const { network = DEFAULT_NETWORK } = paramTypes;
+    const {
+        data: strategies,
+        loading,
+        moreToLoad,
+        error,
+    } = useHealthcheckStrategies(network);
     const classes = useStyles();
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [strategies, setStrategies] = useState<any[]>([]);
-
-    useEffect(() => {
-        const loadStrategiesData = async () => {
-            setIsLoading(true);
-
-            setError(null);
-            try {
-                const vaultService = getService(network);
-                const numVaults = await vaultService.getTotalVaults();
-                const loadedVaults = await vaultService.getVaultsWithPagination(
-                    DEFAULT_QUERY_PARAM
-                );
-                const filteredStrategies = await filterStrategiesByHealthCheck(
-                    loadedVaults,
-                    network
-                );
-                if (loadedVaults.length > 0) {
-                    setStrategies([...filteredStrategies]);
-                    setIsLoading(false);
-                }
-                // iterations for lazy loading
-                if (numVaults > BATCH_NUMBER) {
-                    const iterations = Math.floor(
-                        (numVaults - BATCH_NUMBER) / BATCH_NUMBER
-                    );
-                    let offset = BATCH_NUMBER;
-                    const batchResultsPromises: Promise<Vault[]>[] = [];
-                    for (let i = 0; i <= iterations; i++) {
-                        ((innerOffset: number) => {
-                            const batchedVaultsPromise =
-                                vaultService.getVaultsWithPagination(
-                                    toQueryParam(innerOffset, BATCH_NUMBER)
-                                );
-                            batchResultsPromises.push(batchedVaultsPromise);
-                        })(offset);
-
-                        offset = offset + BATCH_NUMBER;
-                    }
-
-                    const responses = await Promise.all(batchResultsPromises);
-                    const results: Vault[] = responses.flatMap(
-                        (response) => response
-                    );
-                    const filteredResults = await filterStrategiesByHealthCheck(
-                        results,
-                        network
-                    );
-                    setStrategies((strategies) => [
-                        ...strategies,
-                        ...filteredResults,
-                    ]);
-                }
-            } catch (e: unknown) {
-                console.log('Error:', e);
-                setIsLoading(false);
-                setError(getError(e));
-            }
-        };
-        loadStrategiesData();
-    }, [network]);
 
     return (
         <Container maxWidth="lg">
@@ -180,16 +110,17 @@ export const HealthCheckReport = () => {
                         details={error}
                     />
                 )}
-
-                {isLoading && (
+                {loading && (
                     <span>
                         <ProgressSpinnerBar />
-
                         <GlobalStylesLoading />
                     </span>
                 )}
-                {!isLoading && !error && (
+                {!loading && !error && (
                     <div className={classes.root}>
+                        {moreToLoad && (
+                            <ProgressSpinnerBar label="all strategies..." />
+                        )}
                         <GenericList
                             headCells={headCells}
                             items={strategies}

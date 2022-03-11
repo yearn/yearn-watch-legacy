@@ -1,3 +1,5 @@
+export const DEFAULT_BATCH_SIZE = 25;
+
 export type QueryParam = {
     includeExperimental: boolean;
     pagination: {
@@ -10,13 +12,13 @@ export const DEFAULT_QUERY_PARAM: QueryParam = {
     includeExperimental: false,
     pagination: {
         offset: 0,
-        limit: 30,
+        limit: DEFAULT_BATCH_SIZE,
     },
 };
 
 export const toQueryParam = (
     offset = 0,
-    limit = 30,
+    limit = DEFAULT_BATCH_SIZE,
     includeExperimental = false
 ): QueryParam => ({
     includeExperimental,
