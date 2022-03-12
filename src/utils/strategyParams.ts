@@ -32,6 +32,9 @@ const STRAT_PARAMS_V032: string[] = [
     'totalLoss',
 ];
 
+// Used if strategy protocols are not in Yearn Meta
+const UNKNOWN_PROTOCOL = 'Unknown';
+
 const mapVersions = new Map<string, string[]>();
 mapVersions.set('0.3.0', STRAT_PARAMS_V030);
 mapVersions.set('0.3.1', STRAT_PARAMS_V030);
@@ -68,20 +71,39 @@ export const getProtocolAllocation = (
     // this calculation assumes that allocations are split equally
     const strategyToProtocols: { [key: string]: string[] } = {};
     metadata.forEach(({ address, protocols }) => {
-        strategyToProtocols[address] = protocols;
+        strategyToProtocols[address.toLowerCase()] = protocols;
     });
 
     const protocolDebtRatios: { [key: string]: number } = {};
     let totalDebtRatio = 0;
+
     vault.strategies.forEach(({ address, params }) => {
-        const protocols = get(strategyToProtocols, address, []);
-        protocols.forEach((protocol) => {
-            const cur = get(protocolDebtRatios, protocol, 0);
-            const debtRatio = Number(parseInt(params.debtRatio.toString(), 10));
-            protocolDebtRatios[protocol] = cur + debtRatio;
-            totalDebtRatio += debtRatio;
-        });
+        const protocols = get(strategyToProtocols, address.toLowerCase(), []);
+        if (protocols.length === 0) {
+            totalDebtRatio += updateProtocolDebtRatios(
+                protocolDebtRatios,
+                UNKNOWN_PROTOCOL,
+                params
+            );
+        } else {
+            protocols.forEach((protocol) => {
+                totalDebtRatio += updateProtocolDebtRatios(
+                    protocolDebtRatios,
+                    protocol,
+                    params
+                );
+            });
+        }
     });
+
+    if (totalDebtRatio === 0) {
+        return [
+            {
+                name: 'Not Allocated',
+                y: Number((100).toFixed(2)),
+            },
+        ];
+    }
 
     const protocolAllocations: BarChartData[] = [];
     const debtUsage = parseInt(vault.debtUsage) / 100;
@@ -95,15 +117,17 @@ export const getProtocolAllocation = (
     // Normalize protocol debt ratios to debtUsage
     const protocols = Object.keys(protocolDebtRatios);
     protocols.forEach((protocol) => {
-        protocolAllocations.push({
-            name: protocol,
-            y: Number(
-                (
-                    (protocolDebtRatios[protocol] / totalDebtRatio) *
-                    debtUsage
-                ).toFixed(2)
-            ),
-        });
+        if (protocolDebtRatios[protocol] > 0) {
+            protocolAllocations.push({
+                name: protocol,
+                y: Number(
+                    (
+                        (protocolDebtRatios[protocol] / totalDebtRatio) *
+                        debtUsage
+                    ).toFixed(2)
+                ),
+            });
+        }
     });
 
     return sortBy(protocolAllocations, ['y']) as BarChartData[];
@@ -160,4 +184,15 @@ export const mapStrategyParams = (
     );
 
     return mapParamDisplayValues(params);
+};
+
+const updateProtocolDebtRatios = (
+    protocolDebtRatios: { [key: string]: number },
+    protocol: string,
+    params: StrategyParams
+) => {
+    const cur = get(protocolDebtRatios, protocol, 0);
+    const debtRatio = Number(parseInt(params.debtRatio.toString(), 10));
+    protocolDebtRatios[protocol] = cur + debtRatio;
+    return debtRatio;
 };
