@@ -4,7 +4,6 @@ import { Box } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import { BigNumber } from 'ethers';
-import React from 'react';
 
 type SyncStatusProps = {
     network: Network;
