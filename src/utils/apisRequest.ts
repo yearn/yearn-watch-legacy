@@ -55,7 +55,10 @@ const querySubgraph = async (
                 query,
             }
         );
-        if (response.data.errors && response.data.errors.length > 0) {
+        if (
+            response.data.errors !== undefined &&
+            response.data.errors.length > 0
+        ) {
             throw Error(
                 response.data.errors[0].message ||
                     'Error: retrieving data from subgraph'
