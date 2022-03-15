@@ -773,7 +773,7 @@
             "network": "fantom",
             "label": "Others",
             "criteria": {
-                "nameLike": [],
+                "nameLike": ["all"],
                 "strategies": [],
                 "exclude": [
                     "StrategyLenderYieldOptimiser",
