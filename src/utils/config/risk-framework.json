@@ -794,6 +794,46 @@
             "protocolSafetyScore": 5,
             "complexityScore": 5,
             "teamKnowledgeScore": 5
+        },
+        {
+            "id": "curve",
+            "network": "arbitrum",
+            "label": "Curve",
+            "codeReviewScore": 4,
+            "testingScore": 3,
+            "auditScore": 2,
+            "protocolSafetyScore": 1,
+            "complexityScore": 2,
+            "teamKnowledgeScore": 1,
+            "criteria": {
+                "nameLike": [
+                    "crv",
+                    "curve"
+                ],
+                "strategies": [],
+                "exclude": [
+                    "singlesided",
+                    "convex"
+                ]
+            }
+        },
+        {
+            "id": "others",
+            "network": "arbitrum",
+            "label": "Others",
+            "criteria": {
+                "nameLike": [],
+                "strategies": [],
+                "exclude": [
+                   
+                ]
+            },
+            "codeReviewScore": 5,
+            "testingScore": 5,
+            "auditScore": 5,
+            "protocolSafetyScore": 5,
+            "complexityScore": 5,
+            "teamKnowledgeScore": 5
         }
     ]
 }
