@@ -79,14 +79,21 @@ export const mapVaultApiDataToVault = async (
         }
     );
 
+    // TODO make risk call here. pass to mapVaultData. if strat not in list then add variable to strat
+    // TODO this is the same help contract as the risk page one
+    // TODO vaults already have strategies. why ask for them again?
     const strategiesHelperCallResults: ContractCallResults =
         await multicall.call(
             createStrategiesHelperCallAssetStrategiesAddresses(vaults, network)
         );
 
+    console.log('strategy helper');
+    //console.log(vaults);
+    console.log(strategiesHelperCallResults); // return strategies?
     const results: ContractCallResults = await multicall.call(
         vaultCalls.concat(stratCalls)
     );
+    console.log(results);
 
     return mapVaultData(
         results,
@@ -243,6 +250,7 @@ const mapVaultData = (
                     ...mappedVaultContractCallsConverted,
                     strategies: sortedStrategies,
                 },
+                // TODO add risk strategies here
                 networkConfig
             )
         );

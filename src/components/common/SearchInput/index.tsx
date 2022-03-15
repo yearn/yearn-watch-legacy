@@ -85,6 +85,7 @@ const StyledSelect = styled(Select)`
 `;
 export type Flags = {
     onlyWithWarnings: boolean;
+    onlyMissingRisk: boolean;
 };
 
 type SearchInputProps = {
@@ -96,8 +97,12 @@ type SearchInputProps = {
     onFilter: (text: string, flags: Flags, health: string) => void;
 };
 
-const getCurrentFlags = (onlyWithWarnings: boolean) => ({
+const getCurrentFlags = (
+    onlyWithWarnings: boolean,
+    onlyMissingRisk: boolean
+) => ({
     onlyWithWarnings,
+    onlyMissingRisk,
 });
 
 const SearchInput = (props: SearchInputProps) => {
@@ -112,6 +117,8 @@ const SearchInput = (props: SearchInputProps) => {
     const [searchText, setSearchText] = useState('');
     const [isSearching, setIsSearching] = useState(false);
     const [filterVaultsWithWarnings, setFilterVaultsWithWarnings] =
+        useState(false);
+    const [filterVaultsWithMissingRisks, setFilterVaultsWithMissingRisks] =
         useState(false);
     const [healthCheckFilter, setHealthCheckFilter] = useState('');
 
@@ -130,7 +137,13 @@ const SearchInput = (props: SearchInputProps) => {
             const value = (event.target as HTMLInputElement).value;
             setIsSearching(true);
             setSearchText(value);
-            debounceFilter(value, getCurrentFlags(filterVaultsWithWarnings));
+            debounceFilter(
+                value,
+                getCurrentFlags(
+                    filterVaultsWithWarnings,
+                    filterVaultsWithMissingRisks
+                )
+            );
         },
         [filterVaultsWithWarnings, searchText, isSearching, healthCheckFilter]
     );
@@ -140,9 +153,11 @@ const SearchInput = (props: SearchInputProps) => {
             setFilterVaultsWithWarnings(e.target.checked);
             setIsSearching(true);
             const newSearchTextLowerCase = searchText.toLowerCase();
+            console.log('is target checked: ' + e.target.checked);
+            console.log(filterVaultsWithWarnings);
             onFilter(
                 newSearchTextLowerCase,
-                getCurrentFlags(e.target.checked),
+                getCurrentFlags(e.target.checked, filterVaultsWithMissingRisks),
                 healthCheckFilter
             );
             setIsSearching(false);
@@ -152,7 +167,14 @@ const SearchInput = (props: SearchInputProps) => {
     const handleClickClearSearch = useCallback(() => {
         setSearchText('');
         setFilterVaultsWithWarnings(false);
-        onFilter('', getCurrentFlags(false), '');
+        onFilter(
+            '',
+            getCurrentFlags(
+                filterVaultsWithWarnings,
+                filterVaultsWithMissingRisks
+            ),
+            ''
+        );
     }, [onFilter]);
     const healthCheckFilterChange = useCallback(
         (e: SelectChangeEvent<unknown>) => {
@@ -161,7 +183,10 @@ const SearchInput = (props: SearchInputProps) => {
             const newSearchTextLowerCase = searchText.toLowerCase();
             onFilter(
                 newSearchTextLowerCase,
-                getCurrentFlags(filterVaultsWithWarnings),
+                getCurrentFlags(
+                    filterVaultsWithWarnings,
+                    filterVaultsWithMissingRisks
+                ),
                 (e.target as HTMLInputElement).value
             );
             setIsSearching(false);
