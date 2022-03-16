@@ -12,6 +12,7 @@ import { Link, Grid } from '@mui/material';
 import { extractAddress } from '../../../utils/commonUtils';
 import getNetworkConfig from '../../../utils/config';
 import { Network } from '../../../types';
+import { getEthersDefaultProvider } from '../../../utils/ethers';
 
 type EtherScanLinkProps = {
     address?: string;
@@ -65,6 +66,9 @@ const StyledCopiedText = styled.span`
 const EtherScanLink = (props: EtherScanLinkProps) => {
     const { address, transactionHash, internalHref, network } = props;
     const [copied, setCopied] = useState(false);
+    const [value, setValue] = useState('');
+    const [extractedValue, setExtractedValue] = useState('');
+    const [hashValue, setHashValue] = useState('');
     const networkConfig = getNetworkConfig(network);
 
     useEffect(() => {
@@ -75,16 +79,29 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
         return () => clearTimeout(timeId);
     }, [copied]);
 
-    let value = '';
-    let extractedValue = '';
-    if (address) {
-        value = toChecksumAddress(address);
-        extractedValue = extractAddress(address);
-    }
-    if (transactionHash) {
-        value = transactionHash;
-        extractedValue = extractAddress(transactionHash);
-    }
+    useEffect(() => {
+        if (address) {
+            // check if ENS
+            if (address.includes('.')) {
+                setValue(address);
+                setExtractedValue(address);
+                const provider = getEthersDefaultProvider(network);
+                provider.resolveName(address).then((res) => {
+                    setHashValue(res || '');
+                });
+            } else {
+                const checksumAddress = toChecksumAddress(address);
+                setValue(checksumAddress);
+                setExtractedValue(extractAddress(address));
+                setHashValue(checksumAddress);
+            }
+        }
+        if (transactionHash) {
+            setValue(transactionHash);
+            setExtractedValue(extractAddress(transactionHash));
+            setHashValue(transactionHash);
+        }
+    }, []);
 
     const maskedValue = (
         <Tooltip title={value} aria-label="Etherscan">
@@ -97,8 +114,8 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
         setCopied(true);
     };
     const refLink = transactionHash
-        ? networkConfig.toTxExplorerUrl(value)
-        : networkConfig.toAddressExplorerUrl(value);
+        ? networkConfig.toTxExplorerUrl(hashValue)
+        : networkConfig.toAddressExplorerUrl(hashValue);
     return (
         <Grid container spacing={2} alignItems="center">
             <Grid item>
