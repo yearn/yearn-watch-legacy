@@ -69,7 +69,10 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
     const [value, setValue] = useState('');
     const [extractedValue, setExtractedValue] = useState('');
     const [hashValue, setHashValue] = useState('');
+<<<<<<< HEAD
     const [resolved, setResolved] = useState(false);
+=======
+>>>>>>> feat: add ENS resolver
     const networkConfig = getNetworkConfig(network);
 
     useEffect(() => {
@@ -87,6 +90,7 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
                 setValue(address);
                 setExtractedValue(address);
                 const provider = getEthersDefaultProvider(network);
+<<<<<<< HEAD
                 provider
                     .resolveName(address)
                     .then((res) => {
@@ -107,13 +111,26 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
                     setExtractedValue(address);
                     setResolved(false);
                 }
+=======
+                provider.resolveName(address).then((res) => {
+                    setHashValue(res || '');
+                });
+            } else {
+                const checksumAddress = toChecksumAddress(address);
+                setValue(checksumAddress);
+                setExtractedValue(extractAddress(address));
+                setHashValue(checksumAddress);
+>>>>>>> feat: add ENS resolver
             }
         }
         if (transactionHash) {
             setValue(transactionHash);
             setExtractedValue(extractAddress(transactionHash));
             setHashValue(transactionHash);
+<<<<<<< HEAD
             setResolved(true);
+=======
+>>>>>>> feat: add ENS resolver
         }
     }, []);
 
@@ -130,6 +147,7 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
     const refLink = transactionHash
         ? networkConfig.toTxExplorerUrl(hashValue)
         : networkConfig.toAddressExplorerUrl(hashValue);
+<<<<<<< HEAD
 
     if (!resolved) {
         return <>{value}</>;
@@ -168,6 +186,42 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
                         </StyledLink>
                     </Tooltip>
                 </Grid>
+=======
+    return (
+        <Grid container spacing={2} alignItems="center">
+            <Grid item>
+                <StyledAddress>
+                    {internalHref ? (
+                        <Link
+                            component={RouterLink}
+                            color="inherit"
+                            to={internalHref}
+                        >
+                            <Hidden smUp>{maskedValue}</Hidden>
+                            <Hidden smDown>{value}</Hidden>
+                        </Link>
+                    ) : (
+                        <>
+                            <Hidden smUp>{maskedValue}</Hidden>
+                            <Hidden smDown>{value}</Hidden>
+                        </>
+                    )}
+                </StyledAddress>
+
+                <Tooltip title="Copy to clipboard" aria-label="Clipboard">
+                    <StyledLink onClick={(e) => onCopyToClipboard(e)}>
+                        <StyledCopiedText>
+                            <StyledFileCopy fontSize="inherit" />
+                            {copied ? ' Copied' : ''}
+                        </StyledCopiedText>
+                    </StyledLink>
+                </Tooltip>
+                <Tooltip title="View on Explorer" aria-label="Explorer">
+                    <StyledLink href={refLink} target="_blank">
+                        <StyledCallMadeIcon fontSize="inherit" />
+                    </StyledLink>
+                </Tooltip>
+>>>>>>> feat: add ENS resolver
             </Grid>
         );
     }
