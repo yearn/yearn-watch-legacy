@@ -769,6 +769,22 @@
             }
         },
         {
+            "id": "singleassetsolidexLPwitharb",
+            "network": "fantom",
+            "label": "Single Asset Solidex LP with ARB",
+            "codeReviewScore": 3,
+            "testingScore": 3,
+            "auditScore": 5,
+            "protocolSafetyScore": 3,
+            "complexityScore": 3,
+            "teamKnowledgeScore": 3,
+            "criteria": {
+                "nameLike": ["veLp_arb_Solidex"],
+                "strategies": [],
+                "exclude": []
+            }
+        },
+        {
             "id": "others",
             "network": "fantom",
             "label": "Others",
@@ -785,7 +801,8 @@
                     "vedao",
                     "0xdao",
                     "solidexjoint",
-                    "singleassetsolidexLP"
+                    "singleassetsolidexLP",
+                    "singleassetsolidexLPwitharb"
                 ]
             },
             "codeReviewScore": 5,
@@ -822,10 +839,10 @@
             "network": "arbitrum",
             "label": "Others",
             "criteria": {
-                "nameLike": [],
+                "nameLike": ["all"],
                 "strategies": [],
                 "exclude": [
-                   
+                   "curve"
                 ]
             },
             "codeReviewScore": 5,
