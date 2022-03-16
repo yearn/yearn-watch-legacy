@@ -10,6 +10,9 @@ export class ProtocolTVL {
     ) {}
 
     getLongevityDays(): number {
+        if (this.activation === 0) {
+            return 0;
+        }
         const diffMs = Date.now() - this.activation;
         const diffDays = diffMs / 1000 / 60 / 60 / 24;
         return diffDays;
