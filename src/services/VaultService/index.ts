@@ -70,7 +70,12 @@ export abstract class VaultService {
             throw new Error('Invalid vault address');
         }
 
-        const vaults = await this.getVaults([address]);
+        const vaults = await this.getVaults(
+            [address],
+            DEFAULT_QUERY_PARAM,
+            false,
+            [address]
+        );
         if (vaults.length > 0) {
             return vaults[0];
         }
@@ -79,7 +84,8 @@ export abstract class VaultService {
         const experimentalVaults = await this.getVaults(
             [address],
             DEFAULT_QUERY_PARAM,
-            true
+            true,
+            [address]
         );
         if (experimentalVaults.length > 0) {
             return experimentalVaults[0];
@@ -90,10 +96,11 @@ export abstract class VaultService {
     public getVaults = async (
         allowList: string[] = [],
         queryParams: QueryParam = DEFAULT_QUERY_PARAM,
-        experimental = false
+        experimental = false,
+        addresses?: string[]
     ): Promise<Vault[]> => {
         const apiVaults = await memoize(() =>
-            this.getApiVaults(experimental)
+            this.getApiVaults(experimental, addresses)
         )();
         const filterList = new Set(allowList.map((addr) => addr.toLowerCase()));
 
@@ -134,13 +141,14 @@ export abstract class VaultService {
     };
 
     protected getApiVaults = async (
-        experimental = false
+        experimental = false,
+        addresses?: string[]
     ): Promise<VaultApi[]> => {
         let vaults: VaultApi[];
         if (experimental) {
             vaults = await memoize(this.fetchExperimentalVaultData)();
         } else {
-            vaults = await memoize(this.fetchVaultData)();
+            vaults = await memoize(() => this.fetchVaultData(addresses))();
         }
 
         // The SDK may not return all strategies, so we need to query the subgraph
@@ -155,8 +163,10 @@ export abstract class VaultService {
         return sortedApiVaults;
     };
 
-    protected fetchVaultData = async (): Promise<VaultApi[]> => {
-        const vaults = await this.sdk.vaults.get();
+    protected fetchVaultData = async (
+        addresses?: string[]
+    ): Promise<VaultApi[]> => {
+        const vaults = await this.sdk.vaults.get(addresses);
         return mapVaultSdkToVaultApi(vaults);
     };
 
