@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { StrategyTVL } from './strategy-tvl';
+import { isValidTimestamp } from '../utils/dateUtils';
 
 export class ProtocolTVL {
     constructor(
@@ -10,9 +11,12 @@ export class ProtocolTVL {
     ) {}
 
     getLongevityDays(): number {
-        const diffMs = Date.now() - this.activation;
-        const diffDays = diffMs / 1000 / 60 / 60 / 24;
-        return diffDays;
+        if (this.activation && isValidTimestamp(this.activation.toString())) {
+            const diffMs = Date.now() - this.activation;
+            const diffDays = diffMs / 1000 / 60 / 60 / 24;
+            return diffDays;
+        }
+        return 0;
     }
 
     hasName(name: string): boolean {
