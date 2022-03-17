@@ -14,6 +14,7 @@ import ProgressBars from '../../common/ProgressBar';
 import { Network, Vault } from '../../../types';
 import { LabelTypography, SubTitle } from '../../common/Labels';
 import getNetworkConfig from '../../../utils/config';
+import EtherScanLink from '../../common/EtherScanLink';
 
 interface VaultDescriptionProps {
     vault: Vault | undefined;
@@ -74,18 +75,38 @@ export const VaultDescription = (props: VaultDescriptionProps) => {
                 }}
             />
         );
-    const rewards = vault
-        ? networkConfig.treasury.getEnsOrAddress(vault.rewards)
-        : '';
-    const governance = vault
-        ? networkConfig.governance.getEnsOrAddress(vault.governance)
-        : '';
-    const management = vault
-        ? networkConfig.management.getEnsOrAddress(vault.management)
-        : '';
-    const guardian = vault
-        ? networkConfig.guardian.getEnsOrAddress(vault.guardian)
-        : '';
+    const rewards = vault ? (
+        <EtherScanLink
+            address={networkConfig.treasury.getEnsOrAddress(vault.rewards)}
+            network={network}
+        />
+    ) : (
+        ''
+    );
+    const governance = vault ? (
+        <EtherScanLink
+            address={networkConfig.governance.getEnsOrAddress(vault.governance)}
+            network={network}
+        />
+    ) : (
+        ''
+    );
+    const management = vault ? (
+        <EtherScanLink
+            address={networkConfig.management.getEnsOrAddress(vault.management)}
+            network={network}
+        />
+    ) : (
+        ''
+    );
+    const guardian = vault ? (
+        <EtherScanLink
+            address={networkConfig.guardian.getEnsOrAddress(vault.guardian)}
+            network={network}
+        />
+    ) : (
+        ''
+    );
     const total_asset =
         vault &&
         displayAmount(vault.totalAssets, vault.token.decimals) +
