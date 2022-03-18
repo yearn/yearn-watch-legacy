@@ -6,7 +6,7 @@ import { StrategyTVL } from '../types/strategy-tvl';
 import { getAllStrategies, getStrategies } from './strategies';
 import { flattenArrays } from './commonUtils';
 import { isAddress } from 'ethers/lib/utils';
-import _, { filter } from 'lodash';
+import _ from 'lodash';
 import { getStrategiesHelperInstance } from './contracts/instances';
 import { getEthersDefaultProvider } from './ethers';
 import { Contract } from 'ethers';
