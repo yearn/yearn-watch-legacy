@@ -32,6 +32,7 @@ import GenLender from './GenLender';
 import StrategyDetail from './StrategyDetail';
 import StrategyHealthCheck from './StrategyHealthCheck';
 import StrategyReports from './StrategyReports';
+import StrategyTokens from './StrategyTokens';
 
 const StyledCard = styled(Card).withConfig({
     shouldForwardProp: (props) => props.toString() !== 'emergencyExit',
@@ -202,6 +203,13 @@ export const SingleStrategy = () => {
                     )
                 );
             }
+            case 3: {
+                return (
+                    strategy && (
+                        <StrategyTokens strategy={strategy} network={network} />
+                    )
+                );
+            }
             default: {
                 if (!additionalInfo) {
                     throw Error('Should not render tab for additional info');
@@ -302,6 +310,7 @@ export const SingleStrategy = () => {
                                     <Tab label="Detail" />
                                     <Tab label="Reports" />
                                     <Tab label="Health Check" />
+                                    <Tab label="Tokens" />
                                     {additionalInfo && (
                                         <Tab label={additionalInfo} />
                                     )}

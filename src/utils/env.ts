@@ -19,6 +19,8 @@ export const getEnv = memoize(
         fbApiKey: process.env.REACT_APP_FB_API_KEY,
         fbAuthDomain: process.env.REACT_APP_FB_AUTH_DOMAIN,
         fbProjectId: process.env.REACT_APP_FB_PROJECT_ID,
+        // TODO: replace apiKey for production key, get from ENV variable
+        ethplorerKey: 'freekey',
     })
 );
 
