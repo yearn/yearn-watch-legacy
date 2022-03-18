@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { uniqBy, memoize } from 'lodash';
+import { uniqBy, memoize, values } from 'lodash';
 import BigNumber from 'bignumber.js';
 import compareVersions from 'compare-versions';
 
@@ -99,4 +99,8 @@ const _getVaultStrategyMetadata = async (
     return metadata;
 };
 
-export const getVaultStrategyMetadata = memoize(_getVaultStrategyMetadata);
+// Functions with more than 2 parameters need a custom key defined for memoization to work correctly.
+export const getVaultStrategyMetadata = memoize(
+    _getVaultStrategyMetadata,
+    (...args) => values(args).join('_')
+);
