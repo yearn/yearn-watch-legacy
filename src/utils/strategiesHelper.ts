@@ -16,6 +16,23 @@ export const getAssetsStrategiesAddressesByFilterNames = async (
     names: string[],
     network: Network
 ): Promise<string[]> => {
+    // FIXME: temporary fix for fantom chain
+    if (network === Network.fantom) {
+        const allStrategies = await getAllStrategies(network);
+        if (names.map((name) => name.toLowerCase()).includes('all')) {
+            return allStrategies.map((strategy) => strategy.address);
+        }
+        const filteredStrategies = names.map((name) =>
+            allStrategies
+                .filter((strategy) =>
+                    strategy.name.toLowerCase().includes(name.toLowerCase())
+                )
+                .map((strategy) => strategy.address)
+        );
+        const flattenResults = flattenArrays(filteredStrategies);
+        return Array.from(new Set(flattenResults));
+    }
+
     if (names.map((name) => name.toLowerCase()).includes('all')) {
         const allStrategies = await getAllStrategies(network);
         return allStrategies.map((strategy) => strategy.address);
@@ -77,6 +94,7 @@ export const getStrategyTVLsPerProtocol = async (
         excludeStrategyAddresses
             .map((address) => address.toLowerCase())
             .includes(strategy.toLowerCase());
+
     const result = await getAssetsStrategiesAddressesByFilterNames(
         aliases,
         network

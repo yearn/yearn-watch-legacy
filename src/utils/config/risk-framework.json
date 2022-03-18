@@ -801,8 +801,8 @@
                     "vedao",
                     "0xdao",
                     "solidexjoint",
-                    "singleassetsolidexLP",
-                    "singleassetsolidexLPwitharb"
+                    "veLp_Solidex",
+                    "veLp_arb_Solidex"
                 ]
             },
             "codeReviewScore": 5,
