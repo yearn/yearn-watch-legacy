@@ -12,6 +12,7 @@ import { Link, Grid } from '@mui/material';
 import { extractAddress } from '../../../utils/commonUtils';
 import getNetworkConfig from '../../../utils/config';
 import { Network } from '../../../types';
+import { getEthersDefaultProvider } from '../../../utils/ethers';
 
 type EtherScanLinkProps = {
     address?: string;
@@ -65,6 +66,10 @@ const StyledCopiedText = styled.span`
 const EtherScanLink = (props: EtherScanLinkProps) => {
     const { address, transactionHash, internalHref, network } = props;
     const [copied, setCopied] = useState(false);
+    const [value, setValue] = useState('');
+    const [extractedValue, setExtractedValue] = useState('');
+    const [hashValue, setHashValue] = useState('');
+    const [resolved, setResolved] = useState(false);
     const networkConfig = getNetworkConfig(network);
 
     useEffect(() => {
@@ -75,16 +80,42 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
         return () => clearTimeout(timeId);
     }, [copied]);
 
-    let value = '';
-    let extractedValue = '';
-    if (address) {
-        value = toChecksumAddress(address);
-        extractedValue = extractAddress(address);
-    }
-    if (transactionHash) {
-        value = transactionHash;
-        extractedValue = extractAddress(transactionHash);
-    }
+    useEffect(() => {
+        if (address) {
+            // check if ENS
+            if (address.includes('.')) {
+                setValue(address);
+                setExtractedValue(address);
+                const provider = getEthersDefaultProvider(network);
+                provider
+                    .resolveName(address)
+                    .then((res) => {
+                        setHashValue(res || '');
+                        setResolved(true);
+                    })
+                    .catch(() => setResolved(false));
+            } else {
+                // try to get the checksum address
+                try {
+                    const checksumAddress = toChecksumAddress(address);
+                    setValue(checksumAddress);
+                    setExtractedValue(extractAddress(address));
+                    setHashValue(checksumAddress);
+                    setResolved(true);
+                } catch {
+                    setValue(address);
+                    setExtractedValue(address);
+                    setResolved(false);
+                }
+            }
+        }
+        if (transactionHash) {
+            setValue(transactionHash);
+            setExtractedValue(extractAddress(transactionHash));
+            setHashValue(transactionHash);
+            setResolved(true);
+        }
+    }, []);
 
     const maskedValue = (
         <Tooltip title={value} aria-label="Etherscan">
@@ -97,45 +128,49 @@ const EtherScanLink = (props: EtherScanLinkProps) => {
         setCopied(true);
     };
     const refLink = transactionHash
-        ? networkConfig.toTxExplorerUrl(value)
-        : networkConfig.toAddressExplorerUrl(value);
-    return (
-        <Grid container spacing={2} alignItems="center">
-            <Grid item>
-                <StyledAddress>
-                    {internalHref ? (
-                        <Link
-                            component={RouterLink}
-                            color="inherit"
-                            to={internalHref}
-                        >
-                            <Hidden smUp>{maskedValue}</Hidden>
-                            <Hidden smDown>{value}</Hidden>
-                        </Link>
-                    ) : (
-                        <>
-                            <Hidden smUp>{maskedValue}</Hidden>
-                            <Hidden smDown>{value}</Hidden>
-                        </>
-                    )}
-                </StyledAddress>
+        ? networkConfig.toTxExplorerUrl(hashValue)
+        : networkConfig.toAddressExplorerUrl(hashValue);
 
-                <Tooltip title="Copy to clipboard" aria-label="Clipboard">
-                    <StyledLink onClick={(e) => onCopyToClipboard(e)}>
-                        <StyledCopiedText>
-                            <StyledFileCopy fontSize="inherit" />
-                            {copied ? ' Copied' : ''}
-                        </StyledCopiedText>
-                    </StyledLink>
-                </Tooltip>
-                <Tooltip title="View on Explorer" aria-label="Explorer">
-                    <StyledLink href={refLink} target="_blank">
-                        <StyledCallMadeIcon fontSize="inherit" />
-                    </StyledLink>
-                </Tooltip>
+    if (!resolved) {
+        return <>{value}</>;
+    } else {
+        return (
+            <Grid container spacing={2} alignItems="center">
+                <Grid item>
+                    <StyledAddress>
+                        {internalHref ? (
+                            <Link
+                                component={RouterLink}
+                                color="inherit"
+                                to={internalHref}
+                            >
+                                <Hidden smUp>{maskedValue}</Hidden>
+                                <Hidden smDown>{value}</Hidden>
+                            </Link>
+                        ) : (
+                            <>
+                                <Hidden smUp>{maskedValue}</Hidden>
+                                <Hidden smDown>{value}</Hidden>
+                            </>
+                        )}
+                    </StyledAddress>
+                    <Tooltip title="Copy to clipboard" aria-label="Clipboard">
+                        <StyledLink onClick={(e) => onCopyToClipboard(e)}>
+                            <StyledCopiedText>
+                                <StyledFileCopy fontSize="inherit" />
+                                {copied ? ' Copied' : ''}
+                            </StyledCopiedText>
+                        </StyledLink>
+                    </Tooltip>
+                    <Tooltip title="View on Explorer" aria-label="Explorer">
+                        <StyledLink href={refLink} target="_blank">
+                            <StyledCallMadeIcon fontSize="inherit" />
+                        </StyledLink>
+                    </Tooltip>
+                </Grid>
             </Grid>
-        </Grid>
-    );
+        );
+    }
 };
 
 export default EtherScanLink;
