@@ -13,6 +13,9 @@ export const getEnv = memoize(
             process.env.ALCHEMY_KEY || process.env.REACT_APP_ALCHEMY_KEY,
         fantomNode:
             process.env.FANTOM_NODE || process.env.REACT_APP_FANTOM_NODE,
+        theGraphKey:
+            process.env.THE_GRAPH_API_KEY ||
+            process.env.REACT_APP_THE_GRAPH_API_KEY,
         fbApiKey: process.env.REACT_APP_FB_API_KEY,
         fbAuthDomain: process.env.REACT_APP_FB_AUTH_DOMAIN,
         fbProjectId: process.env.REACT_APP_FB_PROJECT_ID,
