@@ -795,7 +795,7 @@
             "complexityScore": 3,
             "teamKnowledgeScore": 3,
             "criteria": {
-                "nameLike": ["fBeets Compounder"],
+                "nameLike": ["fbeetscompounder"],
                 "strategies": [],
                 "exclude": []
             }
