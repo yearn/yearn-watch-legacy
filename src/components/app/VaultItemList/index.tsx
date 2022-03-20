@@ -88,14 +88,14 @@ const StyledMuiAccordion = styled(MuiAccordion).withConfig({
 `;
 const _VaultItemList = (props: VaultItemListProps) => {
     const { vault, network } = props;
-    const config = false;
+    const config = vault.configOK;
     //hook to render list only when panel actually expanded
     const [expanded, setExpanded] = useState(false);
 
     const BlueOnGreenTooltip = withStyles({
         tooltip: {
             color: config ? 'transparent' : '#F2F2F2',
-            backgroundColor: config ? 'transparent' : '#fff',
+            backgroundColor: config ? 'transparent' : '#EB5757',
             fontSize: '16px',
         },
     })(Tooltip);
