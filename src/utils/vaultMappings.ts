@@ -24,6 +24,9 @@ import { toHumanDateText } from './dateUtils';
 import { vaultChecks } from './checks';
 import { getABI_032 } from './contracts/ABI';
 import getNetworkConfig from './config';
+import { getStrategyTVLsPerProtocolMemo } from './strategiesHelper';
+import { initRiskFrameworkScores } from './risk-framework';
+import { ProtocolTVL } from '../types/protocol-tvl';
 
 const VAULT_VIEW_METHODS = [
     'management',
@@ -44,6 +47,7 @@ export const mapVaultApiDataToVault = async (
     network: Network
 ): Promise<Vault[]> => {
     const multicall = getMulticallContract(network);
+    let groups = initRiskFrameworkScores(network);
 
     const vaultMap = new Map<string, VaultApi>();
     const strategyMap = new Map<string, string>();
@@ -79,27 +83,33 @@ export const mapVaultApiDataToVault = async (
         }
     );
 
-    // TODO make risk call here. pass to mapVaultData. if strat not in list then add variable to strat
-    // TODO this is the same help contract as the risk page one
-    // TODO vaults already have strategies. why ask for them again?
+    groups = groups.filter((g) => g.id !== 'others'); // TODO why is others not resolving?
+    const itemPromises = groups.map(async (item) => {
+        return getStrategyTVLsPerProtocolMemo(
+            item.id,
+            item.criteria.nameLike,
+            network as Network,
+            item.criteria.strategies,
+            item.criteria.exclude
+        );
+    });
+
+    const riskItems = await Promise.all(itemPromises);
     const strategiesHelperCallResults: ContractCallResults =
         await multicall.call(
             createStrategiesHelperCallAssetStrategiesAddresses(vaults, network)
         );
 
-    console.log('strategy helper');
-    //console.log(vaults);
-    console.log(strategiesHelperCallResults); // return strategies?
     const results: ContractCallResults = await multicall.call(
         vaultCalls.concat(stratCalls)
     );
-    console.log(results);
 
     return mapVaultData(
         results,
         vaultMap,
         strategyMap,
         network,
+        riskItems,
         strategiesHelperCallResults
     );
 };
@@ -172,9 +182,18 @@ const mapVaultData = (
     vaultMap: Map<string, VaultApi>,
     strategyMap: Map<string, string>,
     network: Network,
+    riskItems: Array<ProtocolTVL>,
     strategiesHelperCallsResults?: ContractCallResults
 ): Vault[] => {
     const vaults: Vault[] = [];
+    const strategiesOnRiskPage = new Set<string>();
+
+    riskItems.forEach((protocolTvl) => {
+        protocolTvl.strategies.forEach((strategyTVL) => {
+            strategiesOnRiskPage.add(strategyTVL.address);
+        });
+    });
+
     vaultMap.forEach((vault) => {
         const {
             address,
@@ -250,7 +269,7 @@ const mapVaultData = (
                     ...mappedVaultContractCallsConverted,
                     strategies: sortedStrategies,
                 },
-                // TODO add risk strategies here
+                strategiesOnRiskPage,
                 networkConfig
             )
         );

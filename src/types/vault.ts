@@ -40,6 +40,7 @@ export type Vault = {
     strategies: Strategy[];
     debtUsage: string;
     configOK: boolean;
+    checkRiskOk: boolean;
     configErrors?: string[];
 };
 

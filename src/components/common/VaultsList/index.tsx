@@ -10,9 +10,6 @@ import { Network, Vault } from '../../../types';
 import SearchInput, { Flags } from '../SearchInput';
 import { VaultItemList } from '../../app';
 import { EMPTY_ADDRESS } from '../../../utils/commonUtils';
-import { initRiskFrameworkScores } from '../../../utils/risk-framework';
-import { getStrategyTVLsPerProtocol } from '../../../utils/strategiesHelper';
-import { ProtocolTVL } from '../../../types/protocol-tvl';
 
 const StyledReportContainer = styled.div`
     && {
@@ -63,20 +60,6 @@ export const VaultsList = (props: VaultsListProps) => {
         return strategies;
     };
 
-    const filterStrategiesNotInRiskFramework = (
-        vault: Vault,
-        newText: string
-    ) => {
-        const strategies = vault.strategies.filter((strategy) => {
-            return (
-                strategy.address.toLowerCase().includes(newText) ||
-                strategy.name.toLowerCase().includes(newText) ||
-                strategy.strategist.toLowerCase().includes(newText)
-            );
-        });
-        return strategies;
-    };
-
     const filterStrategiesHealthCheck = (vault: Vault, health: string) => {
         const strategies = vault.strategies.filter((strategy) => {
             switch (health) {
@@ -103,15 +86,6 @@ export const VaultsList = (props: VaultsListProps) => {
     };
 
     const onFilter = (newText: string, flags: Flags, health: string) => {
-        // TODO remove me. items has strat ids
-        console.log('1!!!!!!!!!!!');
-        console.log(flags);
-        console.log(
-            !flags.onlyWithWarnings &&
-                !flags.onlyMissingRisk &&
-                newText.trim() === '' &&
-                health.trim() === ''
-        );
         if (
             !flags.onlyWithWarnings &&
             !flags.onlyMissingRisk &&
@@ -122,9 +96,6 @@ export const VaultsList = (props: VaultsListProps) => {
             setTotalStrategiesFound(getTotalStrategies(items));
         } else {
             let totalStrategiesFound = 0;
-            console.log('2222222222222222');
-            console.log(items);
-
             const filteredItems = items
                 .filter((item: Vault) => {
                     const applyFlags =
@@ -133,34 +104,10 @@ export const VaultsList = (props: VaultsListProps) => {
                     return applyFlags;
                 })
                 .filter((item: Vault) => {
-                    if (item.strategies.length > 0 && Math.random() < 0.5) {
-                        console.log(item.strategies.length);
-                        item.strategies.pop();
-                        console.log('popped!' + item.name);
-                    }
-                })
-                .filter((item: Vault) => {
-                    // find all strategies in risk page that doesn't exist on homepage
-                    const strategies = [];
-                    if (flags.onlyWithWarnings) {
-                        const riskGroups = initRiskFrameworkScores(network);
-                        const protocols: Array<ProtocolTVL> = [];
-                        const riskPromises = riskGroups.map(async (item) => {
-                            const protocol = await getStrategyTVLsPerProtocol(
-                                item.id,
-                                item.criteria.nameLike,
-                                network as Network,
-                                item.criteria.strategies,
-                                item.criteria.exclude // TODO exclude only strategies on front page
-                            );
-                            //console.log(protocol);
-                            // protocols.push(protocol);
-                            return protocol.strategies.map((s) => s.address);
-                        });
-                        Promise.all(riskPromises);
-                    } else {
-                        return true;
-                    }
+                    const applyFlags =
+                        !flags.onlyMissingRisk ||
+                        (flags.onlyMissingRisk && !item.checkRiskOk);
+                    return applyFlags;
                 })
                 .filter((item: Vault) => {
                     const filteredStrategies = filterStrategies(item, newText);

@@ -11,6 +11,7 @@ import { getStrategiesHelperInstance } from './contracts/instances';
 import { getEthersDefaultProvider } from './ethers';
 import { Contract } from 'ethers';
 import TokenABI from './contracts/ABI/Token.json';
+import { memoize, values } from 'lodash';
 
 export const getAssetsStrategiesAddressesByFilterNames = async (
     names: string[],
@@ -78,6 +79,7 @@ export const getDust = async (strategy: Strategy, network: Network) => {
     return await token.balanceOf(strategy.address);
 };
 
+// TODO In the future, get getStrategyTVLsPerProtocol data from subgraph
 export const getStrategyTVLsPerProtocol = async (
     protocolName: string,
     aliases: string[],
@@ -199,3 +201,9 @@ export const getWarnings = (strategies: Strategy[]): string[] => {
 
     return warnings;
 };
+
+// Functions with more than 2 parameters need a custom key defined for memoization to work correctly.
+export const getStrategyTVLsPerProtocolMemo = memoize(
+    getStrategyTVLsPerProtocol,
+    (...args) => values(args).join('_')
+);

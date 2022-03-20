@@ -46,8 +46,6 @@ export const Risk = () => {
     const [items, setItems] = useState<any[]>([]);
     const [isLoadingItems, setIsLoadingItems] = useState<boolean>(true);
     const groupData = initRiskFrameworkScores(network);
-    // console.log('?????!!!!!!!!!!!!!');
-    // console.log(groupData);
     const groupingId = 'default';
     if (groups.length === 0 && groupData) {
         setGroups(groupData);
@@ -57,7 +55,7 @@ export const Risk = () => {
         if (groups.length == 0) {
             return;
         }
-        let deletemeTotal = 0;
+
         const itemPromises = groups.map(async (item) => {
             const newItem = _.omit(item, 'criteria');
             const protocol = await getStrategyTVLsPerProtocol(
@@ -67,9 +65,6 @@ export const Risk = () => {
                 item.criteria.strategies,
                 item.criteria.exclude
             );
-            deletemeTotal += protocol.strategies.length;
-            console.log('333??????????' + deletemeTotal);
-            console.log(protocol);
             const urlParam = getExcludeIncludeUrlParams({
                 exclude: item.criteria.exclude as unknown as string,
                 include: item.criteria.strategies as unknown as string,

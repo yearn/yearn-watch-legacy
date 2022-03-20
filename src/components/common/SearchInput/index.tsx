@@ -153,8 +153,6 @@ const SearchInput = (props: SearchInputProps) => {
             setFilterVaultsWithWarnings(e.target.checked);
             setIsSearching(true);
             const newSearchTextLowerCase = searchText.toLowerCase();
-            console.log('is target checked: ' + e.target.checked);
-            console.log(filterVaultsWithWarnings);
             onFilter(
                 newSearchTextLowerCase,
                 getCurrentFlags(e.target.checked, filterVaultsWithMissingRisks),
@@ -164,6 +162,22 @@ const SearchInput = (props: SearchInputProps) => {
         },
         [searchText, isSearching, healthCheckFilter]
     );
+
+    const onFilterVaultsWithMissingRisks = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            setFilterVaultsWithMissingRisks(e.target.checked);
+            setIsSearching(true);
+            const newSearchTextLowerCase = searchText.toLowerCase();
+            onFilter(
+                newSearchTextLowerCase,
+                getCurrentFlags(filterVaultsWithWarnings, e.target.checked),
+                healthCheckFilter
+            );
+            setIsSearching(false);
+        },
+        [searchText, isSearching, healthCheckFilter]
+    );
+
     const handleClickClearSearch = useCallback(() => {
         setSearchText('');
         setFilterVaultsWithWarnings(false);
@@ -284,6 +298,23 @@ const SearchInput = (props: SearchInputProps) => {
                                 }
                                 labelPlacement="start"
                                 label="Vaults with warnings"
+                            />
+                        </StyledContainer>
+                    </Grid>
+                    <Grid item xs={12} sm={3}>
+                        <StyledContainer maxWidth="lg">
+                            <StyledFormControlLabel
+                                control={
+                                    <Switch
+                                        checked={filterVaultsWithMissingRisks}
+                                        onChange={
+                                            onFilterVaultsWithMissingRisks
+                                        }
+                                        color="primary"
+                                    />
+                                }
+                                labelPlacement="start"
+                                label="Vaults with missing risk config"
                             />
                         </StyledContainer>
                     </Grid>

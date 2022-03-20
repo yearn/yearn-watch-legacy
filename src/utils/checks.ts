@@ -1,7 +1,8 @@
-import { NetworkConfig, Vault } from '../types';
+import { NetworkConfig, Strategy, Vault } from '../types';
 
 export type VaultCheck = {
     checkOK: boolean;
+    checkRiskOk: boolean;
     errors?: string[];
 };
 
@@ -58,9 +59,10 @@ const checks = [
 
 export const vaultChecks = (
     vault: Vault,
+    strategiesOnRiskPage: Set<string>,
     networkConfig: NetworkConfig
 ): Vault => {
-    const result: VaultCheck = { checkOK: true };
+    const result: VaultCheck = { checkOK: true, checkRiskOk: true };
     checks.forEach((check) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -72,9 +74,17 @@ export const vaultChecks = (
         }
     });
 
+    vault.strategies.forEach((strategy: Strategy) => {
+        if (!strategiesOnRiskPage.has(strategy.address)) {
+            result.checkRiskOk = false;
+            strategy.isMissingRisk = true;
+        }
+    });
+
     return {
         ...vault,
         configOK: result.checkOK,
+        checkRiskOk: result.checkRiskOk,
         configErrors: result.errors,
     };
 };

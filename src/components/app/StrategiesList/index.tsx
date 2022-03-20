@@ -283,7 +283,7 @@ const _StrategiesList = (props: StrategiesListProps) => {
 
                                                             <StyledSubtitle>
                                                                 Since Last
-                                                                Report
+                                                                Report ??
                                                             </StyledSubtitle>
                                                         </Grid>
                                                         <StyleDiv />
@@ -398,6 +398,22 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                             <StyledSubtitle>
                                                                 Total Estimated
                                                                 Assets
+                                                            </StyledSubtitle>
+                                                        </Grid>
+                                                        <Grid
+                                                            item
+                                                            xs={12}
+                                                            md={2}
+                                                        >
+                                                            <StyledTitle>
+                                                                {vault &&
+                                                                strategy.isMissingRisk
+                                                                    ? 'true'
+                                                                    : 'false'}
+                                                            </StyledTitle>
+                                                            <StyledSubtitle>
+                                                                Missing Risk
+                                                                Profile
                                                             </StyledSubtitle>
                                                         </Grid>
                                                         <StyleDiv />

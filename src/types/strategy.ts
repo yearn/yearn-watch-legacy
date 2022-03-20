@@ -25,6 +25,7 @@ export type Strategy = {
 
     emergencyExit: boolean;
     isActive?: boolean;
+    isMissingRisk?: boolean;
 
     strategist: string;
     keeper: string;
