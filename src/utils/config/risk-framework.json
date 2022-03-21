@@ -785,6 +785,22 @@
             }
         },
         {
+            "id": "fbeetscompounder",
+            "network": "fantom",
+            "label": "fBeets Compounder",
+            "codeReviewScore": 3,
+            "testingScore": 4,
+            "auditScore": 5,
+            "protocolSafetyScore": 4,
+            "complexityScore": 3,
+            "teamKnowledgeScore": 3,
+            "criteria": {
+                "nameLike": ["fbeetscompounder"],
+                "strategies": [],
+                "exclude": []
+            }
+        },
+        {
             "id": "others",
             "network": "fantom",
             "label": "Others",
@@ -802,7 +818,8 @@
                     "0xdao",
                     "solidexjoint",
                     "veLp_Solidex",
-                    "veLp_arb_Solidex"
+                    "veLp_arb_Solidex",
+                    "fbeetscompounder"
                 ]
             },
             "codeReviewScore": 5,
