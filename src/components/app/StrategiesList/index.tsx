@@ -283,7 +283,7 @@ const _StrategiesList = (props: StrategiesListProps) => {
 
                                                             <StyledSubtitle>
                                                                 Since Last
-                                                                Report ??
+                                                                Report
                                                             </StyledSubtitle>
                                                         </Grid>
                                                         <StyleDiv />

@@ -86,7 +86,6 @@ export const Risk = () => {
             const medianLikelihood = getMedian(values);
             return {
                 ...newItem,
-                // strategies: protocol.strategies,
                 longevityScore,
                 label: item.label,
                 likelihood: medianLikelihood,

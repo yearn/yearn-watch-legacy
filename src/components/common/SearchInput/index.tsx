@@ -250,7 +250,7 @@ const SearchInput = (props: SearchInputProps) => {
         <div>
             <StyledForm>
                 <Grid container direction="row" alignItems="center" spacing={3}>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={12}>
                         <StyledContainer maxWidth="lg">
                             <StyledTextField
                                 variant="outlined"
@@ -286,7 +286,7 @@ const SearchInput = (props: SearchInputProps) => {
                             />
                         </StyledContainer>
                     </Grid>
-                    <Grid item xs={12} sm={3}>
+                    <Grid item xs={12} sm={4}>
                         <StyledContainer maxWidth="lg">
                             <StyledFormControlLabel
                                 control={
@@ -301,7 +301,7 @@ const SearchInput = (props: SearchInputProps) => {
                             />
                         </StyledContainer>
                     </Grid>
-                    <Grid item xs={12} sm={3}>
+                    <Grid item xs={12} sm={4}>
                         <StyledContainer maxWidth="lg">
                             <StyledFormControlLabel
                                 control={
@@ -318,7 +318,7 @@ const SearchInput = (props: SearchInputProps) => {
                             />
                         </StyledContainer>
                     </Grid>
-                    <Grid item xs={12} sm={3}>
+                    <Grid item xs={12} sm={4}>
                         <StyledContainer maxWidth="lg">
                             <StyledFormControlLabel
                                 control={

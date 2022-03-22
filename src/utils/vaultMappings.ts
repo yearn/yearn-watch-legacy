@@ -47,7 +47,7 @@ export const mapVaultApiDataToVault = async (
     network: Network
 ): Promise<Vault[]> => {
     const multicall = getMulticallContract(network);
-    let groups = initRiskFrameworkScores(network);
+    const groups = initRiskFrameworkScores(network);
 
     const vaultMap = new Map<string, VaultApi>();
     const strategyMap = new Map<string, string>();
@@ -83,9 +83,9 @@ export const mapVaultApiDataToVault = async (
         }
     );
 
-    groups = groups.filter((g) => g.id !== 'others'); // TODO why is others not resolving?
-    const itemPromises = groups.map(async (item) => {
-        return getStrategyTVLsPerProtocolMemo(
+    const noOtherGroups = groups.filter((g) => g.id !== 'others'); // TODO why is others not resolving?
+    const itemPromises = noOtherGroups.map(async (item) => {
+        return await getStrategyTVLsPerProtocolMemo(
             item.id,
             item.criteria.nameLike,
             network as Network,
