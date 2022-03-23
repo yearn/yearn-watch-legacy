@@ -795,7 +795,7 @@
             "complexityScore": 3,
             "teamKnowledgeScore": 3,
             "criteria": {
-                "nameLike": ["fbeetscompounder"],
+                "nameLike": ["fbeets compounder"],
                 "strategies": [],
                 "exclude": []
             }
@@ -835,7 +835,7 @@
                     "solidexjoint",
                     "veLp_Solidex",
                     "veLp_arb_Solidex",
-                    "fbeetscompounder",
+                    "fbeets compounder",
                     "genlevgeist"
                 ]
             },
