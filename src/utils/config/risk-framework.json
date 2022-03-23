@@ -827,7 +827,7 @@
             "complexityScore": 4,
             "teamKnowledgeScore": 2,
             "criteria": {
-                "nameLike": ["GeistLenderBorrower"],
+                "nameLike": ["GeistMIMLender", "GeistDAILender", "GeistfUSDTLender", "GeistfUSDCLender"],
                 "strategies": [],
                 "exclude": []
             }
@@ -854,7 +854,10 @@
                     "veLp_arb_Solidex",
                     "fbeets compounder",
                     "genlevgeist",
-                    "GeistLenderBorrower"
+                    "GeistMIMLender",
+                    "GeistDAILender",
+                    "GeistfUSDTLender",
+                    "GeistfUSDCLender"
                 ]
             },
             "codeReviewScore": 5,
