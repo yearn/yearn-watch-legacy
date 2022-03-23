@@ -801,6 +801,22 @@
             }
         },
         {
+            "id": "genlevgeist",
+            "network": "fantom",
+            "label": "Generic Lev Geist",
+            "codeReviewScore": 3,
+            "testingScore": 3,
+            "auditScore": 5,
+            "protocolSafetyScore": 3,
+            "complexityScore": 4,
+            "teamKnowledgeScore": 2,
+            "criteria": {
+                "nameLike": ["genlevgeist"],
+                "strategies": [],
+                "exclude": []
+            }
+        },
+        {
             "id": "others",
             "network": "fantom",
             "label": "Others",
@@ -819,7 +835,8 @@
                     "solidexjoint",
                     "veLp_Solidex",
                     "veLp_arb_Solidex",
-                    "fbeetscompounder"
+                    "fbeetscompounder",
+                    "genlevgeist"
                 ]
             },
             "codeReviewScore": 5,
