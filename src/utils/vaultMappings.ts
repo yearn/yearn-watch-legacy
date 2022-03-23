@@ -80,8 +80,8 @@ export const mapVaultApiDataToVault = async (
         }
     );
 
-    // const noOtherGroups = groups.filter((g) => g.id !== 'others');
-    const itemPromises = groups.map((item) => {
+    const noOtherGroups = groups.filter((g) => g.id !== 'others');
+    const itemPromises = noOtherGroups.map((item) => {
         const protocol = getStrategyTVLsPerProtocolMemo(
             item.id,
             item.criteria.nameLike,

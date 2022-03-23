@@ -1,7 +1,7 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { StrategyMetadata, Yearn } from '@yfi/sdk';
 import { isAddress } from 'ethers/lib/utils';
-import { memoize } from 'lodash';
+import { memoize, values } from 'lodash';
 import {
     DEFAULT_QUERY_PARAM,
     Network,
@@ -116,7 +116,7 @@ export abstract class VaultService {
             )
         );
 
-        return apiVaults;
+        return filteredVaults;
     };
 
     public getMappedVaults = async (
