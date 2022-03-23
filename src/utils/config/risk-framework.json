@@ -870,6 +870,22 @@
             }
         },
         {
+            "id": "kashilender",
+            "network": "fantom",
+            "label": "Kashi Lender",
+            "codeReviewScore": 3,
+            "testingScore": 4,
+            "auditScore": 5,
+            "protocolSafetyScore": 3,
+            "complexityScore": 3,
+            "teamKnowledgeScore": 4,
+            "criteria": {
+                "nameLike": ["kashi lender"],
+                "strategies": [],
+                "exclude": []
+            }
+        },
+        {
             "id": "others",
             "network": "fantom",
             "label": "Others",
@@ -896,7 +912,8 @@
                     "GeistMIMLender",
                     "GeistDAILender",
                     "GeistfUSDTLender",
-                    "GeistfUSDCLender"
+                    "GeistfUSDCLender",
+                    "kashi lender"
                 ]
             },
             "codeReviewScore": 5,
