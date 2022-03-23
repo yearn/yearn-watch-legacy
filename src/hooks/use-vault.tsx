@@ -56,7 +56,7 @@ export function useAllVaults(network: Network) {
                 let offset = 0;
                 let allVaults: Vault[] = [];
                 while (allVaults.length < numVaults) {
-                    const newVaults = await vaultService.getVaults(
+                    const newVaults = await vaultService.getMappedVaults(
                         [],
                         toQueryParam(offset, DEFAULT_BATCH_SIZE)
                     );

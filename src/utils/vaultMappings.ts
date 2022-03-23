@@ -1,32 +1,31 @@
 import { Vault as VaultSDK } from '@yfi/sdk';
-import { BigNumber } from 'ethers';
 import { BigNumber as BigNumberJS } from 'bignumber.js';
 import { ContractCallContext, ContractCallResults } from 'ethereum-multicall';
-
+import { BigNumber } from 'ethers';
 import {
+    Network,
     Strategy,
+    StrategyApi,
     Vault,
     VaultApi,
-    Network,
-    StrategyApi,
-    VaultVersion,
     VaultData,
+    VaultVersion,
 } from '../types';
-import { buildStrategyCalls, mapStrategiesCalls } from './strategies';
+import { ProtocolTVL } from '../types/protocol-tvl';
+import { vaultChecks } from './checks';
 import {
     createStrategiesHelperCallAssetStrategiesAddresses,
     mapContractCalls,
     mapToStrategyAddressQueueIndex,
 } from './commonUtils';
-import { getMulticallContract } from './multicall';
-import { getTotalDebtUsage } from './strategyParams';
-import { toHumanDateText } from './dateUtils';
-import { vaultChecks } from './checks';
-import { getABI_032 } from './contracts/ABI';
 import getNetworkConfig from './config';
-import { getStrategyTVLsPerProtocolMemo } from './strategiesHelper';
+import { getABI_032 } from './contracts/ABI';
+import { toHumanDateText } from './dateUtils';
+import { getMulticallContract } from './multicall';
 import { initRiskFrameworkScores } from './risk-framework';
-import { ProtocolTVL } from '../types/protocol-tvl';
+import { buildStrategyCalls, mapStrategiesCalls } from './strategies';
+import { getStrategyTVLsPerProtocolMemo } from './strategiesHelper';
+import { getTotalDebtUsage } from './strategyParams';
 
 const VAULT_VIEW_METHODS = [
     'management',
@@ -51,14 +50,12 @@ export const mapVaultApiDataToVault = async (
 
     const vaultMap = new Map<string, VaultApi>();
     const strategyMap = new Map<string, string>();
-
     vaults.forEach((vault: VaultApi) => {
         vaultMap.set(vault.address, vault);
         vault.strategies.forEach((strat: StrategyApi) =>
             strategyMap.set(strat.address, vault.address)
         );
     });
-
     const vaultCalls: ContractCallContext[] = vaults.map(
         ({ address }: VaultApi) => {
             const calls = VAULT_VIEW_METHODS.map((method) => ({
@@ -83,18 +80,18 @@ export const mapVaultApiDataToVault = async (
         }
     );
 
-    const noOtherGroups = groups.filter((g) => g.id !== 'others'); // TODO why is others not resolving?
-    const itemPromises = noOtherGroups.map(async (item) => {
-        return await getStrategyTVLsPerProtocolMemo(
+    // const noOtherGroups = groups.filter((g) => g.id !== 'others');
+    const itemPromises = groups.map((item) => {
+        const protocol = getStrategyTVLsPerProtocolMemo(
             item.id,
             item.criteria.nameLike,
             network as Network,
             item.criteria.strategies,
             item.criteria.exclude
         );
+        return protocol;
     });
-
-    const riskItems = await Promise.all(itemPromises);
+    const strategyTvlsPerProtocol = await Promise.all(itemPromises); // this is what the risk page pulls in
     const strategiesHelperCallResults: ContractCallResults =
         await multicall.call(
             createStrategiesHelperCallAssetStrategiesAddresses(vaults, network)
@@ -109,7 +106,7 @@ export const mapVaultApiDataToVault = async (
         vaultMap,
         strategyMap,
         network,
-        riskItems,
+        strategyTvlsPerProtocol,
         strategiesHelperCallResults
     );
 };
@@ -182,13 +179,13 @@ const mapVaultData = (
     vaultMap: Map<string, VaultApi>,
     strategyMap: Map<string, string>,
     network: Network,
-    riskItems: Array<ProtocolTVL>,
+    strategyTvlsPerProtocol?: Array<ProtocolTVL>,
     strategiesHelperCallsResults?: ContractCallResults
 ): Vault[] => {
     const vaults: Vault[] = [];
     const strategiesOnRiskPage = new Set<string>();
 
-    riskItems.forEach((protocolTvl) => {
+    strategyTvlsPerProtocol?.forEach((protocolTvl) => {
         protocolTvl.strategies.forEach((strategyTVL) => {
             strategiesOnRiskPage.add(strategyTVL.address);
         });

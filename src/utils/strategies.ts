@@ -9,6 +9,7 @@ import {
     VaultApi,
     StrategyParams,
     Network,
+    StrategyApi,
 } from '../types';
 import { mapStrategyParams } from './strategyParams';
 import { mapContractCalls } from './commonUtils';
@@ -265,9 +266,9 @@ export const getStrategies = memoize(innerGetStrategies, (...args) =>
     values(args).join('_')
 );
 
-const _getAllStrategies = async (network: Network): Promise<Strategy[]> => {
+const _getAllStrategies = async (network: Network): Promise<StrategyApi[]> => {
     const vaultService = getVaultService(network);
-    const allVaults = await vaultService.getVaults();
+    const allVaults = await vaultService.getFilteredVaults();
     return allVaults.flatMap((vault) => vault.strategies);
 };
 

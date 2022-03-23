@@ -23,7 +23,7 @@ export function useHealthcheckStrategies(network: Network) {
                 let vaultsFetched = 0;
                 let allStrategies: GenericListItem[] = [];
                 while (vaultsFetched < numVaults) {
-                    const vaults = await vaultService.getVaults(
+                    const vaults = await vaultService.getMappedVaults(
                         [],
                         toQueryParam(offset, DEFAULT_BATCH_SIZE)
                     );

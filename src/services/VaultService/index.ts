@@ -70,7 +70,7 @@ export abstract class VaultService {
             throw new Error('Invalid vault address');
         }
 
-        const vaults = await this.getVaults(
+        const vaults = await this.getMappedVaults(
             [address],
             DEFAULT_QUERY_PARAM,
             false,
@@ -81,7 +81,7 @@ export abstract class VaultService {
         }
 
         // Try experimental vaults if not found in endorsed
-        const experimentalVaults = await this.getVaults(
+        const experimentalVaults = await this.getMappedVaults(
             [address],
             DEFAULT_QUERY_PARAM,
             true,
@@ -93,15 +93,15 @@ export abstract class VaultService {
         throw new Error('Address not recognized as a Yearn vault');
     };
 
-    public getVaults = async (
+    public getFilteredVaults = async (
         allowList: string[] = [],
         queryParams: QueryParam = DEFAULT_QUERY_PARAM,
         experimental = false,
         addresses?: string[]
-    ): Promise<Vault[]> => {
-        const apiVaults = await memoize(() =>
-            this.getApiVaults(experimental, addresses)
-        )();
+    ): Promise<VaultApi[]> => {
+        const apiVaults = await memoize(() => {
+            return this.getApiVaults(experimental, addresses);
+        })();
         const filterList = new Set(allowList.map((addr) => addr.toLowerCase()));
 
         let filteredVaults = filterVaultApiData(apiVaults, filterList);
@@ -116,6 +116,21 @@ export abstract class VaultService {
             )
         );
 
+        return apiVaults;
+    };
+
+    public getMappedVaults = async (
+        allowList: string[] = [],
+        queryParams: QueryParam = DEFAULT_QUERY_PARAM,
+        experimental = false,
+        addresses?: string[]
+    ): Promise<Vault[]> => {
+        const filteredVaults = await this.getFilteredVaults(
+            allowList,
+            queryParams,
+            experimental,
+            addresses
+        );
         // TODO: this is mainly slow because we need to do a multicall to get
         // healthcheck statuses for all strategies, if this information is added
         // to the subgraph, we can optimize this to be much faster by only
@@ -140,7 +155,7 @@ export abstract class VaultService {
         return getVaultStrategyMetadata(this.sdk, vaultAddress);
     };
 
-    protected getApiVaults = async (
+    public getApiVaults = async (
         experimental = false,
         addresses?: string[]
     ): Promise<VaultApi[]> => {
