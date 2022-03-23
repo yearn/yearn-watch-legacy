@@ -833,6 +833,22 @@
             }
         },
         {
+            "id": "curvegeist",
+            "network": "fantom",
+            "label": "Curve Geist",
+            "codeReviewScore": 4,
+            "testingScore": 3,
+            "auditScore": 4,
+            "protocolSafetyScore": 3,
+            "complexityScore": 3,
+            "teamKnowledgeScore": 2,
+            "criteria": {
+                "nameLike": ["curvegeist"],
+                "strategies": [],
+                "exclude": []
+            }
+        },
+        {
             "id": "others",
             "network": "fantom",
             "label": "Others",
@@ -854,7 +870,8 @@
                     "veLp_arb_Solidex",
                     "fbeets compounder",
                     "genlevgeist",
-                    "GeistLenderBorrower"
+                    "GeistLenderBorrower",
+                    "curvegeist"
                 ]
             },
             "codeReviewScore": 5,
