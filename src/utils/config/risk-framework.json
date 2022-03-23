@@ -817,6 +817,22 @@
             }
         },
         {
+            "id": "GeistLenderBorrower",
+            "network": "fantom",
+            "label": "Geist Lender Borrower",
+            "codeReviewScore": 2,
+            "testingScore": 2,
+            "auditScore": 5,
+            "protocolSafetyScore": 3,
+            "complexityScore": 4,
+            "teamKnowledgeScore": 2,
+            "criteria": {
+                "nameLike": ["GeistLenderBorrower"],
+                "strategies": [],
+                "exclude": []
+            }
+        },
+        {
             "id": "others",
             "network": "fantom",
             "label": "Others",
@@ -830,13 +846,15 @@
                     "SingleSidedBeethoven",
                     "ssbeetV2",
                     "ssbeetV2.1",
+                    "GeistLendingBorrower",
                     "vedao",
                     "0xdao",
                     "solidexjoint",
                     "veLp_Solidex",
                     "veLp_arb_Solidex",
                     "fbeets compounder",
-                    "genlevgeist"
+                    "genlevgeist",
+                    "GeistLenderBorrower"
                 ]
             },
             "codeReviewScore": 5,
