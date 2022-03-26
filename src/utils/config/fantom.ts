@@ -6,7 +6,7 @@ import {
 } from '../../types';
 
 const FANTOM_SUBGRAPH_URL =
-    'https://api.thegraph.com/subgraphs/name/yearn/yearn-vaults-v2-fantom';
+    'https://api.thegraph.com/subgraphs/name/bsamuels453/yearn-fantom-validation-grafted';
 
 const GOVERNANCE_ENS = 'governance';
 const GOVERNANCE = '0xC0E2830724C946a6748dDFE09753613cd38f6767';
