@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
 import sum from 'lodash/sum';
@@ -44,6 +44,7 @@ export const VaultsList = (props: VaultsListProps) => {
     const totalStrategies = getTotalStrategies(items);
     const [totalStrategiesFound, setTotalStrategiesFound] =
         useState(totalStrategies);
+    const refItems = useRef(items);
 
     if (items.length === 0) {
         return <>Vaults not found.</>;
@@ -85,6 +86,7 @@ export const VaultsList = (props: VaultsListProps) => {
         return strategies;
     };
 
+    // It's important to use refItems and not items because items will be within a stale scope that wont be updated
     const onFilter = (newText: string, flags: Flags, health: string) => {
         if (
             !flags.onlyWithWarnings &&
@@ -92,11 +94,11 @@ export const VaultsList = (props: VaultsListProps) => {
             newText.trim() === '' &&
             health.trim() === ''
         ) {
-            setFilteredItems(items);
-            setTotalStrategiesFound(getTotalStrategies(items));
+            setFilteredItems(refItems.current);
+            setTotalStrategiesFound(getTotalStrategies(refItems.current));
         } else {
             let totalStrategiesFound = 0;
-            const filteredItems = items
+            const filteredItems = refItems.current
                 .filter((item: Vault) => {
                     const applyFlags =
                         !flags.onlyWithWarnings ||
@@ -134,6 +136,7 @@ export const VaultsList = (props: VaultsListProps) => {
     };
 
     useEffect(() => {
+        refItems.current = items;
         setFilteredItems(items);
         const totalStrategies = getTotalStrategies(items);
         setTotalStrategiesFound(totalStrategies);
