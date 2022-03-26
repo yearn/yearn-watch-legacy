@@ -1,7 +1,7 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { StrategyMetadata, Yearn } from '@yfi/sdk';
 import { isAddress } from 'ethers/lib/utils';
-import { memoize, values } from 'lodash';
+import { memoize } from 'lodash';
 import {
     DEFAULT_QUERY_PARAM,
     Network,
