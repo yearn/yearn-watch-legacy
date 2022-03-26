@@ -75,7 +75,10 @@ export const vaultChecks = (
     });
 
     vault.strategies.forEach((strategy: Strategy) => {
-        if (!strategiesOnRiskPage.has(strategy.address)) {
+        if (
+            !strategiesOnRiskPage.has(strategy.address) &&
+            strategy.withdrawalQueueIndex != -1
+        ) {
             result.checkRiskOk = false;
             strategy.isMissingRisk = true;
         }

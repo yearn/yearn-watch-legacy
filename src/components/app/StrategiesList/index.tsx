@@ -408,8 +408,8 @@ const _StrategiesList = (props: StrategiesListProps) => {
                                                             <StyledTitle>
                                                                 {vault &&
                                                                 strategy.isMissingRisk
-                                                                    ? 'true'
-                                                                    : 'false'}
+                                                                    ? 'True'
+                                                                    : 'False'}
                                                             </StyledTitle>
                                                             <StyledSubtitle>
                                                                 Missing Risk

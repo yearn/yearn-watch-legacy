@@ -42,7 +42,7 @@ export const mainnet: NetworkConfig = {
     toAddressExplorerUrl: (token: string): string =>
         `https://etherscan.io/address/${token}`,
     toTxExplorerUrl: (tx: string): string => `https://etherscan.io/tx/${tx}`,
-    subgraphUrl: `https://api.thegraph.com/subgraphs/name/salazarguille/yearn-vaults-v2-subgraph-mainnet`,
+    subgraphUrl: `https://gateway.thegraph.com/api/${env.theGraphKey}/subgraphs/id/5xMSe3wTNLgFQqsAc5SCVVwT4MiRb5AogJCuSN9PjzXF`,
     usdcAddress: ETH_USDC_ADDRESS,
     oracleAddress: ETH_ORACLE_CONTRACT_ADDRESS,
     strategiesHelperAddress: ETH_STRATEGIES_HELPER_CONTRACT_ADDRESS,
