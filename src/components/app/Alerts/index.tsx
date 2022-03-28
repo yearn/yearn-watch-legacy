@@ -13,6 +13,7 @@ import { useStrategiesMissingRisk } from '../../../hooks/use-strategies-missing-
 import { HeadCell } from '../GenericList/HeadCell';
 import { ErrorAlert } from '../../common/Alerts';
 import getNetworkConfig from '../../../utils/config';
+import { amountToMMs } from '../../../utils/commonUtils';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -39,6 +40,9 @@ export const Alerts = () => {
                 return {
                     name: strategy.name,
                     address: strategy.address,
+                    estimatedTotalAssetsUsdc: amountToMMs(
+                        strategy.estimatedTotalAssetsUsdc
+                    ),
                 };
             }) || [];
         setItems(genericListItems);
@@ -68,6 +72,13 @@ export const Alerts = () => {
             numeric: true,
             disablePadding: false,
             label: 'Address',
+            align: 'center',
+        },
+        {
+            id: 'estimatedTotalAssetsUsdc',
+            numeric: true,
+            disablePadding: false,
+            label: 'TVL (MM)',
             align: 'center',
         },
         {
@@ -107,7 +118,7 @@ export const Alerts = () => {
                 title={`Strategies not in risk framework - ${items.length} `}
                 defaultOrder="desc"
                 defaultOrderBy="name"
-                defaultRowsPerPage={20}
+                defaultRowsPerPage={50}
             />
         </div>
     );

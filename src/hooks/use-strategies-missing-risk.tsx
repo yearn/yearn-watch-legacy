@@ -1,6 +1,7 @@
 import assert from 'assert';
 import { useEffect, useState } from 'react';
-import { Network, Strategy } from '../types';
+import { Network } from '../types';
+import { StrategyTVL } from '../types/strategy-tvl';
 import { getStrategyTVLsPerProtocol } from '../utils';
 import { getError } from '../utils/error';
 import { initRiskFrameworkScores } from '../utils/risk-framework';
@@ -8,7 +9,7 @@ import { initRiskFrameworkScores } from '../utils/risk-framework';
 export function useStrategiesMissingRisk(network: Network) {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [data, setData] = useState<Strategy[] | undefined>();
+    const [data, setData] = useState<StrategyTVL[] | undefined>();
 
     useEffect(() => {
         const fetchVault = async () => {
@@ -29,7 +30,7 @@ export function useStrategiesMissingRisk(network: Network) {
                     (strategy) => {
                         return (
                             strategy.estimatedTotalAssetsUsdc.gt(0) &&
-                            strategy.withdrawalQueueIndex !== -1
+                            strategy.isActive
                         );
                     }
                 );
