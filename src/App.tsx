@@ -21,6 +21,7 @@ import {
 } from './components/app';
 import { StrategyReportProvider } from './contexts/StrategyReportContext';
 import { Risk } from './components/app/Risk';
+import { Alerts } from './components/app/Alerts';
 
 declare module '@mui/styles/defaultTheme' {
     // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -97,6 +98,10 @@ const App = () => {
                             <Route
                                 path="/network/:network/risk"
                                 element={<Risk />}
+                            />
+                            <Route
+                                path="/network/:network/alerts"
+                                element={<Alerts />}
                             />
                             <Route
                                 path="/risk"
