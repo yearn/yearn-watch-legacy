@@ -9,6 +9,9 @@ import {
     VaultApi,
     StrategyParams,
     Network,
+    toQueryParam,
+    DEFAULT_BATCH_SIZE,
+    Vault,
 } from '../types';
 import { mapStrategyParams } from './strategyParams';
 import { mapContractCalls } from './commonUtils';
@@ -275,7 +278,19 @@ export const getStrategies = memoize(innerGetStrategies, (...args) =>
 
 const _getAllStrategies = async (network: Network): Promise<Strategy[]> => {
     const vaultService = getVaultService(network);
-    const allVaults = await vaultService.getVaults();
+    let vaults = [];
+    let allVaults: Array<Vault> = [];
+
+    for (
+        let i = 0;
+        (vaults = await vaultService.getVaults(
+            [],
+            toQueryParam(i * DEFAULT_BATCH_SIZE)
+        )) && vaults.length > 0;
+        i++
+    ) {
+        allVaults = allVaults.concat(vaults);
+    }
     return allVaults.flatMap((vault) => vault.strategies);
 };
 
