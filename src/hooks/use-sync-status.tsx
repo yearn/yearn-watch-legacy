@@ -57,6 +57,7 @@ export function useSyncStatus(network: Network) {
                     syncHeight: results.data._meta.block.number,
                 } as SyncStatus;
                 setSubgraphData(subgraphSyncStatus);
+                setSubgraphRequestError(false);
             } catch (e) {
                 setSubgraphRequestError(true);
             } finally {
