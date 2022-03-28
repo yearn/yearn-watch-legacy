@@ -181,6 +181,14 @@ export const mapStrategiesCalls = (
         if (!mappedStrat.doHealthCheck) {
             mappedStrat.doHealthCheck = false;
         }
+        if (
+            address ===
+            '0x41d638024C525C70A53b883608048e705e061F2c'.toLowerCase()
+        ) {
+            console.info(
+                'withdrawalQueueIndex ' + withdrawalQueueIndex.toString()
+            );
+        }
         return {
             ...mappedVaultStratInfo,
             ...mappedStrat,
