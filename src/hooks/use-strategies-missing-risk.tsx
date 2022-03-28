@@ -1,3 +1,4 @@
+import assert from 'assert';
 import { useEffect, useState } from 'react';
 import { Network, Strategy } from '../types';
 import { getStrategyTVLsPerProtocol } from '../utils';
@@ -15,12 +16,13 @@ export function useStrategiesMissingRisk(network: Network) {
                 setLoading(true);
                 const groupData = initRiskFrameworkScores(network);
                 const justOthers = groupData.find((g) => g.id === 'others'); // get only uncategorized strategies
+                assert(justOthers, 'Could not find group data');
                 const protocolTVL = await getStrategyTVLsPerProtocol(
-                    justOthers!.id,
-                    justOthers!.criteria.nameLike,
+                    justOthers.id,
+                    justOthers.criteria.nameLike,
                     network as Network,
-                    justOthers!.criteria.strategies,
-                    justOthers!.criteria.exclude
+                    justOthers.criteria.strategies,
+                    justOthers.criteria.exclude
                 );
 
                 const allStrategies = protocolTVL.strategies.filter(
