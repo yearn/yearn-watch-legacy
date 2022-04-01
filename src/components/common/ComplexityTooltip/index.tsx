@@ -81,7 +81,7 @@ export const ComplexityTooltip = (props: ComplexityTooltipProps) => {
                     <GenericList
                         headCells={headCellsMapped}
                         items={items}
-                        title={`Longevity Score Definition`}
+                        title={`Complexity Score Definition`}
                         defaultRowsPerPage={5}
                         displayPagination={false}
                     />

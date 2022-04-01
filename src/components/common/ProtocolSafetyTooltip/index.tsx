@@ -80,7 +80,7 @@ export const ProtocolSafetyTooltip = (props: ProtocolSafetyTooltipProps) => {
                     <GenericList
                         headCells={headCellsMapped}
                         items={items}
-                        title={`Longevity Score Definition`}
+                        title={`Protocol Safety Score Definition`}
                         defaultRowsPerPage={5}
                         displayPagination={false}
                     />

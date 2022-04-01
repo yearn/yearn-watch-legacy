@@ -80,7 +80,7 @@ export const TeamKnowledgeTooltip = (props: TeamKnowledgeTooltipProps) => {
                     <GenericList
                         headCells={headCellsMapped}
                         items={items}
-                        title={`Longevity Score Definition`}
+                        title={`Team Knowledge Score Definition`}
                         defaultRowsPerPage={5}
                         displayPagination={false}
                     />

@@ -77,7 +77,7 @@ export const TestTooltip = (props: TestTooltipProps) => {
                     <GenericList
                         headCells={headCellsMapped}
                         items={items}
-                        title={`Longevity Score Definition`}
+                        title={`Testing Score Definition`}
                         defaultRowsPerPage={5}
                         displayPagination={false}
                     />

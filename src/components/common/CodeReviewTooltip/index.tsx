@@ -30,11 +30,11 @@ export const headCells: HeadCell<GenericListItem>[] = [
 */
 const items = [
     {
-        description: '1 review only or was done 6 months or more ago',
+        description: '1 reviewer only or was done 6 months or more ago',
         value: 5,
     },
     {
-        description: '2 reviews was done 3+ months ago',
+        description: '2 reviewers was done 3+ months ago',
         value: 4,
     },
     {
@@ -79,7 +79,7 @@ export const CodeReviewTooltip = (props: CodeReviewTooltipProps) => {
                     <GenericList
                         headCells={headCellsMapped}
                         items={items}
-                        title={`Longevity Score Definition`}
+                        title={`Code Review Score Definition`}
                         defaultRowsPerPage={5}
                         displayPagination={false}
                     />

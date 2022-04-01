@@ -112,7 +112,7 @@ export const ScoreRowCollapse = (props: ScoreRowCollapseProps) => {
             renderValue: (
                 <TableRow key={index}>
                     <TableCell>
-                        {'Longevity Score:'}
+                        {'TVL Impact:'}
                         <MediaQuery query="(max-device-width: 1224px)">
                             {TVLImpact}
                         </MediaQuery>
@@ -129,7 +129,7 @@ export const ScoreRowCollapse = (props: ScoreRowCollapseProps) => {
             renderValue: (
                 <TableRow key={index}>
                     <TableCell>
-                        {'Longevity Score:'}
+                        {'Audit Score:'}
                         <MediaQuery query="(max-device-width: 1224px)">
                             {audit}
                         </MediaQuery>
@@ -146,7 +146,7 @@ export const ScoreRowCollapse = (props: ScoreRowCollapseProps) => {
             renderValue: (
                 <TableRow key={index}>
                     <TableCell>
-                        {'Longevity Score:'}
+                        {'Code Review Score:'}
                         <MediaQuery query="(max-device-width: 1224px)">
                             {codeReview}
                         </MediaQuery>
@@ -163,7 +163,7 @@ export const ScoreRowCollapse = (props: ScoreRowCollapseProps) => {
             renderValue: (
                 <TableRow key={index}>
                     <TableCell>
-                        {'Longevity Score:'}
+                        {'Complexity Score:'}
                         <MediaQuery query="(max-device-width: 1224px)">
                             {complexity}
                         </MediaQuery>
@@ -197,7 +197,7 @@ export const ScoreRowCollapse = (props: ScoreRowCollapseProps) => {
             renderValue: (
                 <TableRow key={index}>
                     <TableCell>
-                        {'Longevity Score:'}
+                        {'Protocol Safety Score:'}
                         <MediaQuery query="(max-device-width: 1224px)">
                             {protocolSafety}
                         </MediaQuery>
@@ -214,7 +214,7 @@ export const ScoreRowCollapse = (props: ScoreRowCollapseProps) => {
             renderValue: (
                 <TableRow key={index}>
                     <TableCell>
-                        {'Longevity Score:'}
+                        {'Team Knowledge Score:'}
                         <MediaQuery query="(max-device-width: 1224px)">
                             {teamknowledge}
                         </MediaQuery>
@@ -231,7 +231,7 @@ export const ScoreRowCollapse = (props: ScoreRowCollapseProps) => {
             renderValue: (
                 <TableRow key={index}>
                     <TableCell>
-                        {'Longevity Score:'}
+                        {'Testing Score:'}
                         <MediaQuery query="(max-device-width: 1224px)">
                             {testValue}
                         </MediaQuery>
