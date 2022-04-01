@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
 import sum from 'lodash/sum';
@@ -44,6 +44,7 @@ export const VaultsList = (props: VaultsListProps) => {
     const totalStrategies = getTotalStrategies(items);
     const [totalStrategiesFound, setTotalStrategiesFound] =
         useState(totalStrategies);
+    const refItems = useRef(items);
 
     if (items.length === 0) {
         return <>Vaults not found.</>;
@@ -88,11 +89,11 @@ export const VaultsList = (props: VaultsListProps) => {
     const onFilter = (newText: string, flags: Flags, health: string) => {
         const hasFlags = flags.onlyWithWarnings;
         if (!hasFlags && newText.trim() === '' && health.trim() === '') {
-            setFilteredItems(items);
-            setTotalStrategiesFound(getTotalStrategies(items));
+            setFilteredItems(refItems.current);
+            setTotalStrategiesFound(getTotalStrategies(refItems.current));
         } else {
             let totalStrategiesFound = 0;
-            const filteredItems = items
+            const filteredItems = refItems.current
                 .filter((item: Vault) => {
                     const applyFlags =
                         !flags.onlyWithWarnings ||
@@ -124,6 +125,7 @@ export const VaultsList = (props: VaultsListProps) => {
     };
 
     useEffect(() => {
+        refItems.current = items;
         setFilteredItems(items);
         const totalStrategies = getTotalStrategies(items);
         setTotalStrategiesFound(totalStrategies);
