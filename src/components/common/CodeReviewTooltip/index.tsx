@@ -30,33 +30,35 @@ export const headCells: HeadCell<GenericListItem>[] = [
 */
 const items = [
     {
-        description: 'New code. Did not go to ape tax before',
+        description: '1 reviewer only or was done 6 months or more ago',
         value: 5,
     },
     {
-        description: 'Code has been live less than a month',
+        description: '2 reviewers was done 3+ months ago',
         value: 4,
     },
     {
-        description: '1 to <4 months live',
+        description:
+            '3 reviewers was done 3+ month ago(only one security dev reviewed + 2 peers)',
         value: 3,
     },
     {
-        description: '4+ months live',
+        description:
+            '3+ reviewers, at least one security dev reviewed, recently',
         value: 2,
     },
     {
         description:
-            '8+ months live, no critical issues and no changes in code base',
+            '+4 reviewers, Two security reviewers and External protocol devs reviewed',
         value: 1,
     },
 ];
 
-type LongevityTooltipProps = {
+type CodeReviewTooltipProps = {
     value: number;
 };
 
-export const LongevityTooltip = (props: LongevityTooltipProps) => {
+export const CodeReviewTooltip = (props: CodeReviewTooltipProps) => {
     const getStyle = (item: GenericListItem) => {
         if (item.value === props.value) {
             return {
@@ -77,7 +79,7 @@ export const LongevityTooltip = (props: LongevityTooltipProps) => {
                     <GenericList
                         headCells={headCellsMapped}
                         items={items}
-                        title={`Longevity Score Definition`}
+                        title={`Code Review Score Definition`}
                         defaultRowsPerPage={5}
                         displayPagination={false}
                     />

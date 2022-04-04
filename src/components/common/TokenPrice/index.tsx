@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import makeStyles from '@mui/styles/makeStyles';
-import { HtmlTooltip } from '../HtmlTooltip';
+import HtmlTooltip from '../HtmlTooltip';
 import { HelpOutlineRounded } from '@mui/icons-material';
 import MediaQuery from 'react-responsive';
 import TableCell from '@mui/material/TableCell';

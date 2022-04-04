@@ -30,33 +30,33 @@ export const headCells: HeadCell<GenericListItem>[] = [
 */
 const items = [
     {
-        description: 'New code. Did not go to ape tax before',
+        description: '20% coverage or less in testing',
         value: 5,
     },
     {
-        description: 'Code has been live less than a month',
+        description: 'less than 40% coverage',
         value: 4,
     },
     {
-        description: '1 to <4 months live',
+        description: '40% coverage to 70% coverage',
         value: 3,
     },
     {
-        description: '4+ months live',
+        description: 'over 80% coverage',
         value: 2,
     },
     {
         description:
-            '8+ months live, no critical issues and no changes in code base',
+            '>90% coverage in testing. Second developer validated and added tests. You can pull repository and test are currently passing',
         value: 1,
     },
 ];
 
-type LongevityTooltipProps = {
+type TestTooltipProps = {
     value: number;
 };
 
-export const LongevityTooltip = (props: LongevityTooltipProps) => {
+export const TestTooltip = (props: TestTooltipProps) => {
     const getStyle = (item: GenericListItem) => {
         if (item.value === props.value) {
             return {
@@ -77,7 +77,7 @@ export const LongevityTooltip = (props: LongevityTooltipProps) => {
                     <GenericList
                         headCells={headCellsMapped}
                         items={items}
-                        title={`Longevity Score Definition`}
+                        title={`Testing Score Definition`}
                         defaultRowsPerPage={5}
                         displayPagination={false}
                     />

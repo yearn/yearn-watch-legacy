@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Grid, { GridSize } from '@mui/material/Grid';
 import { Typography } from '@mui/material';
 import { HelpOutlined } from '@mui/icons-material';
-import { HtmlTooltip } from '../HtmlTooltip';
+import HtmlTooltip from '../HtmlTooltip';
 import { Fragment, ReactNode } from 'react';
 
 const StyledSubtitle = styled(Typography)`

@@ -30,33 +30,36 @@ export const headCells: HeadCell<GenericListItem>[] = [
 */
 const items = [
     {
-        description: 'New code. Did not go to ape tax before',
+        description:
+            '1 person in the team is the only one that has in depth knowledge of the strategy code.',
         value: 5,
     },
     {
-        description: 'Code has been live less than a month',
+        description:
+            '1 Strategist in depth knowledge, 1 strategist somewhat familar',
         value: 4,
     },
     {
-        description: '1 to <4 months live',
+        description: '2 strategists have depth knowledge',
         value: 3,
     },
     {
-        description: '4+ months live',
+        description:
+            '2 strategists have depth knowledge, +1 strategist somewhat familar',
         value: 2,
     },
     {
         description:
-            '8+ months live, no critical issues and no changes in code base',
+            'Team of 3+ strategist are very familar with the code and protocol',
         value: 1,
     },
 ];
 
-type LongevityTooltipProps = {
+type TeamKnowledgeTooltipProps = {
     value: number;
 };
 
-export const LongevityTooltip = (props: LongevityTooltipProps) => {
+export const TeamKnowledgeTooltip = (props: TeamKnowledgeTooltipProps) => {
     const getStyle = (item: GenericListItem) => {
         if (item.value === props.value) {
             return {
@@ -77,7 +80,7 @@ export const LongevityTooltip = (props: LongevityTooltipProps) => {
                     <GenericList
                         headCells={headCellsMapped}
                         items={items}
-                        title={`Longevity Score Definition`}
+                        title={`Team Knowledge Score Definition`}
                         defaultRowsPerPage={5}
                         displayPagination={false}
                     />

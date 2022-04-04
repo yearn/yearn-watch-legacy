@@ -30,33 +30,37 @@ export const headCells: HeadCell<GenericListItem>[] = [
 */
 const items = [
     {
-        description: 'New code. Did not go to ape tax before',
+        description:
+            'Strategy is very complex, uses leverage or debt, not esay to unwind. No health check',
         value: 5,
     },
     {
-        description: 'Code has been live less than a month',
+        description:
+            'Uses leverage or debt, not easy to unwind. No health check.',
         value: 4,
     },
     {
-        description: '1 to <4 months live',
+        description:
+            'No health check. Has loss potential, withdraw fee or requires detailed queue management to avoid loss',
         value: 3,
     },
     {
-        description: '4+ months live',
+        description:
+            'Strategy is simple, easy to migrate/unwind. Has health check.',
         value: 2,
     },
     {
         description:
-            '8+ months live, no critical issues and no changes in code base',
+            'Strategy is simple, easy to migrate/unwind. No leveragte and zero external non permissioned calls. Is not lossy by design',
         value: 1,
     },
 ];
 
-type LongevityTooltipProps = {
+type ComplexityTooltipProps = {
     value: number;
 };
 
-export const LongevityTooltip = (props: LongevityTooltipProps) => {
+export const ComplexityTooltip = (props: ComplexityTooltipProps) => {
     const getStyle = (item: GenericListItem) => {
         if (item.value === props.value) {
             return {
@@ -77,7 +81,7 @@ export const LongevityTooltip = (props: LongevityTooltipProps) => {
                     <GenericList
                         headCells={headCellsMapped}
                         items={items}
-                        title={`Longevity Score Definition`}
+                        title={`Complexity Score Definition`}
                         defaultRowsPerPage={5}
                         displayPagination={false}
                     />

@@ -18,7 +18,7 @@ import Grid from '@mui/material/Grid';
 import Hidden from '@mui/material/Hidden';
 import { ReportProblem } from '@mui/icons-material';
 import { Typography } from '@mui/material';
-import { HtmlTooltip } from '../../common/HtmlTooltip';
+import HtmlTooltip from '../../common/HtmlTooltip';
 
 type VaultItemListProps = {
     vault: Vault;

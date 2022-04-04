@@ -30,33 +30,36 @@ export const headCells: HeadCell<GenericListItem>[] = [
 */
 const items = [
     {
-        description: 'New code. Did not go to ape tax before',
+        description:
+            'no DD document for this strategy and protocol contracts used are very recent and not audited/verified',
         value: 5,
     },
     {
-        description: 'Code has been live less than a month',
+        description: 'DD, contracts verified, and multisig',
         value: 4,
     },
     {
-        description: '1 to <4 months live',
+        description:
+            'DD, requires a multisig. Contracts are verified and audited at least by one firm.',
         value: 3,
     },
     {
-        description: '4+ months live',
+        description:
+            'DD, requires a multisig. Protocol has bug bounties. Contracts are verified and audited at least by 2 firms.',
         value: 2,
     },
     {
         description:
-            '8+ months live, no critical issues and no changes in code base',
+            'Protocols involved in contract are blue chip protocols trusted and good record of security. Maker, Curve, AAVE, Compound',
         value: 1,
     },
 ];
 
-type LongevityTooltipProps = {
+type ProtocolSafetyTooltipProps = {
     value: number;
 };
 
-export const LongevityTooltip = (props: LongevityTooltipProps) => {
+export const ProtocolSafetyTooltip = (props: ProtocolSafetyTooltipProps) => {
     const getStyle = (item: GenericListItem) => {
         if (item.value === props.value) {
             return {
@@ -77,7 +80,7 @@ export const LongevityTooltip = (props: LongevityTooltipProps) => {
                     <GenericList
                         headCells={headCellsMapped}
                         items={items}
-                        title={`Longevity Score Definition`}
+                        title={`Protocol Safety Score Definition`}
                         defaultRowsPerPage={5}
                         displayPagination={false}
                     />
