@@ -1,4 +1,4 @@
-import { HtmlTooltip } from '../HtmlTooltip';
+import HtmlTooltip from '../HtmlTooltip';
 import { Fragment } from 'react';
 import { HelpOutlined } from '@mui/icons-material';
 import { GenericList, GenericListItem } from '../../app';

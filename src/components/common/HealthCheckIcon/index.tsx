@@ -4,7 +4,7 @@ import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { Strategy } from '../../../types';
 import { EMPTY_ADDRESS } from '../../../utils/commonUtils';
-import { HtmlTooltip } from '../HtmlTooltip';
+import HtmlTooltip from '../HtmlTooltip';
 import { Typography } from '@mui/material';
 
 const useStyles = makeStyles({
