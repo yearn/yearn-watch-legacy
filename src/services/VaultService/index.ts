@@ -22,6 +22,7 @@ import {
     getVaultStrategyMetadata,
     sortVaultsByVersion,
 } from '../../utils/vaults';
+import getNetworkConfig from '../../utils/config';
 
 type StrategyBasicData = {
     [vault: string]: StrategyApi[];
@@ -49,11 +50,18 @@ export abstract class VaultService {
         this.network = network;
         this.networkId = networkId;
 
+        const mainnetConfig = getNetworkConfig(Network.mainnet);
+        const fantomConfig = getNetworkConfig(Network.fantom);
+        const arbitrumConfig = getNetworkConfig(Network.arbitrum);
         const provider = getEthersDefaultProvider(this.network);
         this.provider = provider;
         this.sdk = new Yearn(this.networkId, {
             provider,
-            cache: { useCache: false },
+            subgraph: {
+                mainnetSubgraphEndpoint: mainnetConfig.subgraphUrl,
+                fantomSubgraphEndpoint: fantomConfig.subgraphUrl,
+                arbitrumSubgraphEndpoint: arbitrumConfig.subgraphUrl,
+            },
         });
     }
 
