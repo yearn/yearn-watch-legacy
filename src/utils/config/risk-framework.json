@@ -919,6 +919,22 @@
             }
         },
         {
+            "id": "curvestakerspell",
+            "network": "fantom",
+            "label": "Curve Staker Spell",
+            "codeReviewScore": 3,
+            "testingScore": 4,
+            "auditScore": 5,
+            "protocolSafetyScore": 4,
+            "complexityScore": 2,
+            "teamKnowledgeScore": 3,
+            "criteria": {
+                "nameLike": ["curvestakerspell"],
+                "strategies": [],
+                "exclude": []
+            }
+        },
+        {
             "id": "others",
             "network": "fantom",
             "label": "Others",
@@ -949,7 +965,8 @@
                     "ToHedgilSpookyJoint",
                     "88MPH",
                     "singlesided",
-                    "ssc"
+                    "ssc",
+                    "curvestakerspell"
                 ]
             },
             "codeReviewScore": 5,
