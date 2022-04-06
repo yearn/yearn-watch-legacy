@@ -412,7 +412,7 @@
             "teamKnowledgeScore": 2,
             "criteria": {
                 "nameLike": ["SingleSidedBalancer", "SSBv2"],
-                "strategies": [],
+                "strategies": ["0xc31763c0c3025b9DF3Fb7Cb7f4AC041866F64F2E"],
                 "exclude": []
             }
         },
