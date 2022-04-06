@@ -626,6 +626,7 @@
                     "rebalancer",
                     "SingleSidedBalancer",
                     "SSBv2",
+                    "0xc31763c0c3025b9DF3Fb7Cb7f4AC041866F64F2E",
                     "StrategyBarnDAOStaking",
                     "StrategyLeagueDAOStaking",
                     "ToHegicSushiJoint",
