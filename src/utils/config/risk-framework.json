@@ -636,7 +636,8 @@
                     "inverse",
                     "StrategyNotionalLending",
                     "solidexjoint",
-                    "88MPH"
+                    "88MPH",
+                    "StrategyTokemak"
                 ]
             }
         },
