@@ -593,6 +593,22 @@
             }
         },
         {
+            "id": "Stargate",
+            "network": "ethereum/fantom/arbitrum",
+            "label": "Stargate",
+            "codeReviewScore": 3,
+            "testingScore": 4,
+            "auditScore": 5,
+            "protocolSafetyScore": 4,
+            "complexityScore": 4,
+            "teamKnowledgeScore": 3,
+            "criteria": {
+                "nameLike": ["stargate"],
+                "strategies": [],
+                "exclude": []
+            }
+        },
+        {
             "id": "others",
             "network": "ethereum",
             "label": "Others",
@@ -655,7 +671,8 @@
                     "solidexjoint",
                     "88MPH",
                     "StrategyTokemak",
-                    "SingleSidedBoostedBalancer"
+                    "SingleSidedBoostedBalancer",
+                    "stargate"
                 ]
             }
         },
@@ -1002,7 +1019,8 @@
                     "singlesided",
                     "ssc",
                     "curvestakerspell",
-                    "veLp_Oxdao"
+                    "veLp_Oxdao",
+                    "stargate"
                 ]
             },
             "codeReviewScore": 5,
@@ -1042,7 +1060,9 @@
                 "nameLike": ["all"],
                 "strategies": [],
                 "exclude": [
-                   "curve"
+                   "curve",
+                   "crv",
+                   "stargate"
                 ]
             },
             "codeReviewScore": 5,
