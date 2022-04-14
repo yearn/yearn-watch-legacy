@@ -609,6 +609,22 @@
             }
         },
         {
+            "id": "strategyangle",
+            "network": "ethereum",
+            "label": "Angle Protocol",
+            "codeReviewScore": 3,
+            "testingScore": 4,
+            "auditScore": 5,
+            "protocolSafetyScore": 4,
+            "complexityScore": 3,
+            "teamKnowledgeScore": 3,
+            "criteria": {
+                "nameLike": ["strategyangle"],
+                "strategies": [],
+                "exclude": []
+            }
+        },
+        {
             "id": "others",
             "network": "ethereum",
             "label": "Others",
@@ -672,7 +688,8 @@
                     "88MPH",
                     "StrategyTokemak",
                     "SingleSidedBoostedBalancer",
-                    "stargate"
+                    "stargate",
+                    "strategyangle"
                 ]
             }
         },
