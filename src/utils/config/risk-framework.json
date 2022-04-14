@@ -577,6 +577,22 @@
             }
         },
         {
+            "id": "singlesidedbalancer",
+            "network": "ethereum",
+            "label": "Single Sided Balancer v3",
+            "codeReviewScore": 2,
+            "testingScore": 2,
+            "auditScore": 4,
+            "protocolSafetyScore": 1,
+            "complexityScore": 3,
+            "teamKnowledgeScore": 2,
+            "criteria": {
+                "nameLike": ["SingleSidedBalancer", "SSBv3"],
+                "strategies": [],
+                "exclude": []
+            }
+        },
+        {
             "id": "88MPH",
             "network": "ethereum/fantom",
             "label": "88mph deposit",
@@ -674,6 +690,7 @@
                     "rebalancer",
                     "SingleSidedBalancer",
                     "SSBv2",
+                    "SSBv3",
                     "0xc31763c0c3025b9DF3Fb7Cb7f4AC041866F64F2E",
                     "StrategyBarnDAOStaking",
                     "StrategyLeagueDAOStaking",
