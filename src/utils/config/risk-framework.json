@@ -672,6 +672,7 @@
                     "makerv2",
                     "jointprovider",
                     "rebalancer",
+                    "SingleSidedBalancer",
                     "SSBv3",
                     "0xc31763c0c3025b9DF3Fb7Cb7f4AC041866F64F2E",
                     "StrategyBarnDAOStaking",
