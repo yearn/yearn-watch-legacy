@@ -604,7 +604,7 @@
             "teamKnowledgeScore": 3,
             "criteria": {
                 "nameLike": ["stargate"],
-                "strategies": [],
+                "strategies": ["0x2b982BE433093A80e1801A0Dd894994a170a5025"],
                 "exclude": []
             }
         },
@@ -689,6 +689,7 @@
                     "StrategyTokemak",
                     "SingleSidedBoostedBalancer",
                     "stargate",
+                    "0x2b982BE433093A80e1801A0Dd894994a170a5025",
                     "strategyangle"
                 ]
             }
