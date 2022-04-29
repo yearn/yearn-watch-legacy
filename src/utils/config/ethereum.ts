@@ -19,7 +19,7 @@ const TREASURY_ENS = 'treasury.ychad.eth';
 const TREASURY = '0x93a62da5a14c80f265dabc077fcee437b1a0efde';
 
 const MANAGEMENT_FEE = 200;
-const PERF_FEE = 1000;
+const PERF_FEE = 2000;
 const ETH_USDC_ADDRESS = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48';
 const ETH_ORACLE_CONTRACT_ADDRESS =
     '0x83d95e0d5f402511db06817aff3f9ea88224b030';
