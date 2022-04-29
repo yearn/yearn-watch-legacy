@@ -578,7 +578,7 @@
         },
         {
             "id": "88MPH",
-            "network": "ethereum/fantom",
+            "network": "ethereum",
             "label": "88mph deposit",
             "codeReviewScore": 3,
             "testingScore": 3,
@@ -594,7 +594,7 @@
         },
         {
             "id": "Stargate",
-            "network": "ethereum/fantom/arbitrum",
+            "network": "ethereum",
             "label": "Stargate",
             "codeReviewScore": 3,
             "testingScore": 4,
@@ -1004,6 +1004,38 @@
             }
         },
         {
+            "id": "88MPH",
+            "network": "fantom",
+            "label": "88mph deposit",
+            "codeReviewScore": 3,
+            "testingScore": 3,
+            "auditScore": 5,
+            "protocolSafetyScore": 2,
+            "complexityScore": 2,
+            "teamKnowledgeScore": 3,
+            "criteria": {
+                "nameLike": ["88MPH"],
+                "strategies": [],
+                "exclude": []
+            }
+        },
+        {
+            "id": "Stargate",
+            "network": "fantom",
+            "label": "Stargate",
+            "codeReviewScore": 3,
+            "testingScore": 4,
+            "auditScore": 5,
+            "protocolSafetyScore": 4,
+            "complexityScore": 4,
+            "teamKnowledgeScore": 3,
+            "criteria": {
+                "nameLike": ["stargate"],
+                "strategies": [],
+                "exclude": []
+            }
+        },
+        {
             "id": "others",
             "network": "fantom",
             "label": "Others",
@@ -1067,6 +1099,22 @@
                     "singlesided",
                     "convex"
                 ]
+            }
+        },
+        {
+            "id": "Stargate",
+            "network": "arbitrum",
+            "label": "Stargate",
+            "codeReviewScore": 3,
+            "testingScore": 4,
+            "auditScore": 5,
+            "protocolSafetyScore": 4,
+            "complexityScore": 4,
+            "teamKnowledgeScore": 3,
+            "criteria": {
+                "nameLike": ["stargate"],
+                "strategies": [],
+                "exclude": []
             }
         },
         {
