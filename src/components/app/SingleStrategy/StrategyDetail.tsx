@@ -130,6 +130,13 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
                   strategy.token.decimals
               )
             : 'N/A';
+    const keepCRV =
+        strategy && strategy.keepCRV
+            ? displayAmount(
+                  strategy.keepCRV.toString(),
+                  strategy.token.decimals
+              )
+            : 'N/A';
     const keeper = strategy ? (
         <EtherScanLink address={strategy.keeper} network={network} />
     ) : (
@@ -191,6 +198,7 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
         { key: ' Rate Limit:', value: rateLimit },
         { key: ' Min Debt Per Harvest:', value: minDebtPerHarvest },
         { key: ' Max Debt Per Harvest:', value: maxDebtPerHarvest },
+        { key: ' KeepCRV:', value: keepCRV },
         { key: ' Keeper:', value: keeper },
         { key: ' Rewards:', value: rewards },
         { key: ' Strategist:', value: strategist },

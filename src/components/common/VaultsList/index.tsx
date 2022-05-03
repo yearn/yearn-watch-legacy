@@ -154,14 +154,26 @@ export const VaultsList = (props: VaultsListProps) => {
                     </div>
                 ))}
             </div>
-            <StyledReportContainer>
-                <Button
-                    component={RouterLink}
-                    to={`/network/${network}/report`}
-                >
-                    <StyledReportTitle>HealthCheck Report</StyledReportTitle>
-                </Button>
-            </StyledReportContainer>
+            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                <StyledReportContainer>
+                    <Button
+                        component={RouterLink}
+                        to={`/network/${network}/report`}
+                    >
+                        <StyledReportTitle>
+                            HealthCheck Report
+                        </StyledReportTitle>
+                    </Button>
+                </StyledReportContainer>
+                <StyledReportContainer>
+                    <Button
+                        component={RouterLink}
+                        to={`/network/${network}/keepcsv`}
+                    >
+                        <StyledReportTitle>Keep CSV</StyledReportTitle>
+                    </Button>
+                </StyledReportContainer>
+            </div>
         </>
     );
 };
