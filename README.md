@@ -1,4 +1,7 @@
-# Yearn Watch [Site](https://yearn.watch) previously https://yearn-hub.vercel.app/
+# /!\ Deprecated. Please use https://github.com/yearn/yearn-watch /!\
+
+# Yearn Watch
+[Site](https://yearn.watch) previously https://yearn-hub.vercel.app/
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
