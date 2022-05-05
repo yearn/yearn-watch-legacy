@@ -199,3 +199,24 @@ export const getWarnings = (strategies: Strategy[]): string[] => {
 
     return warnings;
 };
+
+export const getAssetsStrategiesAddressesByFilterKeepCRV = async (
+    network: Network
+): Promise<string[]> => {
+    const helper = getStrategiesHelperInstance(network);
+    const results = await helper[
+        'assetsStrategiesAddressesByFilter(string[][])'
+    ]([
+        ['VALUE', '1000', 'DECIMAL'],
+        ['KEY', 'keepCRV', 'DECIMAL'],
+        ['OPERATOR', 'GTE'],
+    ]);
+    const flattenResults = flattenArrays(results);
+    return Array.from(new Set(flattenResults));
+};
+
+export const getKeepCRVStrategyTVLsPerProtocol = async (network: Network) => {
+    const result = await getAssetsStrategiesAddressesByFilterKeepCRV(network);
+    const strategyAddresses = [...result];
+    return strategyAddresses;
+};
