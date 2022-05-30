@@ -97,7 +97,7 @@ const App = () => {
                                 element={<HealthCheckReport />}
                             />
                             <Route
-                                path="/network/:network/keepcsv"
+                                path="/network/:network/keepcrv"
                                 element={<KeepCRVReport />}
                             />
                             <Route

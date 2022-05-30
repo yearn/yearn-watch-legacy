@@ -4,7 +4,7 @@ import { getError } from '../utils/error';
 import { GenericListItem } from '../components/app';
 import { getVaultService } from '../services/VaultService/utils';
 import { DEFAULT_BATCH_SIZE, Network, toQueryParam } from '../types';
-import { filterStrategiesByKeepCSV } from '../utils/vaults';
+import { filterStrategiesByKeepCRV } from '../utils/vaults';
 
 export function useStrategiesKeepCRV(network: Network) {
     const [loading, setLoading] = useState<boolean>(true);
@@ -33,7 +33,7 @@ export function useStrategiesKeepCRV(network: Network) {
                     );
                     offset += DEFAULT_BATCH_SIZE;
                     vaultsFetched += vaults.length;
-                    const strategies = await filterStrategiesByKeepCSV(
+                    const strategies = await filterStrategiesByKeepCRV(
                         vaults,
                         network,
                         FilteredByKeepCRV

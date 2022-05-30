@@ -168,7 +168,7 @@ export const VaultsList = (props: VaultsListProps) => {
                 <StyledReportContainer>
                     <Button
                         component={RouterLink}
-                        to={`/network/${network}/keepcsv`}
+                        to={`/network/${network}/keepcrv`}
                     >
                         <StyledReportTitle>Keep CRV</StyledReportTitle>
                     </Button>

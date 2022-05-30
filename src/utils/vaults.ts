@@ -105,15 +105,15 @@ export const getVaultStrategyMetadata = memoize(
     (...args) => values(args).join('_')
 );
 
-export const filterStrategiesByKeepCSV = async (
+export const filterStrategiesByKeepCRV = async (
     vaults: Vault[],
     network: Network,
-    csvStrategies: string[]
+    crvStrategies: string[]
 ): Promise<GenericListItem[]> => {
     const filteredStrategies: any[] = [];
     vaults.forEach((vault) => {
         vault.strategies.forEach((strategy) => {
-            if (csvStrategies.includes(strategy.address)) {
+            if (crvStrategies.includes(strategy.address)) {
                 filteredStrategies.push({
                     vault: strategy.vault,
                     network,

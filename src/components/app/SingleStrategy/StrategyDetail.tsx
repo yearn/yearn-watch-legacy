@@ -131,12 +131,7 @@ export const StrategyDetail = (props: StrategyDetailProps) => {
               )
             : 'N/A';
     const keepCRV =
-        strategy && strategy.keepCRV
-            ? displayAmount(
-                  strategy.keepCRV.toString(),
-                  strategy.token.decimals
-              )
-            : 'N/A';
+        strategy && strategy.keepCRV ? strategy.keepCRV.toString() : 'N/A';
     const keeper = strategy ? (
         <EtherScanLink address={strategy.keeper} network={network} />
     ) : (

@@ -39,6 +39,7 @@ const STRAT_VIEW_METHODS = [
     'want',
     'doHealthCheck',
     'healthCheck',
+    'keepCRV',
 ];
 
 const STRAT_GEN_LENDER_VIEW_METHODS = [
@@ -183,6 +184,9 @@ export const mapStrategiesCalls = (
         }
         if (!mappedStrat.doHealthCheck) {
             mappedStrat.doHealthCheck = false;
+        }
+        if (!mappedStrat.keepCRV) {
+            mappedStrat.keepCRV = 'N/A';
         }
         return {
             ...mappedVaultStratInfo,
