@@ -20,7 +20,7 @@
             "id": "convex",
             "network": "ethereum",
             "label": "Convex",
-            "codeReviewScore": 2,
+            "codeReviewScore": 3,
             "testingScore": 3,
             "auditScore": 5,
             "protocolSafetyScore": 2,
