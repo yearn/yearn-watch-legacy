@@ -11,19 +11,25 @@ export const initRiskFrameworkScores = async (
 ): Promise<GroupingsList> => {
     const index = Object.values(Network).indexOf(network as Network);
     const key = Object.keys(Network)[index];
-    const networkId = String(NetworkId[key as keyof typeof NetworkId]);
+    const networkId = NetworkId[key as keyof typeof NetworkId];
 
     // try to fetch directly from github first
     const responseGithub = await axios.get(RISK_GH_URL);
     if (responseGithub.status === 200) {
         const riskGroups = responseGithub.data as GroupingsList;
-        return riskGroups.filter((group) => group.network === networkId);
+        const result = riskGroups.filter(
+            (group) => parseInt(group.network) === networkId
+        );
+        return result;
     }
     // try to fetch from the api
     const responseApi = await axios.get(RISK_API_URL);
     if (responseApi.status === 200) {
         const riskGroups = responseApi.data as GroupingsList;
-        return riskGroups.filter((group) => group.network === networkId);
+        const result = riskGroups.filter(
+            (group) => parseInt(group.network) === networkId
+        );
+        return result;
     }
     // return empty array if not found
     return [];
