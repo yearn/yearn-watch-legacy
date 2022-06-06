@@ -47,9 +47,9 @@ export const Risk = () => {
     const [isLoadingItems, setIsLoadingItems] = useState<boolean>(true);
     const groupingId = 'default';
     if (groups.length === 0) {
-        initRiskFrameworkScores(network).then((groupData) =>
-            setGroups(groupData)
-        );
+        initRiskFrameworkScores(network).then((groupData) => {
+            if (groupData.length > 0) setGroups(groupData);
+        });
     }
     const classes = useStyles();
     useEffect(() => {
