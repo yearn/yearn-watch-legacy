@@ -13,23 +13,17 @@ export const initRiskFrameworkScores = async (
     const key = Object.keys(Network)[index];
     const networkId = NetworkId[key as keyof typeof NetworkId];
 
-    // try to fetch directly from github first
-    const responseGithub = await axios.get(RISK_GH_URL);
-    if (responseGithub.status === 200) {
-        const riskGroups = responseGithub.data as GroupingsList;
-        const result = riskGroups.filter(
-            (group) => parseInt(group.network) === networkId
-        );
-        return result;
-    }
-    // try to fetch from the api
-    const responseApi = await axios.get(RISK_API_URL);
-    if (responseApi.status === 200) {
-        const riskGroups = responseApi.data as GroupingsList;
-        const result = riskGroups.filter(
-            (group) => parseInt(group.network) === networkId
-        );
-        return result;
+    // try to fetch data in the following order
+    const endpoints = [RISK_GH_URL, RISK_API_URL];
+    for (const endpoint of endpoints) {
+        const response = await axios.get(endpoint);
+        if (response.status === 200) {
+            const riskGroups = response.data as GroupingsList;
+            const result = riskGroups.filter(
+                (group) => parseInt(group.network) === networkId
+            );
+            return result;
+        }
     }
     // return empty array if not found
     return [];
