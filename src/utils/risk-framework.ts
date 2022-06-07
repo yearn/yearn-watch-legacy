@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Network, NetworkId } from '../types';
 import { GroupingsList } from '../types/grouping';
+import riskFrameworkJson from './config/risks.json';
 
 const RISK_GH_URL =
     'https://raw.githubusercontent.com/yearn/yearn-data-analytics/master/src/risk_framework/risks.json';
@@ -25,6 +26,9 @@ export const initRiskFrameworkScores = async (
             return result;
         }
     }
-    // return empty array if not found
-    return [];
+    // return directly from the json file
+    const riskFramework = riskFrameworkJson as unknown as GroupingsList;
+    return riskFramework.filter(
+        (group) => parseInt(group.network) === networkId
+    );
 };
