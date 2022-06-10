@@ -16,7 +16,8 @@ export const initRiskFrameworkScores = async (
     // try to fetch data in the following order
     const endpoints = [riskGithub, riskApi];
     for (const endpoint of endpoints) {
-        const response = await axios.get(endpoint || '');
+        if (!endpoint) continue;
+        const response = await axios.get(endpoint);
         if (response.status === 200) {
             const riskGroups = response.data as GroupingsList;
             const result = riskGroups.filter(
