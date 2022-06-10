@@ -9,4 +9,6 @@ export interface Env {
     fbAuthDomain: string | undefined;
     fbProjectId: string | undefined;
     ethplorerKey: string | undefined;
+    riskGithub: string | undefined;
+    riskApi: string | undefined;
 }
