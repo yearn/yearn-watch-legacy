@@ -24,7 +24,7 @@ export function useStrategiesKeepCRV(network: Network) {
                 let vaultsFetched = 0;
                 let allStrategies: GenericListItem[] = [];
 
-                const FilteredByKeepCRV =
+                const filteredBykeepCRV =
                     await getKeepCRVStrategyTVLsPerProtocol(network as Network);
                 while (vaultsFetched < numVaults) {
                     const vaults = await vaultService.getVaults(
@@ -36,7 +36,7 @@ export function useStrategiesKeepCRV(network: Network) {
                     const strategies = await filterStrategiesByKeepCRV(
                         vaults,
                         network,
-                        FilteredByKeepCRV
+                        filteredBykeepCRV
                     );
                     allStrategies = [...allStrategies, ...strategies];
                     setData(allStrategies);
