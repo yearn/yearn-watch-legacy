@@ -4,3 +4,4 @@ export * from './use-strategy-metadata';
 export * from './use-strategy-gen-lender';
 export * from './use-vault';
 export * from './use-sync-status';
+export * from './use-strategies-keep-crv';

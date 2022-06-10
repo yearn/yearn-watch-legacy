@@ -18,6 +18,7 @@ import {
     Query,
     SingleStrategy,
     HealthCheckReport,
+    KeepCRVReport,
 } from './components/app';
 import { StrategyReportProvider } from './contexts/StrategyReportContext';
 import { Risk } from './components/app/Risk';
@@ -94,6 +95,10 @@ const App = () => {
                             <Route
                                 path="/network/:network/report"
                                 element={<HealthCheckReport />}
+                            />
+                            <Route
+                                path="/network/:network/keepcrv"
+                                element={<KeepCRVReport />}
                             />
                             <Route
                                 path="/network/:network/risk"

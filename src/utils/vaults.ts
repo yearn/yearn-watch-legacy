@@ -104,3 +104,57 @@ export const getVaultStrategyMetadata = memoize(
     _getVaultStrategyMetadata,
     (...args) => values(args).join('_')
 );
+
+export const filterStrategiesByKeepCRV = async (
+    vaults: Vault[],
+    network: Network,
+    crvStrategies: string[]
+): Promise<GenericListItem[]> => {
+    const filteredStrategies: any[] = [];
+    vaults.forEach((vault) => {
+        vault.strategies.forEach((strategy) => {
+            if (crvStrategies.includes(strategy.address)) {
+                filteredStrategies.push({
+                    vault: strategy.vault,
+                    network,
+                    name: strategy.name,
+                    address: strategy.address,
+                    token: vault.token,
+                    activation: Date.parse(strategy.params.activation),
+                    activationStr: strategy.params.activation,
+                    estimatedTotalAssets: strategy.estimatedTotalAssets,
+                });
+            }
+        });
+    });
+    const resultStrategiesPromises = filteredStrategies.map(
+        async (strategy) => {
+            if (strategy.estimatedTotalAssets) {
+                const estimatedTotalAssetsUsdc = await getTokenPrice(
+                    strategy.token,
+                    strategy.estimatedTotalAssets,
+                    network
+                );
+                const amountInMMs = amountToMMs(estimatedTotalAssetsUsdc);
+                return {
+                    ...strategy,
+                    estimatedTotalAssetsUsdc,
+                    estimatedTotalAssetsUsdcNumber: amountInMMs,
+                    tvlImpact: getTvlImpact(amountInMMs),
+                };
+            } else {
+                const estimatedTotalAssetsUsdc = new BigNumber(0);
+                const amountInMMs = amountToMMs(estimatedTotalAssetsUsdc);
+                return {
+                    ...strategy,
+                    estimatedTotalAssetsUsdc,
+                    estimatedTotalAssetsUsdcNumber: amountInMMs,
+                    tvlImpact: getTvlImpact(amountInMMs),
+                };
+            }
+        }
+    );
+
+    const resultStrategies = await Promise.all(resultStrategiesPromises);
+    return resultStrategies;
+};

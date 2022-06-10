@@ -7,3 +7,4 @@ export * from './NavBar';
 export * from './SingleStrategy';
 export * from './GenericList';
 export * from './HealthCheckReport';
+export * from './KeepCRVReport';
