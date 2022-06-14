@@ -45,10 +45,11 @@ export const Risk = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [items, setItems] = useState<any[]>([]);
     const [isLoadingItems, setIsLoadingItems] = useState<boolean>(true);
-    const groupData = initRiskFrameworkScores(network);
     const groupingId = 'default';
-    if (groups.length === 0 && groupData) {
-        setGroups(groupData);
+    if (groups.length === 0) {
+        initRiskFrameworkScores(network).then((groupData) => {
+            if (groupData.length > 0) setGroups(groupData);
+        });
     }
     const classes = useStyles();
     useEffect(() => {

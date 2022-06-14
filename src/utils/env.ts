@@ -21,6 +21,10 @@ export const getEnv = memoize(
         fbProjectId: process.env.REACT_APP_FB_PROJECT_ID,
         // TODO: replace apiKey for production key, get from ENV variable
         ethplorerKey: 'freekey',
+        // risk framework api
+        riskGithub:
+            'https://raw.githubusercontent.com/yearn/yearn-data-analytics/master/src/risk_framework/risks.json',
+        riskApi: 'https://d3971bp2359cnv.cloudfront.net/api/riskgroups/',
     })
 );
 

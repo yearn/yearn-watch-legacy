@@ -15,7 +15,7 @@ export function useStrategiesMissingRisk(network: Network) {
         const fetchVault = async () => {
             try {
                 setLoading(true);
-                const groupData = initRiskFrameworkScores(network);
+                const groupData = await initRiskFrameworkScores(network);
                 const justOthers = groupData.find((g) => g.id === 'others'); // get only uncategorized strategies
                 assert(justOthers, 'Could not find group data');
                 const protocolTVL = await getStrategyTVLsPerProtocol(
