@@ -22,8 +22,8 @@ export const getEnv = memoize(
         // TODO: replace apiKey for production key, get from ENV variable
         ethplorerKey: 'freekey',
         // risk framework api
-        riskGithub: process.env.RISK_GH_URL,
-        riskApi: process.env.RISK_API_URL,
+        riskGithub: 'https://raw.githubusercontent.com/yearn/yearn-data-analytics/master/src/risk_framework/risks.json',
+        riskApi: 'https://d3971bp2359cnv.cloudfront.net/api/riskgroups/',
     })
 );
 
