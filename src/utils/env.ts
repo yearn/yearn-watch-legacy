@@ -23,8 +23,8 @@ export const getEnv = memoize(
         ethplorerKey: 'freekey',
         // risk framework api
         riskGithub: 
-            "https://raw.githubusercontent.com/yearn/yearn-data-analytics/master/src/risk_framework/risks.json",
-        riskApi: "https://d3971bp2359cnv.cloudfront.net/api/riskgroups/",
+            'https://raw.githubusercontent.com/yearn/yearn-data-analytics/master/src/risk_framework/risks.json',
+        riskApi: 'https://d3971bp2359cnv.cloudfront.net/api/riskgroups/',
     })
 );
 
